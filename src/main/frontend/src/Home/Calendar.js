@@ -4,11 +4,10 @@ import moment from "moment";
 import 'react-calendar/dist/Calendar.css'; // css import
 import './Calendar.css';
 import Api from "../api/plannetApi";
-import { useNavigate  } from "react-router-dom";
-
-const navigate = useNavigate();
+import { useNavigate } from "react-router-dom";
 
 const Cal = ({doMark, endMark}) => {
+    const navigate = useNavigate();
     const [value, setValue] = useState(new Date());
 
     //날짜 클릭시 해당날짜의 write로 이동
@@ -20,6 +19,7 @@ const Cal = ({doMark, endMark}) => {
 
 
     return(
+        
         <div>
             <Calendar 
             returnValue="range"

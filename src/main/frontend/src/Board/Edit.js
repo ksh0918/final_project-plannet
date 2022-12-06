@@ -7,7 +7,7 @@ import Api from "../api/plannetApi";
 import Nav from "../Utill/Nav";
 import { useNavigate  } from "react-router-dom";
 
-const navigate = useNavigate();
+
 
 const Wrap = styled.div`
     width: 1130px;
@@ -202,6 +202,7 @@ const Section = styled.div`
 `;
 
 function Edit() {
+    const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
     let params = useParams(); // url에서 boardNo를 가져오기 위해 uesParams() 사용
     let getNum = params.no; // params는 객체이기 때문에 풀어줘서 다시 getNum에 대입해줌

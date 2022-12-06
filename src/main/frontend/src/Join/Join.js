@@ -7,7 +7,6 @@ import "./Join.scss"
 import "../App";
 import { useNavigate  } from "react-router-dom";
 
-const navigate = useNavigate();
 
 const ContainerJoin = styled.div`
     height: 100vh;
@@ -28,6 +27,7 @@ const Logo = styled.div`
 `;
 
 const Join = () => {
+    const navigate = useNavigate();
     // 키보드 입력
     const [inputId, setInputId] = useState("");
     const [inputPw, setInputPw] = useState("");
