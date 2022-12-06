@@ -9,6 +9,7 @@ import Api from "../api/plannetApi";
 import Modal from '../Utill/Modal';
 import "./DoLogin.scss"
 import "../App";
+import { useNavigate  } from "react-router-dom";
 
 const ContainerLogin = styled.div`
     width: 100%;
@@ -32,6 +33,7 @@ const Logo = styled.div`
 `;
 
 const DoLogin = () => {
+    const navigate = useNavigate();
     // 키보드 입력
     const [inputId, setInputId] = useState("");
     const [inputPw, setInputPw] = useState("");
@@ -65,7 +67,7 @@ const DoLogin = () => {
             if(res.data) {
                 window.localStorage.setItem("isLogin", "true");
                 window.localStorage.setItem("userId", inputId);
-                window.location.assign("/home");
+                navigate('/home');
             } else {
                 setCommnet("아이디 또는 비밀번호가 정확하지 않습니다.");
                 setModalOpen(true);

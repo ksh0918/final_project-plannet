@@ -2,9 +2,11 @@ import React from 'react';
 import '../App';
 import './Modal.css';
 import Api from "../api/plannetApi";
+import { useNavigate } from 'react-router-dom';
 
 
 const Modal = (props) => {
+    const navigate = useNavigate();
     const { open, close, header, boardNo, option } = props;
     
     const getId = window.localStorage.getItem("userId");
@@ -12,16 +14,16 @@ const Modal = (props) => {
     const onClickLogout = () => {
         window.localStorage.setItem("userId", "");
         window.localStorage.setItem("isLogin", "false");
-        window.location.replace("/");
+        navigate('/');
     }
     const onClickWithdraw = async() => {
         await Api.memberDelete(getId);
         window.localStorage.setItem("userId", "");
         window.localStorage.setItem("isLogin", "false");
-        window.location.replace("/");
+        navigate('/');
     }
     const onClickGoLogin = () => {
-        window.location.replace("/doLogin");
+        navigate('/doLogin');
     }
     const onClickEdit = () => {
         const link = "/edit/" + boardNo;
@@ -30,11 +32,11 @@ const Modal = (props) => {
     }
     const onClickDelete = async() => {
         await Api.boardDelete(boardNo);
-        window.location.replace("/board");
+        navigate('/board');
     }
     const onClickUnfriend = async() => { //수정해야함
         // await Api.boardDelete(boardNo);
-        window.location.replace("/friend");
+        navigate('/friend');
     }
     return (
         <div className={open ? 'openModal modal' : 'modal'}>

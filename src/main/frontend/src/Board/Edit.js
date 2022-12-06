@@ -5,6 +5,9 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Api from "../api/plannetApi";
 import Nav from "../Utill/Nav";
+import { useNavigate  } from "react-router-dom";
+
+
 
 const Wrap = styled.div`
     width: 1130px;
@@ -199,6 +202,7 @@ const Section = styled.div`
 `;
 
 function Edit() {
+    const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
     let params = useParams(); // url에서 boardNo를 가져오기 위해 uesParams() 사용
     let getNum = params.no; // params는 객체이기 때문에 풀어줘서 다시 getNum에 대입해줌
@@ -218,7 +222,7 @@ function Edit() {
                 let writerId = response.data[0].writerId;
                 if(getId !== writerId) { 
                     alert("본인의 글만 수정할 수 있습니다.")
-                    window.location.replace("/home");
+                    navigate('/home');
                     return; // Edit 페이지 랜더링 되지 않도록 Home 페이지로 이동하고 useEffect에서 return
                 } 
                 setBoardLoad(response.data);

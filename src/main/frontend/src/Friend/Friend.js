@@ -5,6 +5,7 @@ import FriendList from './FriendList';
 import FriendAdd from './FriendAdd';
 import Api from "../api/plannetApi";
 import Modal from '../Utill/Modal';
+import FriendNoti from './FriendNoti';
 
 const Wrap = styled.div`
     width: 1130px;
@@ -138,7 +139,7 @@ const Friend = () => {
                 </div>
                 <div className='noti'>
                     <h2>Notification</h2>
-                    <div/>
+                    <FriendNoti/>
                 </div>
             </Section>
             <div className="copy">&#169; Plannet.</div>
