@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Nav from "../Utill/Nav";
 import Api from "../api/plannetApi";
@@ -175,6 +176,7 @@ const Section = styled.div`
 `;
 
 const Setting = () => {
+    const navigate = useNavigate();
     const userId = window.localStorage.getItem("userId");
     const [userImgName, setUserImgName] = useState("");
     const [userImgUrl, setUserImgUrl] = useState({backgroundImage: "url(https://khprojectplannet.s3.ap-northeast-2.amazonaws.com/" + userImgName + ")"});
