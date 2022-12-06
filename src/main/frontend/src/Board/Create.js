@@ -196,7 +196,7 @@ function Create() {
 
     const onClickSave = async() => {
         await Api.boardCreate(getId, title, detail, isChecked);
-        window.location.assign('/board');
+        navigate('/board');
     }
 
     const onChangeTitle = (e) => {

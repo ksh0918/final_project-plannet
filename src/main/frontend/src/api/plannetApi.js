@@ -135,6 +135,10 @@ const plannetApi = {
     likeCheckedToggle: async function(id, boardNo) {
         return await axios.get(PLANNET_DOMAIN + `board/like_checked_toggle?id=${id}&boardNo=${boardNo}`,HEADER);
     },
+    // 자유게시판 검색 목록 출력
+        searchList: async function(keyword){
+            return await axios.get(PLANNET_DOMAIN + `board/search_list?keyword=${keyword}`, HEADER);
+    },
     // 해당 게시물에 댓글 작성
     boardCommentCreate: async function(boardNo, id, detail){
         return await axios.get(PLANNET_DOMAIN + `board/comment_write?boardNo=${boardNo}&id=${id}&detail=${detail}`, HEADER);
