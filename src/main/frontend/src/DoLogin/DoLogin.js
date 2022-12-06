@@ -11,8 +11,6 @@ import "./DoLogin.scss"
 import "../App";
 import { useNavigate  } from "react-router-dom";
 
-const navigate = useNavigate();
-
 const ContainerLogin = styled.div`
     width: 100%;
     height: 100vh;
@@ -35,6 +33,7 @@ const Logo = styled.div`
 `;
 
 const DoLogin = () => {
+    const navigate = useNavigate();
     // 키보드 입력
     const [inputId, setInputId] = useState("");
     const [inputPw, setInputPw] = useState("");
