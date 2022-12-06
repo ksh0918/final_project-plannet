@@ -10,5 +10,6 @@ import java.util.List;
 // JpaRepository<테이블명, 프라이머리키에 대한 데이터 형>
 public interface BoardRepository extends JpaRepository<Board, Long> {
     List<Board> findAllByOrderByBoardNoDesc();
+    List<Board> findByTitleLikeOrDetailLikeOrderByBoardNoDesc(String keyword1, String keyword2);
 }
 

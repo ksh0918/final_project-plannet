@@ -75,6 +75,17 @@ public class BoardController {
         }
     }
 
+    // 검색 키워드에 해당하는 보드 리스트 불러오기
+    @GetMapping("/search_list")
+    public ResponseEntity<List<BoardDTO>> searchList(@RequestParam String keyword) {
+        System.out.println(keyword);
+        // 서비스를 다녀옴
+        BoardDTO boardList = boardService.getSearchList("%%" + keyword + "%%");
+        if(boardList.isOk()) {
+            return new ResponseEntity(boardList.getBoardList(), HttpStatus.OK);
+        } else return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
+    }
+
     @PostMapping("/write")
     public ResponseEntity<Boolean> writeBoard(@RequestBody Map<String, String> boardWriteDate) {
         String id = boardWriteDate.get("id");

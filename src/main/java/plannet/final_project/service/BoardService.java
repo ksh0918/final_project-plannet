@@ -110,6 +110,33 @@ public class BoardService {
         }
     }
 
+    // 검색 키워드에 해당하는 글 목록 불러오기 불러오기
+    public BoardDTO getSearchList(String keyword) {
+        BoardDTO boardDTO = new BoardDTO();
+        List<Map<String, Object>> boardList = new ArrayList<>();
+        try {
+            List<Board> boardData = boardRepository.findByTitleLikeOrDetailLikeOrderByBoardNoDesc(keyword, keyword);
+            for (Board e : boardData) {
+                Map<String, Object> board = new HashMap<>();
+                board.put("boardNo", e.getBoardNo());
+                board.put("writerId", e.getUserId().getId());
+                // 익명체크 여부 확인 후 닉네임 넣기
+                if(e.getIsChecked() == 0) {
+                    board.put("nickname", e.getUserId().getNickname());
+                } else board.put("nickname", "익명");
+                board.put("title", e.getTitle());
+                board.put("views", e.getViews());
+                board.put("writeDate", e.getWriteDate());
+                boardList.add(board);
+            }
+            boardDTO.setBoardList(boardList);
+            boardDTO.setOk(true);
+        } catch (Exception e) {
+            boardDTO.setOk(false);
+        }
+        return boardDTO;
+    }
+
     // 자유게시판 글 작성하기
     public boolean writeBoard(String id, String title, String detail, int isChecked){
         Board board = new Board();
