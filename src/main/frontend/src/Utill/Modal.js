@@ -28,7 +28,7 @@ const Modal = (props) => {
     const onClickEdit = () => {
         const link = "/edit/" + boardNo;
         console.log(link);
-        window.location.assign(link);
+        navigate(link);
     }
     const onClickDelete = async() => {
         await Api.boardDelete(boardNo);

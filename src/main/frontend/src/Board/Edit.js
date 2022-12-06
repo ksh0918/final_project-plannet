@@ -239,13 +239,13 @@ function Edit() {
     const onClickEdit = async() => {
         await Api.boardEdit(getId, getNum, title, detail);
         const link = "/board/post_view/" + getNum;
-        window.location.assign(link);
+        navigate(link);
     }
 
     // 취소 버튼 클릭 시 게시물 번호에 해당하는 postView 페이지로 이동
     const onClickCancle = () => {
         const link = "/board/post_view/" + getNum;
-        window.location.assign(link);
+        navigate(link);
     }
 
     const onChangeTitle = (e) => {

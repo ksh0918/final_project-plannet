@@ -138,7 +138,6 @@ const Board = () => {
     let firstNum = currPage - (currPage % 5) + 1
     let lastNum = currPage - (currPage % 5) + 5
 
-
     const postsData = (posts) => {
       if(posts){
         let result = posts.slice(offset, offset + limit);
@@ -146,12 +145,33 @@ const Board = () => {
       }
     }
 
+    // 검색
+    const [searchKeyword, setSearchKeyword] = useState('');
+    const onClickSearch = async () => {
+        try {
+            const response = await Api.searchList(searchKeyword);
+            setBoardList(response.data);
+        } catch (e) {
+            console.log(e);
+        }
+    }
 
-    
+    const onChangeSearchKeyword = (e) => {
+        setSearchKeyword(e.target.value);
+    }
+
+    // 엔터를 눌렀을 때도 검색 되게
+    const onKeyPressSearch = async(e) => {
+        if(e.key === 'Enter'){
+            onClickSearch();
+            setSearchKeyword(''); // 검색 후 검색창 빈칸으로 만들기
+        }
+    }
+
     //날짜 클릭시 해당 번호의 postView로 이동
     const onClickBoard = (boardNo, writerId) => {
         const link = "board/post_view/" + boardNo;
-        window.location.assign(link);
+        navigate(link);
        
         // 글 작성자와 회원 아이디가 다를 때만 해당 boardNo 게시물 조회수 +1
         // 이전에는 localStorage에 writerId와 boardNo를 저장해서 이것들을 이용했지만 그러면 익명 보장이 안 됨
@@ -228,10 +248,10 @@ const Board = () => {
                         })}
                         <li><span onClick = {()=> {setPage(page + 1); setCurrPage(page);}} disabled = {page === numPages}>»</span></li>
                     </ul> 
-                    <form className="search" id="search" name="search" method="post">
-                        <input name="product_search" title="검색" placeholder="검색어 입력"/>
-                        <a href="#" onClick="submit"><i className="bi bi-search"></i></a>
-                    </form> 
+                    <div className="search">
+                        <input name="product_search" title="검색" placeholder="검색어 입력" onChange={onChangeSearchKeyword} onKeyDown={onKeyPressSearch} value={searchKeyword}/>
+                        <a href="#" onClick={onClickSearch}><i className="bi bi-search"></i></a>
+                    </div> 
                 </div>
             </Section>
             <div className="copy">&#169; Plannet.</div>

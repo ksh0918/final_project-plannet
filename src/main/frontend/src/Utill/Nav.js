@@ -222,7 +222,7 @@ const Nav = () => {
 
     // 로고 클릭시 홈으로
     const onClickLogo = () => {
-        window.location.assign("/home");
+        navigate("/home");
     }
 
     //유저정보가져오기
