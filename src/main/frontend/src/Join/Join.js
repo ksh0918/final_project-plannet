@@ -5,6 +5,9 @@ import { ReactComponent as LogoImg } from "../Images/planet-001.svg";
 import Api from '../api/plannetApi';
 import "./Join.scss"
 import "../App";
+import { useNavigate  } from "react-router-dom";
+
+const navigate = useNavigate();
 
 const ContainerJoin = styled.div`
     height: 100vh;
@@ -171,7 +174,7 @@ const Join = () => {
         if(memberReg.data) {
             window.localStorage.setItem("userId", inputId);
             window.localStorage.setItem("isLogin", "true");
-            window.location.replace("/home");
+            navigate('/home');
         }
     }
 

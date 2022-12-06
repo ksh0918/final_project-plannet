@@ -4,6 +4,9 @@ import styled from "styled-components";
 import Api from "../api/plannetApi";
 import Nav from "../Utill/Nav";
 import PlanList from "./PlanList";
+import { useNavigate  } from "react-router-dom";
+
+const navigate = useNavigate();
 
 const Wrap = styled.div`
     width: 1130px;
@@ -247,7 +250,7 @@ const Write = () => {
 
     const onClickSave = async() => {
         await Api.writeSave(getId, date, planList, diary);
-        window.location.replace('/home');
+        navigate('/home');
     }
 
     return (
