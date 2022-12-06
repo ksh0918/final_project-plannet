@@ -4,17 +4,18 @@ import moment from "moment";
 import 'react-calendar/dist/Calendar.css'; // css import
 import './Calendar.css';
 import Api from "../api/plannetApi";
+import { useNavigate  } from "react-router-dom";
+
+const navigate = useNavigate();
 
 const Cal = ({doMark, endMark}) => {
     const [value, setValue] = useState(new Date());
-    
-
 
     //날짜 클릭시 해당날짜의 write로 이동
     const dayIn = (value) => {
         const selectDate = moment(value).format('YYYY-MM-DD');
         const link = "/write/" + selectDate;
-        window.location.replace(link);
+        navigate(link);
     }
 
 
