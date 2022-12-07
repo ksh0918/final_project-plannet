@@ -273,6 +273,7 @@ const PostView = () => {
             try {
                 // 게시물 내용 불러오기
                 const postView = await Api.postView(getNum);
+                console.log("게시물불러오기");
                 setPostViewData(postView.data);
 
                 // 좋아요 수 불러오기
