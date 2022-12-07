@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Nav from "../Utill/Nav";
 import Api from '../api/plannetApi'
@@ -121,6 +121,7 @@ const Section = styled.div`
 `;
 
 const Board = () => {
+    const navigate = useNavigate();
     // localStorage 저장 정보
     const getId = window.localStorage.getItem("userId");
 

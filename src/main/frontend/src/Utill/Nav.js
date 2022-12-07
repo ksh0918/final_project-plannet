@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components"
 import {ReactComponent as Logo} from "../Images/planet-001.svg";
 import Modal from "./Modal";
@@ -190,6 +190,7 @@ const Box = styled.div`
 `;
 
 const Nav = () => {
+    const navigate = useNavigate();
     const userId = window.localStorage.getItem("userId");
     const [userInfo, setUserInfo] = useState("");
     const [scalInfo, setScalInfo] = useState("");

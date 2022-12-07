@@ -28,16 +28,19 @@ public class WriteService {
     // 일정 저장
     public boolean writeSave(String userId, LocalDate date, List<Map<String, Object>> plan, String diary) {
         try {
-            // 회원 정보가 담긴 객체 가져옴
-            Member member = memberRepository.findById(userId).orElseThrow(EmptyStackException::new);
+            Member member = memberRepository.findById(userId).orElseThrow(); // 회원 정보가 담긴 객체 가져옴
+            planRepository.deleteByUserIdAndPlanDate(member, date); // 기존의 plan 삭제. 삭제하지 않으면 DB에 기존의 것이 계속 존재.
+            diaryRepository.deleteByUserIdAndDiaryDate(member, date); // 기존의 diary 삭제
 
             // plan 저장
             for(Map<String, Object> p : plan) {
-                if(p.get("deleted").equals("false")) {
+                System.out.println("deleted : " + p.get("deleted"));
+                System.out.println(p.get("deleted").getClass().getName());
+                // 원래는 p.get("deleted") == false 이면 일정 저장
+                if(!(boolean)p.get("deleted")) {
                     Plan plans = new Plan();
                     plans.setUserId(member);
                     plans.setPlanDate(date);
-                    plans.setPlanNo(Long.parseLong((String)p.get("key")));
                     if(p.get("checked").equals(true)) plans.setPlanChecked(1);
                     else plans.setPlanChecked(0);
                     plans.setPlan((String)p.get("text"));
@@ -46,7 +49,6 @@ public class WriteService {
                 }
             }
             // diary 업데이트
-            List<Diary> diaryList = diaryRepository.findByUserIdAndDiaryDate(member, date);
             Diary diaries = new Diary();
             diaries.setDiary(diary);
             diaries.setUserId(member);

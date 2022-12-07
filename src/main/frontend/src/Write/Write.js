@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Api from "../api/plannetApi";
 import Nav from "../Utill/Nav";
 import PlanList from "./PlanList";
-import { useNavigate } from "react-router-dom";
 
 const Wrap = styled.div`
     width: 1130px;
@@ -217,73 +216,75 @@ const Section = styled.div`
 const Write = () => {
     const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
-    const { date } = useParams();
-    const [planList, setPlanList] = useState([]);
-    const [diary, setDiary] = useState();
+        const { date } = useParams();
+        const [planList, setPlanList] = useState([]);
+        const [diary, setDiary] = useState();
 
-    const onChangeDiary = (e) => {
-        setDiary(e.target.value);
-    }
-    const onClickAddList = () => {
-        const nextPlanList = planList.concat({
-            key: planList[planList.length-1].key+1,
-            checked: false,
-            text: "일정을 입력해주세요.",
-            deleted: false
-        });
-        setPlanList(nextPlanList);
-    }
-
-    useEffect(() => {
-        const writeLoad = async() => {
-            try{
-                const response = await Api.writeLoad(getId, date);
-                setPlanList(response.data[0]);
-                setDiary(response.data[1]);
-            } catch(e){
-                console.log(e);
-            }
+        const onChangeDiary = (e) => {
+            setDiary(e.target.value);
         }
-        writeLoad();
-    },[getId, date]);
+        const onClickAddList = () => {
+            const nextPlanList = planList.concat({
+                key: planList.length+1,
+                checked: false,
+                text: "일정을 입력해주세요.",
+                deleted: false
+            });
+            setPlanList(nextPlanList);
+        }
+
+        useEffect(() => {
+            const writeLoad = async() => {
+                try{
+                    const response = await Api.writeLoad(getId, date);
+                    console.log(response.data[0]);
+                    setPlanList(response.data[0]);
+                    setDiary(response.data[1]);
+                } catch(e){
+                    console.log(e);
+                }
+            }
+            writeLoad();
+            console.log(planList);
+        },[getId, date]);
 
     const onClickSave = async() => {
         await Api.writeSave(getId, date, planList, diary);
-        navigate('/home');
+        navigate("/home");
     }
 
-    return (
-        <Wrap>
-            <Nav/>
-            <Section>
-                <div className="btnbox">
-                    <button className="back" onClick={onClickSave}>
-                    <i className="bi bi-chevron-compact-left"/>{date}
-                    </button>
-                </div>
-                <div className="plan_it sub_box">
-                    <h2>Plan it</h2>
-                    <div className="write_box">
-                        <PlanList planList={planList} setPlanList={setPlanList}/>
-                        <hr/>
-                        <button onClick={onClickAddList}>
-                            <i className="bi bi-plus-lg"></i> 추가하기
+        return (
+            <Wrap>
+                <Nav/>
+                <Section>
+                    <div className="btnbox">
+                        <button className="back" onClick={onClickSave}>
+                        <i className="bi bi-chevron-compact-left"/>{date}
                         </button>
                     </div>
-                </div>
-                <div className="diary sub_box">
-                    <h2>Diary</h2>
-                    <div className="write_box">
-                        <textarea maxLength={800} onChange={onChangeDiary} value={diary}></textarea>
+                    <div className="plan_it sub_box">
+                        <h2>Plan it</h2>
+                        <div className="write_box">
+                            <PlanList planList={planList} setPlanList={setPlanList}/>
+                            <hr/>
+                            <button onClick={onClickAddList}>
+                                <i className="bi bi-plus-lg"></i> 추가하기
+                            </button>
+                        </div>
                     </div>
-                </div>
-                <div className="btnbox">
-                    <button className="save" onClick={onClickSave}>SAVE</button>
-                </div>
-            </Section>
-            <div className="copy">&#169; Plannet.</div>
-        </Wrap>
-    );
+                    <div className="diary sub_box">
+                        <h2>Diary</h2>
+                        <div className="write_box">
+                            <textarea maxLength={800} onChange={onChangeDiary} value={diary}></textarea>
+                        </div>
+                    </div>
+                    <div className="btnbox">
+                        <button className="save" onClick={onClickSave}>SAVE</button>
+                    </div>
+                </Section>
+                <div className="copy">&#169; Plannet.</div>
+            </Wrap>
+        );
 }
 
 export default Write;

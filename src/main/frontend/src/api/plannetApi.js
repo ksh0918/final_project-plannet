@@ -73,8 +73,8 @@ const plannetApi = {
             plan: planList,
             diary: diary
         };
-        return await axios.post(PLANNET_DOMAIN + "WriteSave", object, HEADER);
-    }, 
+        return await axios.post(PLANNET_DOMAIN + "write/save", object, HEADER);
+        },
     // 플랜리스트.다이어리 로드
     writeLoad: async function(id, date) {
         const object = {

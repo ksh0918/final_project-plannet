@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -188,6 +188,7 @@ const Section = styled.div`
 `;
 
 function Create() {
+    const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
     const [title, setTitle] = useState();
     const [detail, setDetail] = useState();

@@ -22,66 +22,66 @@ const StyledInput = styled.input`
 
 const PlanItem = ({planItem, planList, setPlanList}) => {
     const [edited, setEdited] = useState(false);
-    const [newText, setNewText] = useState(planItem.text);
+        const [newText, setNewText] = useState(planItem.text);
 
-    const onChangeCheckbox = () => {
-        const nextPlanList = planList.map((item) => ({
-            ...item,
-            checked: item.id === planItem.id ? !item.checked : item.checked,
-        }));
-        setPlanList(nextPlanList);
-    }
-    const onClickEdit = () => {
-        if(planItem.checked === true){
-            setEdited(false);
-        } else{
-            setEdited(true);
-        }
-    }
-    const onBlurSubmit = (e) => {
-        if(newText.length > 0){
+        const onChangeCheckbox = () => {
             const nextPlanList = planList.map((item) => ({
                 ...item,
-                text: item.id === planItem.id ? newText : item.text,
+                checked: item.key === planItem.key ? !item.checked : item.checked,
             }));
             setPlanList(nextPlanList);
-            setEdited(false);
         }
-    }
-    const onFocusInput = (e) => {
-        e.target.value === "일정을 입력해주세요." ? (e.target.value = "") : (e.target.value = newText)
-    }
-    const onChangeEditInput = (e) => {
-        setNewText(e.target.value);
-    }
-    const onClickRemove = (e) => {
-        const nextPlanList = planList.map((item) => ({
-            ...item,
-            deleted: item.id === planItem.id ? !item.deleted : item.deleted,
-        }));
-        setPlanList(nextPlanList);
-    }
-
-    const editInputRef = useRef(null);
-    useEffect(() => {
-        if(edited) {editInputRef.current.focus();}
-    }, [edited]);
-
-    const testStyle = `
-        ${planItem.checked ? 'donePlan' : ''} 
-        ${planItem.text === "일정을 입력해주세요." ? 'firstPlanColor' : ''}
-    `;
-
-    return(
-        <li>
-            <StyledInput type="checkbox" checked={planItem.checked} onChange={onChangeCheckbox}/>
-            {edited ? 
-                (<input type="text" value={newText} ref={editInputRef} onFocus={onFocusInput} onChange={onChangeEditInput} onBlur={onBlurSubmit}/>) 
-                : (<span className={testStyle} onClick={onClickEdit}>{planItem.text}</span>)
+        const onClickEdit = () => {
+            if(planItem.checked === true){
+                setEdited(false);
+            } else{
+                setEdited(true);
             }
-            <button onClick={onClickRemove}><i className="bi bi-trash3-fill" /></button>
-        </li>    
-    );
+        }
+        const onBlurSubmit = (e) => {
+            if(newText.length > 0){
+                const nextPlanList = planList.map((item) => ({
+                    ...item,
+                    text: item.key === planItem.key ? newText : item.text,
+                }));
+                setPlanList(nextPlanList);
+                setEdited(false);
+            }
+        }
+        const onFocusInput = (e) => {
+            e.target.value === "일정을 입력해주세요." ? (e.target.value = "") : (e.target.value = newText)
+        }
+        const onChangeEditInput = (e) => {
+            setNewText(e.target.value);
+        }
+        const onClickRemove = (e) => {
+            const nextPlanList = planList.map((item) => ({
+                ...item,
+                deleted: item.key === planItem.key ? !item.deleted : item.deleted,
+            }));
+            setPlanList(nextPlanList);
+        }
+
+        const editInputRef = useRef(null);
+        useEffect(() => {
+            if(edited) {editInputRef.current.focus();}
+        }, [edited]);
+
+        const testStyle = `
+            ${planItem.checked ? 'donePlan' : ''}
+            ${planItem.text === "일정을 입력해주세요." ? 'firstPlanColor' : ''}
+        `;
+
+        return(
+            <li>
+                <StyledInput type="checkbox" checked={planItem.checked} onChange={onChangeCheckbox}/>
+                {edited ?
+                    (<input type="text" value={newText} ref={editInputRef} onFocus={onFocusInput} onChange={onChangeEditInput} onBlur={onBlurSubmit}/>)
+                    : (<span className={testStyle} onClick={onClickEdit}>{planItem.text}</span>)
+                }
+                <button onClick={onClickRemove}><i className="bi bi-trash3-fill" /></button>
+            </li>
+        );
 }
 
 export default PlanItem;
