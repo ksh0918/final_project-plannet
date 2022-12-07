@@ -85,7 +85,7 @@ public class MemberController {
         String type = memFind.get("type");
 
         MemberDTO memberDTO = memberService.memberFindCheck(uni, email, type);
-        if(memberDTO.isOk()) return new ResponseEntity(memberDTO.getId(), HttpStatus.OK);
+        if(memberDTO.isOk()) return new ResponseEntity(memberDTO, HttpStatus.OK);
         else return new ResponseEntity(false, HttpStatus.OK);
     }
     // 비밀번호 찾기 시 새 비밀번호 설정

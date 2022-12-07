@@ -125,10 +125,10 @@ const Find = () =>{
 
     const onClickFindId = async() => {
         const res = await Api.memberFind(findInName, findInEmail, "Type_ID");
-        if(res.data){
+        if(res.data.reg === true){
             setModalOpen(true);
             setHeader("로그인");
-            setComment("아이디는 ["+ res.data + "] 입니다.");
+            setComment("아이디는 ["+ res.data.id + "] 입니다.");
         }
         else {
             setModalOpen(true);
@@ -143,17 +143,18 @@ const Find = () =>{
 
     const onClickFindPwd = async() => {
         const res = await Api.memberFind(findInId, findInEmail, "Type_PWD");
-        if(res.data != null){
+        console.log(res.data);
+        if(res.data.reg === true){
             setModalOpen(true);
             setHeader("");
             setComment("새로운 비밀번호를 설정합니다.");
             setIsNewPwd(true);
-        }
-        else {
+        }else {
             setModalOpen(true);
             setComment("가입되어 있는 정보가 없습니다.")
         }
     }
+
     const onKeyDownFindPwd = (e) => {
         if(e.key === 'Enter'){
             onClickFindPwd();
