@@ -144,7 +144,6 @@ public class MemberService {
             scomRepository.deleteByUserId(member);
             smemRepository.deleteByUserId(member);
             splanRepository.deleteByUserId(member);
-            log.warn("scal 전 완료");
             scalRepository.deleteByUserId(member);
             memberRepository.deleteById(id);
             return true;
