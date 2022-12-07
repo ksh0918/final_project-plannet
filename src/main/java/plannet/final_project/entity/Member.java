@@ -5,10 +5,9 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter @Setter
 @ToString
@@ -52,4 +51,13 @@ public class Member {
     @Column(length = 200)
     //@ColumnDefault("userdefault.png")
     private String proImg;
+
+    @OneToMany(mappedBy = "userId", cascade = {CascadeType.ALL}, orphanRemoval=true)
+    private List<SPLAN> splans;
+    @OneToMany(mappedBy = "userId", cascade = {CascadeType.ALL}, orphanRemoval=true)
+    private List<SCAL> scals;
+    @OneToMany(mappedBy = "userId", cascade = {CascadeType.ALL}, orphanRemoval=true)
+    private List<SCOM> scoms;
+    @OneToMany(mappedBy = "userId", cascade = {CascadeType.ALL}, orphanRemoval=true)
+    private List<SMEM> smems;
 }

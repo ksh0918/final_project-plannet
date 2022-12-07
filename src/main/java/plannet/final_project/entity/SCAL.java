@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter @Setter
 @ToString
@@ -25,4 +26,11 @@ public class SCAL {
 
     @Column(length = 2400)
     private String calMemo;
+
+    @OneToMany(mappedBy = "calNo", cascade = {CascadeType.ALL}, orphanRemoval=true)
+    private List<SPLAN> splans;
+    @OneToMany(mappedBy = "calNo", cascade = {CascadeType.ALL}, orphanRemoval=true)
+    private List<SMEM> smems;
+    @OneToMany(mappedBy = "calNo", cascade = {CascadeType.ALL}, orphanRemoval=true)
+    private List<SCOM> scoms;
 }
