@@ -99,7 +99,6 @@ const plannetApi = {
     },
     // 글 조회수 
     boardViewsUp:async function(boardNo){
-        console.log("제대로들어옴?");
         return await axios.get(PLANNET_DOMAIN+ `board/views_up?boardNo=${boardNo}`, HEADER);
     },
     // 게시판 내용보기

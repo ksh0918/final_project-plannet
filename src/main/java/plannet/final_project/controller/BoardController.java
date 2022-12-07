@@ -52,15 +52,25 @@ public class BoardController {
         return new ResponseEntity(postViewList, HttpStatus.OK);
     }
 
+    // boardNo에 해당하는 좋아요 수 구하기
+    @GetMapping("/like_cnt")
+    public ResponseEntity<Integer> likeCnt(@RequestParam Board boardNo) {
+        int likeCnt = boardService.getLikeCnt(boardNo);
+        return new ResponseEntity(likeCnt, HttpStatus.OK);
+    }
+
     // boardNo로 내가 해당 게시물에 좋아요를 눌렀는지 조회하기
     @GetMapping("/like_checked")
     public ResponseEntity<Integer> likeChecked(@RequestParam String id, Board boardNo) {
         boolean likeChecked = boardService.getLikeChecked(id, boardNo);
-        if (likeChecked) {
-            return new ResponseEntity(likeChecked, HttpStatus.OK);
-        } else {
-            return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity(likeChecked, HttpStatus.OK);
+    }
+
+    // 좋아요 버튼을 눌렀을 때 toggle 밑 데이터베이스 변경
+    @GetMapping("/like_checked_toggle")
+    public ResponseEntity<Integer> likeCheckedToggle(@RequestParam String id, Board boardNo) {
+        boolean likeCheckedToggle = boardService.getLikeCheckedToggle(id, boardNo);
+        return new ResponseEntity(likeCheckedToggle, HttpStatus.OK);
     }
 
     // boardNo의 게시물을 내가 작성하지 않았으면 조회수 +1
