@@ -78,17 +78,36 @@ public class BoardService {
         return boardDTO;
     }
 
+    // 보드 넘버에 해당하는 글의 좋아요 수
+    public int getLikeCnt(Board boardNo) {
+        int likeCnt = likeCntRepository.countByBoardNo(boardNo).intValue();
+        return likeCnt;
+    }
+
     // 내가 해당 게시물을 좋아요 눌렀는지 여부
     public boolean getLikeChecked(String id, Board boardNo) {
         Member member = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return likeCntRepository.existsByUserIdAndBoardNo(member, boardNo);
+    }
+
+    // 좋아요 버튼을 누를 때마다 데이터베이스 접근
+    public boolean getLikeCheckedToggle(String id, Board boardNo) {
+        Member member = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         boolean CurrentLikeChecked = likeCntRepository.existsByUserIdAndBoardNo(member, boardNo);
+        System.out.println("현재 좋아요" + CurrentLikeChecked);
         try {
-            if (CurrentLikeChecked) likeCntRepository.deleteByUserIdAndBoardNo(member, boardNo);
+            System.out.println("true 들어옴");
+            if (CurrentLikeChecked) {likeCntRepository.deleteByUserIdAndBoardNo(member, boardNo);
+                CurrentLikeChecked = !CurrentLikeChecked;
+                System.out.println("true 정상수행" + CurrentLikeChecked);}
             else {
+                System.out.println("false 들어옴");
+                CurrentLikeChecked = !CurrentLikeChecked;
                 LikeCnt likeCnt = new LikeCnt();
                 likeCnt.setUserId(member);
                 likeCnt.setBoardNo(boardNo);
                 likeCntRepository.save(likeCnt);
+                System.out.println("false 정상수행" + CurrentLikeChecked);
             }
             return CurrentLikeChecked;
         } catch (Exception e) {
