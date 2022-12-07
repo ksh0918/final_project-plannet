@@ -90,7 +90,7 @@ public class MemberService {
         MemberDTO memDTO = new MemberDTO();
         try{
             char t = type.charAt(5);
-            Member mem = new Member();
+            Member mem;
 
             switch (t) {
                 case 'I' :
@@ -145,6 +145,26 @@ public class MemberService {
         }catch (Exception e){
             log.warn("실패구역");
             return false;
+        }
+    }
+
+    public boolean googleLoginReg(String email, String id, String name) {
+        Member member = memberRepository.findByEmail(email);
+        if(member != null) { // 회원정보가 있으면(null이 아니면)
+            return member.getSocial().equals("g");
+            //구글로 가입된 회원은 true 아니면 false
+        } else { // 회원정보가 없으면 가입
+            Member RegMember = new Member();
+            RegMember.setId(id);
+            String userCode = String.format("%04d", (int)(Math.random() * 9999) + 1);
+            RegMember.setUserCode(userCode);
+            RegMember.setPwd("-");
+            RegMember.setName(name);
+            RegMember.setNickname(name);
+            RegMember.setEmail(email);
+            RegMember.setJoinDate(LocalDateTime.now());
+            memberRepository.save(RegMember);
+            return true;
         }
     }
 }

@@ -17,26 +17,27 @@ import plannet.final_project.config.ConfigUtils;
 import plannet.final_project.dto.GoogleLoginDto;
 import plannet.final_project.dto.GoogleLoginRequest;
 import plannet.final_project.dto.GoogleLoginResponse;
+import plannet.final_project.service.MemberService;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
 @Controller
-@RequiredArgsConstructor
 @RequestMapping(value = "/google")
+@RequiredArgsConstructor
 @Slf4j
 public class GoogleController {
-
     private final ConfigUtils configUtils;
+    private final MemberService memberService;
 
     @GetMapping(value = "/login")
     public ResponseEntity<Object> moveGoogleInitUrl() {
-        log.warn("1번");
         String authUrl = configUtils.googleInitUrl();
+        URI redirectUri;
         try {
-//            URI redirectUri = new URI(authUrl);
+            redirectUri = new URI(authUrl);
             HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.setLocation(new URI(authUrl));
+            httpHeaders.setLocation(redirectUri);
             return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
         } catch (URISyntaxException e) {
             e.printStackTrace();
@@ -46,11 +47,8 @@ public class GoogleController {
     }
 
     @GetMapping(value = "/login/redirect")
-    public ResponseEntity<GoogleLoginDto> redirectGoogleLogin(
-            @RequestParam(value = "code") String authCode
-    ) {
+    public String redirectGoogleLogin(@RequestParam(value = "code") String authCode) {
         // HTTP 통신을 위해 RestTemplate 활용
-        log.warn("3번");
         RestTemplate restTemplate = new RestTemplate();
         GoogleLoginRequest requestParams = GoogleLoginRequest.builder()
                 .clientId(configUtils.getGoogleClientId())
@@ -74,7 +72,7 @@ public class GoogleController {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
             objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL); // NULL이 아닌 값만 응답받기(NULL인 경우는 생략)
-            GoogleLoginResponse googleLoginResponse = objectMapper.readValue(apiResponseJson.getBody(), new TypeReference<GoogleLoginResponse>() {});
+            GoogleLoginResponse googleLoginResponse = objectMapper.readValue(apiResponseJson.getBody(), new TypeReference<>() {});
 
             // 사용자의 정보는 JWT Token으로 저장되어 있고, Id_Token에 값을 저장한다.
             String jwtToken = googleLoginResponse.getIdToken();
@@ -89,10 +87,16 @@ public class GoogleController {
             String resultJson = restTemplate.getForObject(requestUrl, String.class);
 
             if(resultJson != null) {
-                GoogleLoginDto userInfoDto = objectMapper.readValue(resultJson, new TypeReference<GoogleLoginDto>() {});
-                log.info("Google Login Dto = {}", userInfoDto.toString());
+                GoogleLoginDto userInfoDto = objectMapper.readValue(resultJson, new TypeReference<>() {});
+                String email = userInfoDto.getEmail();
+                String id = userInfoDto.getSub();
+                String name = userInfoDto.getName()+"6";
+                boolean isReg = memberService.googleLoginReg(email, id, name);
 
-                return ResponseEntity.ok().body(userInfoDto);
+                return "redirect:"+ UriComponentsBuilder.fromUriString("http://localhost:8111/socialLogin")
+                        .queryParam("id", id)
+                        .queryParam("newMember", isReg)
+                        .build();
             }
             else {
                 throw new Exception("Google OAuth failed!");
@@ -102,6 +106,9 @@ public class GoogleController {
             e.printStackTrace();
         }
 
-        return ResponseEntity.badRequest().body(null);
+        return "redirect:"+ UriComponentsBuilder.fromUriString("http://localhost:8111/socialLogin")
+                .queryParam("id", "a")
+                .queryParam("newMember", "a")
+                .build();
     }
 }

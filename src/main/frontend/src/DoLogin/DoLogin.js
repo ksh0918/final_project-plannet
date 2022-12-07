@@ -61,6 +61,10 @@ const DoLogin = () => {
         setCommnet("서비스 준비중 입니다 ...");
     }
 
+    const onClickGoogle = () => {
+        navigate("/google/login");
+    }
+
     const onClickLogin = async() => {
         try {
             const res = await Api.userLogin(inputId, inputPw);
@@ -94,10 +98,10 @@ const DoLogin = () => {
                         <img src={kakaoimg} alt="카카오로고" className="logImg"/>
                         카카오톡으로 로그인
                     </button>
-                    <button className="login-btn2" onClick={onClickLink}>
+                    <a href="../google/login"><button className="login-btn2">
                         <img src={googleimg1} alt="구글로고" className="logImg"/>
                         구글로 로그인
-                        </button>
+                        </button></a>
                     <button className="login-btn3" onClick={onClickLink}>
                         <img src={naverimg} alt="네이버로고" className="logImg"/>
                         네이버로 로그인

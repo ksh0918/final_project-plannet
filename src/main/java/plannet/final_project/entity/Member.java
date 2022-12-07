@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 public class Member {
     @Id
-    @Column(length = 15)
+    @Column(length = 50)
     private String id;
 
     @Column(nullable = false, length = 5)
@@ -39,9 +39,6 @@ public class Member {
     @CreatedDate
     private LocalDateTime joinDate;
 
-    @Column(length = 20)
-    private String SNS;
-
     @Column(length = 300)
     private String profile;
 
@@ -51,6 +48,9 @@ public class Member {
     @Column(length = 200)
     //@ColumnDefault("userdefault.png")
     private String proImg;
+
+    @Column(length = 1)
+    private String social;
 
     @OneToMany(mappedBy = "userId", cascade = {CascadeType.ALL}, orphanRemoval=true)
     private List<SPLAN> splans;
