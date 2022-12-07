@@ -278,10 +278,12 @@ const PostView = () => {
                 // 좋아요 수 불러오기
                 const likeCnt = await Api.likeCnt(getNum);
                 setLikeCnt(likeCnt.data);
+                console.log("좋아요 수" + likeCnt);
 
                 // 좋아요 체크 여부 불러오기
                 const likeChecked = await Api.likeChecked(getId, getNum);
                 setLikeChecked(likeChecked.data);
+                console.log("좋아요 체크여부" + likeChecked);
 
                 // 댓글 불러오기 (수정중)
                 const response4 = await Api.boardCommentLoad(getNum);
