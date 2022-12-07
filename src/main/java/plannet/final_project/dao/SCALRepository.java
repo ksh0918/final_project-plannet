@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface SCALRepository extends JpaRepository<SCAL, Long> {
     List<SCAL> findByUserId(Member member);
+    void deleteByUserId(Member member);
 }

@@ -2,6 +2,7 @@ package plannet.final_project.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import plannet.final_project.entity.Board;
+import plannet.final_project.entity.Member;
 
 import java.util.List;
 
@@ -11,5 +12,6 @@ import java.util.List;
 public interface BoardRepository extends JpaRepository<Board, Long> {
     List<Board> findAllByOrderByBoardNoDesc();
     List<Board> findByTitleLikeOrDetailLikeOrderByBoardNoDesc(String keyword1, String keyword2);
+    void deleteByUserId(Member member);
 }
 
