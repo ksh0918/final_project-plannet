@@ -63,6 +63,7 @@ src/main/frontend/yarn-error.log*
 # Resources
 src/main/resources/static/static/css/*
 src/main/resources/static/static/js/*
+src/main/resources/static/index.html
 
 ### log ###
 *.log
