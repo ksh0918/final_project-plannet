@@ -171,7 +171,7 @@ const Board = () => {
 
     //날짜 클릭시 해당 번호의 postView로 이동
     const onClickBoard = (boardNo, writerId) => {
-        const link = "board/post_view/" + boardNo;
+        const link = "post_view/" + boardNo;
         navigate(link);
        
         // 글 작성자와 회원 아이디가 다를 때만 해당 boardNo 게시물 조회수 +1
