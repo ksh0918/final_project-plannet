@@ -1,5 +1,6 @@
 package plannet.final_project.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import plannet.final_project.dao.*;
@@ -15,17 +16,20 @@ import java.util.EmptyStackException;
 @Service
 @Slf4j
 @Transactional
+@RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
-    private BoardRepository boardRepository;
-    private CommentsRepository commentsRepository;
-    private DiaryRepository diaryRepository;
-    private LikeCntRepository likeCntRepository;
-    private PlanRepository planRepository;
-
-    public MemberService(MemberRepository memberRepository){
-        this.memberRepository = memberRepository;
-    }
+    private final BoardRepository boardRepository;
+    private final CommentsRepository commentsRepository;
+    private final DiaryRepository diaryRepository;
+    private final LikeCntRepository likeCntRepository;
+    private final FriendRepository friendRepository;
+    private final MessageRepository messageRepository;
+    private final PlanRepository planRepository;
+    private final SCOMRepository scomRepository;
+    private final SMEMRepository smemRepository;
+    private final SPLANRepository splanRepository;
+    private final SCALRepository scalRepository;
 
     public boolean loginCheck (String id, String pwd){
         try {
@@ -128,6 +132,21 @@ public class MemberService {
     }
     public boolean deleteMember(String id){
         try {
+            Member member = memberRepository.findById(id).orElseThrow();
+            likeCntRepository.deleteByUserId(member);
+            commentsRepository.deleteByUserId(member);
+            boardRepository.deleteByUserId(member);
+            diaryRepository.deleteByUserId(member);
+            friendRepository.deleteByUserId(member);
+            messageRepository.deleteByUserId(member);
+            planRepository.deleteByUserId(member);
+            // 공유안한 사람은 삭제 가능
+            scomRepository.deleteByUserId(member);
+            smemRepository.deleteByUserId(member);
+            splanRepository.deleteByUserId(member);
+            log.warn("scal 전 완료");
+            scalRepository.deleteByUserId(member);
+            memberRepository.deleteById(id);
             return true;
         }catch (Exception e){
             log.warn("실패구역");

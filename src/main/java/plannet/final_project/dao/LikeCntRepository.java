@@ -12,4 +12,6 @@ public interface LikeCntRepository extends JpaRepository<LikeCnt, Long> {
     Long countByBoardNo(Board boardNo);
     boolean existsByUserIdAndBoardNo(Member userId, Board boardNo);
     void deleteByUserIdAndBoardNo(Member member, Board boardNo);
+    void deleteByBoardNo(Board board);
+    void deleteByUserId(Member member);
 }
