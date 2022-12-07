@@ -66,7 +66,6 @@ public class BoardController {
     // boardNo의 게시물을 내가 작성하지 않았으면 조회수 +1
     @GetMapping("/views_up")
     public ResponseEntity<Integer> viewsUp(@RequestParam Long boardNo) {
-        System.out.println("ddddddddddddddddddddddddddd" + boardNo);
         boolean viewsChecked = boardService.getViews(boardNo);
         if (viewsChecked) {
             return new ResponseEntity(viewsChecked, HttpStatus.OK);
