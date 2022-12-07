@@ -64,6 +64,7 @@ src/main/frontend/yarn-error.log*
 src/main/resources/static/static/css/*
 src/main/resources/static/static/js/*
 src/main/resources/static/index.html
+src/main/resources/static/asset-manifest.json
 
 ### log ###
 *.log
