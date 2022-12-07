@@ -9,6 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+// @Value를 사용하기 위해 @Component 추가
+// 해당 클래스를 Bean으로 생성해둠
+// 추후 사용할 일이 있을 때, Bean 인스턴스를 꺼내 활용
 @Component
 @PropertySource("classpath:application-oath.properties")
 @Slf4j
