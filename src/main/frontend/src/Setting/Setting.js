@@ -183,7 +183,6 @@ const Setting = () => {
     const [userNickname, setUserNickname] = useState("");
     const [userEmail, setUserEmail] = useState("");
     const [userPhone, setUserPhone] = useState("");
-    const [userSNS, setUserSNS] = useState("");
     const [userPro, setUserPro] = useState("");
 
     const [changeEmail, setChangeEmail] = useState("");
@@ -199,11 +198,10 @@ const Setting = () => {
                 setUserNickname(response.data[0]);
                 setChangeEmail(response.data[3]);
                 setUserEmail(response.data[3]);
-                setChangePhone(response.data[5]);
-                setUserPhone(response.data[5]);
-                setUserSNS(response.data[4]);
+                setChangePhone(response.data[4]);
+                setUserPhone(response.data[4]);
                 setUserPro(response.data[2]);
-                setUserImgName(response.data[6]);
+                setUserImgName(response.data[5]);
                 setUserImgUrl({backgroundImage: "url(https://khprojectplannet.s3.ap-northeast-2.amazonaws.com/" + response.data[6] + ")"});
             } catch(e){
                 console.log(e);
@@ -213,7 +211,7 @@ const Setting = () => {
     },[userId]);
 
     const onClickSave = async() => {
-        await Api.userInfoSave(userId, userNickname, userEmail, userPhone, userSNS, userPro);
+        await Api.userInfoSave(userId, userNickname, userEmail, userPhone, userPro);
         navigate("/home");
     }
 
@@ -222,9 +220,6 @@ const Setting = () => {
     }
     const onChangePhone = (e) => {
         setChangePhone(e.target.value);
-    }
-    const onChangeSNS = (e) => {
-        setUserSNS(e.target.value);
     }
     const onChangePro = (e) => {
         setUserPro(e.target.value);
@@ -358,10 +353,6 @@ const Setting = () => {
                         <div className="session">
                             <p>전화번호 {changePhone && <span>{telMessage}</span>}</p>
                             <input onChange={onChangePhone} onBlur={onBlurTelCheck} value={changePhone} placeholder="전화번호"/>
-                        </div>
-                        <div className="session">
-                            <p>SNS</p>
-                            <input onChange={onChangeSNS} value={userSNS} placeholder="SNS"/>
                         </div>
                         <div className="session">
                             <p>자기소개글</p>

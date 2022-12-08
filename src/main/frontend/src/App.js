@@ -2,6 +2,7 @@ import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Main from './Main/Main';
 import DoLogin from './DoLogin/DoLogin';
+import Social from './Join/Social';
 import Join from './Join/Join';
 import Find from './Join/Find';
 import Setting from './Setting/Setting';
@@ -21,6 +22,7 @@ function App() {
             <Routes>
                 <Route path='/' element={<PublicRoute><Main /></PublicRoute>}/>
                 <Route path='/doLogin' element={<PublicRoute><DoLogin /></PublicRoute>}/>
+                <Route path='/social' element={<PublicRoute><Social /></PublicRoute>}/>
                 <Route path='/join' element={<PublicRoute><Join /></PublicRoute>}/>
                 <Route path='/find' element={<PublicRoute><Find /></PublicRoute>}/>
                 <Route path="/setting" element={<PrivateRoute><Setting /></PrivateRoute>}/>

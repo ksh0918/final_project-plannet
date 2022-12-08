@@ -165,13 +165,12 @@ const plannetApi = {
         return await axios.post(PLANNET_DOMAIN + "user/nav_info", object, HEADER);
     },
     // userInfo 저장하기
-    userInfoSave: async function(id, nickname, email, phone, sns, profile) {
+    userInfoSave: async function(id, nickname, email, phone, profile) {
         const object = {
             id: id,
             nickname: nickname,
             email: email,
             phone: phone,
-            sns: sns,
             profile: profile
         };
         return await axios.post(PLANNET_DOMAIN + "user/info_save", object, HEADER);

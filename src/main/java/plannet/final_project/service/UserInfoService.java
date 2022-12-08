@@ -23,13 +23,12 @@ public class UserInfoService {
     private final SPLANRepository splanRepository;
 
     // 사용자 정보 수정
-    public boolean saveUserInfo(String id, String nickname, String email, String phone, String sns, String profile) {
+    public boolean saveUserInfo(String id, String nickname, String email, String phone, String profile) {
         try{
             Member mem = memberRepository.findById(id).orElseThrow(EmptyStackException::new);
             mem.setNickname(nickname);
             mem.setEmail(email);
             mem.setTel(phone);
-            mem.setSNS(sns);
             mem.setProfile(profile);
             Member rst = memberRepository.save(mem);
             log.warn(rst.toString());
@@ -60,7 +59,6 @@ public class UserInfoService {
             memberDTO.setUserCode(member.getUserCode());
             memberDTO.setProfile(member.getProfile());
             memberDTO.setEmail(member.getEmail());
-            memberDTO.setSns(member.getSNS());
             memberDTO.setTel(member.getTel());
             memberDTO.setProImg(member.getProImg());
             memberDTO.setOk(true);

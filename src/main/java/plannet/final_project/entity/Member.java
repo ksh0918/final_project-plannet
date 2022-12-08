@@ -49,7 +49,7 @@ public class Member {
     //@ColumnDefault("userdefault.png")
     private String proImg;
 
-    @Column(length = 1)
+    @Column(length = 1) // 소셜로 가입한 사람인지 기록하는 컬럼
     private String social;
 
     @OneToMany(mappedBy = "userId", cascade = {CascadeType.ALL}, orphanRemoval=true)

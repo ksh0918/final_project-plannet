@@ -31,10 +31,9 @@ public class UserInfoController {
         String nickname = userInfo.get("nickname");
         String email = userInfo.get("email");
         String phone = userInfo.get("phone");
-        String sns = userInfo.get("sns");
         String profile = userInfo.get("profile");
 
-        boolean result = userInfoService.saveUserInfo(id, nickname, email, phone, sns, profile);
+        boolean result = userInfoService.saveUserInfo(id, nickname, email, phone, profile);
         if(result) {
             return new ResponseEntity(true, HttpStatus.OK);
         }
@@ -54,7 +53,6 @@ public class UserInfoController {
             userInfo.add(memberDTO.getUserCode());
             userInfo.add(memberDTO.getProfile());
             userInfo.add(memberDTO.getEmail());
-            userInfo.add(memberDTO.getSns());
             userInfo.add(memberDTO.getTel());
             userInfo.add(memberDTO.getProImg());
 
