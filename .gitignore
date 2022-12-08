@@ -59,12 +59,14 @@ src/main/frontend/.env.production.local
 src/main/frontend/npm-debug.log*
 src/main/frontend/yarn-debug.log*
 src/main/frontend/yarn-error.log*
+src/main/frontend/yarn.lock
 
 # Resources
 src/main/resources/static/static/css/*
 src/main/resources/static/static/js/*
 src/main/resources/static/index.html
 src/main/resources/static/asset-manifest.json
+
 
 ### log ###
 *.log
