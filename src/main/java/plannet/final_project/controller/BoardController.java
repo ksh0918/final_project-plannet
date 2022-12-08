@@ -33,14 +33,14 @@ public class BoardController {
         } else return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
     }
     
-    // 인기글 top3 목록 출력
-    @GetMapping("/top3_list")
-    public ResponseEntity<List<BoardDTO>> top3List() {
-        BoardDTO top3List = boardService.getTop3List();
-        if(top3List.isOk()) {
-            return new ResponseEntity(top3List.getBoardList(), HttpStatus.OK);
-        } else return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
-    }
+//    // 인기글 top3 목록 출력
+//    @GetMapping("/top3_list")
+//    public ResponseEntity<List<BoardDTO>> top3List() {
+//        BoardDTO top3List = boardService.getTop3List();
+//        if(top3List.isOk()) {
+//            return new ResponseEntity(top3List.getBoardList(), HttpStatus.OK);
+//        } else return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
+//    }
 
     // 검색 키워드에 해당하는 보드 리스트 불러오기
     @GetMapping("/search_list")
@@ -75,6 +75,7 @@ public class BoardController {
     // boardNo의 게시물을 내가 작성하지 않았으면 조회수 +1
     @GetMapping("/views_up")
     public ResponseEntity<Integer> viewsUp(@RequestParam Long boardNo) {
+        System.out.println("여긴옴?");
         boolean viewsChecked = boardService.getViews(boardNo);
         if (viewsChecked) {
             return new ResponseEntity(viewsChecked, HttpStatus.OK);
