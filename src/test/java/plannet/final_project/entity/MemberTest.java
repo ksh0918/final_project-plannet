@@ -110,122 +110,122 @@
 //            quoteRepository.save(quote);
 //        }
 //    }
+
+    // 사용자 정보&개인 일정 달성률/공유캘린더정보 불러오기
+//    public void navList (String userId) {
+//        List<MemberDTO> navList = new ArrayList<>();
+//        MemberDTO memberDTO = new MemberDTO();
+//        Member member = memberRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
+//        memberDTO.setNickname(member.getNickname());
+//        memberDTO.setId(member.getId());
+//        memberDTO.setUserCode(member.getUserCode());
+//        memberDTO.setProfile(member.getProfile());
+//        memberDTO.setEmail(member.getEmail());
+//        memberDTO.setTel(member.getTel());
+//        memberDTO.setProImg(member.getProImg());
 //
-//    // 사용자 정보&개인 일정 달성률/공유캘린더정보 불러오기
-////    public void navList (String userId) {
-////        List<MemberDTO> navList = new ArrayList<>();
-////        MemberDTO memberDTO = new MemberDTO();
-////        Member member = memberRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
-////        memberDTO.setNickname(member.getNickname());
-////        memberDTO.setId(member.getId());
-////        memberDTO.setUserCode(member.getUserCode());
-////        memberDTO.setProfile(member.getProfile());
-////        memberDTO.setEmail(member.getEmail());
-////        memberDTO.setTel(member.getTel());
-////        memberDTO.setProImg(member.getProImg());
-////
-////        //개인 일정 달성률 구하기
-////        List<WriteDTO> personalTotal = planRepository.findByUserId(userId);
-////        List<WriteDTO> personalEnd = planRepository.findByUserIdAndPlanChecked(userId, 1);
-////        int personalTotalCnt = 0; // 총 일정 갯수
-////        int personalEndCnt = 0; // 완료된 일정 갯수
-////        for(WriteDTO e : personalTotal) {
-////            personalTotalCnt++;
-////        }
-////        for(WriteDTO e : personalEnd) {
-////            personalEndCnt++;
-////        }
-////        memberDTO.setPes(personalTotalCnt * 100 / personalEndCnt);
-////
-////
-////    } // 테스트 끝 서비스로 옮겼음. 일부 테스트에 구현되어있지 않음
-////
-////    @Test
-////    @Rollback(value = false)
-////    @DisplayName("일주일 일정")
-////    public void weekList() {
-////        String id = "test_id_1";
-////        Member member = memberRepository.findById(id).orElseThrow();
-////        HomeDTO homeDTO = new HomeDTO();
-////
-////        LocalDate[] weekDay = {
-////            LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY)),
-////            LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)),
-////            LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.TUESDAY)),
-////            LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.WEDNESDAY)),
-////            LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.THURSDAY)),
-////            LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.FRIDAY)),
-////            LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.SATURDAY))
-////        };
-////        List<List<Map<String, Object>>> weekPlan = new ArrayList<>();
-////        for(int i = 0; i < 7; i++) {
-////            List<Map<String, Object>> dayPlan = new ArrayList<>();
-////            List<Plan> dayPlanOrigin = planRepository.findByUserIdAndPlanDateOrderByPlanNoAsc(member, weekDay[i]);
-////            for(Plan e : dayPlanOrigin) {
-////                Map<String, Object> plan = new HashMap<>();
-////                plan.put("no", e.getPlanNo());
-////                plan.put("plan", e.getPlan());
-////                plan.put("checked", e.getPlanChecked());
-////                dayPlan.add(plan);
-////            }
-////            weekPlan.add(dayPlan);
-////        }
-////        homeDTO.setWeekPlan(weekPlan);
-////    } // 테스트 끝 서비스로 옮겼음.
-////    @Test
-////    @Rollback(value = false)
-////    @DisplayName("달력 dot")
-////    public void planMark() {
-////        String id = "test_id_1";
-////        Member member = memberRepository.findById(id).orElseThrow();
-////        HomeDTO homeDTO = new HomeDTO();
-////        List<Set<LocalDate>> planMark = new ArrayList<>();
-////        for(int i = 0; i < 2; i++) {
-////            Set<LocalDate> planDot = new HashSet<>();
-////            List<Plan> plan = planRepository.findByUserIdAndPlanChecked(member, i);
-////            for(Plan e : plan) {
-////                planDot.add(e.getPlanDate());
-////            }
-////            planMark.add(planDot);
-////        }
-////        homeDTO.setPlanMark(planMark);
-////    } // 테스트 끝 서비스로 옮겼음.
-////    @Test
-////    @Rollback(value = false)
-////    @DisplayName("메모 불러오기")
-////    public void memoLoad() {
-////        String id = "test_id_1";
-////        Member member = memberRepository.findById(id).orElseThrow();
-////        HomeDTO homeDTO = new HomeDTO();
-////        homeDTO.setMemo(member.getMemo());
-////    } // 테스트 끝 서비스로 옮겼음.
-////    @Test
-////    @Rollback(value = false)
-////    @DisplayName("명언 불러오기")
-////    public void quoteLoad() {
-////        HomeDTO homeDTO = new HomeDTO();
-////        int randomNum = (int) (Math.random() * ((int) quoteRepository.count() + 1));
-////        homeDTO.setQuote(quoteRepository.findById(randomNum).orElseThrow().getQuote());
-////    } // 테스트 끝 서비스로 옮겼음.
-////
-////    @Test
-////    @Rollback(value = false)
-////    @DisplayName("일정 불러오기")
-////    public void planLoad() {
-////        String id = "test_id_1";
-////        LocalDate date = LocalDate.of(2022, 11, 25);
-////
-////        Member member = memberRepository.findById(id).orElseThrow();
-////        List<Plan> plans = planRepository.findByUserIdAndPlanDateOrderByPlanNoAsc(member, date);
-////        List<Map<String, Object>> planList = new ArrayList<>();
-////        for(Plan e : plans) {
-////            Map<String, Object> plan = new HashMap<>();
-////            plan.put("key", e.getPlanNo());
-////            plan.put("checked", e.getPlanChecked());
-////            plan.put("text", e.getPlan());
-////            plan.put("deleted", false);
-////            planList.add(plan);
-////        }
-////        System.out.println(planList);
-////    }
-//}
+//        //개인 일정 달성률 구하기
+//        List<WriteDTO> personalTotal = planRepository.findByUserId(userId);
+//        List<WriteDTO> personalEnd = planRepository.findByUserIdAndPlanChecked(userId, 1);
+//        int personalTotalCnt = 0; // 총 일정 갯수
+//        int personalEndCnt = 0; // 완료된 일정 갯수
+//        for(WriteDTO e : personalTotal) {
+//            personalTotalCnt++;
+//        }
+//        for(WriteDTO e : personalEnd) {
+//            personalEndCnt++;
+//        }
+//        memberDTO.setPes(personalTotalCnt * 100 / personalEndCnt);
+//
+//
+//    } // 테스트 끝 서비스로 옮겼음. 일부 테스트에 구현되어있지 않음
+//
+//    @Test
+//    @Rollback(value = false)
+//    @DisplayName("일주일 일정")
+//    public void weekList() {
+//        String id = "test_id_1";
+//        Member member = memberRepository.findById(id).orElseThrow();
+//        HomeDTO homeDTO = new HomeDTO();
+//
+//        LocalDate[] weekDay = {
+//            LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY)),
+//            LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)),
+//            LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.TUESDAY)),
+//            LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.WEDNESDAY)),
+//            LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.THURSDAY)),
+//            LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.FRIDAY)),
+//            LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.SATURDAY))
+//        };
+//        List<List<Map<String, Object>>> weekPlan = new ArrayList<>();
+//        for(int i = 0; i < 7; i++) {
+//            List<Map<String, Object>> dayPlan = new ArrayList<>();
+//            List<Plan> dayPlanOrigin = planRepository.findByUserIdAndPlanDateOrderByPlanNoAsc(member, weekDay[i]);
+//            for(Plan e : dayPlanOrigin) {
+//                Map<String, Object> plan = new HashMap<>();
+//                plan.put("no", e.getPlanNo());
+//                plan.put("plan", e.getPlan());
+//                plan.put("checked", e.getPlanChecked());
+//                dayPlan.add(plan);
+//            }
+//            weekPlan.add(dayPlan);
+//        }
+//        homeDTO.setWeekPlan(weekPlan);
+//    } // 테스트 끝 서비스로 옮겼음.
+//    @Test
+//    @Rollback(value = false)
+//    @DisplayName("달력 dot")
+//    public void planMark() {
+//        String id = "test_id_1";
+//        Member member = memberRepository.findById(id).orElseThrow();
+//        HomeDTO homeDTO = new HomeDTO();
+//        List<Set<LocalDate>> planMark = new ArrayList<>();
+//        for(int i = 0; i < 2; i++) {
+//            Set<LocalDate> planDot = new HashSet<>();
+//            List<Plan> plan = planRepository.findByUserIdAndPlanChecked(member, i);
+//            for(Plan e : plan) {
+//                planDot.add(e.getPlanDate());
+//            }
+//            planMark.add(planDot);
+//        }
+//        homeDTO.setPlanMark(planMark);
+//    } // 테스트 끝 서비스로 옮겼음.
+//    @Test
+//    @Rollback(value = false)
+//    @DisplayName("메모 불러오기")
+//    public void memoLoad() {
+//        String id = "test_id_1";
+//        Member member = memberRepository.findById(id).orElseThrow();
+//        HomeDTO homeDTO = new HomeDTO();
+//        homeDTO.setMemo(member.getMemo());
+//    } // 테스트 끝 서비스로 옮겼음.
+//    @Test
+//    @Rollback(value = false)
+//    @DisplayName("명언 불러오기")
+//    public void quoteLoad() {
+//        HomeDTO homeDTO = new HomeDTO();
+//        int randomNum = (int) (Math.random() * ((int) quoteRepository.count() + 1));
+//        homeDTO.setQuote(quoteRepository.findById(randomNum).orElseThrow().getQuote());
+//    } // 테스트 끝 서비스로 옮겼음.
+//
+//    @Test
+//    @Rollback(value = false)
+//    @DisplayName("일정 불러오기")
+//    public void planLoad() {
+//        String id = "test_id_1";
+//        LocalDate date = LocalDate.of(2022, 11, 25);
+//
+//        Member member = memberRepository.findById(id).orElseThrow();
+//        List<Plan> plans = planRepository.findByUserIdAndPlanDateOrderByPlanNoAsc(member, date);
+//        List<Map<String, Object>> planList = new ArrayList<>();
+//        for(Plan e : plans) {
+//            Map<String, Object> plan = new HashMap<>();
+//            plan.put("key", e.getPlanNo());
+//            plan.put("checked", e.getPlanChecked());
+//            plan.put("text", e.getPlan());
+//            plan.put("deleted", false);
+//            planList.add(plan);
+//        }
+//        System.out.println(planList);
+//    }
+}

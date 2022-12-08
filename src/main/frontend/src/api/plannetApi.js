@@ -180,7 +180,7 @@ const plannetApi = {
             id: id,
             imgName: imgName
         };
-        return await axios.post(PLANNET_DOMAIN + "UserImgSave", object, HEADER);
+        return await axios.post(PLANNET_DOMAIN + "user/img_save", object, HEADER);
     },
     // 개인 home/달력/주간일정/메모/명언 출력
     personalHome: async function(id) {

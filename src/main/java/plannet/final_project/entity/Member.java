@@ -46,7 +46,6 @@ public class Member {
     private String memo;
 
     @Column(length = 200)
-    //@ColumnDefault("userdefault.png")
     private String proImg;
 
     @Column(length = 1) // 소셜로 가입한 사람인지 기록하는 컬럼
