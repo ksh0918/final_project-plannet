@@ -158,13 +158,6 @@ const Join = () => {
             setIsEmail(false);
         } 
     }
-    const emailAuth = async() => {
-        const emailAuthCheck = await Api.emailAuthCheck(inputEmail);
-    }
-
-    const onChangeTel = (e) => {
-       setInputTel(e.target.value.replace(/[^0-9]/g, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`));
-    }
 
     const onBlurTelCheck = async() => {
         // 가입 여부 우선 확인
@@ -235,7 +228,6 @@ const Join = () => {
                         {inputEmail.length > 0 && <span>{emailMessage}</span>}
                     </p>
                     <input type='email' placeholder="이메일" value={inputEmail} onChange={onChangeEmail} onBlur={onBlurEmailCheck}/>
-                    <button onClick={emailAuth}>인증하기</button>
                 </div>
                 <div className="session">
                     <p>
