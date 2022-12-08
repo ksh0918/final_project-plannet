@@ -162,10 +162,6 @@ const plannetApi = {
     likeCheckedToggle: async function(id, boardNo) {
         return await axios.get(PLANNET_DOMAIN + `board/like_checked_toggle?id=${id}&boardNo=${boardNo}`,HEADER);
     },
-    // 해당 게시물에 댓글 작성
-    boardCommentCreate: async function(boardNo, id, detail){
-        return await axios.get(PLANNET_DOMAIN + `board/comment_write?boardNo=${boardNo}&id=${id}&detail=${detail}`, HEADER);
-    },
     // 해당 게시물에 작성된 댓글 불러오기
     boardCommentLoad: async function(boardNo){
         console.log(boardNo);
@@ -173,6 +169,10 @@ const plannetApi = {
             boardNo : boardNo
         };
         return await axios.post(PLANNET_DOMAIN + "board/comment_load", object, HEADER);
+    },
+    // 해당 게시물에 댓글 작성
+    boardCommentCreate: async function(boardNo, id, detail){
+        return await axios.get(PLANNET_DOMAIN + `board/comment_write?boardNo=${boardNo}&id=${id}&detail=${detail}`, HEADER);
     },
     // 자유게시판 글 작성
     boardWrite: async function(id, title, detail, isChecked){
