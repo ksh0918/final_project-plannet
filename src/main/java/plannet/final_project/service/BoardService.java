@@ -58,6 +58,38 @@ public class BoardService {
         return boardDTO;
     }
 
+    // 인기글 리스트 불러오기
+    public BoardDTO getTop3List() {
+        List<Integer> top3BoardNo = likeCntRepository.findAllTop3GroupByBoardNoOrderByCountByBoardNoDescBoardNoDesc();
+        for (Integer e : top3BoardNo) {
+            System.out.println(e);
+        }
+        System.out.println("여기가 출력입니다:" + top3BoardNo);
+        BoardDTO boardDTO = new BoardDTO();
+        List<Map<String, Object>> boardList = new ArrayList<>();
+        try {
+            List<Board> boardData = boardRepository.findAllMatchingBoardNo(top3BoardNo);
+            for (Board e : boardData) {
+                Map<String, Object> board = new HashMap<>();
+                board.put("boardNo", e.getBoardNo());
+                board.put("writerId", e.getUserId().getId());
+                // 익명체크 여부 확인 후 닉네임 넣기
+                if(e.getIsChecked() == 0) {
+                    board.put("nickname", e.getUserId().getNickname());
+                } else board.put("nickname", "익명");
+                board.put("title", e.getTitle());
+                board.put("views", e.getViews());
+                board.put("writeDate", e.getWriteDate());
+                boardList.add(board);
+            }
+            boardDTO.setBoardList(boardList);
+            boardDTO.setOk(true);
+        } catch (Exception e) {
+            boardDTO.setOk(false);
+        }
+        return boardDTO;
+    }
+
     // 보드 넘버에 해당하는 글의 상세페이지 불러오기
     public BoardDTO getPostView(Long boardNo) {
         Board board = boardRepository.findById(boardNo).orElseThrow();

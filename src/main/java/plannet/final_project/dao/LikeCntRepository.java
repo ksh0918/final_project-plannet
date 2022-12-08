@@ -17,6 +17,5 @@ public interface LikeCntRepository extends JpaRepository<LikeCnt, Long> {
     @Query(value = "select board_no from like_cnt group by board_no order by count(board_no) desc, board_no desc limit 3", nativeQuery = true)
     List<Integer> findAllTop3GroupByBoardNoOrderByCountByBoardNoDescBoardNoDesc();
     void deleteByUserIdAndBoardNo(Member member, Board boardNo);
-    void deleteByBoardNo(Board board);
     void deleteByUserId(Member member);
 }

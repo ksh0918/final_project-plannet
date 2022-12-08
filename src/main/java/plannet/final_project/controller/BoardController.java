@@ -34,7 +34,13 @@ public class BoardController {
     }
     
     // 인기글 top3 목록 출력
-
+    @GetMapping("/top3_list")
+    public ResponseEntity<List<BoardDTO>> top3List() {
+        BoardDTO top3List = boardService.getTop3List();
+        if(top3List.isOk()) {
+            return new ResponseEntity(top3List.getBoardList(), HttpStatus.OK);
+        } else return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
+    }
 
     // 검색 키워드에 해당하는 보드 리스트 불러오기
     @GetMapping("/search_list")
