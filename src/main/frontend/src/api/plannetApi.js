@@ -25,6 +25,7 @@ const plannetApi = {
         };
         return await axios.post(PLANNET_DOMAIN + "member/register", memberObj, HEADER);
     },
+    // 이메일 인증
     emailAuthCheck : async function(email){
         const emailAuth = {
             email:email
