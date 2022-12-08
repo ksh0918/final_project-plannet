@@ -47,7 +47,7 @@ public class MemberService {
             member.setName(name);
             member.setNickname(nickname);
             member.setEmail(email);
-            member.setTel(tel);
+            if(tel.length() != 0) member.setTel(tel);
             String userCode = String.format("%04d", (int)(Math.random() * 9999) + 1);
             member.setUserCode(userCode);
             member.setJoinDate(LocalDateTime.now());
