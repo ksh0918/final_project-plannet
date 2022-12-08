@@ -50,14 +50,6 @@ const plannetApi = {
         };
         return await axios.post(PLANNET_DOMAIN + "member/new_pwd", reg, HEADER);
     },
-    // 회원 메모 저장
-    memberMemoSave: async function(id, memo) {
-        const object = {
-            id: id,
-            memo: memo
-        };
-        return await axios.post(PLANNET_DOMAIN + "MemberMemoSave", object, HEADER);
-    },
     // 회원 탈퇴
     memberDelete: async function(id) {
         const memberObj = {
@@ -73,6 +65,14 @@ const plannetApi = {
             id: id
         };
         return await axios.post(PLANNET_DOMAIN + "home/personal", object, HEADER);
+    },
+    // 회원 메모 저장
+    memberMemoSave: async function(id, memo) {
+        const object = {
+            id: id,
+            memo: memo
+        };
+        return await axios.post(PLANNET_DOMAIN + "MemberMemoSave", object, HEADER);
     },
 
     // UserInfoController
