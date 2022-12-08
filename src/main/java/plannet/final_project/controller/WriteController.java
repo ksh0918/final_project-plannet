@@ -57,5 +57,4 @@ public class WriteController {
             return new ResponseEntity(null, HttpStatus.OK);
         }
     }
-
 }
