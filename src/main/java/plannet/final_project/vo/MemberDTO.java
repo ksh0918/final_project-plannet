@@ -14,7 +14,6 @@ public class MemberDTO {
     private String nickname;
     private String email;
     private String tel;
-    private String sns;
     private String profile;
     private String memo;
     private String proImg;
