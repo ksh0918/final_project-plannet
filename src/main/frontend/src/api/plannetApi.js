@@ -1,9 +1,9 @@
-
 import axios from "axios";
 const HEADER = 'application/json';
 const PLANNET_DOMAIN = "http://localhost:8111/";
 
 const plannetApi = {
+    // MemberController
     // 로그인 기능
     userLogin: async function(id, pw) {
         const loginObj = {
@@ -33,13 +33,6 @@ const plannetApi = {
         };
         return await axios.post(PLANNET_DOMAIN + "member/overlap_check", regCheck, HEADER);
     },
-    // 회원 탈퇴
-    memberDelete: async function(id) {
-        const memberObj = {
-            id: id,
-        };
-        return await axios.post(PLANNET_DOMAIN + "member/member_delete", memberObj, HEADER);
-    },
     // 회원 아이디, 비밀번호 찾기
     memberFind: async function(uni, email, type){
         const reg = {
@@ -65,6 +58,15 @@ const plannetApi = {
         };
         return await axios.post(PLANNET_DOMAIN + "MemberMemoSave", object, HEADER);
     },
+    // 회원 탈퇴
+    memberDelete: async function(id) {
+        const memberObj = {
+            id: id,
+        };
+        return await axios.post(PLANNET_DOMAIN + "member/member_delete", memberObj, HEADER);
+    },
+
+    // WriteController
     // 플랜리스트.다이어리 저장
     writeSave: async function(id, date, planList, diary) {
         const object = {
@@ -83,12 +85,22 @@ const plannetApi = {
         };
         return await axios.post(PLANNET_DOMAIN + "write/load", object, HEADER);
     },
+
+    // BoardController
     // 자유게시판 목록 출력
     boardList: async function(){
         return await axios.get(PLANNET_DOMAIN + "board/list", HEADER);
     },
+    // 인기글 top3 목록 출력
+    top3List: async function(){
+        return await axios.get(PLANNET_DOMAIN + "board/top3_list", HEADER);
+    },
+    // 특정 보드넘버의 게시물 내용 불러오기 + 좋아요 수
+    postView: async function(boardNo){
+        return await axios.get(PLANNET_DOMAIN + `board/post_view?boardNo=${boardNo}`, HEADER);
+    },
     // 자유게시판 글 작성
-    boardCreate: async function(id, title, detail, isChecked){
+    boardWrite: async function(id, title, detail, isChecked){
         const object = {
             id : id,
             title : title,
