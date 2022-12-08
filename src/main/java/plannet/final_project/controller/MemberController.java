@@ -3,10 +3,8 @@ package plannet.final_project.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import plannet.final_project.service.EmailService;
 import plannet.final_project.service.MemberService;
 import plannet.final_project.vo.MemberDTO;
 
@@ -18,6 +16,7 @@ import java.util.Map;
 @RequestMapping("/member")
 public class MemberController {
     private MemberService memberService;
+    private EmailService emailService;
     public MemberController(MemberService memberService){
         this.memberService = memberService;
     }
@@ -112,5 +111,12 @@ public class MemberController {
         else{
             return new ResponseEntity(false,HttpStatus.OK);
         }
+    }
+    @PostMapping("/emailConfirm")
+    public String emailConfirm(@RequestParam String email) throws Exception {
+
+        String confirm = emailService.sendSimpleMessage(email);
+
+        return confirm;
     }
 }

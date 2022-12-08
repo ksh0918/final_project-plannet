@@ -25,6 +25,12 @@ const plannetApi = {
         };
         return await axios.post(PLANNET_DOMAIN + "member/register", memberObj, HEADER);
     },
+    emailAuthCheck : async function(email){
+        const emailAuth = {
+            email:email
+        };
+        return await axios.post(PLANNET_DOMAIN+"member/emailConfirm",emailAuth,HEADER);
+    },
     // 회원 가입 여부 확인
     memberRegCheck: async function(uni, type) {
         const regCheck = {
