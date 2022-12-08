@@ -95,10 +95,31 @@ const plannetApi = {
     top3List: async function(){
         return await axios.get(PLANNET_DOMAIN + "board/top3_list", HEADER);
     },
-    // 특정 보드넘버의 게시물 내용 불러오기 + 좋아요 수
+    // 특정 보드넘버의 게시물 내용 + 좋아요 수 불러오기
     postView: async function(boardNo){
         return await axios.get(PLANNET_DOMAIN + `board/post_view?boardNo=${boardNo}`, HEADER);
     },
+    // boardNo의 게시물을 내가 작성하지 않았으면 조회수 +1
+    boardViewsUp:async function(boardNo){
+        return await axios.get(PLANNET_DOMAIN+ `board/views_up?boardNo=${boardNo}`, HEADER);
+    },
+    // 좋아요 수 불러오기
+    likeCnt: async function(boardNo) {
+        return await axios.get(PLANNET_DOMAIN + `board/like_cnt?boardNo=${boardNo}`, HEADER);
+    },
+    // 좋아요 여부 불러오기
+    likeChecked: async function(id, boardNo) {
+        return await axios.get(PLANNET_DOMAIN + `board/like_checked?id=${id}&boardNo=${boardNo}`, HEADER);
+    },
+    // 좋아요 버튼을 눌렀을 때 toggle 밑 데이터베이스 변경
+    likeCheckedToggle: async function(id, boardNo) {
+        return await axios.get(PLANNET_DOMAIN + `board/like_checked_toggle?id=${id}&boardNo=${boardNo}`,HEADER);
+    },
+    // 자유게시판 검색 목록 출력
+    searchList: async function(keyword){
+        return await axios.get(PLANNET_DOMAIN + `board/search_list?keyword=${keyword}`, HEADER);
+    },
+
     // 자유게시판 글 작성
     boardWrite: async function(id, title, detail, isChecked){
         const object = {
@@ -109,14 +130,8 @@ const plannetApi = {
         };
         return await axios.post(PLANNET_DOMAIN + "board/write", object, HEADER);
     },
-    // 글 조회수 
-    boardViewsUp:async function(boardNo){
-        return await axios.get(PLANNET_DOMAIN+ `board/views_up?boardNo=${boardNo}`, HEADER);
-    },
-    // 게시판 내용보기
-    postView: async function(boardNo){
-        return await axios.get(PLANNET_DOMAIN + `board/post_view?boardNo=${boardNo}`, HEADER);
-    },
+    
+
     // 글 삭제
     boardDelete: async function(num) {
         const object = {
@@ -134,22 +149,7 @@ const plannetApi = {
         };
         return await axios.post(PLANNET_DOMAIN + "board/edit", object, HEADER);
     },
-    // 좋아요 수 불러오기
-    likeCnt: async function(boardNo) {
-        return await axios.get(PLANNET_DOMAIN + `board/like_cnt?boardNo=${boardNo}`, HEADER);
-    },
-    // 좋아요 여부 불러오기
-    likeChecked: async function(id, boardNo) {
-        return await axios.get(PLANNET_DOMAIN + `board/like_checked?id=${id}&boardNo=${boardNo}`, HEADER);
-    },
-    // 해당 게시물에 좋아요를 눌렀는지 체크
-    likeCheckedToggle: async function(id, boardNo) {
-        return await axios.get(PLANNET_DOMAIN + `board/like_checked_toggle?id=${id}&boardNo=${boardNo}`,HEADER);
-    },
-    // 자유게시판 검색 목록 출력
-        searchList: async function(keyword){
-            return await axios.get(PLANNET_DOMAIN + `board/search_list?keyword=${keyword}`, HEADER);
-    },
+
     // 해당 게시물에 댓글 작성
     boardCommentCreate: async function(boardNo, id, detail){
         return await axios.get(PLANNET_DOMAIN + `board/comment_write?boardNo=${boardNo}&id=${id}&detail=${detail}`, HEADER);
