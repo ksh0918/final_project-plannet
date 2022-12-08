@@ -97,6 +97,32 @@ public class BoardController {
         } else return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
     }
 
+    // 자유게시판 댓글 작성하기
+    @GetMapping("/comment_write")
+    public ResponseEntity<Boolean> boardCommentsCreate(@RequestParam Long boardNo, String id, String detail) {
+        log.warn(id);
+//        long boardNo = (long) commentData.get("boardNo");
+//        String id = (String) commentData.get("id");
+//        String detail = (String) commentData.get("detail");
+        boolean boardCommentsCreate = boardService.getcommentsCreate(boardNo, id, detail);
+        if (boardCommentsCreate) {
+            return new ResponseEntity(boardCommentsCreate, HttpStatus.OK);
+        } else {
+            return new ResponseEntity(boardCommentsCreate, HttpStatus.OK);
+        }
+    }
+
+    // 자유게시판 댓글 불러오기
+    @PostMapping("/comment_load")
+    public ResponseEntity<List<Map<String, Object>>> boardCommentsLoad(@RequestBody Map<String, Long> boardNo) {
+        long num = boardNo.get("boardNo");
+        BoardDTO boardDTO = boardService.commentsLoad(num);
+        if(boardDTO.isOk()) {
+            List<Map<String, Object>> commentList = boardDTO.getCommentList();
+            return new ResponseEntity(commentList, HttpStatus.OK);
+        } else return new ResponseEntity(null, HttpStatus.OK);
+    }
+
     // 자유게시판 글 작성
     @PostMapping("/write")
     public ResponseEntity<Boolean> writeBoard(@RequestBody Map<String, String> boardWriteDate) {
@@ -138,30 +164,5 @@ public class BoardController {
         boolean result = boardService.boardDelete(boardNo);
         if(result) return new ResponseEntity(true, HttpStatus.OK);
         else return new ResponseEntity(false, HttpStatus.OK);
-    }
-    // 자유게시판 댓글 작성하기
-    @GetMapping("/comment_write")
-    public ResponseEntity<Boolean> boardCommentsCreate(@RequestParam Long boardNo, String id, String detail) {
-        log.warn(id);
-//        long boardNo = (long) commentData.get("boardNo");
-//        String id = (String) commentData.get("id");
-//        String detail = (String) commentData.get("detail");
-        boolean boardCommentsCreate = boardService.getcommentsCreate(boardNo, id, detail);
-        if (boardCommentsCreate) {
-            return new ResponseEntity(boardCommentsCreate, HttpStatus.OK);
-        } else {
-            return new ResponseEntity(boardCommentsCreate, HttpStatus.OK);
-        }
-    }
-
-    // 자유게시판 댓글 불러오기
-    @PostMapping("/comment_load")
-    public ResponseEntity<List<Map<String, Object>>> boardCommentsLoad(@RequestBody Map<String, Long> boardNo) {
-        long num = boardNo.get("boardNo");
-        BoardDTO boardDTO = boardService.commentsLoad(num);
-        if(boardDTO.isOk()) {
-            List<Map<String, Object>> commentList = boardDTO.getCommentList();
-            return new ResponseEntity(commentList, HttpStatus.OK);
-        } else return new ResponseEntity(null, HttpStatus.OK);
     }
 }
