@@ -55,7 +55,23 @@ const plannetApi = {
         const memberObj = {
             id: id,
         };
-        return await axios.post(PLANNET_DOMAIN + "member/member_delete", memberObj, HEADER);
+        return await axios.post(PLANNET_DOMAIN + "member/delete", memberObj, HEADER);
+    },
+    // 첫 소셜로그인시 정보 불러오기
+    memberNewSocialLoad: async function(id){
+        const reg = {
+            id : id,
+        };
+        return await axios.post(PLANNET_DOMAIN + "member/new_social_load", reg, HEADER);
+    },
+    // 첫 소셜로그인시 정보 저장하기
+    memberNewSocialSave: async function(id, nickname, tel){
+        const reg = {
+            id : id,
+            nickname : nickname,
+            tel : tel,
+        };
+        return await axios.post(PLANNET_DOMAIN + "member/new_social_save", reg, HEADER);
     },
 
     // HomeController
