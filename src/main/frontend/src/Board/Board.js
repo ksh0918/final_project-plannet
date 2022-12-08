@@ -127,6 +127,7 @@ const Board = () => {
 
     // 값 불러오기 & 값 
     const [boardList, setBoardList] = useState([]); // boardList 불러오기
+    const [top3List, setTop3List] = useState([]); // boardList 불러오기
     const [boardNo, setBoardNo] = useState(); // 게시물 클릭 시 boardNo 재설정
     const [views, setViewsUp] = useState(0); // 게시물 클릭 시 작성자와 로그인 ID가 다를 경우에만 조회수 +1
     
@@ -169,42 +170,18 @@ const Board = () => {
         }
     }
 
-    //날짜 클릭시 해당 번호의 postView로 이동
-    const onClickBoard = (boardNo, writerId) => {
-
-        // *** 수정하다가 일단 다시 아래가 처음으로 되돌린 코드, setViewsUp은 무시해도 ok,
-        // *** 문제점: viewUp(boardNo) 가 실행되기 전에 페이지 이동이 먼저 일어남, promise then 등으로 해결해야 함
-        // if(writerId !== getId) {
-        //     return new Promise((resolve, reject) => {
-        //         viewsUp(boardNo);
-        //         console.log("조회수업들어간다");
-        //     })
-        // }
-        // onClickBoard(boardNo, writerId).then((resolvedData) => {
-        //     const link = "post_view/" + boardNo;
-        //     navigate(link);
-        // });
-
-        // 글 작성자와 회원 아이디가 다를 때만 해당 boardNo 게시물 조회수 +1
-        // 이전에는 localStorage에 writerId와 boardNo를 저장해서 이것들을 이용했지만 그러면 익명 보장이 안 됨
-        // 그래서 프론트에서 writerId와 userId를 비교하고, boardNo를 viewUp 메소드의 매개변수로 넘겨야 함
+    // 타이틀 클릭 시 작성자 id 와 다르면 조회수 +1
+    const viewsUp = async (boardNo, writerId) => {
+        console.log(boardNo);
+        console.log(writerId);
         if(writerId !== getId) {
-            viewsUp(boardNo);
             console.log("조회수업들어간다");
+            const response = await Api.boardViewsUp(boardNo);
+            console.log("조회수업 실행 + response");
         }
-        
         console.log("페이지이동실행");
         const link = "post_view/" + boardNo;
         navigate(link);
-    }
-
-    // 조회수 +1
-    const viewsUp = async (boardNo) => {
-        try {
-            const response = await Api.boardViewsUp(boardNo);
-            setViewsUp(response.data);
-            console.log("조회수업 실행 + response");
-        } catch (e) {console.log(e);}
     };
 
     // boardList 불러오기
@@ -239,10 +216,19 @@ const Board = () => {
                             <th>Views</th>
                             <th>Date</th>
                         </tr>
+                        {top3List.map(({boardNo, writerId, title, nickname, views, writeDate}) => (
+                            <tr key={boardNo}>
+                                <td>{boardNo}</td>
+                                <td onChange={setBoardNo} onClick={()=> viewsUp(boardNo, writerId)}>{title}</td>
+                                <td>{nickname}</td>
+                                <td>{views}</td>
+                                <td>{writeDate.substring(0, 10)}</td>
+                            </tr>     
+                        ))}
                         {boardList.slice(offset, offset + limit).map(({boardNo, writerId, title, nickname, views, writeDate}) => (
                             <tr key={boardNo}>
                                 <td>{boardNo}</td>
-                                <td onChange={setBoardNo} onClick={()=> onClickBoard(boardNo, writerId)}>{title}</td>
+                                <td onChange={setBoardNo} onClick={()=> viewsUp(boardNo, writerId)}>{title}</td>
                                 <td>{nickname}</td>
                                 <td>{views}</td>
                                 <td>{writeDate.substring(0, 10)}</td>
