@@ -32,6 +32,20 @@ public class BoardController {
             return new ResponseEntity(boardList.getBoardList(), HttpStatus.OK);
         } else return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
     }
+    
+    // 인기글 top3 목록 출력
+
+
+    // 검색 키워드에 해당하는 보드 리스트 불러오기
+    @GetMapping("/search_list")
+    public ResponseEntity<List<BoardDTO>> searchList(@RequestParam String keyword) {
+        System.out.println(keyword);
+        // 서비스를 다녀옴
+        BoardDTO boardList = boardService.getSearchList("%%" + keyword + "%%");
+        if(boardList.isOk()) {
+            return new ResponseEntity(boardList.getBoardList(), HttpStatus.OK);
+        } else return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
+    }
 
     // 특정 보드넘버의 게시물 내용 불러오기 + 좋아요 수
     @GetMapping("/post_view")
@@ -50,6 +64,17 @@ public class BoardController {
         postViewData.put("isChecked", postView.getIsChecked());
         postViewList.add(postViewData);
         return new ResponseEntity(postViewList, HttpStatus.OK);
+    }
+
+    // boardNo의 게시물을 내가 작성하지 않았으면 조회수 +1
+    @GetMapping("/views_up")
+    public ResponseEntity<Integer> viewsUp(@RequestParam Long boardNo) {
+        boolean viewsChecked = boardService.getViews(boardNo);
+        if (viewsChecked) {
+            return new ResponseEntity(viewsChecked, HttpStatus.OK);
+        } else {
+            return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
+        }
     }
 
     // boardNo에 해당하는 좋아요 수 구하기
@@ -73,67 +98,6 @@ public class BoardController {
         return new ResponseEntity(likeCheckedToggle, HttpStatus.OK);
     }
 
-    // boardNo의 게시물을 내가 작성하지 않았으면 조회수 +1
-    @GetMapping("/views_up")
-    public ResponseEntity<Integer> viewsUp(@RequestParam Long boardNo) {
-        boolean viewsChecked = boardService.getViews(boardNo);
-        if (viewsChecked) {
-            return new ResponseEntity(viewsChecked, HttpStatus.OK);
-        } else {
-            return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    // 검색 키워드에 해당하는 보드 리스트 불러오기
-    @GetMapping("/search_list")
-    public ResponseEntity<List<BoardDTO>> searchList(@RequestParam String keyword) {
-        System.out.println(keyword);
-        // 서비스를 다녀옴
-        BoardDTO boardList = boardService.getSearchList("%%" + keyword + "%%");
-        if(boardList.isOk()) {
-            return new ResponseEntity(boardList.getBoardList(), HttpStatus.OK);
-        } else return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
-    }
-
-    @PostMapping("/write")
-    public ResponseEntity<Boolean> writeBoard(@RequestBody Map<String, String> boardWriteDate) {
-        String id = boardWriteDate.get("id");
-        String title = boardWriteDate.get("title");
-        String detail = boardWriteDate.get("detail");
-        int isChecked = Integer.parseInt(boardWriteDate.get("isChecked"));
-
-        boolean result = boardService.writeBoard(id, title, detail, isChecked);
-        if(result) {
-            return new ResponseEntity(true, HttpStatus.OK);
-        }
-        else {
-            return new ResponseEntity(false, HttpStatus.BAD_REQUEST);
-        }
-    }
-    // 자유게시판 글 삭제하기
-    @PostMapping("/delete")
-    public ResponseEntity<Boolean> boardDelete(@RequestBody Map<String, String> boardDelete) {
-        Long boardNo = Long.parseLong(boardDelete.get("num"));
-        boolean result = boardService.boardDelete(boardNo);
-        if(result) return new ResponseEntity(true, HttpStatus.OK);
-        else return new ResponseEntity(false, HttpStatus.OK);
-    }
-    // 자유게시판 글 수정
-    @PostMapping("edit")
-    public ResponseEntity<Boolean> boardEdit(@RequestBody Map<String, String> boardEdit) {
-        String userId = boardEdit.get("id");
-        Long boardNo = Long.parseLong(boardEdit.get("num"));
-        String title = boardEdit.get("title");
-        String detail = boardEdit.get("detail");
-
-        boolean result = boardService.boardEdit(userId, boardNo, title, detail);
-        if(result) {
-            return new ResponseEntity(true, HttpStatus.OK);
-        }
-        else {
-            return new ResponseEntity(false, HttpStatus.OK);
-        }
-    }
     // 자유게시판 댓글 작성하기
     @GetMapping("/comment_write")
     public ResponseEntity<Boolean> boardCommentsCreate(@RequestParam Long boardNo, String id, String detail) {
@@ -158,5 +122,48 @@ public class BoardController {
             List<Map<String, Object>> commentList = boardDTO.getCommentList();
             return new ResponseEntity(commentList, HttpStatus.OK);
         } else return new ResponseEntity(null, HttpStatus.OK);
+    }
+
+    // 자유게시판 글 작성
+    @PostMapping("/write")
+    public ResponseEntity<Boolean> writeBoard(@RequestBody Map<String, String> boardWriteDate) {
+        String id = boardWriteDate.get("id");
+        String title = boardWriteDate.get("title");
+        String detail = boardWriteDate.get("detail");
+        int isChecked = Integer.parseInt(boardWriteDate.get("isChecked"));
+
+        boolean result = boardService.writeBoard(id, title, detail, isChecked);
+        if(result) {
+            return new ResponseEntity(true, HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity(false, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // 자유게시판 글 수정
+    @PostMapping("edit")
+    public ResponseEntity<Boolean> boardEdit(@RequestBody Map<String, String> boardEdit) {
+        String userId = boardEdit.get("id");
+        Long boardNo = Long.parseLong(boardEdit.get("num"));
+        String title = boardEdit.get("title");
+        String detail = boardEdit.get("detail");
+
+        boolean result = boardService.boardEdit(userId, boardNo, title, detail);
+        if(result) {
+            return new ResponseEntity(true, HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity(false, HttpStatus.OK);
+        }
+    }
+
+    // 자유게시판 글 삭제하기
+    @PostMapping("/delete")
+    public ResponseEntity<Boolean> boardDelete(@RequestBody Map<String, String> boardDelete) {
+        Long boardNo = Long.parseLong(boardDelete.get("num"));
+        boolean result = boardService.boardDelete(boardNo);
+        if(result) return new ResponseEntity(true, HttpStatus.OK);
+        else return new ResponseEntity(false, HttpStatus.OK);
     }
 }
