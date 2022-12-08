@@ -1,6 +1,8 @@
 package plannet.final_project.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import plannet.final_project.entity.Board;
 import plannet.final_project.entity.Member;
 
@@ -12,6 +14,8 @@ import java.util.List;
 public interface BoardRepository extends JpaRepository<Board, Long> {
     List<Board> findAllByOrderByBoardNoDesc();
     List<Board> findByTitleLikeOrDetailLikeOrderByBoardNoDesc(String keyword1, String keyword2);
+    @Query(value = "select * from board where board_No in (:board_no) order by board_no desc", nativeQuery = true)
+    List<Board> findAllMatchingBoardNo(@Param("board_no") List<Integer> board_no);
     void deleteByUserId(Member member);
 }
 

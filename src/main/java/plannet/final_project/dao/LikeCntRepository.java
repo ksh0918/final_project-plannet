@@ -1,9 +1,12 @@
 package plannet.final_project.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import plannet.final_project.entity.Board;
 import plannet.final_project.entity.LikeCnt;
 import plannet.final_project.entity.Member;
+
+import java.util.List;
 
 // 엔티티를 만들었으니 DB에 접근할 수 있는 Repository를 만든다
 // 요청과 응답만 처리
@@ -11,7 +14,8 @@ import plannet.final_project.entity.Member;
 public interface LikeCntRepository extends JpaRepository<LikeCnt, Long> {
     Long countByBoardNo(Board boardNo);
     boolean existsByUserIdAndBoardNo(Member userId, Board boardNo);
+    @Query(value = "select board_no from like_cnt group by board_no order by count(board_no) desc, board_no desc limit 3", nativeQuery = true)
+    List<Integer> findAllTop3GroupByBoardNoOrderByCountByBoardNoDescBoardNoDesc();
     void deleteByUserIdAndBoardNo(Member member, Board boardNo);
-    void deleteByBoardNo(Board board);
     void deleteByUserId(Member member);
 }

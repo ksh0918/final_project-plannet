@@ -50,14 +50,6 @@ const plannetApi = {
         };
         return await axios.post(PLANNET_DOMAIN + "member/new_pwd", reg, HEADER);
     },
-    // 회원 메모 저장
-    memberMemoSave: async function(id, memo) {
-        const object = {
-            id: id,
-            memo: memo
-        };
-        return await axios.post(PLANNET_DOMAIN + "MemberMemoSave", object, HEADER);
-    },
     // 회원 탈퇴
     memberDelete: async function(id) {
         const memberObj = {
@@ -73,6 +65,14 @@ const plannetApi = {
             id: id
         };
         return await axios.post(PLANNET_DOMAIN + "home/personal", object, HEADER);
+    },
+    // 회원 메모 저장
+    memberMemoSave: async function(id, memo) {
+        const object = {
+            id: id,
+            memo: memo
+        };
+        return await axios.post(PLANNET_DOMAIN + "MemberMemoSave", object, HEADER);
     },
 
     // UserInfoController
@@ -162,10 +162,6 @@ const plannetApi = {
     likeCheckedToggle: async function(id, boardNo) {
         return await axios.get(PLANNET_DOMAIN + `board/like_checked_toggle?id=${id}&boardNo=${boardNo}`,HEADER);
     },
-    // 해당 게시물에 댓글 작성
-    boardCommentCreate: async function(boardNo, id, detail){
-        return await axios.get(PLANNET_DOMAIN + `board/comment_write?boardNo=${boardNo}&id=${id}&detail=${detail}`, HEADER);
-    },
     // 해당 게시물에 작성된 댓글 불러오기
     boardCommentLoad: async function(boardNo){
         console.log(boardNo);
@@ -173,6 +169,10 @@ const plannetApi = {
             boardNo : boardNo
         };
         return await axios.post(PLANNET_DOMAIN + "board/comment_load", object, HEADER);
+    },
+    // 해당 게시물에 댓글 작성
+    boardCommentCreate: async function(boardNo, id, detail){
+        return await axios.get(PLANNET_DOMAIN + `board/comment_write?boardNo=${boardNo}&id=${id}&detail=${detail}`, HEADER);
     },
     // 자유게시판 글 작성
     boardWrite: async function(id, title, detail, isChecked){

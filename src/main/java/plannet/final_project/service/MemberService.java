@@ -12,7 +12,6 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.EmptyStackException;
 
-
 @Service
 @Slf4j
 @Transactional
@@ -38,6 +37,7 @@ public class MemberService {
             return false;
         }
     }
+
     public boolean regMember(String id,String pwd,String name,
                              String nickname,String email,String tel){
         try {
@@ -62,6 +62,7 @@ public class MemberService {
             return false;
         }
     }
+
     public boolean overlapCheck (String uni, String type){
         boolean isNotOverLap = true;
         try{
@@ -91,6 +92,7 @@ public class MemberService {
         }
 
     }
+
     // 아이디 비밀번호 찾기
     public MemberDTO memberFindCheck(String uni, String email, String type) {
         MemberDTO memDTO = new MemberDTO();
@@ -124,6 +126,7 @@ public class MemberService {
         }
         return memDTO;
     }
+
     // 비밀번호 찾기 시 새 비밀번호 설정
     public boolean regNewPwd(String id, String pwd) {
         try{
@@ -136,6 +139,7 @@ public class MemberService {
         }
         return true;
     }
+
     public boolean deleteMember(String id){
         try {
             Member member = memberRepository.findById(id).orElseThrow();
