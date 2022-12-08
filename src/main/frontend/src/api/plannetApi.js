@@ -55,7 +55,7 @@ const plannetApi = {
         const memberObj = {
             id: id,
         };
-        return await axios.post(PLANNET_DOMAIN + "member/member_delete", memberObj, HEADER);
+        return await axios.post(PLANNET_DOMAIN + "member/delete", memberObj, HEADER);
     },
     // 첫 소셜로그인시 정보 불러오기
     memberNewSocialLoad: async function(id){
