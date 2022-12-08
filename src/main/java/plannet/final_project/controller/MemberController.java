@@ -113,7 +113,7 @@ public class MemberController {
         }
     }
     @PostMapping("/emailConfirm")
-    public String emailConfirm(@RequestParam String email) throws Exception {
+    public String emailConfirm(@RequestParam(value = "email",required =false) String email ) throws Exception {
 
         String confirm = emailService.sendSimpleMessage(email);
 
