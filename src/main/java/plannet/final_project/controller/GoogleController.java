@@ -91,11 +91,11 @@ public class GoogleController {
                 String email = userInfoDto.getEmail();
                 String id = userInfoDto.getSub();
                 String name = userInfoDto.getName()+"6";
-                boolean isReg = memberService.googleLoginReg(email, id, name);
+                int regStatus = memberService.googleLoginReg(email, id, name);
 
-                return "redirect:"+ UriComponentsBuilder.fromUriString("http://localhost:8111/socialLogin")
+                return "redirect:"+ UriComponentsBuilder.fromUriString("http://localhost:8111/social")
                         .queryParam("id", id)
-                        .queryParam("newMember", isReg)
+                        .queryParam("regStatus", regStatus) //구글로 가입된 회원은 0 , 일반 회원은 1, 첫 구글로그인 2
                         .build();
             }
             else {
@@ -106,9 +106,8 @@ public class GoogleController {
             e.printStackTrace();
         }
 
-        return "redirect:"+ UriComponentsBuilder.fromUriString("http://localhost:8111/socialLogin")
-                .queryParam("id", "a")
-                .queryParam("newMember", "a")
+        return "redirect:"+ UriComponentsBuilder.fromUriString("http://localhost:8111/social")
+                .queryParam("regStatus", "3") //오류시 3을 보냄
                 .build();
     }
 }
