@@ -50,7 +50,6 @@ public class HomeService {
                 weekPlan.add(dayPlan);
             }
             homeDTO.setWeekPlan(weekPlan);
-
             // planMark
             List<Set<LocalDate>> planMark = new ArrayList<>();
             for(int i = 0; i < 2; i++) {
@@ -62,10 +61,10 @@ public class HomeService {
                 planMark.add(planDot);
             }
             homeDTO.setPlanMark(planMark);
-
             // memoLoad
-            homeDTO.setMemo(member.getMemo());
-
+            if(member.getMemo() != null) {
+                homeDTO.setMemo(member.getMemo());
+            } else homeDTO.setMemo("");
             // quoteLoad
             int randomNum = (int) (Math.random() * ((int) quoteRepository.count() + 1));
             homeDTO.setQuote(quoteRepository.findById(randomNum).orElseThrow().getQuote());
