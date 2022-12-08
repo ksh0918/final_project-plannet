@@ -66,6 +66,49 @@ const plannetApi = {
         return await axios.post(PLANNET_DOMAIN + "member/member_delete", memberObj, HEADER);
     },
 
+    // HomeController
+    // 개인 home/달력/주간일정/메모/명언 출력
+    personalHome: async function(id) {
+        const object = {
+            id: id
+        };
+        return await axios.post(PLANNET_DOMAIN + "home/personal", object, HEADER);
+    },
+
+    // UserInfoController
+    // userInfo 불러오기 - userinfoController-userinfoload
+    userInfoLoad: async function(id){
+        const object = {
+            id:id
+        };
+        return await axios.post(PLANNET_DOMAIN + "user/info_load", object, HEADER);
+    },
+    // userInfo 저장하기
+    userInfoSave: async function(id, nickname, email, phone, profile) {
+        const object = {
+            id: id,
+            nickname: nickname,
+            email: email,
+            phone: phone,
+            profile: profile
+        };
+        return await axios.post(PLANNET_DOMAIN + "user/info_save", object, HEADER);
+    },
+    userImgSave: async function(id, imgName) {
+        const object = {
+            id: id,
+            imgName: imgName
+        };
+        return await axios.post(PLANNET_DOMAIN + "user/img_save", object, HEADER);
+    },
+    // NavInfo 불러오기 - userinfoController-NavInfo
+    userNavInfo: async function(id){
+        const object = {
+            id:id
+        };
+        return await axios.post(PLANNET_DOMAIN + "user/nav_info", object, HEADER);
+    },
+
     // WriteController
     // 플랜리스트.다이어리 저장
     writeSave: async function(id, date, planList, diary) {
@@ -95,6 +138,10 @@ const plannetApi = {
     top3List: async function(){
         return await axios.get(PLANNET_DOMAIN + "board/top3_list", HEADER);
     },
+    // 자유게시판 검색 목록 출력
+    searchList: async function(keyword){
+        return await axios.get(PLANNET_DOMAIN + `board/search_list?keyword=${keyword}`, HEADER);
+    },
     // 특정 보드넘버의 게시물 내용 + 좋아요 수 불러오기
     postView: async function(boardNo){
         return await axios.get(PLANNET_DOMAIN + `board/post_view?boardNo=${boardNo}`, HEADER);
@@ -115,41 +162,6 @@ const plannetApi = {
     likeCheckedToggle: async function(id, boardNo) {
         return await axios.get(PLANNET_DOMAIN + `board/like_checked_toggle?id=${id}&boardNo=${boardNo}`,HEADER);
     },
-    // 자유게시판 검색 목록 출력
-    searchList: async function(keyword){
-        return await axios.get(PLANNET_DOMAIN + `board/search_list?keyword=${keyword}`, HEADER);
-    },
-
-    // 자유게시판 글 작성
-    boardWrite: async function(id, title, detail, isChecked){
-        const object = {
-            id : id,
-            title : title,
-            detail : detail,
-            isChecked : isChecked
-        };
-        return await axios.post(PLANNET_DOMAIN + "board/write", object, HEADER);
-    },
-    
-
-    // 글 삭제
-    boardDelete: async function(num) {
-        const object = {
-            num : num
-        };
-        return await axios.post(PLANNET_DOMAIN + "board/delete", object, HEADER);
-    },
-    // 글 수정
-    boardEdit: async function(id, num, title, detail) {
-        const object = {
-            id: id,
-            num: num,
-            title: title,
-            detail: detail
-        };
-        return await axios.post(PLANNET_DOMAIN + "board/edit", object, HEADER);
-    },
-
     // 해당 게시물에 댓글 작성
     boardCommentCreate: async function(boardNo, id, detail){
         return await axios.get(PLANNET_DOMAIN + `board/comment_write?boardNo=${boardNo}&id=${id}&detail=${detail}`, HEADER);
@@ -162,47 +174,33 @@ const plannetApi = {
         };
         return await axios.post(PLANNET_DOMAIN + "board/comment_load", object, HEADER);
     },
-    // userInfo 불러오기 - userinfoController-userinfoload
-    userInfoLoad: async function(id){
+    // 자유게시판 글 작성
+    boardWrite: async function(id, title, detail, isChecked){
         const object = {
-            id:id
+            id : id,
+            title : title,
+            detail : detail,
+            isChecked : isChecked
         };
-        return await axios.post(PLANNET_DOMAIN + "user/info_load", object, HEADER);
+        return await axios.post(PLANNET_DOMAIN + "board/write", object, HEADER);
     },
-    // NavInfo 불러오기 - userinfoController-NavInfo
-    userNavInfo: async function(id){
-        const object = {
-            id:id
-        };
-        return await axios.post(PLANNET_DOMAIN + "user/nav_info", object, HEADER);
-    },
-    // userInfo 저장하기
-    userInfoSave: async function(id, nickname, email, phone, profile) {
+    // 글 수정
+    boardEdit: async function(id, num, title, detail) {
         const object = {
             id: id,
-            nickname: nickname,
-            email: email,
-            phone: phone,
-            profile: profile
+            num: num,
+            title: title,
+            detail: detail
         };
-        return await axios.post(PLANNET_DOMAIN + "user/info_save", object, HEADER);
+        return await axios.post(PLANNET_DOMAIN + "board/edit", object, HEADER);
     },
-    userImgSave: async function(id, imgName) {
+    // 글 삭제
+    boardDelete: async function(num) {
         const object = {
-            id: id,
-            imgName: imgName
+            num : num
         };
-        return await axios.post(PLANNET_DOMAIN + "user/img_save", object, HEADER);
-    },
-    // 개인 home/달력/주간일정/메모/명언 출력
-    personalHome: async function(id) {
-        const object = {
-            id: id
-        };
-        return await axios.post(PLANNET_DOMAIN + "home/personal", object, HEADER);
+        return await axios.post(PLANNET_DOMAIN + "board/delete", object, HEADER);
     }
 }
 
 export default plannetApi;
-
-

@@ -35,6 +35,17 @@ public class BoardController {
     
     // 인기글 top3 목록 출력
 
+    // 검색 키워드에 해당하는 보드 리스트 불러오기
+    @GetMapping("/search_list")
+    public ResponseEntity<List<BoardDTO>> searchList(@RequestParam String keyword) {
+        System.out.println(keyword);
+        // 서비스를 다녀옴
+        BoardDTO boardList = boardService.getSearchList("%%" + keyword + "%%");
+        if(boardList.isOk()) {
+            return new ResponseEntity(boardList.getBoardList(), HttpStatus.OK);
+        } else return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
+    }
+
     // 특정 보드넘버의 게시물 내용 불러오기 + 좋아요 수
     @GetMapping("/post_view")
     public ResponseEntity<List<Map<String, Object>>> postView(@RequestParam Long boardNo) {
@@ -84,17 +95,6 @@ public class BoardController {
     public ResponseEntity<Integer> likeCheckedToggle(@RequestParam String id, Board boardNo) {
         boolean likeCheckedToggle = boardService.getLikeCheckedToggle(id, boardNo);
         return new ResponseEntity(likeCheckedToggle, HttpStatus.OK);
-    }
-
-    // 검색 키워드에 해당하는 보드 리스트 불러오기
-    @GetMapping("/search_list")
-    public ResponseEntity<List<BoardDTO>> searchList(@RequestParam String keyword) {
-        System.out.println(keyword);
-        // 서비스를 다녀옴
-        BoardDTO boardList = boardService.getSearchList("%%" + keyword + "%%");
-        if(boardList.isOk()) {
-            return new ResponseEntity(boardList.getBoardList(), HttpStatus.OK);
-        } else return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
     }
 
     // 자유게시판 댓글 작성하기

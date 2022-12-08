@@ -24,24 +24,6 @@ public class UserInfoController {
         this.userInfoService = userInfoService;
     }
 
-    // 사용자 정보 수정
-    @PostMapping("/info_save")
-    public ResponseEntity<Boolean> userInfoSave(@RequestBody Map<String, String> userInfo) {
-        String id = userInfo.get("id");
-        String nickname = userInfo.get("nickname");
-        String email = userInfo.get("email");
-        String phone = userInfo.get("phone");
-        String profile = userInfo.get("profile");
-
-        boolean result = userInfoService.saveUserInfo(id, nickname, email, phone, profile);
-        if(result) {
-            return new ResponseEntity(true, HttpStatus.OK);
-        }
-        else {
-            return new ResponseEntity(false, HttpStatus.OK);
-        }
-    }
-
     //사용자 정보 불러오기
     @PostMapping("/info_load")
     public ResponseEntity<List<Object>> userInfoLoad(@RequestBody Map<String, String> userId) {
@@ -58,6 +40,24 @@ public class UserInfoController {
 
             return new ResponseEntity(userInfo, HttpStatus.OK);
         } else return new ResponseEntity(null, HttpStatus.OK);
+    }
+
+    // 사용자 정보 수정
+    @PostMapping("/info_save")
+    public ResponseEntity<Boolean> userInfoSave(@RequestBody Map<String, String> userInfo) {
+        String id = userInfo.get("id");
+        String nickname = userInfo.get("nickname");
+        String email = userInfo.get("email");
+        String phone = userInfo.get("phone");
+        String profile = userInfo.get("profile");
+
+        boolean result = userInfoService.saveUserInfo(id, nickname, email, phone, profile);
+        if(result) {
+            return new ResponseEntity(true, HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity(false, HttpStatus.OK);
+        }
     }
 
     // 사용자 프로필 이미지명 저장
