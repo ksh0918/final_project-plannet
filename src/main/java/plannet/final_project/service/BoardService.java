@@ -58,6 +58,65 @@ public class BoardService {
         return boardDTO;
     }
 
+    // 인기글 리스트 불러오기
+    public BoardDTO getTop3List() {
+        List<Integer> top3BoardNo = likeCntRepository.findAllTop3GroupByBoardNoOrderByCountByBoardNoDescBoardNoDesc();
+        for (Integer e : top3BoardNo) {
+            System.out.println(e);
+        }
+        System.out.println("여기가 출력입니다:" + top3BoardNo);
+        BoardDTO boardDTO = new BoardDTO();
+        List<Map<String, Object>> boardList = new ArrayList<>();
+        try {
+            List<Board> boardData = boardRepository.findAllMatchingBoardNo(top3BoardNo);
+            for (Board e : boardData) {
+                Map<String, Object> board = new HashMap<>();
+                board.put("boardNo", e.getBoardNo());
+                board.put("writerId", e.getUserId().getId());
+                // 익명체크 여부 확인 후 닉네임 넣기
+                if(e.getIsChecked() == 0) {
+                    board.put("nickname", e.getUserId().getNickname());
+                } else board.put("nickname", "익명");
+                board.put("title", e.getTitle());
+                board.put("views", e.getViews());
+                board.put("writeDate", e.getWriteDate());
+                boardList.add(board);
+            }
+            boardDTO.setBoardList(boardList);
+            boardDTO.setOk(true);
+        } catch (Exception e) {
+            boardDTO.setOk(false);
+        }
+        return boardDTO;
+    }
+
+    // 검색 키워드에 해당하는 글 목록 불러오기 불러오기
+    public BoardDTO getSearchList(String keyword) {
+        BoardDTO boardDTO = new BoardDTO();
+        List<Map<String, Object>> boardList = new ArrayList<>();
+        try {
+            List<Board> boardData = boardRepository.findByTitleLikeOrDetailLikeOrderByBoardNoDesc(keyword, keyword);
+            for (Board e : boardData) {
+                Map<String, Object> board = new HashMap<>();
+                board.put("boardNo", e.getBoardNo());
+                board.put("writerId", e.getUserId().getId());
+                // 익명체크 여부 확인 후 닉네임 넣기
+                if(e.getIsChecked() == 0) {
+                    board.put("nickname", e.getUserId().getNickname());
+                } else board.put("nickname", "익명");
+                board.put("title", e.getTitle());
+                board.put("views", e.getViews());
+                board.put("writeDate", e.getWriteDate());
+                boardList.add(board);
+            }
+            boardDTO.setBoardList(boardList);
+            boardDTO.setOk(true);
+        } catch (Exception e) {
+            boardDTO.setOk(false);
+        }
+        return boardDTO;
+    }
+
     // 보드 넘버에 해당하는 글의 상세페이지 불러오기
     public BoardDTO getPostView(Long boardNo) {
         Board board = boardRepository.findById(boardNo).orElseThrow();
@@ -77,6 +136,20 @@ public class BoardService {
             boardDTO.setOk(true);
         } catch (Exception e) {boardDTO.setOk(false);}
         return boardDTO;
+    }
+
+    // 조회수 +1
+    public boolean getViews(Long boardNo) {
+        Board board = boardRepository.findById(boardNo).orElseThrow();
+        int CurrentViews = board.getViews() + 1;
+        System.out.println("현재조회수:" + CurrentViews);
+        try {
+            board.setViews(CurrentViews);
+            boardRepository.save(board);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     // 보드 넘버에 해당하는 글의 좋아요 수
@@ -116,104 +189,6 @@ public class BoardService {
         }
     }
 
-    // 조회수 +1
-    public boolean getViews(Long boardNo) {
-        Board board = boardRepository.findById(boardNo).orElseThrow();
-        int CurrentViews = board.getViews() + 1;
-        System.out.println("현재조회수:" + CurrentViews);
-        try {
-            board.setViews(CurrentViews);
-            boardRepository.save(board);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    // 검색 키워드에 해당하는 글 목록 불러오기 불러오기
-    public BoardDTO getSearchList(String keyword) {
-        BoardDTO boardDTO = new BoardDTO();
-        List<Map<String, Object>> boardList = new ArrayList<>();
-        try {
-            List<Board> boardData = boardRepository.findByTitleLikeOrDetailLikeOrderByBoardNoDesc(keyword, keyword);
-            for (Board e : boardData) {
-                Map<String, Object> board = new HashMap<>();
-                board.put("boardNo", e.getBoardNo());
-                board.put("writerId", e.getUserId().getId());
-                // 익명체크 여부 확인 후 닉네임 넣기
-                if(e.getIsChecked() == 0) {
-                    board.put("nickname", e.getUserId().getNickname());
-                } else board.put("nickname", "익명");
-                board.put("title", e.getTitle());
-                board.put("views", e.getViews());
-                board.put("writeDate", e.getWriteDate());
-                boardList.add(board);
-            }
-            boardDTO.setBoardList(boardList);
-            boardDTO.setOk(true);
-        } catch (Exception e) {
-            boardDTO.setOk(false);
-        }
-        return boardDTO;
-    }
-
-    // 자유게시판 글 작성하기
-    public boolean writeBoard(String id, String title, String detail, int isChecked){
-        Board board = new Board();
-        board.setUserId(memberRepository.findById(id).orElseThrow());
-        board.setTitle(title);
-        board.setDetail(detail);
-        board.setIsChecked(isChecked);
-        board.setWriteDate(LocalDateTime.now());
-        boardRepository.save(board);
-        return true;
-    }
-
-    // 자유게시판 글 삭제하기
-    public boolean boardDelete(Long boardNo) {
-        Board board = boardRepository.findById(boardNo).orElseThrow();
-        try {
-            commentsRepository.deleteByBoardNo(board); // 댓글 엔티티네서 게시판번호가 외래키이므로 게시글을 삭제하려면 댓글들도 삭제해야지만 게시글이 삭제됨
-            boardRepository.deleteById(boardNo);
-            return true;
-        } catch (Exception e){
-            return false;
-        }
-    }
-
-    // 자유게시판 글 수정하기
-    public boolean boardEdit(String userId, Long boardNo, String title, String detail) {
-        try{
-            Board board = boardRepository.findById(boardNo).orElseThrow(EmptyStackException::new);
-            board.setTitle(title);
-            board.setDetail(detail);
-            Board rst = boardRepository.save(board);
-            log.warn(rst.toString());
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
-    }
-    // 자유게시판 댓글 작성하기
-    public boolean getcommentsCreate(Long boardNo, String id, String detail) {
-        try {
-            Comments comments = new Comments();
-            comments.setUserId(memberRepository.findById(id).orElseThrow());
-            System.out.println("sdsdss" + comments.getUserId());
-            comments.setBoardNo(boardRepository.findById(boardNo).orElseThrow());
-            System.out.println("sdsdss" + comments.getBoardNo());
-            comments.setDetail(detail);
-            System.out.println("sdsdss" + comments.getDetail());
-            comments.setWriteDate(LocalDateTime.now());
-            System.out.println("sdsdss" + comments.getWriteDate());
-            commentsRepository.save(comments);
-            System.out.println("ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ");
-            return true;
-        } catch (Exception e) {
-            return true;
-        }
-    }
-
     // 자유게시판 댓글 불러오기
     public BoardDTO commentsLoad (Long boardNo) {
         BoardDTO boardDTO = new BoardDTO();
@@ -234,5 +209,63 @@ public class BoardService {
             boardDTO.setOk(false);
         }
         return boardDTO;
+    }
+
+    // 자유게시판 댓글 작성하기
+    public boolean getcommentsCreate(Long boardNo, String id, String detail) {
+        try {
+            Comments comments = new Comments();
+            comments.setUserId(memberRepository.findById(id).orElseThrow());
+            System.out.println("sdsdss" + comments.getUserId());
+            comments.setBoardNo(boardRepository.findById(boardNo).orElseThrow());
+            System.out.println("sdsdss" + comments.getBoardNo());
+            comments.setDetail(detail);
+            System.out.println("sdsdss" + comments.getDetail());
+            comments.setWriteDate(LocalDateTime.now());
+            System.out.println("sdsdss" + comments.getWriteDate());
+            commentsRepository.save(comments);
+            System.out.println("ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ");
+            return true;
+        } catch (Exception e) {
+            return true;
+        }
+    }
+
+    // 자유게시판 글 작성하기
+    public boolean writeBoard(String id, String title, String detail, int isChecked){
+        Board board = new Board();
+        board.setUserId(memberRepository.findById(id).orElseThrow());
+        board.setTitle(title);
+        board.setDetail(detail);
+        board.setIsChecked(isChecked);
+        board.setWriteDate(LocalDateTime.now());
+        boardRepository.save(board);
+        return true;
+    }
+
+    // 자유게시판 글 수정하기
+    public boolean boardEdit(String userId, Long boardNo, String title, String detail) {
+        try{
+            Board board = boardRepository.findById(boardNo).orElseThrow(EmptyStackException::new);
+            board.setTitle(title);
+            board.setDetail(detail);
+            Board rst = boardRepository.save(board);
+            log.warn(rst.toString());
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+    // 자유게시판 글 삭제하기
+    public boolean boardDelete(Long boardNo) {
+        Board board = boardRepository.findById(boardNo).orElseThrow();
+        try {
+            commentsRepository.deleteByBoardNo(board); // 댓글 엔티티네서 게시판번호가 외래키이므로 게시글을 삭제하려면 댓글들도 삭제해야지만 게시글이 삭제됨
+            boardRepository.deleteById(boardNo);
+            return true;
+        } catch (Exception e){
+            return false;
+        }
     }
 }

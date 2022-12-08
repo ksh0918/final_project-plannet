@@ -26,6 +26,36 @@ public class WriteService {
         this.diaryRepository = diaryRepository;
         this.planRepository = planRepository;
     }
+
+    // 일정 불러오기
+    public WriteDTO writeLoad(String id, LocalDate date) {
+        WriteDTO writeDTO = new WriteDTO();
+        try{
+            Member member = memberRepository.findById(id).orElseThrow();
+            List<Plan> plans = planRepository.findByUserIdAndPlanDateOrderByPlanNoAsc(member, date);
+            List<Map<String, Object>> planList = new ArrayList<>();
+            for (Plan e : plans) {
+                Map<String, Object> plan = new HashMap<>();
+                plan.put("key", e.getPlanNo());
+                plan.put("checked", e.getPlanChecked());
+                plan.put("text", e.getPlan());
+                plan.put("deleted", false);
+                planList.add(plan);
+            }
+            writeDTO.setPlanList(planList);
+            List<Diary> diaryList = diaryRepository.findByUserIdAndDiaryDate(member, date);
+            if(diaryList.size() != 0) {
+                String diary = diaryList.get(0).getDiary();
+                writeDTO.setDiary(diary);
+            } else writeDTO.setDiary("");
+            //다이어리 담기
+            writeDTO.setOk(true);
+        } catch (Exception e) {
+            writeDTO.setOk(false);
+        }
+        return writeDTO;
+    }
+
     // 일정 저장
     public boolean writeSave(String userId, LocalDate date, List<Map<String, Object>> plan, String diary) {
         System.out.println("들어옴1");
@@ -68,34 +98,5 @@ public class WriteService {
             return false;
         }
         return true;
-    }
-
-    // 일정 불러오기
-    public WriteDTO writeLoad(String id, LocalDate date) {
-        WriteDTO writeDTO = new WriteDTO();
-        try{
-            Member member = memberRepository.findById(id).orElseThrow();
-            List<Plan> plans = planRepository.findByUserIdAndPlanDateOrderByPlanNoAsc(member, date);
-            List<Map<String, Object>> planList = new ArrayList<>();
-            for (Plan e : plans) {
-                Map<String, Object> plan = new HashMap<>();
-                plan.put("key", e.getPlanNo());
-                plan.put("checked", e.getPlanChecked());
-                plan.put("text", e.getPlan());
-                plan.put("deleted", false);
-                planList.add(plan);
-            }
-            writeDTO.setPlanList(planList);
-            List<Diary> diaryList = diaryRepository.findByUserIdAndDiaryDate(member, date);
-            if(diaryList.size() != 0) {
-                String diary = diaryList.get(0).getDiary();
-                writeDTO.setDiary(diary);
-            } else writeDTO.setDiary("");
-            //다이어리 담기
-            writeDTO.setOk(true);
-        } catch (Exception e) {
-            writeDTO.setOk(false);
-        }
-        return writeDTO;
     }
 }

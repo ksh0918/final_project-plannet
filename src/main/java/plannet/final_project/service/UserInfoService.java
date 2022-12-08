@@ -22,33 +22,6 @@ public class UserInfoService {
     private final SCALRepository scalRepository;
     private final SPLANRepository splanRepository;
 
-    // 사용자 정보 수정
-    public boolean saveUserInfo(String id, String nickname, String email, String phone, String profile) {
-        try{
-            Member mem = memberRepository.findById(id).orElseThrow(EmptyStackException::new);
-            mem.setNickname(nickname);
-            mem.setEmail(email);
-            mem.setTel(phone);
-            mem.setProfile(profile);
-            Member rst = memberRepository.save(mem);
-            log.warn(rst.toString());
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
-    }
-    // 사용자 프로필 이미지명 저장
-    public boolean saveUserImg(String id, String imgName) {
-        try {
-            Member mem = memberRepository.findById(id).orElseThrow(EmptyStackException::new);
-            mem.setProImg(imgName);
-            Member rst = memberRepository.save(mem);
-            log.warn(rst.toString());
-        } catch(Exception e) {
-            return false;
-        }
-        return true;
-    }
     public MemberDTO userInfo (String userId) { // 사용자 정보 불러오기
         MemberDTO memberDTO = new MemberDTO();
         try{
@@ -68,7 +41,36 @@ public class UserInfoService {
         return memberDTO;
     }
 
-    //개인 일정 달성률/공유캘린더정보 불러오기
+    // 사용자 정보 수정
+    public boolean saveUserInfo(String id, String nickname, String email, String phone, String profile) {
+        try{
+            Member mem = memberRepository.findById(id).orElseThrow(EmptyStackException::new);
+            mem.setNickname(nickname);
+            mem.setEmail(email);
+            mem.setTel(phone);
+            mem.setProfile(profile);
+            Member rst = memberRepository.save(mem);
+            log.warn(rst.toString());
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+    // 사용자 프로필 이미지명 저장
+    public boolean saveUserImg(String id, String imgName) {
+        try {
+            Member mem = memberRepository.findById(id).orElseThrow(EmptyStackException::new);
+            mem.setProImg(imgName);
+            Member rst = memberRepository.save(mem);
+            log.warn(rst.toString());
+        } catch(Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+    // 개인 일정 달성률/공유캘린더정보 불러오기
     public MemberDTO navInfo (String userId) {
         MemberDTO memberDTO = new MemberDTO();
         try{
@@ -133,5 +135,4 @@ public class UserInfoService {
 
         return memberDTO;
     }
-
 }

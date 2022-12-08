@@ -34,6 +34,24 @@ public class BoardController {
     }
     
     // 인기글 top3 목록 출력
+    @GetMapping("/top3_list")
+    public ResponseEntity<List<BoardDTO>> top3List() {
+        BoardDTO top3List = boardService.getTop3List();
+        if(top3List.isOk()) {
+            return new ResponseEntity(top3List.getBoardList(), HttpStatus.OK);
+        } else return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
+    }
+
+    // 검색 키워드에 해당하는 보드 리스트 불러오기
+    @GetMapping("/search_list")
+    public ResponseEntity<List<BoardDTO>> searchList(@RequestParam String keyword) {
+        System.out.println(keyword);
+        // 서비스를 다녀옴
+        BoardDTO boardList = boardService.getSearchList("%%" + keyword + "%%");
+        if(boardList.isOk()) {
+            return new ResponseEntity(boardList.getBoardList(), HttpStatus.OK);
+        } else return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
+    }
 
     // 특정 보드넘버의 게시물 내용 불러오기 + 좋아요 수
     @GetMapping("/post_view")
@@ -86,15 +104,30 @@ public class BoardController {
         return new ResponseEntity(likeCheckedToggle, HttpStatus.OK);
     }
 
-    // 검색 키워드에 해당하는 보드 리스트 불러오기
-    @GetMapping("/search_list")
-    public ResponseEntity<List<BoardDTO>> searchList(@RequestParam String keyword) {
-        System.out.println(keyword);
-        // 서비스를 다녀옴
-        BoardDTO boardList = boardService.getSearchList("%%" + keyword + "%%");
-        if(boardList.isOk()) {
-            return new ResponseEntity(boardList.getBoardList(), HttpStatus.OK);
-        } else return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
+    // 자유게시판 댓글 작성하기
+    @GetMapping("/comment_write")
+    public ResponseEntity<Boolean> boardCommentsCreate(@RequestParam Long boardNo, String id, String detail) {
+        log.warn(id);
+//        long boardNo = (long) commentData.get("boardNo");
+//        String id = (String) commentData.get("id");
+//        String detail = (String) commentData.get("detail");
+        boolean boardCommentsCreate = boardService.getcommentsCreate(boardNo, id, detail);
+        if (boardCommentsCreate) {
+            return new ResponseEntity(boardCommentsCreate, HttpStatus.OK);
+        } else {
+            return new ResponseEntity(boardCommentsCreate, HttpStatus.OK);
+        }
+    }
+
+    // 자유게시판 댓글 불러오기
+    @PostMapping("/comment_load")
+    public ResponseEntity<List<Map<String, Object>>> boardCommentsLoad(@RequestBody Map<String, Long> boardNo) {
+        long num = boardNo.get("boardNo");
+        BoardDTO boardDTO = boardService.commentsLoad(num);
+        if(boardDTO.isOk()) {
+            List<Map<String, Object>> commentList = boardDTO.getCommentList();
+            return new ResponseEntity(commentList, HttpStatus.OK);
+        } else return new ResponseEntity(null, HttpStatus.OK);
     }
 
     // 자유게시판 글 작성
@@ -138,30 +171,5 @@ public class BoardController {
         boolean result = boardService.boardDelete(boardNo);
         if(result) return new ResponseEntity(true, HttpStatus.OK);
         else return new ResponseEntity(false, HttpStatus.OK);
-    }
-    // 자유게시판 댓글 작성하기
-    @GetMapping("/comment_write")
-    public ResponseEntity<Boolean> boardCommentsCreate(@RequestParam Long boardNo, String id, String detail) {
-        log.warn(id);
-//        long boardNo = (long) commentData.get("boardNo");
-//        String id = (String) commentData.get("id");
-//        String detail = (String) commentData.get("detail");
-        boolean boardCommentsCreate = boardService.getcommentsCreate(boardNo, id, detail);
-        if (boardCommentsCreate) {
-            return new ResponseEntity(boardCommentsCreate, HttpStatus.OK);
-        } else {
-            return new ResponseEntity(boardCommentsCreate, HttpStatus.OK);
-        }
-    }
-
-    // 자유게시판 댓글 불러오기
-    @PostMapping("/comment_load")
-    public ResponseEntity<List<Map<String, Object>>> boardCommentsLoad(@RequestBody Map<String, Long> boardNo) {
-        long num = boardNo.get("boardNo");
-        BoardDTO boardDTO = boardService.commentsLoad(num);
-        if(boardDTO.isOk()) {
-            List<Map<String, Object>> commentList = boardDTO.getCommentList();
-            return new ResponseEntity(commentList, HttpStatus.OK);
-        } else return new ResponseEntity(null, HttpStatus.OK);
     }
 }
