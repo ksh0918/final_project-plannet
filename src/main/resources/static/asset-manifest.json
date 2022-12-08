@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.5bc85d0b.css",
-    "main.js": "/static/js/main.fc7ce683.js",
+    "main.js": "/static/js/main.944f3c05.js",
     "static/js/787.cda612ba.chunk.js": "/static/js/787.cda612ba.chunk.js",
     "static/media/kakaotalk_logo2.png": "/static/media/kakaotalk_logo2.baf93d766574a834bc84.png",
     "static/media/planet-001.svg": "/static/media/planet-001.72ef0efc83a0239489cc4f50164faad8.svg",
     "index.html": "/index.html",
     "main.5bc85d0b.css.map": "/static/css/main.5bc85d0b.css.map",
-    "main.fc7ce683.js.map": "/static/js/main.fc7ce683.js.map",
+    "main.944f3c05.js.map": "/static/js/main.944f3c05.js.map",
     "787.cda612ba.chunk.js.map": "/static/js/787.cda612ba.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.5bc85d0b.css",
-    "static/js/main.fc7ce683.js"
+    "static/js/main.944f3c05.js"
   ]
 }
