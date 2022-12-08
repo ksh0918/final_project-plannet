@@ -53,16 +53,15 @@ public class MemberController {
                 log.warn("값이 false");
                 return new ResponseEntity(false, HttpStatus.OK);
             }
-        }catch (Exception e){
+        } catch (Exception e){
             log.warn("Controll오류");
             return new ResponseEntity(false, HttpStatus.OK);
         }
-
     }
 
     @PostMapping("/overlap_check")
     public ResponseEntity<Boolean> overlapCheck(@RequestBody Map<String, String> checkData){
-        try{
+        try {
             String uni = checkData.get("uni");
             String type = checkData.get("type");
 
@@ -77,6 +76,7 @@ public class MemberController {
             return  new ResponseEntity(false, HttpStatus.OK);
         }
     }
+
     // 아이디 비밀번호 찾기
     @PostMapping("/find_check")
     public ResponseEntity<List<MemberDTO>> memberFind(@RequestBody Map<String, String> memFind) {
@@ -88,6 +88,7 @@ public class MemberController {
         if(memberDTO.isOk()) return new ResponseEntity(memberDTO, HttpStatus.OK);
         else return new ResponseEntity(false, HttpStatus.OK);
     }
+
     // 비밀번호 찾기 시 새 비밀번호 설정
     @PostMapping("/new_pwd")
     public ResponseEntity<Boolean> memberNewPwd(@RequestBody Map<String, String> newPwd) {
@@ -102,6 +103,7 @@ public class MemberController {
             return new ResponseEntity(false, HttpStatus.OK);
         }
     }
+
     @PostMapping("/member_delete")
     public ResponseEntity<Boolean> memberDelete(@RequestBody Map<String,String> delete){
         String id = delete.get("id");

@@ -35,6 +35,7 @@ public class BoardController {
     
     // 인기글 top3 목록 출력
 
+
     // 검색 키워드에 해당하는 보드 리스트 불러오기
     @GetMapping("/search_list")
     public ResponseEntity<List<BoardDTO>> searchList(@RequestParam String keyword) {
