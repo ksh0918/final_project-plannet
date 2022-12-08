@@ -150,10 +150,10 @@ const plannetApi = {
     boardList: async function(){
         return await axios.get(PLANNET_DOMAIN + "board/list", HEADER);
     },
-    // 인기글 top3 목록 출력
-    top3List: async function(){
-        return await axios.get(PLANNET_DOMAIN + "board/top3_list", HEADER);
-    },
+//    // 인기글 top3 목록 출력
+//    top3List: async function(){
+//        return await axios.get(PLANNET_DOMAIN + "board/top3_list", HEADER);
+//    },
     // 자유게시판 검색 목록 출력
     searchList: async function(keyword){
         return await axios.get(PLANNET_DOMAIN + `board/search_list?keyword=${keyword}`, HEADER);

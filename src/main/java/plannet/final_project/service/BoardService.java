@@ -58,37 +58,37 @@ public class BoardService {
         return boardDTO;
     }
 
-    // 인기글 리스트 불러오기
-    public BoardDTO getTop3List() {
-        List<Integer> top3BoardNo = likeCntRepository.findAllTop3GroupByBoardNoOrderByCountByBoardNoDescBoardNoDesc();
-        for (Integer e : top3BoardNo) {
-            System.out.println(e);
-        }
-        System.out.println("여기가 출력입니다:" + top3BoardNo);
-        BoardDTO boardDTO = new BoardDTO();
-        List<Map<String, Object>> boardList = new ArrayList<>();
-        try {
-            List<Board> boardData = boardRepository.findAllMatchingBoardNo(top3BoardNo);
-            for (Board e : boardData) {
-                Map<String, Object> board = new HashMap<>();
-                board.put("boardNo", e.getBoardNo());
-                board.put("writerId", e.getUserId().getId());
-                // 익명체크 여부 확인 후 닉네임 넣기
-                if(e.getIsChecked() == 0) {
-                    board.put("nickname", e.getUserId().getNickname());
-                } else board.put("nickname", "익명");
-                board.put("title", e.getTitle());
-                board.put("views", e.getViews());
-                board.put("writeDate", e.getWriteDate());
-                boardList.add(board);
-            }
-            boardDTO.setBoardList(boardList);
-            boardDTO.setOk(true);
-        } catch (Exception e) {
-            boardDTO.setOk(false);
-        }
-        return boardDTO;
-    }
+//    // 인기글 리스트 불러오기
+//    public BoardDTO getTop3List() {
+//        List<Integer> top3BoardNo = likeCntRepository.findAllTop3GroupByBoardNoOrderByCountByBoardNoDescBoardNoDesc();
+//        for (Integer e : top3BoardNo) {
+//            System.out.println(e);
+//        }
+//        System.out.println("여기가 출력입니다:" + top3BoardNo);
+//        BoardDTO boardDTO = new BoardDTO();
+//        List<Map<String, Object>> boardList = new ArrayList<>();
+//        try {
+//            List<Board> boardData = boardRepository.findAllMatchingBoardNo(top3BoardNo);
+//            for (Board e : boardData) {
+//                Map<String, Object> board = new HashMap<>();
+//                board.put("boardNo", e.getBoardNo());
+//                board.put("writerId", e.getUserId().getId());
+//                // 익명체크 여부 확인 후 닉네임 넣기
+//                if(e.getIsChecked() == 0) {
+//                    board.put("nickname", e.getUserId().getNickname());
+//                } else board.put("nickname", "익명");
+//                board.put("title", e.getTitle());
+//                board.put("views", e.getViews());
+//                board.put("writeDate", e.getWriteDate());
+//                boardList.add(board);
+//            }
+//            boardDTO.setBoardList(boardList);
+//            boardDTO.setOk(true);
+//        } catch (Exception e) {
+//            boardDTO.setOk(false);
+//        }
+//        return boardDTO;
+//    }
 
     // 검색 키워드에 해당하는 글 목록 불러오기 불러오기
     public BoardDTO getSearchList(String keyword) {
@@ -140,10 +140,14 @@ public class BoardService {
 
     // 조회수 +1
     public boolean getViews(Long boardNo) {
+        System.out.println("들어옴1");
         Board board = boardRepository.findById(boardNo).orElseThrow();
+        System.out.println("들어옴2");
         int CurrentViews = board.getViews() + 1;
         System.out.println("현재조회수:" + CurrentViews);
+
         try {
+            System.out.println("들어옴31");
             board.setViews(CurrentViews);
             boardRepository.save(board);
             return true;
