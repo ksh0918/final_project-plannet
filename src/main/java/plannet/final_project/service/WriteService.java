@@ -10,6 +10,7 @@ import plannet.final_project.entity.Member;
 import plannet.final_project.entity.Plan;
 import plannet.final_project.vo.WriteDTO;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -27,17 +28,25 @@ public class WriteService {
     }
     // 일정 저장
     public boolean writeSave(String userId, LocalDate date, List<Map<String, Object>> plan, String diary) {
+        System.out.println("들어옴1");
         try {
-            Member member = memberRepository.findById(userId).orElseThrow(); // 회원 정보가 담긴 객체 가져옴
+            System.out.println("들어옴2");
+            Member member = memberRepository.findById(userId).orElseThrow(EntityNotFoundException::new); // 회원 정보가 담긴 객체 가져옴
+            System.out.println("들어옴3");
             planRepository.deleteByUserIdAndPlanDate(member, date); // 기존의 plan 삭제. 삭제하지 않으면 DB에 기존의 것이 계속 존재.
+            System.out.println("들어옴4");
             diaryRepository.deleteByUserIdAndDiaryDate(member, date); // 기존의 diary 삭제
+            System.out.println("들어옴5");
 
             // plan 저장
             for(Map<String, Object> p : plan) {
+                System.out.println("들어옴6");
                 System.out.println("deleted : " + p.get("deleted"));
                 System.out.println(p.get("deleted").getClass().getName());
+                System.out.println("들어옴7");
                 // 원래는 p.get("deleted") == false 이면 일정 저장
-                if(!(boolean)p.get("deleted")) {
+                if((boolean)p.get("deleted") == false) {
+                    System.out.println("들어옴8");
                     Plan plans = new Plan();
                     plans.setUserId(member);
                     plans.setPlanDate(date);

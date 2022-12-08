@@ -47,10 +47,12 @@ public class MemberService {
             member.setName(name);
             member.setNickname(nickname);
             member.setEmail(email);
-            member.setTel(tel);
+            if(tel.length() != 0) member.setTel(tel);
             String userCode = String.format("%04d", (int)(Math.random() * 9999) + 1);
             member.setUserCode(userCode);
             member.setJoinDate(LocalDateTime.now());
+            member.setProImg("userdefault.png");
+            member.setSocial("-");
             log.warn("정보입력 완료");
             memberRepository.save(member);
             log.warn("저장 완료");
@@ -76,6 +78,10 @@ public class MemberService {
                     else break;
                 case 'T' :
                     member = memberRepository.findByTel(uni);
+                    if(member != null) isNotOverLap = false;
+                    else break;
+                case 'N' :
+                    member = memberRepository.findByNickname(uni);
                     if(member != null) isNotOverLap = false;
                     else break;
             }

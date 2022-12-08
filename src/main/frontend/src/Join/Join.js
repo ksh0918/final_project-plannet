@@ -119,8 +119,7 @@ const Join = () => {
     
     // 닉네임을 적었으면 해당 닉네임으로 저장
     const onChangeNickname = (e) => {
-            setInputNickname(e.target.value);
-            if(e.target.value.length > 0) setIsNickname(true);
+        setInputNickname(e.target.value);
     }
     
     // 이메일 확인 체크
@@ -139,14 +138,13 @@ const Join = () => {
 
     const onBlurNicknameCheck = async() => {
         // 가입 여부 우선 확인
-        const memberCheck = await Api.memberRegCheck(inputEmail, "TYPE_NICKNAME");
-        if (memberCheck.data && isEmail) {
-            setEmailMessage("사용가능한 Email입니다.");
-        } else if(memberCheck.data && !isEmail){
-            setEmailMessage("이메일의 형식이 올바르지 않습니다.");
+        const memberCheck = await Api.memberRegCheck(inputNickname, "TYPE_NICKNAME");
+        if (memberCheck.data && inputNickname.length > 0) {
+            setNicknameMessage("사용가능한 닉네임입니다.");
+            setIsNickname(true);
         } else {
-            setEmailMessage("이미 사용하고 있는 Email입니다.");
-            setIsEmail(false);
+            setNicknameMessage("이미 사용하고 있는 닉네임입니다.");
+            setIsNickname(false);
         } 
     }
 
@@ -222,8 +220,10 @@ const Join = () => {
                     <input type='text'placeholder="이름" value={inputName} onChange={onChangeName} maxLength={30}/>
                 </div>
                 <div className="session">
-                    <p>닉네임*</p>
-                    {inputNickname.length > 0 && <span>{nicknameMessage}</span>}
+                    <p>
+                        닉네임*
+                        {inputNickname.length > 0 && <span>{nicknameMessage}</span>}
+                    </p>
                     <input type='text' placeholder="닉네임" value={inputNickname} onChange={onChangeNickname} onBlur={onBlurNicknameCheck} maxLength={20}/>
                 </div>
                 <div className="session">
