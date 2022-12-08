@@ -3,10 +3,7 @@ package plannet.final_project.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import plannet.final_project.service.WriteService;
 import plannet.final_project.vo.WriteDTO;
 
@@ -17,7 +14,7 @@ import java.util.Map;
 
 @RestController
 @Slf4j
-@RequestMapping("/write")
+@RequestMapping(value="/write", method= RequestMethod.POST)
 public class WriteController {
     private final WriteService writeService;
     public WriteController(WriteService writeService) {
