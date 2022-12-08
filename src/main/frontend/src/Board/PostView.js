@@ -251,20 +251,15 @@ const PostView = () => {
 
     }
 
-    // 댓글 입력 (수정중)
+    // 댓글 입력
     const onChangeComments = (e) => {
         setComments(e.target.value);
     }
     // 댓글 저장
     const onClickSaveComments = async() => {
         await Api.boardCommentCreate(getNum, getId, comments);
-        const nextPlanList = commentsList.concat({
-            date: moment().format('YYYY-MM-DD HH:mm'),
-            detail: comments,
-            id: getId,
-        });
-        setCommentsList(nextPlanList);
-        //setComments("");
+        const response = await Api.boardCommentLoad(getNum);
+        setCommentsList(response.data);
     } 
     
     // 본문 불러오기
@@ -286,18 +281,18 @@ const PostView = () => {
                 setLikeChecked(likeChecked.data);
                 console.log("좋아요 체크여부" + likeChecked);
 
-                // 댓글 불러오기 (수정중)
-                const response4 = await Api.boardCommentLoad(getNum);
-                console.log(response4);
+                // 댓글 불러오기
+                const response = await Api.boardCommentLoad(getNum);
+                console.log(response);
                 // window.localStorage.setItem("commentNum",response4.data.value[1]);
-                setCommentsList(response4.data);
+                setCommentsList(response.data);
             } catch (e) {
                 console.log(e);
             } 
         };
         postViewLoad();
     }, [getNum]);
-    console.log(commentsList);
+    // console.log(commentsList);
 
     return(
         <Wrap>
