@@ -221,7 +221,7 @@ const Setting = () => {
 
     // 설정 저장
     const onClickSave = async() => {
-        await Api.userInfoSave(userId, userNickname, userEmail, userPhone, userPro);
+        await Api.userInfoSave(userId, setChangeNickname, setChangeEmail, setChangePhone, userPro);
         navigate("/home");
     }
     // 닉네임변경
@@ -230,7 +230,7 @@ const Setting = () => {
         setIsNickname(false);
     }
     const onChangePhone = (e) => {
-        setChangePhone(e.target.value);
+        setChangePhone(e.target.value.replace(/[^0-9]/g, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`));
         if(e.target.value.length === 0) setIsTel(true);
         else setIsTel(false);
     }
@@ -302,7 +302,7 @@ const Setting = () => {
             setIsNickname(true);
         } else if(memberCheck.data && changeNickname.length > 0){
             setNicknameMessage("사용가능한 닉네임입니다.");
-            setIsEmail(true);
+            setIsNickname(true);
         } else {
             setNicknameMessage("이미 사용하고 있는 닉네임입니다.");
             setIsNickname(false);
