@@ -104,7 +104,6 @@ const plannetApi = {
         const object = {
             id: id,
             nickname: nickname,
-            email: email,
             phone: phone,
             profile: profile
         };
