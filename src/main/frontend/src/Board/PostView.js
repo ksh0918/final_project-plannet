@@ -218,7 +218,7 @@ const PostView = () => {
     const [commentsList, setCommentsList] = useState([]);
 
     // 댓글 페이지네이션
-    const [limit, setLimit] = useState(10);  // 페이지당 댓글 수 (현재는 10개 고정)
+    const [limit, setLimit] = useState(20);  // 페이지당 댓글 수 (현재는 20개 고정)
     const [page, setPage] = useState(1); // 현재 댓글 페이지 번호
     const offset = (page - 1) * limit; // 댓글 페이지 위치 계산
     const numPages = Math.ceil(commentsList.length / limit); // 필요한 댓글 페이지 개수
@@ -257,8 +257,8 @@ const PostView = () => {
     }
     // 댓글 저장
     const onClickSaveComments = async() => {
-        await Api.boardCommentCreate(getNum, getId, comments);
-        const response = await Api.boardCommentLoad(getNum);
+        await Api.commentsWrite(getNum, getId, comments);
+        const response = await Api.commentsLoad(getNum);
         setCommentsList(response.data);
     } 
     
@@ -279,7 +279,7 @@ const PostView = () => {
                 setLikeChecked(likeChecked.data);
 
                 // 댓글 불러오기
-                const response = await Api.boardCommentLoad(getNum);
+                const response = await Api.commentsLoad(getNum);
                 console.log(response);
                 // window.localStorage.setItem("commentNum",response4.data.value[1]);
                 setCommentsList(response.data);

@@ -1,5 +1,6 @@
 package plannet.final_project.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +18,10 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping("/board")
+@RequiredArgsConstructor
 public class BoardController {
     // Service 로직 연결
     private final BoardService boardService;
-    public BoardController(BoardService boardService) { this.boardService = boardService; }
 
     // 전체 보드 리스트 불러오기
     @GetMapping("/list")
@@ -112,8 +113,8 @@ public class BoardController {
         long num = boardNo.get("boardNo");
         BoardDTO boardDTO = boardService.getCommentsLoad(num);
         if(boardDTO.isOk()) {
-            List<Map<String, Object>> commentList = boardDTO.getCommentsList();
-            return new ResponseEntity(commentList, HttpStatus.OK);
+            List<Map<String, Object>> commentsList = boardDTO.getCommentsList();
+            return new ResponseEntity(commentsList, HttpStatus.OK);
         } else return new ResponseEntity(null, HttpStatus.OK);
     }
 
