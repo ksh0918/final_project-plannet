@@ -147,7 +147,7 @@ public class BoardController {
     }
 
     // 자유게시판 글 수정
-    @PostMapping("edit")
+    @PostMapping("/edit")
     public ResponseEntity<Boolean> boardEdit(@RequestBody Map<String, String> boardEdit) {
         String userId = boardEdit.get("id");
         Long boardNo = Long.parseLong(boardEdit.get("num"));
