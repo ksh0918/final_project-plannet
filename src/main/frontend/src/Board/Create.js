@@ -196,7 +196,7 @@ function Create() {
     const [lengthCheck, setLengthCheck] = useState(false);
 
     const onClickSave = async() => {
-        await Api.boardCreate(getId, title, detail, isChecked);
+        await Api.boardWrite(getId, title, detail, isChecked);
         navigate('/board');
     }
 

@@ -1,6 +1,5 @@
 package plannet.final_project.controller;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +17,10 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping("/board")
-@RequiredArgsConstructor
 public class BoardController {
     // Service 로직 연결
     private final BoardService boardService;
+    public BoardController(BoardService boardService) { this.boardService = boardService; }
 
     // 전체 보드 리스트 불러오기
     @GetMapping("/list")
@@ -113,8 +112,8 @@ public class BoardController {
         long num = boardNo.get("boardNo");
         BoardDTO boardDTO = boardService.getCommentsLoad(num);
         if(boardDTO.isOk()) {
-            List<Map<String, Object>> commentsList = boardDTO.getCommentsList();
-            return new ResponseEntity(commentsList, HttpStatus.OK);
+            List<Map<String, Object>> commentList = boardDTO.getCommentsList();
+            return new ResponseEntity(commentList, HttpStatus.OK);
         } else return new ResponseEntity(null, HttpStatus.OK);
     }
 
@@ -130,14 +129,14 @@ public class BoardController {
     }
 
     // 자유게시판 글 작성
-    @PostMapping("/write")
+    @PostMapping("/board_write")
     public ResponseEntity<Boolean> writeBoard(@RequestBody Map<String, String> boardWriteDate) {
         String id = boardWriteDate.get("id");
         String title = boardWriteDate.get("title");
         String detail = boardWriteDate.get("detail");
         int isChecked = Integer.parseInt(boardWriteDate.get("isChecked"));
 
-        boolean result = boardService.writeBoard(id, title, detail, isChecked);
+        boolean result = boardService.boardWrite(id, title, detail, isChecked);
         if(result) {
             return new ResponseEntity(true, HttpStatus.OK);
         }
@@ -147,7 +146,7 @@ public class BoardController {
     }
 
     // 자유게시판 글 수정
-    @PostMapping("edit")
+    @PostMapping("/board_edit")
     public ResponseEntity<Boolean> boardEdit(@RequestBody Map<String, String> boardEdit) {
         String userId = boardEdit.get("id");
         Long boardNo = Long.parseLong(boardEdit.get("num"));
@@ -164,7 +163,7 @@ public class BoardController {
     }
 
     // 자유게시판 글 삭제하기
-    @PostMapping("/delete")
+    @PostMapping("/board_delete")
     public ResponseEntity<Boolean> boardDelete(@RequestBody Map<String, String> boardDelete) {
         Long boardNo = Long.parseLong(boardDelete.get("num"));
         boolean result = boardService.boardDelete(boardNo);

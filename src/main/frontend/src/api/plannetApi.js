@@ -90,12 +90,12 @@ const plannetApi = {
         return await axios.post(PLANNET_DOMAIN + "home/personal", object, HEADER);
     },
     // 회원 메모 저장
-    memberMemoSave: async function(id, memo) {
+    memoSave: async function(id, detail) {
         const object = {
             id: id,
-            memo: memo
+            detail: detail
         };
-        return await axios.post(PLANNET_DOMAIN + "MemberMemoSave", object, HEADER);
+        return await axios.post(PLANNET_DOMAIN + "home/memo", object, HEADER);
     },
 
     // UserInfoController
@@ -111,7 +111,6 @@ const plannetApi = {
         const object = {
             id: id,
             nickname: nickname,
-            email: email,
             phone: phone,
             profile: profile
         };
@@ -205,7 +204,7 @@ const plannetApi = {
             detail : detail,
             isChecked : isChecked
         };
-        return await axios.post(PLANNET_DOMAIN + "board/write", object, HEADER);
+        return await axios.post(PLANNET_DOMAIN + "board/board_write", object, HEADER);
     },
     // 글 수정
     boardEdit: async function(id, num, title, detail) {
@@ -215,14 +214,14 @@ const plannetApi = {
             title: title,
             detail: detail
         };
-        return await axios.post(PLANNET_DOMAIN + "board/edit", object, HEADER);
+        return await axios.post(PLANNET_DOMAIN + "board/board_edit", object, HEADER);
     },
     // 글 삭제
     boardDelete: async function(num) {
         const object = {
             num : num
         };
-        return await axios.post(PLANNET_DOMAIN + "board/delete", object, HEADER);
+        return await axios.post(PLANNET_DOMAIN + "board/board_delete", object, HEADER);
     }
 }
 

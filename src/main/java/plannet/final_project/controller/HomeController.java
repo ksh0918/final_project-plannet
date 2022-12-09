@@ -37,4 +37,15 @@ public class HomeController {
             return new ResponseEntity(null, HttpStatus.OK);
         }
     }
+
+    @PostMapping("/memo")
+    public ResponseEntity<Boolean> memoWrite(@RequestBody Map<String, String> personalMemo) {
+        String id = personalMemo.get("id");
+        String detail = personalMemo.get("detail");
+        System.out.println(id);
+        System.out.println(detail);
+        boolean memoWrite = homeService.memoWrite(id, detail);
+        if(memoWrite) return new ResponseEntity(memoWrite, HttpStatus.OK);
+        else return new ResponseEntity(null, HttpStatus.OK);
+    }
 }
