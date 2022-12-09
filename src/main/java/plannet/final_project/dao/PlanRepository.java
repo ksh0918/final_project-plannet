@@ -1,6 +1,7 @@
 package plannet.final_project.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import plannet.final_project.entity.Board;
 import plannet.final_project.entity.Member;
 import plannet.final_project.entity.Plan;
 
@@ -13,4 +14,6 @@ public interface PlanRepository extends JpaRepository<Plan, Long> {
     List<Plan> findByUserIdAndPlanDateOrderByPlanNoAsc(Member member, LocalDate localDate);
     void deleteByUserId(Member member);
     void deleteByUserIdAndPlanDate(Member userId, LocalDate localDate);
+    Long countByUserId(Member userId);
+    Long countByUserIdAndPlanChecked(Member userId, int checked);
 }

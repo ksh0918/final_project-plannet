@@ -73,7 +73,14 @@ const plannetApi = {
         };
         return await axios.post(PLANNET_DOMAIN + "member/new_social_save", reg, HEADER);
     },
-
+    // EmailController
+    // 이메일 인증
+    emailAuthCheck : async function(email){
+        const object = {
+            email : email
+        };
+        return await axios.post(PLANNET_DOMAIN+"login/mailConfirm",object,HEADER);
+    },
     // HomeController
     // 개인 home/달력/주간일정/메모/명언 출력
     personalHome: async function(id) {
