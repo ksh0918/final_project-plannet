@@ -174,6 +174,9 @@ const Section = styled.div`
         tr td:nth-child(2) {
             padding: 5px 15px;
         }
+        td:last-child {
+            font-size: 8px;
+        }
     }
     .button-area2 {
         text-align: right;
