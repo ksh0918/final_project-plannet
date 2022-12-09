@@ -129,7 +129,7 @@ public class BoardController {
     }
 
     // 자유게시판 글 작성
-    @PostMapping("/board_write")
+    @PostMapping("/write")
     public ResponseEntity<Boolean> writeBoard(@RequestBody Map<String, String> boardWriteDate) {
         String id = boardWriteDate.get("id");
         String title = boardWriteDate.get("title");
@@ -146,7 +146,7 @@ public class BoardController {
     }
 
     // 자유게시판 글 수정
-    @PostMapping("/board_edit")
+    @PostMapping("edit")
     public ResponseEntity<Boolean> boardEdit(@RequestBody Map<String, String> boardEdit) {
         String userId = boardEdit.get("id");
         Long boardNo = Long.parseLong(boardEdit.get("num"));
@@ -163,7 +163,7 @@ public class BoardController {
     }
 
     // 자유게시판 글 삭제하기
-    @PostMapping("/board_delete")
+    @PostMapping("/delete")
     public ResponseEntity<Boolean> boardDelete(@RequestBody Map<String, String> boardDelete) {
         Long boardNo = Long.parseLong(boardDelete.get("num"));
         boolean result = boardService.boardDelete(boardNo);
