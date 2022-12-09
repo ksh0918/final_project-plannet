@@ -42,11 +42,10 @@ public class UserInfoService {
     }
 
     // 사용자 정보 수정
-    public boolean saveUserInfo(String id, String nickname, String email, String phone, String profile) {
+    public boolean saveUserInfo(String id, String nickname, String phone, String profile) {
         try{
             Member mem = memberRepository.findById(id).orElseThrow(EmptyStackException::new);
             mem.setNickname(nickname);
-            mem.setEmail(email);
             mem.setTel(phone);
             mem.setProfile(profile);
             Member rst = memberRepository.save(mem);

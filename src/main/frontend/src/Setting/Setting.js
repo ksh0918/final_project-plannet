@@ -186,15 +186,12 @@ const Setting = () => {
     const [userPro, setUserPro] = useState("");
 
     const [changeNickname, setChangeNickname] = useState("");
-    const [changeEmail, setChangeEmail] = useState("");
     const [changePhone, setChangePhone] = useState("");
     
     const [nicknameMessage, setNicknameMessage] = useState("");
-    const [emailMessage, setEmailMessage] = useState("");
     const [telMessage, setTelMessage] = useState("");
 
     const [isNickname, setIsNickname] = useState(true);
-    const [isEmail, setIsEmail] = useState(true);
     const [isTel, setIsTel] = useState(true);
 
     useEffect(() => {
@@ -203,7 +200,6 @@ const Setting = () => {
                 const response = await Api.userInfoLoad(userId);
                 console.log(response.data);
                 setChangeNickname(response.data[0]);
-                setChangeEmail(response.data[3]);
                 setChangePhone(response.data[4]);
 
                 setUserNickname(response.data[0]);
@@ -221,7 +217,7 @@ const Setting = () => {
 
     // 설정 저장
     const onClickSave = async() => {
-        await Api.userInfoSave(userId, setChangeNickname, setChangeEmail, setChangePhone, userPro);
+        await Api.userInfoSave(userId, changeNickname, changePhone, userPro);
         navigate("/home");
     }
     // 닉네임변경
@@ -261,37 +257,6 @@ const Setting = () => {
         } else {
             setTelMessage("중복된 전화번호입니다.");
             setIsTel(false)
-        } 
-    }
-
-    const onChangeEmail = (e) => {
-        const emailRegex = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-        const emailCurrent = e.target.value ;
-        setChangeEmail(emailCurrent);
-            if(!emailRegex.test(emailCurrent)){
-                setEmailMessage('이메일의 형식이 올바르지 않습니다.')
-                setIsEmail(false);
-            } else {
-                setEmailMessage('이메일의 형식이 올바르게 입력되었습니다.')
-                setIsEmail(true);
-            }
-    }
-
-    const onBlurEmailCheck = async() => {
-        // 가입 여부 우선 확인
-        const memberCheck = await Api.memberRegCheck(changeEmail, "TYPE_EMAIL");
-        if (userEmail ===  changeEmail) {
-            setEmailMessage("기존 Email입니다.");
-            setIsEmail(true);
-        } else if(memberCheck.data && !isEmail){
-            setEmailMessage("이메일의 형식이 올바르지 않습니다.");
-            setIsEmail(false);
-        } else if(memberCheck.data && isEmail){
-            setEmailMessage("사용가능한 Email입니다.");
-            setIsEmail(true);
-        } else {
-            setEmailMessage("이미 사용하고 있는 Email입니다.");
-            setIsEmail(false);
         } 
     }
 
@@ -371,8 +336,8 @@ const Setting = () => {
                             <input onChange={onChangeNickname} value={changeNickname} onBlur={onBlurNicknameCheck} placeholder="닉네임"/>
                         </div>
                         <div className="session">
-                            <p>이메일 {changeEmail && <span>{emailMessage}</span>}</p>
-                            <input onChange={onChangeEmail} value={changeEmail} onBlur={onBlurEmailCheck} placeholder="이메일"/>
+                            <p>이메일</p>
+                            <input value={userEmail} placeholder="이메일" readOnly/>
                         </div>
                         <div className="session">
                             <p>전화번호 {changePhone && <span>{telMessage}</span>}</p>
@@ -387,7 +352,7 @@ const Setting = () => {
                     </div>
                 </div>
                 <div className="btnbox">
-                    <button onClick={onClickSave} className="save" disabled={!(isEmail && isTel && isNickname)}>SAVE</button>
+                    <button onClick={onClickSave} className="save" disabled={!(isTel && isNickname)}>SAVE</button>
                 </div>
             </Section>
             <div className="copy">&#169; Plannet.</div>

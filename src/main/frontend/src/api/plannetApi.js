@@ -73,7 +73,14 @@ const plannetApi = {
         };
         return await axios.post(PLANNET_DOMAIN + "member/new_social_save", reg, HEADER);
     },
-
+    // EmailController
+    // 이메일 인증
+    emailAuthCheck : async function(email){
+        const object = {
+            email : email
+        };
+        return await axios.post(PLANNET_DOMAIN+"login/mailConfirm",object,HEADER);
+    },
     // HomeController
     // 개인 home/달력/주간일정/메모/명언 출력
     personalHome: async function(id) {
@@ -104,7 +111,6 @@ const plannetApi = {
         const object = {
             id: id,
             nickname: nickname,
-            email: email,
             phone: phone,
             profile: profile
         };
@@ -198,7 +204,7 @@ const plannetApi = {
             detail : detail,
             isChecked : isChecked
         };
-        return await axios.post(PLANNET_DOMAIN + "board/write", object, HEADER);
+        return await axios.post(PLANNET_DOMAIN + "board/board_write", object, HEADER);
     },
     // 글 수정
     boardEdit: async function(id, num, title, detail) {
@@ -208,14 +214,14 @@ const plannetApi = {
             title: title,
             detail: detail
         };
-        return await axios.post(PLANNET_DOMAIN + "board/edit", object, HEADER);
+        return await axios.post(PLANNET_DOMAIN + "board/board_edit", object, HEADER);
     },
     // 글 삭제
     boardDelete: async function(num) {
         const object = {
             num : num
         };
-        return await axios.post(PLANNET_DOMAIN + "board/delete", object, HEADER);
+        return await axios.post(PLANNET_DOMAIN + "board/board_delete", object, HEADER);
     }
 }
 

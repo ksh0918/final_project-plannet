@@ -3,7 +3,7 @@ spring:
     mail:
         host: smtp.naver.com #smtp 서버 주소
         port: 465 # 메일 인증서버 포트
-        username:  #네이버 아이디
+        username:   #네이버 아이디
         password:  #네이버 비밀번호
         properties:
             mail:

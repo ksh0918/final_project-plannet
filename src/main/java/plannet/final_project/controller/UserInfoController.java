@@ -47,11 +47,10 @@ public class UserInfoController {
     public ResponseEntity<Boolean> userInfoSave(@RequestBody Map<String, String> userInfo) {
         String id = userInfo.get("id");
         String nickname = userInfo.get("nickname");
-        String email = userInfo.get("email");
         String phone = userInfo.get("phone");
         String profile = userInfo.get("profile");
 
-        boolean result = userInfoService.saveUserInfo(id, nickname, email, phone, profile);
+        boolean result = userInfoService.saveUserInfo(id, nickname, phone, profile);
         if(result) {
             return new ResponseEntity(true, HttpStatus.OK);
         }
