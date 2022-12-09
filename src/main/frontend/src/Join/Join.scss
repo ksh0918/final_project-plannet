@@ -27,6 +27,10 @@
         &::placeholder {
             color: #bbb;
         }
+        &:read-only{
+            background-color: #eee;
+            color: #aaa;
+        }
     }
     button {
         border-radius: 5px;

@@ -90,7 +90,7 @@ public class GoogleController {
                 GoogleLoginDto userInfoDto = objectMapper.readValue(resultJson, new TypeReference<>() {});
                 String email = userInfoDto.getEmail();
                 String id = userInfoDto.getSub();
-                String name = userInfoDto.getName()+"6";
+                String name = userInfoDto.getName();
                 int regStatus = memberService.googleLoginReg(email, id, name);
 
                 return "redirect:"+ UriComponentsBuilder.fromUriString("http://localhost:8111/social")
