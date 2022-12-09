@@ -170,7 +170,7 @@ public class MemberService {
             RegMember.setUserCode(userCode);
             RegMember.setPwd("-");
             RegMember.setName(name);
-            RegMember.setNickname(id+email);
+            RegMember.setNickname("nick" + userCode + String.format("%04d", (int)(Math.random() * 500)));
             RegMember.setEmail(email);
             RegMember.setJoinDate(LocalDateTime.now());
             RegMember.setSocial("g");
