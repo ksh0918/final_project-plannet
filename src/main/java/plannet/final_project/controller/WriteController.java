@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import plannet.final_project.entity.Plan;
 import plannet.final_project.service.WriteService;
 import plannet.final_project.vo.WriteDTO;
 
@@ -17,12 +16,9 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping(value="/write")
+@RequestMapping("/write")
 public class WriteController {
     private final WriteService writeService;
-//    public WriteController(WriteService writeService) {
-//        this.writeService = writeService;
-//    }
 
     // 일정 저장
     @PostMapping("/save")
@@ -35,8 +31,7 @@ public class WriteController {
         boolean result = writeService.writeSave(userId, date, plan, diary);
         if(result) {
             return new ResponseEntity(true, HttpStatus.OK);
-        }
-        else {
+        } else {
             return new ResponseEntity(false, HttpStatus.OK);
         }
     }
