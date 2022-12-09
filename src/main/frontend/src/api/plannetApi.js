@@ -197,7 +197,7 @@ const plannetApi = {
             detail : detail,
             isChecked : isChecked
         };
-        return await axios.post(PLANNET_DOMAIN + "board/write", object, HEADER);
+        return await axios.post(PLANNET_DOMAIN + "board/board_write", object, HEADER);
     },
     // 글 수정
     boardEdit: async function(id, num, title, detail) {
@@ -207,14 +207,14 @@ const plannetApi = {
             title: title,
             detail: detail
         };
-        return await axios.post(PLANNET_DOMAIN + "board/edit", object, HEADER);
+        return await axios.post(PLANNET_DOMAIN + "board/board_edit", object, HEADER);
     },
     // 글 삭제
     boardDelete: async function(num) {
         const object = {
             num : num
         };
-        return await axios.post(PLANNET_DOMAIN + "board/delete", object, HEADER);
+        return await axios.post(PLANNET_DOMAIN + "board/board_delete", object, HEADER);
     }
 }
 
