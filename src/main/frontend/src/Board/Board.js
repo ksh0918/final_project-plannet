@@ -129,10 +129,9 @@ const Board = () => {
     const [boardList, setBoardList] = useState([]); // boardList 불러오기
     const [top3List, setTop3List] = useState([]); // boardList 불러오기
     const [boardNo, setBoardNo] = useState(); // 게시물 클릭 시 boardNo 재설정
-    const [views, setViewsUp] = useState(0); // 게시물 클릭 시 작성자와 로그인 ID가 다를 경우에만 조회수 +1
     
     // 페이지네이션
-    const limit = 15; // 페이지당 게시물 수 (현재는 15개 고정)
+    const limit = 12; // 페이지당 게시물 수 (현재는 12개 고정)
     const [page, setPage] = useState(1); // 현재 페이지 번호
     const offset = (page - 1) * limit; // 게시물 위치 계산, 시작점과 끝점을 구하는 offset
     const numPages = Math.ceil(boardList.length / limit); // 필요한 페이지 개수

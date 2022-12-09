@@ -58,37 +58,40 @@ public class BoardService {
         return boardDTO;
     }
 
-//    // 인기글 리스트 불러오기
-//    public BoardDTO getTop3List() {
-//        List<Integer> top3BoardNo = likeCntRepository.findAllTop3GroupByBoardNoOrderByCountByBoardNoDescBoardNoDesc();
-//        for (Integer e : top3BoardNo) {
-//            System.out.println(e);
-//        }
-//        System.out.println("여기가 출력입니다:" + top3BoardNo);
-//        BoardDTO boardDTO = new BoardDTO();
-//        List<Map<String, Object>> boardList = new ArrayList<>();
-//        try {
-//            List<Board> boardData = boardRepository.findAllMatchingBoardNo(top3BoardNo);
-//            for (Board e : boardData) {
-//                Map<String, Object> board = new HashMap<>();
-//                board.put("boardNo", e.getBoardNo());
-//                board.put("writerId", e.getUserId().getId());
-//                // 익명체크 여부 확인 후 닉네임 넣기
-//                if(e.getIsChecked() == 0) {
-//                    board.put("nickname", e.getUserId().getNickname());
-//                } else board.put("nickname", "익명");
-//                board.put("title", e.getTitle());
-//                board.put("views", e.getViews());
-//                board.put("writeDate", e.getWriteDate());
-//                boardList.add(board);
-//            }
-//            boardDTO.setBoardList(boardList);
-//            boardDTO.setOk(true);
-//        } catch (Exception e) {
-//            boardDTO.setOk(false);
-//        }
-//        return boardDTO;
-//    }
+    // 인기글 리스트 불러오기
+    public BoardDTO getTop3List() {
+        System.out.println("여긴오니1");
+        List<Integer> top3BoardNo = likeCntRepository.findAllTop3GroupByBoardNoOrderByCountByBoardNoDescBoardNoDesc();
+        System.out.println("여긴오니2");
+        for (Integer e : top3BoardNo) {
+            System.out.println("여기는");
+            System.out.println(e);
+        }
+        System.out.println("여기가 출력입니다:" + top3BoardNo);
+        BoardDTO boardDTO = new BoardDTO();
+        List<Map<String, Object>> boardList = new ArrayList<>();
+        try {
+            List<Board> boardData = boardRepository.findAllMatchingBoardNo(top3BoardNo);
+            for (Board e : boardData) {
+                Map<String, Object> board = new HashMap<>();
+                board.put("boardNo", e.getBoardNo());
+                board.put("writerId", e.getUserId().getId());
+                // 익명체크 여부 확인 후 닉네임 넣기
+                if(e.getIsChecked() == 0) {
+                    board.put("nickname", e.getUserId().getNickname());
+                } else board.put("nickname", "익명");
+                board.put("title", e.getTitle());
+                board.put("views", e.getViews());
+                board.put("writeDate", e.getWriteDate());
+                boardList.add(board);
+            }
+            boardDTO.setBoardList(boardList);
+            boardDTO.setOk(true);
+        } catch (Exception e) {
+            boardDTO.setOk(false);
+        }
+        return boardDTO;
+    }
 
     // 검색 키워드에 해당하는 글 목록 불러오기 불러오기
     public BoardDTO getSearchList(String keyword) {
@@ -191,20 +194,20 @@ public class BoardService {
     }
 
     // 자유게시판 댓글 불러오기
-    public BoardDTO commentsLoad (Long boardNo) {
+    public BoardDTO getCommentsLoad (Long boardNo) {
         BoardDTO boardDTO = new BoardDTO();
         try {
-            List<Map<String, Object>> commentList = new ArrayList<>();
+            List<Map<String, Object>> commentsList = new ArrayList<>();
             Board board = boardRepository.findById(boardNo).orElseThrow(ExemptionMechanismException::new);
             List<Comments> data = commentsRepository.findByBoardNo(board);
             for (Comments e : data) {
-                Map<String, Object> comment = new HashMap<>();
-                comment.put("nickname", e.getUserId().getNickname());
-                comment.put("detail", e.getDetail());
-                comment.put("date", e.getWriteDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-                commentList.add(comment);
+                Map<String, Object> comments = new HashMap<>();
+                comments.put("nickname", e.getUserId().getNickname());
+                comments.put("detail", e.getDetail());
+                comments.put("date", e.getWriteDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+                commentsList.add(comments);
             }
-            boardDTO.setCommentList(commentList);
+            boardDTO.setCommentsList(commentsList);
             boardDTO.setOk(true);
         } catch (Exception e) {
             boardDTO.setOk(false);
@@ -213,19 +216,14 @@ public class BoardService {
     }
 
     // 자유게시판 댓글 작성하기
-    public boolean getcommentsCreate(Long boardNo, String id, String detail) {
+    public boolean getCommentsWrite(Long boardNo, String id, String detail) {
         try {
             Comments comments = new Comments();
             comments.setUserId(memberRepository.findById(id).orElseThrow());
-            System.out.println("sdsdss" + comments.getUserId());
             comments.setBoardNo(boardRepository.findById(boardNo).orElseThrow());
-            System.out.println("sdsdss" + comments.getBoardNo());
             comments.setDetail(detail);
-            System.out.println("sdsdss" + comments.getDetail());
             comments.setWriteDate(LocalDateTime.now());
-            System.out.println("sdsdss" + comments.getWriteDate());
             commentsRepository.save(comments);
-            System.out.println("ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ");
             return true;
         } catch (Exception e) {
             return true;

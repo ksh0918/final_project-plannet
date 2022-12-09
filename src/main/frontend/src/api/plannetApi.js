@@ -150,10 +150,10 @@ const plannetApi = {
     boardList: async function(){
         return await axios.get(PLANNET_DOMAIN + "board/list", HEADER);
     },
-//    // 인기글 top3 목록 출력
-//    top3List: async function(){
-//        return await axios.get(PLANNET_DOMAIN + "board/top3_list", HEADER);
-//    },
+    // 인기글 top3 목록 출력
+    top3List: async function(){
+        return await axios.get(PLANNET_DOMAIN + "board/top3_list", HEADER);
+    },
     // 자유게시판 검색 목록 출력
     searchList: async function(keyword){
         return await axios.get(PLANNET_DOMAIN + `board/search_list?keyword=${keyword}`, HEADER);
@@ -179,16 +179,16 @@ const plannetApi = {
         return await axios.get(PLANNET_DOMAIN + `board/like_checked_toggle?id=${id}&boardNo=${boardNo}`,HEADER);
     },
     // 해당 게시물에 작성된 댓글 불러오기
-    boardCommentLoad: async function(boardNo){
+    commentsLoad: async function(boardNo){
         console.log(boardNo);
         const object = {
             boardNo : boardNo
         };
-        return await axios.post(PLANNET_DOMAIN + "board/comment_load", object, HEADER);
+        return await axios.post(PLANNET_DOMAIN + "board/comments_load", object, HEADER);
     },
     // 해당 게시물에 댓글 작성
-    boardCommentCreate: async function(boardNo, id, detail){
-        return await axios.get(PLANNET_DOMAIN + `board/comment_write?boardNo=${boardNo}&id=${id}&detail=${detail}`, HEADER);
+    commentsWrite: async function(boardNo, id, detail){
+        return await axios.get(PLANNET_DOMAIN + `board/comments_write?boardNo=${boardNo}&id=${id}&detail=${detail}`, HEADER);
     },
     // 자유게시판 글 작성
     boardWrite: async function(id, title, detail, isChecked){
