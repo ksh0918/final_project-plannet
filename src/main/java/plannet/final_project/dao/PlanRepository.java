@@ -14,6 +14,8 @@ public interface PlanRepository extends JpaRepository<Plan, Long> {
     List<Plan> findByUserIdAndPlanChecked(Member userId, int planChecked);
     List<Plan> findByUserIdAndPlanDateOrderByPlanNoAsc(Member member, LocalDate localDate);
     void deleteByUserId(Member member);
+    Long countByUserId(Member userId);
+    Long countByUserIdAndPlanChecked(Member userId, int checked);
     @Modifying //데이터베이스에 변경을 주는 네이티브 쿼리는 이 어노테이션 필요 (INSERT, UPDATE, DELETE)
     @Query(value="delete from plan where id=:userId and plan_date=:date",
             nativeQuery = true)
