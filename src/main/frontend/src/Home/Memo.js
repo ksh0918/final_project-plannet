@@ -15,7 +15,8 @@ const Memo = ({props}) => {
     },[props]);
 
     const onBlurSave = async() => {
-        await Api.memberMemoSave(getId, memoText);
+        console.log("실행되니");
+        await Api.memoSave(getId, memoText);
     }
 
     return (
