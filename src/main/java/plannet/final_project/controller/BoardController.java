@@ -113,8 +113,8 @@ public class BoardController {
         long num = boardNo.get("boardNo");
         BoardDTO boardDTO = boardService.getCommentsLoad(num);
         if(boardDTO.isOk()) {
-            List<Map<String, Object>> commentList = boardDTO.getCommentsList();
-            return new ResponseEntity(commentList, HttpStatus.OK);
+            List<Map<String, Object>> commentsList = boardDTO.getCommentsList();
+            return new ResponseEntity(commentsList, HttpStatus.OK);
         } else return new ResponseEntity(null, HttpStatus.OK);
     }
 
