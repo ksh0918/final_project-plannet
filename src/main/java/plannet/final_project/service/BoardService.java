@@ -140,19 +140,13 @@ public class BoardService {
 
     // 조회수 +1
     public boolean getViews(Long boardNo) {
-        System.out.println("들어옴1");
         Board board = boardRepository.findById(boardNo).orElseThrow();
-        System.out.println("들어옴2");
         int CurrentViews = board.getViews() + 1;
-        System.out.println("현재조회수:" + CurrentViews);
 
         try {
-            System.out.println("들어옴31");
-            Board board1 = new Board();
-            board1.setBoardNo(boardNo);
-            board1.setViews(CurrentViews);
-//            board.setViews(CurrentViews);
-            boardRepository.save(board1);
+            board.setBoardNo(boardNo);
+            board.setViews(CurrentViews);
+            boardRepository.save(board);
             return true;
         } catch (Exception e) {
             return false;

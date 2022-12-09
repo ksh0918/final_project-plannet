@@ -177,7 +177,7 @@ const Board = () => {
         if(writerId !== getId) {
             console.log("조회수업들어간다");
             const response = await Api.boardViewsUp(boardNo);
-            console.log("조회수업 실행 + response");
+            console.log("조회수업 실행" + response);
         }
         console.log("페이지이동실행");
         const link = "post_view/" + boardNo;
