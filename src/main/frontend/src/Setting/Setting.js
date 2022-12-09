@@ -221,7 +221,7 @@ const Setting = () => {
 
     // 설정 저장
     const onClickSave = async() => {
-        await Api.userInfoSave(userId, setChangeNickname, setChangeEmail, setChangePhone, userPro);
+        await Api.userInfoSave(userId, changeNickname, changeEmail, changePhone, userPro);
         navigate("/home");
     }
     // 닉네임변경
