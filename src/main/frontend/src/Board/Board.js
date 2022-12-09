@@ -84,7 +84,7 @@ const Section = styled.div`
         td:first-child {border-left: none};
         td:nth-child(2) {width: 400px; text-align: left; padding-left: 20px;}  
         tr:hover td, tr:hover a{color: #4555AE; background-color: #efefef; cursor: pointer;}
-        .bi-heart-fill {padding-right:5px; margin-left:13px; color:red;}
+        .bi-heart-fill {padding-right:5px; color:red;}
         .top3_List {
             td {
                 color: #0026ff;
