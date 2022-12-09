@@ -74,4 +74,16 @@ public class HomeService {
         }
         return homeDTO;
     }
+
+    public boolean memoWrite(String id, String detail) {
+        try {
+            Member member = memberRepository.findById(id).orElseThrow();
+            member.setMemo(detail);
+            memberRepository.save(member);
+            return true;
+        }
+        catch (Exception e) {
+            return false;
+        }
+    }
 }
