@@ -78,8 +78,8 @@ public class UserInfoService {
             //멤버달성률
             List<Plan> personalTotal = planRepository.findByUserId(member);
             List<Plan> personalEnd = planRepository.findByUserIdAndPlanChecked(member, 1);
-            int personalTotalCnt = 0; // 총 일정 갯수
-            int personalEndCnt = 0; // 완료된 일정 갯수
+            int personalTotalCnt = planRepository.countByUserId(member).intValue(); // 총 일정 갯수
+            int personalEndCnt = planRepository.countByUserIdAndPlanChecked(member, 1).intValue(); // 완료된 일정 갯수
             for(Plan e : personalTotal) {
                 personalTotalCnt++;
             }
