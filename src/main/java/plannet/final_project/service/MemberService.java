@@ -178,4 +178,30 @@ public class MemberService {
             return 2;
         }
     }
+
+    public MemberDTO newSocialLoad(String id) {
+        MemberDTO memberDTO = new MemberDTO();
+        try{
+            Member member = memberRepository.findById(id).orElseThrow();
+            memberDTO.setName(member.getName());
+            memberDTO.setEmail(member.getEmail());
+            memberDTO.setOk(true);
+        } catch (Exception e) {
+            memberDTO.setOk(false);
+        }
+        return memberDTO;
+    }
+
+    public boolean newSocialSave(String id, String nickname, String tel) {
+        try{
+            Member member = new Member();
+            member.setId(id);
+            member.setNickname(nickname);
+            member.setTel(tel);
+            memberRepository.save(member);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

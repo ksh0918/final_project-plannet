@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import plannet.final_project.service.MemberService;
 import plannet.final_project.vo.MemberDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -101,11 +102,39 @@ public class MemberController {
         }
     }
 
-    @PostMapping("/member_delete")
+    @PostMapping("/delete")
     public ResponseEntity<Boolean> memberDelete(@RequestBody Map<String,String> delete){
         String id = delete.get("id");
         boolean member = memberService.deleteMember(id);
         if(member){
+            return new ResponseEntity(true,HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity(false,HttpStatus.OK);
+        }
+    }
+
+    @PostMapping("/new_social_load")
+    public ResponseEntity<List<String>> newSocialLoad(@RequestBody Map<String,String> load){
+        String id = load.get("id");
+        MemberDTO memberDTO = memberService.newSocialLoad(id);
+        if(memberDTO.isOk()){
+            List<String> newSocialLoad = new ArrayList<>();
+            newSocialLoad.add(memberDTO.getName());
+            newSocialLoad.add(memberDTO.getEmail());
+            return new ResponseEntity(newSocialLoad,HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity(null,HttpStatus.OK);
+        }
+    }
+    @PostMapping("/new_social_save")
+    public ResponseEntity<Boolean> newSocialSave(@RequestBody Map<String,String> save){
+        String id = save.get("id");
+        String nickname = save.get("nickname");
+        String tel = save.get("tel");
+        boolean isSave = memberService.newSocialSave(id, nickname, tel);
+        if(isSave){
             return new ResponseEntity(true,HttpStatus.OK);
         }
         else{

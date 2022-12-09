@@ -159,16 +159,20 @@ const Join = () => {
         } 
     }
 
-    const onBlurTelCheck = async() => {
-        // 가입 여부 우선 확인
-        const memberCheck = await Api.memberRegCheck(inputTel, "TYPE_TEL");
-        if (memberCheck.data) {
-            setTelMessage("사용가능한 전화번호입니다.");
-        } else {
-            setTelMessage("이미 사용하고 있는 전화번호입니다.");
-            setIsTel(false)
-        } 
-    }
+    const onChangeTel = (e) => {
+        setInputTel(e.target.value.replace(/[^0-9]/g, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`));
+     }
+ 
+     const onBlurTelCheck = async() => {
+         // 가입 여부 우선 확인
+         const memberCheck = await Api.memberRegCheck(inputTel, "TYPE_TEL");
+         if (memberCheck.data) {
+             setTelMessage("사용가능한 전화번호입니다.");
+         } else {
+             setTelMessage("이미 사용하고 있는 전화번호입니다.");
+             setIsTel(false)
+         } 
+     }
 
     // ENTER 키를 눌렀을 때 회원가입 전송
     const onKeyDownJoin = (e) => {

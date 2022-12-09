@@ -148,8 +148,11 @@ public class BoardService {
 
         try {
             System.out.println("들어옴31");
-            board.setViews(CurrentViews);
-            boardRepository.save(board);
+            Board board1 = new Board();
+            board1.setBoardNo(boardNo);
+            board1.setViews(CurrentViews);
+//            board.setViews(CurrentViews);
+            boardRepository.save(board1);
             return true;
         } catch (Exception e) {
             return false;
