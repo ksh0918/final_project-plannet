@@ -6,8 +6,9 @@ import plannet.final_project.entity.Comments;
 import plannet.final_project.entity.Member;
 
 import java.util.List;
-public interface CommentsRepository extends JpaRepository<Comments, String> {
+public interface CommentsRepository extends JpaRepository<Comments, Long> {
     List<Comments> findByBoardNo(Board board);
     void deleteByBoardNo(Board board);
+    void deleteById(Long commentNo);
     void deleteByUserId (Member member);
 }

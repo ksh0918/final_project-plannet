@@ -169,7 +169,7 @@ public class BoardService {
     }
 
     // 좋아요 버튼을 누를 때마다 데이터베이스 접근
-    public boolean getLikeCheckedToggle(String id, Board boardNo) {
+    public boolean likeCheckedToggle(String id, Board boardNo) {
         Member member = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         boolean CurrentLikeChecked = likeCntRepository.existsByUserIdAndBoardNo(member, boardNo);
         System.out.println("현재 좋아요" + CurrentLikeChecked);
@@ -216,7 +216,7 @@ public class BoardService {
     }
 
     // 자유게시판 댓글 작성하기
-    public boolean getCommentsWrite(Long boardNo, String id, String detail) {
+    public boolean commentsWrite(Long boardNo, String id, String detail) {
         try {
             Comments comments = new Comments();
             comments.setUserId(memberRepository.findById(id).orElseThrow());
@@ -224,6 +224,27 @@ public class BoardService {
             comments.setDetail(detail);
             comments.setWriteDate(LocalDateTime.now());
             commentsRepository.save(comments);
+            return true;
+        } catch (Exception e) {
+            return true;
+        }
+    }
+
+
+    // 자유게시판 댓글 삭제하기
+    public boolean commentsDelete(Long commentNo) {
+        System.out.println("여긴 들어오니");
+        try {
+            System.out.println("여긴");
+            commentsRepository.deleteById(commentNo);
+            System.out.println("여긴?");
+//            Comments comments = new Comments();
+//
+//            comments.setUserId(memberRepository.findById(id).orElseThrow());
+//            comments.setBoardNo(boardRepository.findById(boardNo).orElseThrow());
+//            comments.setDetail(detail);
+//            comments.setWriteDate(LocalDateTime.now());
+//            commentsRepository.save(comments);
             return true;
         } catch (Exception e) {
             return true;
