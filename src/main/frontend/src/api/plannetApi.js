@@ -107,7 +107,7 @@ const plannetApi = {
         return await axios.post(PLANNET_DOMAIN + "user/info_load", object, HEADER);
     },
     // userInfo 저장하기
-    userInfoSave: async function(id, nickname, email, phone, profile) {
+    userInfoSave: async function(id, nickname, phone, profile) {
         const object = {
             id: id,
             nickname: nickname,

@@ -45,6 +45,8 @@ public class UserInfoController {
     // 사용자 정보 수정
     @PostMapping("/info_save")
     public ResponseEntity<Boolean> userInfoSave(@RequestBody Map<String, String> userInfo) {
+        System.out.println("컨트롤러 핸드폰 : " + userInfo.get("phone"));
+        System.out.println("컨트롤러 프로필 : " + userInfo.get("profile"));
         String id = userInfo.get("id");
         String nickname = userInfo.get("nickname");
         String phone = userInfo.get("phone");

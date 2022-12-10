@@ -43,14 +43,25 @@ public class UserInfoService {
 
     // 사용자 정보 수정
     public boolean saveUserInfo(String id, String nickname, String phone, String profile) {
+        System.out.println("전화번호 : " + phone);
+        System.out.println("프로필 : " + profile);
+        System.out.println("들어옴1");
         try{
+            System.out.println("들어옴2");
             Member mem = memberRepository.findById(id).orElseThrow(EmptyStackException::new);
+            System.out.println("들어옴3");
             mem.setNickname(nickname);
+            System.out.println("들어옴4");
             mem.setTel(phone);
+            System.out.println("들어5");
             mem.setProfile(profile);
+            System.out.println("들어옴6");
             Member rst = memberRepository.save(mem);
+            System.out.println("들어옴7");
             log.warn(rst.toString());
+            System.out.println("들어옴8");
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
         return true;
