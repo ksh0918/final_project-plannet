@@ -196,8 +196,7 @@ const Setting = () => {
     // 설정 저장
     const onClickSave = async() => {
         await Api.userInfoSave(userId, changeNickname, changePhone, userPro);
-        console.log(changePhone);
-//        navigate("/home");
+        navigate("/home");
     }
     // 닉네임변경
     const onChangeNickname = (e) => {
