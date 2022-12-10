@@ -223,11 +223,11 @@ function Edit() {
                 if(getId !== writerId) { 
                     alert("본인의 글만 수정할 수 있습니다.")
                     navigate('/home');
-                    return; // Edit 페이지 랜더링 되지 않도록 Home 페이지로 이동하고 useEffect에서 return
+                    return; // Edit 페이지로 이동하지 않도록 Home 페이지로 이동하고 useEffect에서 return
                 } 
                 setBoardLoad(response.data);
                 setTitle(response.data[0].title);
-                setDetail(response.data);
+                setDetail(response.data[0].detail);
             } catch (e) {
                 console.log(e);
             }

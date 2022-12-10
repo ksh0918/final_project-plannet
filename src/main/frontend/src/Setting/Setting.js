@@ -227,19 +227,19 @@ const Setting = () => {
     // 전화번호/이메일 중복확인
     const onBlurTelCheck = async() => {
         const memberCheck = await Api.memberRegCheck(changePhone, "TYPE_TEL");
-        if (memberCheck.data && (changePhone.length === 12 || changePhone.length === 13)) { // 전화번호 길이 체크
+        if (memberCheck.data && (changePhone.length === 12 || changePhone.length === 13) && changePhone.indexOf('-') === 3) { // 전화번호 길이 체크
             setTelMessage("사용가능한 전화번호입니다.");
             setIsTel(true);
-        } else if(memberCheck.data && (changePhone.length < 12 || changePhone.length > 13)){
-            setTelMessage("사용 불가능한 전화번호입니다.");
-            setIsTel(false);
-        }else if(memberCheck.data && userPhone === changePhone){
+        } else if(!memberCheck.data && userPhone === changePhone){
             setTelMessage("기존 전화번호입니다.");
             setIsTel(true);
-        } else {
+        } else if(!memberCheck.data) {
             setTelMessage("중복된 전화번호입니다.");
             setIsTel(false);
-        } 
+        } else {
+          setTelMessage("사용 불가능한 전화번호입니다.");
+          setIsTel(false);
+        }
     }
     // 닉네임 중복확인
     const onBlurNicknameCheck = async() => {

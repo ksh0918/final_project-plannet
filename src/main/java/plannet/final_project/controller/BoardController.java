@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-@Slf4j
 @RestController
+@Slf4j
 @RequestMapping("/board")
 public class BoardController {
     // Service 로직 연결
