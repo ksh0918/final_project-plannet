@@ -34,7 +34,6 @@ function App() {
                 <Route path="/create" element={<PrivateRoute><Create /></PrivateRoute>}/>
                 <Route path="/edit/:no" element={<PrivateRoute><Edit /></PrivateRoute>}/>
                 <Route exact path='/board/post_view/:no' element={<PrivateRoute><PostView /></PrivateRoute>}/>
-                <Route path="/scal/create" element={<PrivateRoute><SCalCreate /><PrivateRoute>}/>
                 <Route path="/scal/create" element={<PrivateRoute><SCalCreate /></PrivateRoute>}/>
             </Routes>
         </Router>
