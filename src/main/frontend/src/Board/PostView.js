@@ -120,7 +120,7 @@ const Section = styled.div`
         .left-space {
             margin-left: 10px;
         }
-        .bi {color: red;}
+        .bi {color: #ff41a0;}
     }
     .util_box{
         .page_list {
@@ -156,7 +156,7 @@ const Section = styled.div`
         table{width: 100%; margin: 10px 0;}
         table, tr, td{
             border-collapse: collapse;
-            padding: 5px;
+            padding: 20px;
             border: 1px solid white;
             background: none;
             border-bottom: 1px solid #ddd;
@@ -175,6 +175,7 @@ const Section = styled.div`
             padding: 5px 15px;
         }
         td:last-child {
+            width: 200px;
             font-size: 8px;
         }
     }
@@ -281,6 +282,7 @@ const PostView = () => {
                 console.log(response);
                 // window.localStorage.setItem("commentNum",response4.data.value[1]);
                 setCommentsList(response.data);
+                console.log(comments);
             } catch (e) {
                 console.log(e);
             } 
@@ -326,11 +328,11 @@ const PostView = () => {
                             <th>Comment</th>
                             <th className='th_3'>Date</th>
                         </tr>
-                        {commentsList.map(({no, nickname, detail, date})=>(
+                        {commentsList.map(({no, writerId, nickname, detail, date})=>(
                             <tr key={no}>
                                 <td>{nickname}</td>
                                 <td>{detail}</td>
-                                <td>{date}<i class="bi bi-x"></i></td>
+                                <td>{date}{getId === writerId ? <i class="bi bi-x"></i> : null}</td>
                             </tr>
                         ))}
                     </table>

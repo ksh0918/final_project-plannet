@@ -57,17 +57,26 @@ const plannetApi = {
         };
         return await axios.post(PLANNET_DOMAIN + "member/delete", memberObj, HEADER);
     },
-    // 첫 소셜로그인시 정보 불러오기
-    changeSocialLogin: async function(email){ // 일반로그인에서 > 소셜로그인으로 전환
+    // 일반로그인에서 > 소셜로그인으로 전환
+    changeSocialLogin: async function(email){ 
         const reg = {
             email : email,
         };
         return await axios.post(PLANNET_DOMAIN + "member/change_social_login", reg, HEADER);
     },
+    // 소셜로그인
+    socialLoginFindId: async function(email){
+        const reg = {
+            email : email,
+        };
+        return await axios.post(PLANNET_DOMAIN + "member/social_login_find_id", reg, HEADER);
+    },
     // 첫 소셜로그인시 정보 저장하기
-    memberNewSocialSave: async function(id, nickname, tel){
+    memberNewSocialSave: async function(id, name, email, nickname, tel){
         const reg = {
             id : id,
+            name : name,
+            email : email,
             nickname : nickname,
             tel : tel,
         };

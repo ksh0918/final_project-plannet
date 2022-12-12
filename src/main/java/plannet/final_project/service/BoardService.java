@@ -202,6 +202,7 @@ public class BoardService {
             List<Comments> data = commentsRepository.findByBoardNo(board);
             for (Comments e : data) {
                 Map<String, Object> comments = new HashMap<>();
+                comments.put("writerId", e.getUserId().getId());
                 comments.put("nickname", e.getUserId().getNickname());
                 comments.put("detail", e.getDetail());
                 comments.put("date", e.getWriteDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
