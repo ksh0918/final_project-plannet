@@ -120,7 +120,7 @@ const Section = styled.div`
         .left-space {
             margin-left: 10px;
         }
-        .bi {color: red;}
+        .bi {color: #ff41a0;}
     }
     .util_box{
         .page_list {
