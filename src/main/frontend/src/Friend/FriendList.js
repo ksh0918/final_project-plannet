@@ -88,11 +88,12 @@ const Friends = styled.div`
     }
 `;
 
-const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd}) => {
+const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,setOption}) => {
 
 
     // 친구삭제 버튼 팝업(수정해야함)
-    const onClickUnfriend = () => {
+    const onClickUnfriend = (e) => {
+        setOption(e.key);
         setCommnet("친구를 삭제하시겠습니까?</br>(삭제 시 상호 삭제됩니다)");
         setModalHeader("친구삭제");
         setModalOpen(true);
@@ -111,7 +112,7 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd}) =
                             <span>{e.userCode}</span>
                         </p>
                         <p>{e.profile}</p>
-                        <i className="bi bi-x-lg unfriend_btn" onClick={onClickUnfriend}></i>
+                        <i className="bi bi-x-lg unfriend_btn" onClick={() => onClickUnfriend(e)}></i>
                     </li>
                 );})}
                 <p>더 많은 친구를 추가해보세요!</p>

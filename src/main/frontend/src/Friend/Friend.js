@@ -122,13 +122,14 @@ const Friend = () => {
     const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
     const [friendList, setFriendList] = useState([
-        {key: 1, proImg: "https://images.unsplash.com/photo-1668603145974-c05f7a0e4552?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80", nickname: "안녕하세요", userCode: "#0000", profile: "자기소개입니다"}, 
-        {key: 2, proImg: "https://images.unsplash.com/photo-1669847171248-8f12c8160d57?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80", nickname: "안녕하세요", userCode: "#0000", profile: "자기소개입니다"}]);
+        {key: 1, proImg: "https://images.unsplash.com/photo-1668603145974-c05f7a0e4552?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80", nickname: "안녕하세요", userCode: "0000", profile: "자기소개입니다"}, 
+        {key: 2, proImg: "https://images.unsplash.com/photo-1669847171248-8f12c8160d57?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80", nickname: "안녕하세요", userCode: "0000", profile: "자기소개입니다"}]);
     const [notiList, setNotiList] = useState([
         {key: 3, nickname: "ㅇㅇㅇ", userCode: "0000", desc: "공유캘린더 초대"}, 
         {key: 4, nickname: "ㅇㅇㅇ", userCode: "0000", desc: "친구 요청"}
     ]);
     const [isAdd, setIsAdd] = useState(false);
+    const [option, setOption] = useState("");
 
     useEffect(() => {
         const personalHome = async() => {
@@ -163,17 +164,17 @@ const Friend = () => {
 
     return (
         <Wrap>
-            <Modal open={modalOpen} close={closeModal} header={modalHeader}><p dangerouslySetInnerHTML={{__html: comment}}></p></Modal>
+            <Modal open={modalOpen} close={closeModal} header={modalHeader} option={option}><p dangerouslySetInnerHTML={{__html: comment}}></p></Modal>
             <Nav/>
             <Section>
                 <div className="friend">
                     <h2>Friend<i className={'bi bi-person-fill-add ' + (isAdd? 'add_active_logo' : '')} onClick={onClickaddFriend}></i></h2>
                     <FriendAdd setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} isAdd={isAdd} />
-                    <FriendList setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} friendList={friendList} isAdd={isAdd}/>
+                    <FriendList setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} friendList={friendList} isAdd={isAdd} setOption={setOption}/>
                 </div>
                 <div className='noti'>
                     <h2>Notification</h2>
-                    <FriendNoti setNotiList={setNotiList} notiList={notiList}/>
+                    <FriendNoti notiList={notiList} setOption={setOption}/>
                     <div onClick={onClickaddSCal}>공유캘린더 생성하기<i className="bi bi-chevron-compact-right"/></div>
                 </div>
             </Section>

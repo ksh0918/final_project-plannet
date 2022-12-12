@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Modal = (props) => {
     const navigate = useNavigate();
-    const { open, close, header, boardNo, option } = props;
+    const { open, close, header, boardNo, option} = props;
     
     const getId = window.localStorage.getItem("userId");
 
@@ -35,8 +35,8 @@ const Modal = (props) => {
         navigate('/board');
     }
     const onClickUnfriend = async() => { //수정해야함
-        // await Api.boardDelete(boardNo);
-        navigate('/friend');
+        // await Api.unfriend(option); // 백엔드 구현해야함
+        window.location.reload();
     }
     const onClickGoogleLogin = async() => {
         const response = await Api.changeSocialLogin(option);

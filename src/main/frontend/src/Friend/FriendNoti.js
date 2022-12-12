@@ -49,7 +49,12 @@ const Noti = styled.div`
     }
 `;
 
-const FriendNoti = ({setNotiList, notiList}) => {
+const FriendNoti = ({setOption, notiList}) => {
+    const onClickNoti = (e, status) => {
+        if(e.desc === )
+        setOption(e.desc);
+        alert(status);
+    }
     return (
         <Noti>
             {notiList? 
@@ -61,8 +66,8 @@ const FriendNoti = ({setNotiList, notiList}) => {
                             <p>{e.desc}</p>
                         </div>
                         <div>                        
-                            <div>승락</div>
-                            <div>거절</div>
+                            <div onClick={() => onClickNoti(e, "승락")}>승락</div>
+                            <div onClick={() => onClickNoti(e, "거절")}>거절</div>
                         </div>
                     </li>
                 );})}
