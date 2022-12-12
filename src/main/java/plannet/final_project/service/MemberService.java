@@ -31,16 +31,18 @@ public class MemberService {
     private final SCALRepository scalRepository;
 
     public String loginCheck (String id, String pwd){
-        memberRepository.findById(id).orElseThrow(EntityNotFoundException::new).getPwd().equals(pwd);
         String result;
         try {
-            String email = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new).getEmail();
-            String social = memberRepository.findByEmail(email).getSocial();
-            if (social.equals("g")) result = "google";
-            else result = "normal";
+            Member member = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+            if(member.getPwd().equals(pwd)) {//아이디와 비밀번호가 일치
+                if (member.getSocial().equals("g")) result = "google"; //하지만 소셜로그인 대상
+                else result = "normal"; // 일반 사용자
+            } else result = "no data"; //로그인값도 일치하지 않고 소셜로그인 대상도 아님
             return result;
         } catch (Exception e) {
-            result = "no data";
+            if(memberRepository.findByEmail(id).getSocial().equals("g")) { // 아이디로 적은 이메일이 소셜로그인 대상
+                result = "google";
+            } else { result = "no data"; }
             return result;
         }
     }
