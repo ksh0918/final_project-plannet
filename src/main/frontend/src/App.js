@@ -5,6 +5,7 @@ import DoLogin from './DoLogin/DoLogin';
 import Social from './Join/Social';
 import Join from './Join/Join';
 import Find from './Join/Find';
+import Terms from './Join/Terms';
 import Setting from './Setting/Setting';
 import Home from './Home/Home';
 import Write from './Write/Write';
@@ -24,6 +25,7 @@ function App() {
                 <Route path='/' element={<PublicRoute><Main /></PublicRoute>}/>
                 <Route path='/doLogin' element={<PublicRoute><DoLogin /></PublicRoute>}/>
                 <Route path='/social' element={<PublicRoute><Social /></PublicRoute>}/>
+                <Route path='/terms' element={<PublicRoute><Terms /></PublicRoute>}/>
                 <Route path='/join' element={<PublicRoute><Join /></PublicRoute>}/>
                 <Route path='/find' element={<PublicRoute><Find /></PublicRoute>}/>
                 <Route path="/setting" element={<PrivateRoute><Setting /></PrivateRoute>}/>
