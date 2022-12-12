@@ -198,7 +198,7 @@ function Create() {
 
     const onClickSave = async() => {
         await Api.boardWrite(getId, title, detail, isChecked);
-        navigate('/board/board_write');
+        navigate('/board');
     }
 
     const onChangeTitle = (e) => {
