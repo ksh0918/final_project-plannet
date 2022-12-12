@@ -226,6 +226,14 @@ const plannetApi = {
             num : num
         };
         return await axios.post(PLANNET_DOMAIN + "board/board_delete", object, HEADER);
+    },
+    // 공유 캘린더 생성
+    scalCreate: async function(id, title, friendList) {
+        const object = {
+            id: id,
+        title: title
+        };
+        return await axios.post(PLANNET_DOMAIN + "scal/create", object, HEADER);
     }
 }
 
