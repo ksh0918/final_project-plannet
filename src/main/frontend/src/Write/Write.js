@@ -252,7 +252,7 @@ const Write = () => {
         await Api.writeSave(getId, date, planList, diary);
         console.log(planList);
         console.log(diary);
-//        navigate("/home");
+        navigate("/home");
 
     }
 

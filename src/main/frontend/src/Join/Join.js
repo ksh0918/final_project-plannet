@@ -57,6 +57,8 @@ const Join = () => {
     const [isEmail, setIsEmail] = useState(false);
     const [isTel, setIsTel] = useState(true);
     const [isAuth,setIsAuth] = useState(false);
+
+    const [clickAuth, setClickAuth] = useState(false);
  
     // ID 길이 체크
     const onChangId = (e) => {
@@ -143,7 +145,8 @@ const Join = () => {
     // 이메일 인증번호 받기
     const onClickAuth = async() => {
         const emailAuth = await Api.emailAuthCheck(inputEmail);
-        setAuthNum(emailAuth.data)
+        setClickAuth(true);
+        setAuthNum(emailAuth.data);
     }
     // 이메일 인증번호 확인
     const onCheckAuth = async() => {
@@ -256,13 +259,13 @@ const Join = () => {
                         이메일*
                         {inputEmail.length > 0 && <span>{emailMessage}</span>}
                     </p>
-                    <div>
-                        <input type='email' placeholder="이메일" value={inputEmail} onChange={onChangeEmail} onBlur={onBlurEmailCheck}/>
+                    <div className='email_auth'>
+                        <input type='email' placeholder="이메일" value={inputEmail}  onChange={onChangeEmail} onBlur={onBlurEmailCheck}/>
                         <button type='button' onClick={onClickAuth}>인증번호 받기</button>
                     </div>
-                    <div>
-                        <input type='text' value = {inputAuth} onChange={onChangeAuth}></input>
-                        <button type='button' onClick={onCheckAuth}>인증하기</button>
+                    <div className='email_auth'>
+                        <input type='text'placeholder="인증번호 확인" value = {inputAuth} onChange={onChangeAuth} disabled={!clickAuth}></input>
+                        <button type='button' onClick={onCheckAuth} disabled={!clickAuth}>인증하기</button>
                         {inputAuth.length > 0 && <span>{authMessage}</span>}
                     </div>
                     

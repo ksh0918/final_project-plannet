@@ -27,14 +27,15 @@ const Logo = styled.div`
     }
 `;
 
-const Join = () => {
+const Social = () => {
     const navigate = useNavigate();
     const id = new URL(window.location.href).searchParams.get("id");
     const regStatus = new URL(window.location.href).searchParams.get("regStatus");
     const [comment, setCommnet] = useState("");
-        const [modalOpen, setModalOpen] = useState(false);
-        const closeModal = () => {
-            setModalOpen(false);
+    const [header, setHeader] = useState(""); 
+    const [modalOpen, setModalOpen] = useState(false);
+    const closeModal = () => {
+        setModalOpen(false);
     };
 
     const [info, setInfo] = useState("");
@@ -59,18 +60,20 @@ const Join = () => {
             }
         }
 
-        if(regStatus === 0) {
+        if(regStatus === '0') {
             window.localStorage.setItem("userId", id);
             window.localStorage.setItem("isLogin", "true");
             navigate('/home');
-        } else if(regStatus === 1) { // 일반 회원
-            setModalOpen(true);
+        } else if(regStatus === '1') { // 일반 회원
             setCommnet("구글 연동을 하시겠습니까? </br> 연동 후 구글 로그인으로만 로그인 가능합니다.");
-        } else if(regStatus === 2) { // 구글로그인이 처음
+            setHeader("구글 연동");
+            setModalOpen(true);
+        } else if(regStatus === '2') { // 구글로그인이 처음
             newSocial();
         } else {
-            setModalOpen(true);
             setCommnet("구글 로그인에 실패했습니다.");
+            setHeader("구글 로그인 실패");
+            setModalOpen(true);
         }
     },[id, navigate, regStatus])
  
@@ -119,38 +122,42 @@ const Join = () => {
     return(
         <>
             <ContainerJoin>
-                <Modal open={modalOpen} close={closeModal} header="구글로그인 실패">{comment}</Modal>
-                <Logo><LogoImg width="90px" viewBox="30 150 430 220"/><Link to="/" className="logo">Plannet</Link></Logo>
-                <div className="session">
-                    <p>이름*</p>
-                    <input type='text'placeholder="이름" value={info[0]} readonly/>
-                </div>
-                <div className="session">
-                    <p>
-                        닉네임*
-                        {inputNickname.length > 0 && <span>{nicknameMessage}</span>}
-                    </p>
-                    <input type='text' placeholder="닉네임" value={inputNickname} onChange={onChangeNickname} onBlur={onBlurNicknameCheck} maxLength={20}/>
-                </div>
-                <div className="session">
-                    <p>
-                        이메일*
-                    </p>
-                    <input type='email' placeholder="이메일" value={info[1]} readonly/>
-                </div>
-                <div className="session">
-                    <p>
-                        전화번호
-                        {inputTel.length > 0 && <span>{telMessage}</span>}
-                    </p>
-                    <input type='tel' placeholder="휴대폰번호('-' 제외)" value={inputTel} onChange={onChangeTel} onBlur={onBlurTelCheck} onKeyDown={onKeyDownJoin}/>
-                </div>
-                <div className="session">
-                    <button onClick={onClickJoin} disabled={!(isNickname && isTel)}>가입하기</button>
-                </div>
+                <Modal open={modalOpen} close={closeModal} header={header}><p dangerouslySetInnerHTML={{__html: comment}}></p></Modal>
+                {regStatus === '2'?  
+                    <>
+                        <Logo><LogoImg width="90px" viewBox="30 150 430 220"/><Link to="/" className="logo">Plannet</Link></Logo>
+                        <div className="session">
+                            <p>이름</p>
+                            <input type='text'placeholder="이름" value={info[0]} disabled/>
+                        </div>
+                        <div className="session">
+                            <p>이메일</p>
+                            <input type='email' placeholder="이메일" value={info[1]} disabled/>
+                        </div>
+                        <div className="session">
+                            <p>
+                                닉네임*
+                                {inputNickname.length > 0 && <span>{nicknameMessage}</span>}
+                            </p>
+                            <input type='text' placeholder="닉네임" value={inputNickname} onChange={onChangeNickname} onBlur={onBlurNicknameCheck} maxLength={20}/>
+                        </div>
+                        <div className="session">
+                            <p>
+                                전화번호
+                                {inputTel.length > 0 && <span>{telMessage}</span>}
+                            </p>
+                            <input type='tel' placeholder="휴대폰번호('-' 제외)" value={inputTel} onChange={onChangeTel} onBlur={onBlurTelCheck} onKeyDown={onKeyDownJoin}/>
+                        </div>
+                        <div className="session">
+                            <button onClick={onClickJoin} disabled={!(isNickname && isTel)}>가입하기</button>
+                        </div>
+                    </>
+                : ''}
+                
+                
             </ContainerJoin>
         </> 
     );
 };
 
-export default Join;
+export default Social;
