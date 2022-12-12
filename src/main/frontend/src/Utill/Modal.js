@@ -39,7 +39,9 @@ const Modal = (props) => {
         navigate('/friend');
     }
     const onClickGoogleLogin = async() => {
-        await Api.changeSocialLogin(option); //비밀번호 수정 / g 붙여주기
+        const response = await Api.changeSocialLogin(option);
+        window.localStorage.setItem("userId", response.data);
+        window.localStorage.setItem("isLogin", "true");
         navigate('/home');
     }
     const onClickGoogleNo = async() => {

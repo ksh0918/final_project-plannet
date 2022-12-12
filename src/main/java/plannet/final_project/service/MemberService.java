@@ -171,40 +171,46 @@ public class MemberService {
             if(member.getSocial().equals("g")) return 0; //구글로 가입된 회원은 0
             else return 1; // 일반 회원은 1
         } else { // 구글로그인이 처음이면 2
-//            Member RegMember = new Member();
-//            RegMember.setId(id);
-//            String userCode = String.format("%04d", (int)(Math.random() * 9999) + 1);
-//            RegMember.setUserCode(userCode);
-//            RegMember.setPwd("-");
-//            RegMember.setName(name);
-//            RegMember.setNickname("nick" + userCode + String.format("%04d", (int)(Math.random() * 500)));
-//            RegMember.setEmail(email);
-//            RegMember.setJoinDate(LocalDateTime.now());
-//            RegMember.setSocial("g");
-//            memberRepository.save(RegMember);
             return 2;
         }
     }
-    public boolean newSocialSave(String id, String nickname, String tel) {
+    public boolean newSocialSave(String id, String name, String email, String nickname, String tel) {
         try{
             Member member = new Member();
             member.setId(id);
+            String userCode = String.format("%04d", (int)(Math.random() * 9999) + 1);
+            member.setUserCode(userCode);
+            member.setPwd("-");
+            member.setName(name);
+            member.setEmail(email);
             member.setNickname(nickname);
-            member.setTel(tel);
+            member.setJoinDate(LocalDateTime.now());
+            member.setSocial("g");
+            if(tel.length() != 0) member.setTel(tel);
+            member.setProImg("userdefault.png");
             memberRepository.save(member);
             return true;
         } catch (Exception e) {
             return false;
         }
-    }   public boolean changeSocialLogin(String email) {
-        try{
+    }
+    public String changeSocialLogin(String email) {
+        try {
             Member member = memberRepository.findByEmail(email);
             member.setPwd("-");
             member.setSocial("g");
             memberRepository.save(member);
-            return true;
+            return member.getId();
         } catch (Exception e) {
-            return false;
+            return "NOK";
+        }
+    }
+    public String socialLoginFindId(String email) {
+        try{
+            Member member = memberRepository.findByEmail(email);
+            return member.getId();
+        } catch (Exception e) {
+            return "NOK";
         }
     }
 }

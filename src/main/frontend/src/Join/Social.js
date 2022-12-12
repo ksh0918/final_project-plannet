@@ -29,6 +29,7 @@ const Logo = styled.div`
 
 const Social = () => {
     const navigate = useNavigate();
+    decodeURI(new URL(window.location.href));
     const id = new URL(window.location.href).searchParams.get("id");
     const name = new URL(window.location.href).searchParams.get("name");
     const email = new URL(window.location.href).searchParams.get("email");
@@ -52,10 +53,14 @@ const Social = () => {
     const [isTel, setIsTel] = useState(true);
 
     useEffect(() => {
-        if(regStatus === '0') {
-            window.localStorage.setItem("userId", id);
+        const socialLoginFindId = async() => { 
+            const response = await Api.socialLoginFindId(email);
+            window.localStorage.setItem("userId", response.data.substring(7));
             window.localStorage.setItem("isLogin", "true");
             navigate('/home');
+        }
+        if(regStatus === '0') {
+            socialLoginFindId();
         } else if(regStatus === '1') { // 일반 회원
             setOption(email);
             setCommnet("구글 연동을 하시겠습니까? </br> 연동 후 구글 로그인으로만 로그인 가능합니다.");
@@ -104,7 +109,7 @@ const Social = () => {
         }
     }
     const onClickJoin = async() => {
-        const memberReg = await Api.memberNewSocialSave(id, inputNickname, inputTel);
+        const memberReg = await Api.memberNewSocialSave(id, name, email, inputNickname, inputTel);
         if(memberReg.data) {
             window.localStorage.setItem("userId", id);
             window.localStorage.setItem("isLogin", "true");
