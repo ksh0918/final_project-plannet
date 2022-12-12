@@ -58,11 +58,11 @@ const plannetApi = {
         return await axios.post(PLANNET_DOMAIN + "member/delete", memberObj, HEADER);
     },
     // 첫 소셜로그인시 정보 불러오기
-    memberNewSocialLoad: async function(id){
+    changeSocialLogin: async function(email){ // 일반로그인에서 > 소셜로그인으로 전환
         const reg = {
-            id : id,
+            email : email,
         };
-        return await axios.post(PLANNET_DOMAIN + "member/new_social_load", reg, HEADER);
+        return await axios.post(PLANNET_DOMAIN + "member/change_social_login", reg, HEADER);
     },
     // 첫 소셜로그인시 정보 저장하기
     memberNewSocialSave: async function(id, nickname, tel){
