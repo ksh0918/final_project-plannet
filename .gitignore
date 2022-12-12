@@ -76,3 +76,6 @@ src/main/resources/static/asset-manifest.json
 
 ### amz s3 ###
 src/main/frontend/src/Setting/ProImg.js
+
+### naver mail auth ###
+src/main/resources/application.yml
