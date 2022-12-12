@@ -93,7 +93,7 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd}) =
 
     // 친구삭제 버튼 팝업(수정해야함)
     const onClickUnfriend = () => {
-        setCommnet("친구를 삭제하시겠습니까? (삭제 시 상호 삭제됩니다)");
+        setCommnet("친구를 삭제하시겠습니까?</br>(삭제 시 상호 삭제됩니다)");
         setModalHeader("친구삭제");
         setModalOpen(true);
     }

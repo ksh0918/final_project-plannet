@@ -6,6 +6,7 @@ import FriendAdd from './FriendAdd';
 import Api from "../api/plannetApi";
 import Modal from '../Utill/Modal';
 import FriendNoti from './FriendNoti';
+import { useNavigate } from 'react-router-dom';
 
 const Wrap = styled.div`
     width: 1130px;
@@ -50,16 +51,40 @@ const Section = styled.div`
     }
     .noti {
         width: 30%;
-        div {
+        >div:first-of-type {
             width: 100%;
-            height: calc(100% - 70px);
-            padding: 10px;
+            height: calc(100% - 130px);
             background-color: #f9f9f9;
             border-radius: 5px;
             border: 2px solid #f9f9f9;
             overflow: hidden;
             &::-webkit-scrollbar {
                 display: none;
+            }
+        }
+        >div:last-of-type {
+            margin-top: 10px;
+            height: 50px;
+            border-radius: 25px;
+            text-align: center;
+            color: white;
+            font-size: 18px;
+            line-height: 50px;
+            background-color: #333;
+            transition: all .1s ease-in;
+            cursor: pointer;
+            i{
+                color: white;
+                font-size: 24px;
+                vertical-align: middle;
+                transition: all .1s ease-in;
+            }
+            &:hover{
+                background-color: #666;
+                color: #888;
+            }
+            &:hover i{
+                color: #888;
             }
         }
     }
@@ -94,11 +119,15 @@ const Section = styled.div`
 `;
 
 const Friend = () => {
+    const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
     const [friendList, setFriendList] = useState([
-        {proImg: "https://images.unsplash.com/photo-1668603145974-c05f7a0e4552?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80", nickname: "안녕하세요", userCode: "#0000", profile: "자기소개입니다"}, 
-        {proImg: "https://images.unsplash.com/photo-1669847171248-8f12c8160d57?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80", nickname: "안녕하세요", userCode: "#0000", profile: "자기소개입니다"}]);
-    
+        {key: 1, proImg: "https://images.unsplash.com/photo-1668603145974-c05f7a0e4552?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80", nickname: "안녕하세요", userCode: "#0000", profile: "자기소개입니다"}, 
+        {key: 2, proImg: "https://images.unsplash.com/photo-1669847171248-8f12c8160d57?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80", nickname: "안녕하세요", userCode: "#0000", profile: "자기소개입니다"}]);
+    const [notiList, setNotiList] = useState([
+        {key: 3, nickname: "ㅇㅇㅇ", userCode: "0000", desc: "공유캘린더 초대"}, 
+        {key: 4, nickname: "ㅇㅇㅇ", userCode: "0000", desc: "친구 요청"}
+    ]);
     const [isAdd, setIsAdd] = useState(false);
 
     useEffect(() => {
@@ -118,6 +147,10 @@ const Friend = () => {
         else setIsAdd(true);
     }
 
+    const onClickaddSCal = () => {
+        navigate("/scal/create");
+    }
+
     const [comment, setCommnet] = useState("");
     const [modalHeader, setModalHeader] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
@@ -126,10 +159,11 @@ const Friend = () => {
     const closeModal = () => {
         setModalOpen(false);
     };
+    
 
     return (
         <Wrap>
-            <Modal open={modalOpen} close={closeModal} header={modalHeader}>{comment}</Modal>
+            <Modal open={modalOpen} close={closeModal} header={modalHeader}><p dangerouslySetInnerHTML={{__html: comment}}></p></Modal>
             <Nav/>
             <Section>
                 <div className="friend">
@@ -139,7 +173,8 @@ const Friend = () => {
                 </div>
                 <div className='noti'>
                     <h2>Notification</h2>
-                    <FriendNoti/>
+                    <FriendNoti setNotiList={setNotiList} notiList={notiList}/>
+                    <div onClick={onClickaddSCal}>공유캘린더 생성하기<i className="bi bi-chevron-compact-right"/></div>
                 </div>
             </Section>
             <div className="copy">&#169; Plannet.</div>
