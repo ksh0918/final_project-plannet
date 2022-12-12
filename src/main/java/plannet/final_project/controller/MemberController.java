@@ -26,8 +26,8 @@ public class MemberController {
         String pwd = loginData.get("pwd");
         String result = memberService.loginCheck(id,pwd);
         switch (result) {
-            case "구글" : return new ResponseEntity("구글", HttpStatus.OK);
-            case "일반" : return new ResponseEntity("일반", HttpStatus.OK);
+            case "google" : return new ResponseEntity("google", HttpStatus.OK);
+            case "normal" : return new ResponseEntity("normal", HttpStatus.OK);
             default : return new ResponseEntity(null, HttpStatus.OK);
         }
     }
@@ -113,26 +113,24 @@ public class MemberController {
         }
     }
 
-    @PostMapping("/new_social_load")
-    public ResponseEntity<List<String>> newSocialLoad(@RequestBody Map<String,String> load){
-        String id = load.get("id");
-        MemberDTO memberDTO = memberService.newSocialLoad(id);
-        if(memberDTO.isOk()){
-            List<String> newSocialLoad = new ArrayList<>();
-            newSocialLoad.add(memberDTO.getName());
-            newSocialLoad.add(memberDTO.getEmail());
-            return new ResponseEntity(newSocialLoad,HttpStatus.OK);
-        }
-        else{
-            return new ResponseEntity(null,HttpStatus.OK);
-        }
-    }
     @PostMapping("/new_social_save")
     public ResponseEntity<Boolean> newSocialSave(@RequestBody Map<String,String> save){
         String id = save.get("id");
         String nickname = save.get("nickname");
         String tel = save.get("tel");
         boolean isSave = memberService.newSocialSave(id, nickname, tel);
+        if(isSave){
+            return new ResponseEntity(true,HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity(false,HttpStatus.OK);
+        }
+    }
+
+    @PostMapping("/change_social_login")
+    public ResponseEntity<Boolean> changeSocialLogin(@RequestBody Map<String,String> change){
+        String email = change.get("email");
+        boolean isSave = memberService.changeSocialLogin(email);
         if(isSave){
             return new ResponseEntity(true,HttpStatus.OK);
         }

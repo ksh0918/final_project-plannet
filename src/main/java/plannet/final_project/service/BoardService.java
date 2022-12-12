@@ -253,15 +253,18 @@ public class BoardService {
 
     // 자유게시판 글 작성하기
     public boolean boardWrite(String id, String title, String detail, int isChecked){
-        Board board = new Board();
-        board.setUserId(memberRepository.findById(id).orElseThrow());
-        System.out.println("aaaa" + board.getUserId());
-        board.setTitle(title);
-        board.setDetail(detail);
-        board.setIsChecked(isChecked);
-        board.setWriteDate(LocalDateTime.now());
-        boardRepository.save(board);
-        return true;
+        try {
+            Board board = new Board();
+            board.setUserId(memberRepository.findById(id).orElseThrow());
+            board.setTitle(title);
+            board.setDetail(detail);
+            board.setIsChecked(isChecked);
+            board.setWriteDate(LocalDateTime.now());
+            boardRepository.save(board);
+            return true;
+        } catch (Exception e) {
+            return true;
+        }
     }
 
     // 자유게시판 글 수정하기
