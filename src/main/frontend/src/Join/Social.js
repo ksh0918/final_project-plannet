@@ -30,6 +30,8 @@ const Logo = styled.div`
 const Social = () => {
     const navigate = useNavigate();
     const id = new URL(window.location.href).searchParams.get("id");
+    const name = new URL(window.location.href).searchParams.get("name");
+    const email = new URL(window.location.href).searchParams.get("email");
     const regStatus = new URL(window.location.href).searchParams.get("regStatus");
     const [comment, setCommnet] = useState("");
     const [header, setHeader] = useState(""); 
@@ -37,8 +39,7 @@ const Social = () => {
     const closeModal = () => {
         setModalOpen(false);
     };
-
-    const [info, setInfo] = useState("");
+    const [option, setOption] = useState("");
     const [inputNickname, setInputNickname] = useState("");
     const [inputTel, setInputTel] = useState("");
 
@@ -51,31 +52,22 @@ const Social = () => {
     const [isTel, setIsTel] = useState(true);
 
     useEffect(() => {
-        const newSocial = async() => {
-            try{
-                const response = await Api.memberNewSocialLoad(id);
-                setInfo(response.data);
-            } catch(e){
-            console.log(e);
-            }
-        }
-
         if(regStatus === '0') {
             window.localStorage.setItem("userId", id);
             window.localStorage.setItem("isLogin", "true");
             navigate('/home');
         } else if(regStatus === '1') { // 일반 회원
+            setOption(email);
             setCommnet("구글 연동을 하시겠습니까? </br> 연동 후 구글 로그인으로만 로그인 가능합니다.");
             setHeader("구글 연동");
             setModalOpen(true);
         } else if(regStatus === '2') { // 구글로그인이 처음
-            newSocial();
         } else {
             setCommnet("구글 로그인에 실패했습니다.");
             setHeader("구글 로그인 실패");
             setModalOpen(true);
         }
-    },[id, navigate, regStatus])
+    },[email, id, navigate, regStatus])
  
     // 닉네임을 적었으면 해당 닉네임으로 저장
     const onChangeNickname = (e) => {
@@ -122,17 +114,17 @@ const Social = () => {
     return(
         <>
             <ContainerJoin>
-                <Modal open={modalOpen} close={closeModal} header={header}><p dangerouslySetInnerHTML={{__html: comment}}></p></Modal>
+                <Modal open={modalOpen} close={closeModal} header={header} option={option}><p dangerouslySetInnerHTML={{__html: comment}}></p></Modal>
                 {regStatus === '2'?  
                     <>
                         <Logo><LogoImg width="90px" viewBox="30 150 430 220"/><Link to="/" className="logo">Plannet</Link></Logo>
                         <div className="session">
                             <p>이름</p>
-                            <input type='text'placeholder="이름" value={info[0]} disabled/>
+                            <input type='text'placeholder="이름" value={name} disabled/>
                         </div>
                         <div className="session">
                             <p>이메일</p>
-                            <input type='email' placeholder="이메일" value={info[1]} disabled/>
+                            <input type='email' placeholder="이메일" value={email} disabled/>
                         </div>
                         <div className="session">
                             <p>

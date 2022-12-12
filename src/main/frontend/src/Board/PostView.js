@@ -326,11 +326,11 @@ const PostView = () => {
                             <th>Comment</th>
                             <th className='th_3'>Date</th>
                         </tr>
-                        {commentsList.map(({no, id, nickname, detail, date})=>(
+                        {commentsList.map(({no, nickname, detail, date})=>(
                             <tr key={no}>
                                 <td>{nickname}</td>
                                 <td>{detail}</td>
-                                <td>{date}</td>
+                                <td>{date}<i class="bi bi-x"></i></td>
                             </tr>
                         ))}
                     </table>
