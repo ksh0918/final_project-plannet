@@ -1,21 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
+<link rel="stylesheet" href="./index.css">
 <body>
 <div style="margin:100px;">
-<!--    <div style="color: rgba(47, 69, 192, .2)" style="font-family:">-->
-
-<!--    </div>-->
+    <div style="background-color: rgb(69, 85, 174); margin:0;">
+        <p style="font-size:60px; font-weight:bold; font-family:'Comfortaa',cursive; color: white; margin:30px 0 30px 0;">Plannet</p>
+    </div>
     <h3> 안녕하세요.</h3>
     <h3> 일정 관리 서비스 Plannet 입니다.</h3>
     <h3> Plannet 서비스 이용을 위해 이메일 주소 인증을 요청하셨습니다.</h3>
     <br>
-    <br>
     <p> 아래 코드를 회원가입 창으로 돌아가 입력해주세요.</p>
     <br>
-
     <div align="center" style="border:1px solid black; font-family:verdana;">
-        <h3 style="color:blue"> 회원가입 인증 코드 입니다. </h3>
+        <p style="font-size:20px; font-weight:bold;"> 회원가입 인증 코드 입니다. </p>
         <div style="font-size:130%" th:text="${code}"> </div>
     </div>
     <br/>
