@@ -84,13 +84,13 @@ const Section = styled.div`
         td:first-child {border-left: none};
         td:nth-child(2) {width: 400px; text-align: left; padding-left: 20px;}  
         tr:hover td, tr:hover a{color: #4555AE; background-color: #efefef; cursor: pointer;}
-        .bi-heart-fill {padding-right:5px; color:red;}
+        .bi-heart-fill {padding-right:5px; color:#ff41a0;}
         .top3_List {
             td {
-                color: #0026ff;
+                color: #5a6fe9;
                 font-weight: 400;
             }   
-            tr:last-child {border-bottom: solid 2px #7a7a7a;}
+            tr {border-bottom: solid 2px #7a7a7a;}
         }
     }
     .util_box {
