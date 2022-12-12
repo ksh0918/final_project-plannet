@@ -202,6 +202,7 @@ public class BoardService {
             List<Comments> data = commentsRepository.findByBoardNo(board);
             for (Comments e : data) {
                 Map<String, Object> comments = new HashMap<>();
+                comments.put("writerId", e.getUserId().getId());
                 comments.put("nickname", e.getUserId().getNickname());
                 comments.put("detail", e.getDetail());
                 comments.put("date", e.getWriteDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
@@ -253,15 +254,18 @@ public class BoardService {
 
     // 자유게시판 글 작성하기
     public boolean boardWrite(String id, String title, String detail, int isChecked){
-        Board board = new Board();
-        board.setUserId(memberRepository.findById(id).orElseThrow());
-        System.out.println("aaaa" + board.getUserId());
-        board.setTitle(title);
-        board.setDetail(detail);
-        board.setIsChecked(isChecked);
-        board.setWriteDate(LocalDateTime.now());
-        boardRepository.save(board);
-        return true;
+        try {
+            Board board = new Board();
+            board.setUserId(memberRepository.findById(id).orElseThrow());
+            board.setTitle(title);
+            board.setDetail(detail);
+            board.setIsChecked(isChecked);
+            board.setWriteDate(LocalDateTime.now());
+            boardRepository.save(board);
+            return true;
+        } catch (Exception e) {
+            return true;
+        }
     }
 
     // 자유게시판 글 수정하기

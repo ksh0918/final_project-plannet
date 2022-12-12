@@ -1,26 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
+<link rel="stylesheet" href="./index.css">
 <body>
 <div style="margin:100px;">
-    <h1> 안녕하세요.</h1>
-    <h1> 일정 관리 서비스 Plannet 입니다.</h1>
-    <br>
-    <h2>Plannet</h2>
-    <h3>Let's plan it!</h3>
-    <p>오늘의 끝에서 내일을 계획하다.
-        <br/> 하루의 끝에서 오늘을 되돌아보며 정리할 수 있는 플래너.
-        <br/> Plannet은 하루의 시작부터 마무리까지
-        <br/> 일정을 계획해 성취하도록 돕습니다.
-        <br/> 오늘 느낀 감정을 소소하게 적어보세요.
-        <br/> 내일의 일정 또한 완벽하게 작성 할 수 있을 것입니다.
-    </p>
+    <div style="background-color: rgb(69, 85, 174); margin:0;">
+        <p style="font-size:60px; font-weight:bold; font-family:'Comfortaa',cursive; color: white; margin:30px 0 30px 0;">Plannet</p>
+    </div>
+    <h3> 안녕하세요.</h3>
+    <h3> 일정 관리 서비스 Plannet 입니다.</h3>
+    <h3> Plannet 서비스 이용을 위해 이메일 주소 인증을 요청하셨습니다.</h3>
     <br>
     <p> 아래 코드를 회원가입 창으로 돌아가 입력해주세요.</p>
     <br>
-
     <div align="center" style="border:1px solid black; font-family:verdana;">
-        <h3 style="color:blue"> 회원가입 인증 코드 입니다. </h3>
+        <p style="font-size:20px; font-weight:bold;"> 회원가입 인증 코드 입니다. </p>
         <div style="font-size:130%" th:text="${code}"> </div>
     </div>
     <br/>

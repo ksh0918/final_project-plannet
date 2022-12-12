@@ -26,8 +26,8 @@ public class MemberController {
         String pwd = loginData.get("pwd");
         String result = memberService.loginCheck(id,pwd);
         switch (result) {
-            case "구글" : return new ResponseEntity("구글", HttpStatus.OK);
-            case "일반" : return new ResponseEntity("일반", HttpStatus.OK);
+            case "google" : return new ResponseEntity("google", HttpStatus.OK);
+            case "normal" : return new ResponseEntity("normal", HttpStatus.OK);
             default : return new ResponseEntity(null, HttpStatus.OK);
         }
     }

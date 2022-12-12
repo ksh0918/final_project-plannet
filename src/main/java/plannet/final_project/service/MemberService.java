@@ -36,11 +36,11 @@ public class MemberService {
         try {
             String email = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new).getEmail();
             String social = memberRepository.findByEmail(email).getSocial();
-            if (social.equals("g")) result = "구글";
-            else result = "일반";
+            if (social.equals("g")) result = "google";
+            else result = "normal";
             return result;
         } catch (Exception e) {
-            result = "정보없음";
+            result = "no data";
             return result;
         }
     }
