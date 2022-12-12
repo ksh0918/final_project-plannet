@@ -111,7 +111,7 @@ const Main = () => {
                             <br/> 내일의 일정 또한 완벽하게 작성 할 수 있을 것입니다.
                         </Explain>
                     <Link to="/doLogin" className="doLogin">로그인하기</Link>
-                    <Link to="/join" className="doLogin">회원가입</Link>
+                    <Link to="/terms" className="doLogin">회원가입</Link>
                 </RightMain>
             </Container>
         </div>

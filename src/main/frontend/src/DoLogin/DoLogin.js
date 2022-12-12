@@ -68,10 +68,13 @@ const DoLogin = () => {
     const onClickLogin = async() => {
         try {
             const res = await Api.userLogin(inputId, inputPw);
-            if(res.data) {
+            if(res.data === 'normal') {
                 window.localStorage.setItem("isLogin", "true");
                 window.localStorage.setItem("userId", inputId);
                 navigate('/home');
+            } else if(res.data === 'google') {
+                setCommnet("구글 로그인을 이용해주세요.");
+                setModalOpen(true);
             } else {
                 setCommnet("아이디 또는 비밀번호가 정확하지 않습니다.");
                 setModalOpen(true);

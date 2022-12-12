@@ -26,8 +26,8 @@ public class MemberController {
         String pwd = loginData.get("pwd");
         String result = memberService.loginCheck(id,pwd);
         switch (result) {
-            case "구글" : return new ResponseEntity("구글", HttpStatus.OK);
-            case "일반" : return new ResponseEntity("일반", HttpStatus.OK);
+            case "google" : return new ResponseEntity("google", HttpStatus.OK);
+            case "normal" : return new ResponseEntity("normal", HttpStatus.OK);
             default : return new ResponseEntity(null, HttpStatus.OK);
         }
     }
@@ -116,9 +116,11 @@ public class MemberController {
     @PostMapping("/new_social_save")
     public ResponseEntity<Boolean> newSocialSave(@RequestBody Map<String,String> save){
         String id = save.get("id");
+        String name = save.get("name");
+        String email = save.get("email");
         String nickname = save.get("nickname");
         String tel = save.get("tel");
-        boolean isSave = memberService.newSocialSave(id, nickname, tel);
+        boolean isSave = memberService.newSocialSave(id, name, email, nickname, tel);
         if(isSave){
             return new ResponseEntity(true,HttpStatus.OK);
         }
@@ -128,14 +130,26 @@ public class MemberController {
     }
 
     @PostMapping("/change_social_login")
-    public ResponseEntity<Boolean> changeSocialLogin(@RequestBody Map<String,String> change){
+    public ResponseEntity<String> changeSocialLogin(@RequestBody Map<String,String> change){
         String email = change.get("email");
-        boolean isSave = memberService.changeSocialLogin(email);
-        if(isSave){
-            return new ResponseEntity(true,HttpStatus.OK);
+        String userId = memberService.changeSocialLogin(email);
+        if(!userId.equals("NOK")){
+            return new ResponseEntity(userId,HttpStatus.OK);
         }
         else{
-            return new ResponseEntity(false,HttpStatus.OK);
+            return new ResponseEntity("NOK",HttpStatus.OK);
+        }
+    }
+    @PostMapping("/social_login_find_id")
+    public ResponseEntity<String> socialLoginFindId(@RequestBody Map<String,String> change){
+        String email = change.get("email");
+        String userId = "userID:" + memberService.socialLoginFindId(email);
+        if(!userId.equals("NOK")){
+            System.out.println(userId);
+            return new ResponseEntity(userId,HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity("NOK",HttpStatus.OK);
         }
     }
 }
