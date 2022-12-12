@@ -49,11 +49,16 @@ const Noti = styled.div`
     }
 `;
 
-const FriendNoti = ({setOption, notiList}) => {
+const FriendNoti = ({setCommnet, setModalHeader, setModalOpen, setOption, notiList}) => {
     const onClickNoti = (e, status) => {
-        if(e.desc === )
-        setOption(e.desc);
-        alert(status);
+        if(e.desc === '공유캘린더 초대') {
+            setOption("SCAL&"+status);
+        } else {
+            setOption("Friend&"+status);    
+        }
+        setCommnet(e.desc + "을 " + status + "합니다.");
+        setModalHeader("e.desc");
+        setModalOpen(true);
     }
     return (
         <Noti>
