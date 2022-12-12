@@ -95,7 +95,7 @@ public class GoogleController {
 
                 return "redirect:"+ UriComponentsBuilder.fromUriString("http://localhost:8111/social")
                         .queryParam("id", id)
-                        .queryParam("name", name)
+                        .queryParam("name", java.net.URLEncoder.encode(name))
                         .queryParam("email", email)
                         .queryParam("regStatus", regStatus) //구글로 가입된 회원은 0 , 일반 회원은 1, 첫 구글로그인 2
                         .build();
