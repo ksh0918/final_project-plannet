@@ -282,6 +282,7 @@ const PostView = () => {
                 console.log(response);
                 // window.localStorage.setItem("commentNum",response4.data.value[1]);
                 setCommentsList(response.data);
+                console.log(comments);
             } catch (e) {
                 console.log(e);
             } 

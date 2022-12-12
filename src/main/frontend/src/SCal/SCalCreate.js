@@ -59,5 +59,6 @@ const SCalCreate = () => {
             </Section>
         </Wrap>
     )
-
 }
+
+export default SCalCreate;
