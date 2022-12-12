@@ -57,6 +57,12 @@ const Modal = (props) => {
     const onClickGoogleNo = async() => {
         navigate('/doLogin');
     }
+    const onClickBackYes = async() => {
+        navigate(-1);
+    }
+    const onClickBackNo = async() => {
+
+    }
     return (
         <div className={open ? 'openModal modal' : 'modal'}>
             {open && 
@@ -83,6 +89,7 @@ const Modal = (props) => {
                         {(header === '구글 연동') ? <><button className='yes btn-m' onClick={onClickGoogleLogin}>yes</button><button className='close' onClick={onClickGoogleNo}>no</button></>: ''}
                         {(header === '구글 로그인 실패') ? <button className='close' onClick={onClickGoogleNo}>close</button>: ''}
                         {(header === '구글 연동')||(header === '구글 로그인 실패') ? '' : <button className='close' onClick={close}>close</button>}
+                        {(header === '뒤로가기') ? <button className='yes btn-m' onClick={onClickBackYes}>yes</button> : <button className='close' onClick={close}>close</button>}
                     </footer>
                 </section>
             }

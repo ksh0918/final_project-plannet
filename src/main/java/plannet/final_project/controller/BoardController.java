@@ -146,14 +146,16 @@ public class BoardController {
         String id = boardWriteDate.get("id");
         String title = boardWriteDate.get("title");
         String detail = boardWriteDate.get("detail");
-        int isChecked = Integer.parseInt(boardWriteDate.get("isChecked"));
-
+        int isChecked = 0;
+        if (boardWriteDate.get("isChecked").equals("true")){
+             isChecked = 1;
+        }
         boolean result = boardService.boardWrite(id, title, detail, isChecked);
         if(result) {
             return new ResponseEntity(true, HttpStatus.OK);
         }
         else {
-            return new ResponseEntity(false, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(false, HttpStatus.OK);
         }
     }
 

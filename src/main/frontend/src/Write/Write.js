@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Api from "../api/plannetApi";
 import Nav from "../Utill/Nav";
 import PlanList from "./PlanList";
+import Modal from "../Utill/Modal";
 
 const Wrap = styled.div`
     width: 1130px;
@@ -214,6 +215,20 @@ const Section = styled.div`
 `;
 
 const Write = () => {
+    const [comment, setComment] = useState("");
+    const [modalOpen, setModalOpen] = useState(false);
+    const [header, setHeader] = useState("");
+    window.onpopstate = (event) =>{
+        if(event){
+            setModalOpen(true);
+            setHeader('뒤로가기');
+            setComment('변경 내용이 저장이 되지 않을 수 있습니다. 뒤로 가시겠습니까?');
+        };
+        console.log("뒤로가기");      
+    };
+    const closeModal = () => {
+        setModalOpen(false);
+    };      
     const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
         const { date } = useParams();
@@ -252,38 +267,39 @@ const Write = () => {
         await Api.writeSave(getId, date, planList, diary);
         navigate("/home");
     }
-        return (
-            <Wrap>
-                <Nav/>
-                <Section>
-                    <div className="btnbox">
-                        <button className="back" onClick={onClickSave}>
+    return (
+        <Wrap>
+            <Nav/>
+            <Section>
+                <div className="btnbox">
+                    <button className="back" onClick={onClickSave}>
                         <i className="bi bi-chevron-compact-left"/>{date}
+                    </button>
+                </div>
+                <div className="plan_it sub_box">
+                    <h2>Plan it</h2>
+                    <div className="write_box">
+                        <PlanList planList={planList} setPlanList={setPlanList}/>
+                        <hr/>
+                        <button onClick={onClickAddList}>
+                            <i className="bi bi-plus-lg"></i> 추가하기
                         </button>
                     </div>
-                    <div className="plan_it sub_box">
-                        <h2>Plan it</h2>
-                        <div className="write_box">
-                            <PlanList planList={planList} setPlanList={setPlanList}/>
-                            <hr/>
-                            <button onClick={onClickAddList}>
-                                <i className="bi bi-plus-lg"></i> 추가하기
-                            </button>
-                        </div>
+                </div>
+                <div className="diary sub_box">
+                    <h2>Diary</h2>
+                    <div className="write_box">
+                        <textarea maxLength={800} onChange={onChangeDiary} value={diary}></textarea>
                     </div>
-                    <div className="diary sub_box">
-                        <h2>Diary</h2>
-                        <div className="write_box">
-                            <textarea maxLength={800} onChange={onChangeDiary} value={diary}></textarea>
-                        </div>
-                    </div>
-                    <div className="btnbox">
-                        <button className="save" onClick={onClickSave}>SAVE</button>
-                    </div>
-                </Section>
-                <div className="copy">&#169; Plannet.</div>
-            </Wrap>
-        );
+                </div>
+                <div className="btnbox">
+                    <button className="save" onClick={onClickSave}>SAVE</button>
+                </div>
+            </Section>
+            <div className="copy">&#169; Plannet.</div>
+            {<Modal open={modalOpen} close={closeModal} header={header}>{comment}</Modal>}
+        </Wrap>
+    );
 }
 
 export default Write;
