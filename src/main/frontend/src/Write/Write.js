@@ -250,12 +250,8 @@ const Write = () => {
 
     const onClickSave = async() => {
         await Api.writeSave(getId, date, planList, diary);
-        console.log(planList);
-        console.log(diary);
         navigate("/home");
-
     }
-
         return (
             <Wrap>
                 <Nav/>

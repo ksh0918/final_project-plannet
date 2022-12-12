@@ -107,7 +107,7 @@ const plannetApi = {
         return await axios.post(PLANNET_DOMAIN + "user/info_load", object, HEADER);
     },
     // userInfo 저장하기
-    userInfoSave: async function(id, nickname, email, phone, profile) {
+    userInfoSave: async function(id, nickname, phone, profile) {
         const object = {
             id: id,
             nickname: nickname,
@@ -195,6 +195,10 @@ const plannetApi = {
     // 해당 게시물에 댓글 작성
     commentsWrite: async function(boardNo, id, detail){
         return await axios.get(PLANNET_DOMAIN + `board/comments_write?boardNo=${boardNo}&id=${id}&detail=${detail}`, HEADER);
+    },
+    // 해당 게시물에 댓글 작성
+    commentsDelete: async function(commentNo){
+        return await axios.get(PLANNET_DOMAIN + `board/comments_write?commentNo=${commentNo}`, HEADER);
     },
     // 자유게시판 글 작성
     boardWrite: async function(id, title, detail, isChecked){

@@ -163,13 +163,13 @@ const Setting = () => {
     const [userPhone, setUserPhone] = useState("");
     const [userPro, setUserPro] = useState("");
 
-    const [changeNickname, setChangeNickname] = useState("");
+    const [changeNickname, setChangeNickname] = useState(""); // 닉네임 변경값
     const [changePhone, setChangePhone] = useState("");
     
-    const [nicknameMessage, setNicknameMessage] = useState("");
+    const [nicknameMessage, setNicknameMessage] = useState(""); // 닉네임 중복 여부 span 메시지
     const [telMessage, setTelMessage] = useState("");
 
-    const [isNickname, setIsNickname] = useState(true);
+    const [isNickname, setIsNickname] = useState(true); // 닉네임 가능 여부
     const [isTel, setIsTel] = useState(true);
 
     useEffect(() => {
@@ -205,8 +205,9 @@ const Setting = () => {
     }
     const onChangePhone = (e) => {
         setChangePhone(e.target.value.replace(/[^0-9]/g, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`));
-        if(e.target.value.length === 0) setIsTel(true);
-        else setIsTel(false);
+        // 전화번호 하이픈 포함 길이 체크
+        if(e.target.value.length === 0 || e.target.value.length < 12 || e.target.value.length > 13) setIsTel(false);
+        else setIsTel(true);
     }
     const onChangePro = (e) => {
         setUserPro(e.target.value);
@@ -226,18 +227,21 @@ const Setting = () => {
     // 전화번호/이메일 중복확인
     const onBlurTelCheck = async() => {
         const memberCheck = await Api.memberRegCheck(changePhone, "TYPE_TEL");
-        if (memberCheck.data) {
+        if (memberCheck.data && (changePhone.length === 12 || changePhone.length === 13) && changePhone.indexOf('-') === 3) { // 전화번호 길이 체크
             setTelMessage("사용가능한 전화번호입니다.");
-            setIsTel(true)
-        } else if(memberCheck.data && userPhone ===  changePhone){
+            setIsTel(true);
+        } else if(!memberCheck.data && userPhone === changePhone){
             setTelMessage("기존 전화번호입니다.");
             setIsTel(true);
-        } else {
+        } else if(!memberCheck.data) {
             setTelMessage("중복된 전화번호입니다.");
-            setIsTel(false)
-        } 
+            setIsTel(false);
+        } else {
+          setTelMessage("사용 불가능한 전화번호입니다.");
+          setIsTel(false);
+        }
     }
-
+    // 닉네임 중복확인
     const onBlurNicknameCheck = async() => {
         const memberCheck = await Api.memberRegCheck(changeNickname, "TYPE_NICKNAME");
         if (userNickname === changeNickname) {
@@ -270,7 +274,7 @@ const Setting = () => {
                         </div>
                         <div className="session">
                             <p>전화번호 {changePhone && <span>{telMessage}</span>}</p>
-                            <input onChange={onChangePhone} onBlur={onBlurTelCheck} value={changePhone} placeholder="전화번호"/>
+                            <input onChange={onChangePhone} value={changePhone} onBlur={onBlurTelCheck} placeholder="전화번호"/>
                         </div>
                         <div className="session">
                             <p>자기소개글</p>

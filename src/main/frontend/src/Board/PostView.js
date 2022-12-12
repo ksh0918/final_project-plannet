@@ -174,6 +174,9 @@ const Section = styled.div`
         tr td:nth-child(2) {
             padding: 5px 15px;
         }
+        td:last-child {
+            font-size: 8px;
+        }
     }
     .button-area2 {
         text-align: right;
@@ -216,12 +219,6 @@ const PostView = () => {
     const [likeCheckedData, setLikeChecked] = useState(false); // 내가 좋아요를 했는지 여부 로드
     const [comments, setComments] = useState(''); 
     const [commentsList, setCommentsList] = useState([]);
-
-    // 댓글 페이지네이션
-    const [limit, setLimit] = useState(20);  // 페이지당 댓글 수 (현재는 20개 고정)
-    const [page, setPage] = useState(1); // 현재 댓글 페이지 번호
-    const offset = (page - 1) * limit; // 댓글 페이지 위치 계산
-    const numPages = Math.ceil(commentsList.length / limit); // 필요한 댓글 페이지 개수
     
     // 게시물 삭제, 수정 팝업
     const [modalOpen, setModalOpen] = useState(false); // 모달에 띄워줄 메세지 문구
@@ -260,6 +257,7 @@ const PostView = () => {
         await Api.commentsWrite(getNum, getId, comments);
         const response = await Api.commentsLoad(getNum);
         setCommentsList(response.data);
+        setComments(''); // 등록 후 댓글창 빈칸으로 만들기
     } 
     
     // 본문 불러오기
@@ -328,7 +326,7 @@ const PostView = () => {
                             <th>Comment</th>
                             <th className='th_3'>Date</th>
                         </tr>
-                        {commentsList.slice(offset, offset+limit).map(({no, id, nickname, detail, date})=>(
+                        {commentsList.map(({no, id, nickname, detail, date})=>(
                             <tr key={no}>
                                 <td>{nickname}</td>
                                 <td>{detail}</td>
@@ -336,15 +334,6 @@ const PostView = () => {
                             </tr>
                         ))}
                     </table>
-                    {/* <div>
-                        <ul className="page_list">
-                            <li><span onclick = {()=> setPage(page - 1)} disabled = {page === 1}>«</span></li>
-                            {Array(numPages).fill().map((_, i) => (
-                            <li><span key={i + 1} onClick={() => setPage(i + 1)} aria-current={page === i + 1 ? "page" : null}>{i + 1}</span></li>
-                            ))}
-                            <li><span onclick = {()=> setPage(page + 1)} disabled = {page === numPages}>»</span></li>
-                        </ul>
-                    </div> */}
                     </div>
                     <div className="button-area2">
                     <input type='text' className='comment_text' placeholder='댓글 달기...' value={comments} onChange={onChangeComments} name='comments' size='60'></input>

@@ -24,12 +24,11 @@ public class MemberController {
     public ResponseEntity<Boolean> memberLogin(@RequestBody Map<String, String> loginData){
         String id = loginData.get("id");
         String pwd = loginData.get("pwd");
-        boolean result = memberService.loginCheck(id,pwd);
-        if(result){
-            return new ResponseEntity(true, HttpStatus.OK);
-        }
-        else{
-            return new ResponseEntity(false, HttpStatus.OK);
+        String result = memberService.loginCheck(id,pwd);
+        switch (result) {
+            case "구글" : return new ResponseEntity("구글", HttpStatus.OK);
+            case "일반" : return new ResponseEntity("일반", HttpStatus.OK);
+            default : return new ResponseEntity(null, HttpStatus.OK);
         }
     }
 

@@ -30,11 +30,18 @@ public class MemberService {
     private final SPLANRepository splanRepository;
     private final SCALRepository scalRepository;
 
-    public boolean loginCheck (String id, String pwd){
+    public String loginCheck (String id, String pwd){
+        memberRepository.findById(id).orElseThrow(EntityNotFoundException::new).getPwd().equals(pwd);
+        String result;
         try {
-            return memberRepository.findById(id).orElseThrow(EntityNotFoundException::new).getPwd().equals(pwd);
+            String email = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new).getEmail();
+            String social = memberRepository.findByEmail(email).getSocial();
+            if (social.equals("g")) result = "구글";
+            else result = "일반";
+            return result;
         } catch (Exception e) {
-            return false;
+            result = "정보없음";
+            return result;
         }
     }
 

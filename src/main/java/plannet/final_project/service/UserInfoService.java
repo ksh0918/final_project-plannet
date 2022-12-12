@@ -51,6 +51,7 @@ public class UserInfoService {
             Member rst = memberRepository.save(mem);
             log.warn(rst.toString());
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
         return true;

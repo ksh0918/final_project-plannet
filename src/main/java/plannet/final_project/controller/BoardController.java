@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-@Slf4j
 @RestController
+@Slf4j
 @RequestMapping("/board")
 public class BoardController {
     // Service 로직 연결
@@ -32,7 +32,7 @@ public class BoardController {
             return new ResponseEntity(boardList.getBoardList(), HttpStatus.OK);
         } else return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
     }
-    
+
     // 인기글 top3 목록 출력
     @GetMapping("/top3_list")
     public ResponseEntity<List<BoardDTO>> top3List() {
@@ -102,13 +102,13 @@ public class BoardController {
     // 좋아요 버튼을 눌렀을 때 toggle 밑 데이터베이스 변경
     @GetMapping("/like_checked_toggle")
     public ResponseEntity<Integer> likeCheckedToggle(@RequestParam String id, Board boardNo) {
-        boolean likeCheckedToggle = boardService.getLikeCheckedToggle(id, boardNo);
+        boolean likeCheckedToggle = boardService.likeCheckedToggle(id, boardNo);
         return new ResponseEntity(likeCheckedToggle, HttpStatus.OK);
     }
 
     // 자유게시판 댓글 불러오기
     @PostMapping("/comments_load")
-    public ResponseEntity<List<Map<String, Object>>> boardCommentsLoad(@RequestBody Map<String, Long> boardNo) {
+    public ResponseEntity<List<Map<String, Object>>> commentsLoad(@RequestBody Map<String, Long> boardNo) {
         long num = boardNo.get("boardNo");
         BoardDTO boardDTO = boardService.getCommentsLoad(num);
         if(boardDTO.isOk()) {
@@ -120,7 +120,7 @@ public class BoardController {
     // 자유게시판 댓글 작성하기
     @GetMapping("/comments_write")
     public ResponseEntity<Boolean> commentsWrite(@RequestParam Long boardNo, String id, String detail) {
-        boolean commentsWrite = boardService.getCommentsWrite(boardNo, id, detail);
+        boolean commentsWrite = boardService.commentsWrite(boardNo, id, detail);
         if (commentsWrite) {
             return new ResponseEntity(commentsWrite, HttpStatus.OK);
         } else {
@@ -128,9 +128,21 @@ public class BoardController {
         }
     }
 
+    // 자유게시판 댓글 삭제하기
+    @GetMapping("/comments_delete")
+    public ResponseEntity<Boolean> commentsDelete(@RequestParam Long commentNo) {
+        System.out.println("여긴들어오니");
+        boolean commentsDelete = boardService.commentsDelete(commentNo);
+        if (commentsDelete) {
+            return new ResponseEntity(commentsDelete, HttpStatus.OK);
+        } else {
+            return new ResponseEntity(commentsDelete, HttpStatus.OK);
+        }
+    }
+
     // 자유게시판 글 작성
     @PostMapping("/board_write")
-    public ResponseEntity<Boolean> writeBoard(@RequestBody Map<String, String> boardWriteDate) {
+    public ResponseEntity<Boolean> boardWrite(@RequestBody Map<String, String> boardWriteDate) {
         String id = boardWriteDate.get("id");
         String title = boardWriteDate.get("title");
         String detail = boardWriteDate.get("detail");
