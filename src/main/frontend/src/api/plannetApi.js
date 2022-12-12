@@ -58,11 +58,11 @@ const plannetApi = {
         return await axios.post(PLANNET_DOMAIN + "member/delete", memberObj, HEADER);
     },
     // 첫 소셜로그인시 정보 불러오기
-    memberNewSocialLoad: async function(id){
+    changeSocialLogin: async function(email){ // 일반로그인에서 > 소셜로그인으로 전환
         const reg = {
-            id : id,
+            email : email,
         };
-        return await axios.post(PLANNET_DOMAIN + "member/new_social_load", reg, HEADER);
+        return await axios.post(PLANNET_DOMAIN + "member/change_social_login", reg, HEADER);
     },
     // 첫 소셜로그인시 정보 저장하기
     memberNewSocialSave: async function(id, nickname, tel){
@@ -73,7 +73,14 @@ const plannetApi = {
         };
         return await axios.post(PLANNET_DOMAIN + "member/new_social_save", reg, HEADER);
     },
-
+    // EmailController
+    // 이메일 인증
+    emailAuthCheck : async function(email){
+        const object = {
+            email : email
+        };
+        return await axios.post(PLANNET_DOMAIN+"login/mailConfirm",object,HEADER);
+    },
     // HomeController
     // 개인 home/달력/주간일정/메모/명언 출력
     personalHome: async function(id) {
@@ -100,11 +107,10 @@ const plannetApi = {
         return await axios.post(PLANNET_DOMAIN + "user/info_load", object, HEADER);
     },
     // userInfo 저장하기
-    userInfoSave: async function(id, nickname, email, phone, profile) {
+    userInfoSave: async function(id, nickname, phone, profile) {
         const object = {
             id: id,
             nickname: nickname,
-            email: email,
             phone: phone,
             profile: profile
         };
@@ -189,6 +195,10 @@ const plannetApi = {
     // 해당 게시물에 댓글 작성
     commentsWrite: async function(boardNo, id, detail){
         return await axios.get(PLANNET_DOMAIN + `board/comments_write?boardNo=${boardNo}&id=${id}&detail=${detail}`, HEADER);
+    },
+    // 해당 게시물에 댓글 작성
+    commentsDelete: async function(commentNo){
+        return await axios.get(PLANNET_DOMAIN + `board/comments_write?commentNo=${commentNo}`, HEADER);
     },
     // 자유게시판 글 작성
     boardWrite: async function(id, title, detail, isChecked){

@@ -42,16 +42,16 @@ public class UserInfoService {
     }
 
     // 사용자 정보 수정
-    public boolean saveUserInfo(String id, String nickname, String email, String phone, String profile) {
+    public boolean saveUserInfo(String id, String nickname, String phone, String profile) {
         try{
             Member mem = memberRepository.findById(id).orElseThrow(EmptyStackException::new);
             mem.setNickname(nickname);
-            mem.setEmail(email);
             mem.setTel(phone);
             mem.setProfile(profile);
             Member rst = memberRepository.save(mem);
             log.warn(rst.toString());
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
         return true;
@@ -79,8 +79,8 @@ public class UserInfoService {
             //멤버달성률
             List<Plan> personalTotal = planRepository.findByUserId(member);
             List<Plan> personalEnd = planRepository.findByUserIdAndPlanChecked(member, 1);
-            int personalTotalCnt = 0; // 총 일정 갯수
-            int personalEndCnt = 0; // 완료된 일정 갯수
+            int personalTotalCnt = planRepository.countByUserId(member).intValue(); // 총 일정 갯수
+            int personalEndCnt = planRepository.countByUserIdAndPlanChecked(member, 1).intValue(); // 완료된 일정 갯수
             for(Plan e : personalTotal) {
                 personalTotalCnt++;
             }

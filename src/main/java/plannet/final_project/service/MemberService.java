@@ -30,11 +30,18 @@ public class MemberService {
     private final SPLANRepository splanRepository;
     private final SCALRepository scalRepository;
 
-    public boolean loginCheck (String id, String pwd){
+    public String loginCheck (String id, String pwd){
+        memberRepository.findById(id).orElseThrow(EntityNotFoundException::new).getPwd().equals(pwd);
+        String result;
         try {
-            return memberRepository.findById(id).orElseThrow(EntityNotFoundException::new).getPwd().equals(pwd);
+            String email = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new).getEmail();
+            String social = memberRepository.findByEmail(email).getSocial();
+            if (social.equals("g")) result = "구글";
+            else result = "일반";
+            return result;
         } catch (Exception e) {
-            return false;
+            result = "정보없음";
+            return result;
         }
     }
 
@@ -158,46 +165,42 @@ public class MemberService {
         }
     }
 
-    public int googleLoginReg(String email, String id, String name) {
+    public int googleLoginReg(String email) {
         Member member = memberRepository.findByEmail(email);
         if(member != null) { // 회원정보가 있으면(null이 아니면)
             if(member.getSocial().equals("g")) return 0; //구글로 가입된 회원은 0
             else return 1; // 일반 회원은 1
         } else { // 구글로그인이 처음이면 2
-            Member RegMember = new Member();
-            RegMember.setId(id);
-            String userCode = String.format("%04d", (int)(Math.random() * 9999) + 1);
-            RegMember.setUserCode(userCode);
-            RegMember.setPwd("-");
-            RegMember.setName(name);
-            RegMember.setNickname(id+email);
-            RegMember.setEmail(email);
-            RegMember.setJoinDate(LocalDateTime.now());
-            RegMember.setSocial("g");
-            memberRepository.save(RegMember);
+//            Member RegMember = new Member();
+//            RegMember.setId(id);
+//            String userCode = String.format("%04d", (int)(Math.random() * 9999) + 1);
+//            RegMember.setUserCode(userCode);
+//            RegMember.setPwd("-");
+//            RegMember.setName(name);
+//            RegMember.setNickname("nick" + userCode + String.format("%04d", (int)(Math.random() * 500)));
+//            RegMember.setEmail(email);
+//            RegMember.setJoinDate(LocalDateTime.now());
+//            RegMember.setSocial("g");
+//            memberRepository.save(RegMember);
             return 2;
         }
     }
-
-    public MemberDTO newSocialLoad(String id) {
-        MemberDTO memberDTO = new MemberDTO();
-        try{
-            Member member = memberRepository.findById(id).orElseThrow();
-            memberDTO.setName(member.getName());
-            memberDTO.setEmail(member.getEmail());
-            memberDTO.setOk(true);
-        } catch (Exception e) {
-            memberDTO.setOk(false);
-        }
-        return memberDTO;
-    }
-
     public boolean newSocialSave(String id, String nickname, String tel) {
         try{
             Member member = new Member();
             member.setId(id);
             member.setNickname(nickname);
             member.setTel(tel);
+            memberRepository.save(member);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }   public boolean changeSocialLogin(String email) {
+        try{
+            Member member = memberRepository.findByEmail(email);
+            member.setPwd("-");
+            member.setSocial("g");
             memberRepository.save(member);
             return true;
         } catch (Exception e) {

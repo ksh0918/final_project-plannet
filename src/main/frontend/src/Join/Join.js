@@ -36,6 +36,8 @@ const Join = () => {
     const [inputNickname, setInputNickname] = useState("");
     const [inputEmail, setInputEmail] = useState("");
     const [inputTel, setInputTel] = useState("");
+    const [inputAuth,setInputAuth] = useState("");
+    const [authNum,setAuthNum] = useState("");
  
     // 오류 메시지
     const [idMessage, setIdMessage] = useState("");
@@ -44,6 +46,7 @@ const Join = () => {
     const [nicknameMessage, setNicknameMessage] = useState("");
     const [emailMessage, setEmailMessage] = useState("");
     const [telMessage, setTelMessage] = useState("");
+    const [authMessage,setAuthMessage] = useState("");
  
     // 유효성 검사
     const [isId, setIsId] = useState(false);
@@ -53,6 +56,9 @@ const Join = () => {
     const [isNickname, setIsNickname] = useState(false);
     const [isEmail, setIsEmail] = useState(false);
     const [isTel, setIsTel] = useState(true);
+    const [isAuth,setIsAuth] = useState(false);
+
+    const [clickAuth, setClickAuth] = useState(false);
  
     // ID 길이 체크
     const onChangId = (e) => {
@@ -134,6 +140,28 @@ const Join = () => {
             setEmailMessage('이메일의 형식이 올바르게 입력되었습니다.')
             setIsEmail(true);
         }
+    }
+
+    // 이메일 인증번호 받기
+    const onClickAuth = async() => {
+        const emailAuth = await Api.emailAuthCheck(inputEmail);
+        setClickAuth(true);
+        setAuthNum(emailAuth.data);
+    }
+    // 이메일 인증번호 확인
+    const onCheckAuth = async() => {
+        if(authNum === inputAuth){
+            setAuthMessage("인증이 완료되었습니다.")
+            setIsAuth(true)
+        }
+        else{
+            setAuthMessage("인증이 완료되지 않았습니다.")
+            setIsAuth(false)
+        }
+    }
+    
+    const onChangeAuth = (e) => {
+        setInputAuth(e.target.value)
     }
 
     const onBlurNicknameCheck = async() => {
@@ -231,7 +259,16 @@ const Join = () => {
                         이메일*
                         {inputEmail.length > 0 && <span>{emailMessage}</span>}
                     </p>
-                    <input type='email' placeholder="이메일" value={inputEmail} onChange={onChangeEmail} onBlur={onBlurEmailCheck}/>
+                    <div className='email_auth'>
+                        <input type='email' placeholder="이메일" value={inputEmail}  onChange={onChangeEmail} onBlur={onBlurEmailCheck}/>
+                        <button type='button' onClick={onClickAuth}>인증번호 받기</button>
+                    </div>
+                    <div className='email_auth'>
+                        <input type='text'placeholder="인증번호 확인" value = {inputAuth} onChange={onChangeAuth} disabled={!clickAuth}></input>
+                        <button type='button' onClick={onCheckAuth} disabled={!clickAuth}>인증하기</button>
+                        {inputAuth.length > 0 && <span>{authMessage}</span>}
+                    </div>
+                    
                 </div>
                 <div className="session">
                     <p>
@@ -241,7 +278,7 @@ const Join = () => {
                     <input type='tel' placeholder="휴대폰번호('-' 제외)" value={inputTel} onChange={onChangeTel} onBlur={onBlurTelCheck} onKeyDown={onKeyDownJoin}/>
                 </div>
                 <div className="session">
-                    <button onClick={onClickJoin} disabled={!(isId && isPw && isConPw && isName && isNickname &&isEmail && isTel)}>가입하기</button>
+                    <button onClick={onClickJoin} disabled={!(isId && isPw && isConPw && isName && isNickname &&isEmail && isTel && isAuth)}>가입하기</button>
                 </div>
             </ContainerJoin>
         </> 

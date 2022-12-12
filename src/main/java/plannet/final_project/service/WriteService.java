@@ -1,5 +1,6 @@
 package plannet.final_project.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import plannet.final_project.dao.DiaryRepository;
@@ -11,21 +12,18 @@ import plannet.final_project.entity.Plan;
 import plannet.final_project.vo.WriteDTO;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
+@Transactional
 @Slf4j
 public class WriteService {
-    private MemberRepository memberRepository;
-    private DiaryRepository diaryRepository;
-    private PlanRepository planRepository;
-
-    public WriteService(MemberRepository memberRepository, DiaryRepository diaryRepository, PlanRepository planRepository) {
-        this.memberRepository = memberRepository;
-        this.diaryRepository = diaryRepository;
-        this.planRepository = planRepository;
-    }
+    private final MemberRepository memberRepository;
+    private final DiaryRepository diaryRepository;
+    private final PlanRepository planRepository;
 
     // 일정 불러오기
     public WriteDTO writeLoad(String id, LocalDate date) {
@@ -58,30 +56,27 @@ public class WriteService {
 
     // 일정 저장
     public boolean writeSave(String userId, LocalDate date, List<Map<String, Object>> plan, String diary) {
-        System.out.println("들어옴1");
         try {
-            System.out.println("들어옴2");
             Member member = memberRepository.findById(userId).orElseThrow(EntityNotFoundException::new); // 회원 정보가 담긴 객체 가져옴
-            System.out.println("들어옴3");
-            planRepository.deleteByUserIdAndPlanDate(member, date); // 기존의 plan 삭제. 삭제하지 않으면 DB에 기존의 것이 계속 존재.
-            System.out.println("들어옴4");
-            diaryRepository.deleteByUserIdAndDiaryDate(member, date); // 기존의 diary 삭제
-            System.out.println("들어옴5");
+            planRepository.deleteByUserIdAndPlanDate(userId, date); // 기존의 일정 삭제. 삭제 안 하면 기존의 것들이 DB에 계속 있음
+            diaryRepository.deleteByUserIdAndDiaryDate(userId, date); // 기존의 다이어리 삭제
 
             // plan 저장
             for(Map<String, Object> p : plan) {
-                System.out.println("들어옴6");
-                System.out.println("deleted : " + p.get("deleted"));
-                System.out.println(p.get("deleted").getClass().getName());
-                System.out.println("들어옴7");
-                // 원래는 p.get("deleted") == false 이면 일정 저장
-                if((boolean)p.get("deleted") == false) {
-                    System.out.println("들어옴8");
+                if(!(Boolean)p.get("deleted")) { // p.get("deleted") == false 이면 일정 저장
                     Plan plans = new Plan();
                     plans.setUserId(member);
                     plans.setPlanDate(date);
-                    if(p.get("checked").equals(true)) plans.setPlanChecked(1);
-                    else plans.setPlanChecked(0);
+                    String checked = String.valueOf(p.get("checked"));
+                    if(checked.equals("0")) { // 수정하지 않은 기본의 것들은 checked가 1 또는 0으로 로드되기 때문에 따로 확인해줘야 함
+                        plans.setPlanChecked(0);
+                    } else if (checked.equals("1")) {
+                        plans.setPlanChecked(1);
+                    } else if (checked.equals("false")) { // 새로 생성하거나 수정한 checked는 true/false로 request함
+                        plans.setPlanChecked(0);
+                    } else if (checked.equals("true")) {
+                        plans.setPlanChecked(1);
+                    }
                     plans.setPlan((String)p.get("text"));
                     Plan rst = planRepository.save(plans);
                     log.warn(rst.toString());
@@ -95,6 +90,7 @@ public class WriteService {
             Diary rst = diaryRepository.save(diaries);
             log.warn(rst.toString());
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
         return true;

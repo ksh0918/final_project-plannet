@@ -84,6 +84,14 @@ const Section = styled.div`
         td:first-child {border-left: none};
         td:nth-child(2) {width: 400px; text-align: left; padding-left: 20px;}  
         tr:hover td, tr:hover a{color: #4555AE; background-color: #efefef; cursor: pointer;}
+        .bi-heart-fill {padding-right:5px; color:#ff41a0;}
+        .top3_List {
+            td {
+                color: #5a6fe9;
+                font-weight: 400;
+            }   
+            tr {border-bottom: solid 2px #7a7a7a;}
+        }
     }
     .util_box {
         .page_list {
@@ -171,19 +179,14 @@ const Board = () => {
 
     // 타이틀 클릭 시 작성자 id 와 다르면 조회수 +1
     const viewsUp = async (boardNo, writerId) => {
-        console.log(boardNo);
-        console.log(writerId);
         if(writerId !== getId) {
-            console.log("조회수업들어간다");
             const response = await Api.boardViewsUp(boardNo);
-            console.log("조회수업 실행" + response);
         }
-        console.log("페이지이동실행");
         const link = "post_view/" + boardNo;
         navigate(link);
     };
 
-    // boardList 불러오기
+    // boardList & top3List 불러오기
     useEffect(() => {
         const boardData = async () => {
             try {
@@ -194,7 +197,17 @@ const Board = () => {
                 console.log(e);
             }
         };
+        
+        const top3Data = async () => {
+            try {
+                const response = await Api.top3List();
+                setTop3List(response.data);
+            } catch (e) {
+                console.log(e);
+            }
+        };
         boardData();
+        top3Data();
     }, []);
 
     return (
@@ -216,8 +229,8 @@ const Board = () => {
                             <th>Date</th>
                         </tr>
                         {top3List.map(({boardNo, writerId, title, nickname, views, writeDate}) => (
-                            <tr key={boardNo}>
-                                <td>{boardNo}</td>
+                            <tr className="top3_List" key={boardNo}>
+                                <td><i className="bi bi-heart-fill"/>{boardNo}</td>
                                 <td onChange={setBoardNo} onClick={()=> viewsUp(boardNo, writerId)}>{title}</td>
                                 <td>{nickname}</td>
                                 <td>{views}</td>

@@ -8,7 +8,7 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
-    "aws-sdk": "^2.1270.0",
+    "aws-sdk": "^2.1271.0",
     "axios": "^1.2.1",
     "moment": "^2.29.4",
     "react": "^18.2.0",
@@ -16,7 +16,7 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.5",
     "react-scripts": "5.0.1",
-    "sass": "^1.56.1",
+    "sass": "^1.56.2",
     "styled-component": "^2.8.0",
     "styled-components": "^5.3.6",
     "web-vitals": "^2.1.0"

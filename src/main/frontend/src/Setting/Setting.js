@@ -4,7 +4,8 @@ import styled from "styled-components";
 import Nav from "../Utill/Nav";
 import Api from "../api/plannetApi";
 import Modal from "../Utill/Modal";
-import AWS from "aws-sdk"
+import ProImg from "./ProImg";
+
 
 const Wrap = styled.div`
     width: 1130px;
@@ -115,6 +116,10 @@ const Section = styled.div`
                     &::placeholder {
                         color: #bbb;
                     }
+                    &:read-only{
+                        background-color: #eee;
+                        color: #aaa;
+                    }
                 }
                 textarea {
                     padding: 10px 15px;
@@ -139,33 +144,6 @@ const Section = styled.div`
                 }
             }
         }
-        .userImgBox {
-            width: 180px;
-            height: 180px;
-            aspect-ratio: auto 1 / 1;
-            border-radius: 100%;
-            overflow: hidden;;
-            background-size: cover;
-            margin: 0 auto;
-            position: relative;
-            input {display:none;}
-            div {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                border-radius: 100%;
-                background-color: rgba(0, 0, 0, .15);
-                cursor: pointer;
-                text-align: center;
-                i {
-                    font-size: 50px;
-                    line-height: 160px;
-                    color: rgba(255, 255, 255, .6);
-                }
-            }
-        }
     }
     .withdrawal {
         cursor: pointer;
@@ -185,16 +163,13 @@ const Setting = () => {
     const [userPhone, setUserPhone] = useState("");
     const [userPro, setUserPro] = useState("");
 
-    const [changeNickname, setChangeNickname] = useState("");
-    const [changeEmail, setChangeEmail] = useState("");
+    const [changeNickname, setChangeNickname] = useState(""); // 닉네임 변경값
     const [changePhone, setChangePhone] = useState("");
     
-    const [nicknameMessage, setNicknameMessage] = useState("");
-    const [emailMessage, setEmailMessage] = useState("");
+    const [nicknameMessage, setNicknameMessage] = useState(""); // 닉네임 중복 여부 span 메시지
     const [telMessage, setTelMessage] = useState("");
 
-    const [isNickname, setIsNickname] = useState(true);
-    const [isEmail, setIsEmail] = useState(true);
+    const [isNickname, setIsNickname] = useState(true); // 닉네임 가능 여부
     const [isTel, setIsTel] = useState(true);
 
     useEffect(() => {
@@ -203,7 +178,6 @@ const Setting = () => {
                 const response = await Api.userInfoLoad(userId);
                 console.log(response.data);
                 setChangeNickname(response.data[0]);
-                setChangeEmail(response.data[3]);
                 setChangePhone(response.data[4]);
 
                 setUserNickname(response.data[0]);
@@ -221,7 +195,7 @@ const Setting = () => {
 
     // 설정 저장
     const onClickSave = async() => {
-        await Api.userInfoSave(userId, setChangeNickname, setChangeEmail, setChangePhone, userPro);
+        await Api.userInfoSave(userId, changeNickname, changePhone, userPro);
         navigate("/home");
     }
     // 닉네임변경
@@ -231,8 +205,9 @@ const Setting = () => {
     }
     const onChangePhone = (e) => {
         setChangePhone(e.target.value.replace(/[^0-9]/g, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`));
-        if(e.target.value.length === 0) setIsTel(true);
-        else setIsTel(false);
+        // 전화번호 하이픈 포함 길이 체크
+        if(e.target.value.length === 0 || e.target.value.length < 12 || e.target.value.length > 13) setIsTel(false);
+        else setIsTel(true);
     }
     const onChangePro = (e) => {
         setUserPro(e.target.value);
@@ -252,49 +227,21 @@ const Setting = () => {
     // 전화번호/이메일 중복확인
     const onBlurTelCheck = async() => {
         const memberCheck = await Api.memberRegCheck(changePhone, "TYPE_TEL");
-        if (memberCheck.data) {
+        if (memberCheck.data && (changePhone.length === 12 || changePhone.length === 13) && changePhone.indexOf('-') === 3) { // 전화번호 길이 체크
             setTelMessage("사용가능한 전화번호입니다.");
-            setIsTel(true)
-        } else if(memberCheck.data && userPhone ===  changePhone){
+            setIsTel(true);
+        } else if(!memberCheck.data && userPhone === changePhone){
             setTelMessage("기존 전화번호입니다.");
             setIsTel(true);
-        } else {
+        } else if(!memberCheck.data) {
             setTelMessage("중복된 전화번호입니다.");
-            setIsTel(false)
-        } 
-    }
-
-    const onChangeEmail = (e) => {
-        const emailRegex = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-        const emailCurrent = e.target.value ;
-        setChangeEmail(emailCurrent);
-            if(!emailRegex.test(emailCurrent)){
-                setEmailMessage('이메일의 형식이 올바르지 않습니다.')
-                setIsEmail(false);
-            } else {
-                setEmailMessage('이메일의 형식이 올바르게 입력되었습니다.')
-                setIsEmail(true);
-            }
-    }
-
-    const onBlurEmailCheck = async() => {
-        // 가입 여부 우선 확인
-        const memberCheck = await Api.memberRegCheck(changeEmail, "TYPE_EMAIL");
-        if (userEmail ===  changeEmail) {
-            setEmailMessage("기존 Email입니다.");
-            setIsEmail(true);
-        } else if(memberCheck.data && !isEmail){
-            setEmailMessage("이메일의 형식이 올바르지 않습니다.");
-            setIsEmail(false);
-        } else if(memberCheck.data && isEmail){
-            setEmailMessage("사용가능한 Email입니다.");
-            setIsEmail(true);
+            setIsTel(false);
         } else {
-            setEmailMessage("이미 사용하고 있는 Email입니다.");
-            setIsEmail(false);
-        } 
+          setTelMessage("사용 불가능한 전화번호입니다.");
+          setIsTel(false);
+        }
     }
-
+    // 닉네임 중복확인
     const onBlurNicknameCheck = async() => {
         const memberCheck = await Api.memberRegCheck(changeNickname, "TYPE_NICKNAME");
         if (userNickname === changeNickname) {
@@ -308,50 +255,6 @@ const Setting = () => {
             setIsNickname(false);
         } 
     }
-    
-    //이미지 저장
-    const bucket = "khprojectplannet";
-
-    AWS.config.update({
-        region: "ap-northeast-2",
-        credentials: new AWS.CognitoIdentityCredentials({
-        IdentityPoolId: "ap-northeast-2:b3a02944-c9e9-4639-8d1f-6a3b950cdd9d"
-        }),
-    })
-
-    const handleFileInput = async(e) => {
-        // input 태그를 통해 선택한 파일 객체
-        const file = e.target.files[0];
-        const fileName = userId + e.target.files[0].name;
-        
-        // S3 SDK에 내장된 업로드 함수
-        const upload = new AWS.S3.ManagedUpload({
-            params: {
-                Bucket: bucket, // 업로드할 대상 버킷명
-                Key: fileName, // 업로드할 파일명
-                Body: file, // 업로드할 파일 객체
-            },
-        })
-        
-        const promise = upload.promise()
-        // 이미지 업로드
-        promise.then(
-            function (data) {
-                alert("이미지가 변경되었습니다.")
-            },
-            function (err) {
-                return alert("오류가 발생했습니다: ", err.message)
-            }
-        )
-        setUserImgName(fileName);
-
-        //서버에 이미지 이름 저장
-        await Api.userImgSave(userId, fileName);
-        
-        //적용한 이미지 미리보기
-        const fileUrl = URL.createObjectURL(file);
-        setUserImgUrl({backgroundImage: "url(" + fileUrl + ")"});
-    }
 
     return (
         <Wrap>
@@ -359,24 +262,19 @@ const Setting = () => {
             <Section>
                 <div className="setting">
                     <h2>Setting</h2>
-                    <div className="userImgBox" style={userImgUrl}>
-                        <label>
-                            <input type="file" accept="image/*" onChange={handleFileInput}/>
-                            <div><i className="bi bi-pencil-fill"></i></div>
-                        </label>
-                    </div>
+                    <ProImg userId={userId} setUserImgName={setUserImgName} setUserImgUrl={setUserImgUrl} userImgUrl={userImgUrl}/>
                     <div className="userInfo">
                         <div className="session">
                             <p>닉네임 {changeNickname && <span>{nicknameMessage}</span>}</p>
                             <input onChange={onChangeNickname} value={changeNickname} onBlur={onBlurNicknameCheck} placeholder="닉네임"/>
                         </div>
                         <div className="session">
-                            <p>이메일 {changeEmail && <span>{emailMessage}</span>}</p>
-                            <input onChange={onChangeEmail} value={changeEmail} onBlur={onBlurEmailCheck} placeholder="이메일"/>
+                            <p>이메일</p>
+                            <input value={userEmail} placeholder="이메일" readOnly/>
                         </div>
                         <div className="session">
                             <p>전화번호 {changePhone && <span>{telMessage}</span>}</p>
-                            <input onChange={onChangePhone} onBlur={onBlurTelCheck} value={changePhone} placeholder="전화번호"/>
+                            <input onChange={onChangePhone} value={changePhone} onBlur={onBlurTelCheck} placeholder="전화번호"/>
                         </div>
                         <div className="session">
                             <p>자기소개글</p>
@@ -387,7 +285,7 @@ const Setting = () => {
                     </div>
                 </div>
                 <div className="btnbox">
-                    <button onClick={onClickSave} className="save" disabled={!(isEmail && isTel && isNickname)}>SAVE</button>
+                    <button onClick={onClickSave} className="save" disabled={!(isTel && isNickname)}>SAVE</button>
                 </div>
             </Section>
             <div className="copy">&#169; Plannet.</div>
