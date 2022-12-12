@@ -91,10 +91,12 @@ public class GoogleController {
                 String email = userInfoDto.getEmail();
                 String id = userInfoDto.getSub();
                 String name = userInfoDto.getName();
-                int regStatus = memberService.googleLoginReg(email, id, name);
+                int regStatus = memberService.googleLoginReg(email);
 
                 return "redirect:"+ UriComponentsBuilder.fromUriString("http://localhost:8111/social")
                         .queryParam("id", id)
+                        .queryParam("name", name)
+                        .queryParam("email", email)
                         .queryParam("regStatus", regStatus) //구글로 가입된 회원은 0 , 일반 회원은 1, 첫 구글로그인 2
                         .build();
             }

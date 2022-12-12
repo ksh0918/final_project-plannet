@@ -39,7 +39,7 @@ const Modal = (props) => {
         navigate('/friend');
     }
     const onClickGoogleLogin = async() => {
-        // await Api.boardDelete(boardNo); //아이디를 구글 아이디로 넣어주고 비밀번호 도 수정 / g 붙여주기
+        await Api.changeSocialLogin(option); //비밀번호 수정 / g 붙여주기
         navigate('/home');
     }
     const onClickGoogleNo = async() => {
