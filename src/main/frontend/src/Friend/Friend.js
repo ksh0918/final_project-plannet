@@ -174,7 +174,7 @@ const Friend = () => {
                 </div>
                 <div className='noti'>
                     <h2>Notification</h2>
-                    <FriendNoti notiList={notiList} setOption={setOption}/>
+                    <FriendNoti setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} notiList={notiList} setOption={setOption}/>
                     <div onClick={onClickaddSCal}>공유캘린더 생성하기<i className="bi bi-chevron-compact-right"/></div>
                 </div>
             </Section>
