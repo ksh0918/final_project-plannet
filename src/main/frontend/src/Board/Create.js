@@ -5,6 +5,7 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Api from "../api/plannetApi";
 import Nav from "../Utill/Nav";
+import axios, { Axios } from 'axios';
 
 const Wrap = styled.div`
     width: 1130px;
@@ -197,7 +198,7 @@ function Create() {
 
     const onClickSave = async() => {
         await Api.boardWrite(getId, title, detail, isChecked);
-        navigate('/board');
+        navigate('/board/board_write');
     }
 
     const onChangeTitle = (e) => {
