@@ -165,46 +165,42 @@ public class MemberService {
         }
     }
 
-    public int googleLoginReg(String email, String id, String name) {
+    public int googleLoginReg(String email) {
         Member member = memberRepository.findByEmail(email);
         if(member != null) { // 회원정보가 있으면(null이 아니면)
             if(member.getSocial().equals("g")) return 0; //구글로 가입된 회원은 0
             else return 1; // 일반 회원은 1
         } else { // 구글로그인이 처음이면 2
-            Member RegMember = new Member();
-            RegMember.setId(id);
-            String userCode = String.format("%04d", (int)(Math.random() * 9999) + 1);
-            RegMember.setUserCode(userCode);
-            RegMember.setPwd("-");
-            RegMember.setName(name);
-            RegMember.setNickname("nick" + userCode + String.format("%04d", (int)(Math.random() * 500)));
-            RegMember.setEmail(email);
-            RegMember.setJoinDate(LocalDateTime.now());
-            RegMember.setSocial("g");
-            memberRepository.save(RegMember);
+//            Member RegMember = new Member();
+//            RegMember.setId(id);
+//            String userCode = String.format("%04d", (int)(Math.random() * 9999) + 1);
+//            RegMember.setUserCode(userCode);
+//            RegMember.setPwd("-");
+//            RegMember.setName(name);
+//            RegMember.setNickname("nick" + userCode + String.format("%04d", (int)(Math.random() * 500)));
+//            RegMember.setEmail(email);
+//            RegMember.setJoinDate(LocalDateTime.now());
+//            RegMember.setSocial("g");
+//            memberRepository.save(RegMember);
             return 2;
         }
     }
-
-    public MemberDTO newSocialLoad(String id) {
-        MemberDTO memberDTO = new MemberDTO();
-        try{
-            Member member = memberRepository.findById(id).orElseThrow();
-            memberDTO.setName(member.getName());
-            memberDTO.setEmail(member.getEmail());
-            memberDTO.setOk(true);
-        } catch (Exception e) {
-            memberDTO.setOk(false);
-        }
-        return memberDTO;
-    }
-
     public boolean newSocialSave(String id, String nickname, String tel) {
         try{
             Member member = new Member();
             member.setId(id);
             member.setNickname(nickname);
             member.setTel(tel);
+            memberRepository.save(member);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }   public boolean changeSocialLogin(String email) {
+        try{
+            Member member = memberRepository.findByEmail(email);
+            member.setPwd("-");
+            member.setSocial("g");
             memberRepository.save(member);
             return true;
         } catch (Exception e) {

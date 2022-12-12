@@ -38,6 +38,13 @@ const Modal = (props) => {
         // await Api.boardDelete(boardNo);
         navigate('/friend');
     }
+    const onClickGoogleLogin = async() => {
+        await Api.changeSocialLogin(option); //비밀번호 수정 / g 붙여주기
+        navigate('/home');
+    }
+    const onClickGoogleNo = async() => {
+        navigate('/doLogin');
+    }
     return (
         <div className={open ? 'openModal modal' : 'modal'}>
             {open && 
@@ -56,7 +63,9 @@ const Modal = (props) => {
                         {(header === '글수정삭제' && option === '수정') ? <button className='yes btn-m' onClick={onClickEdit}>yes</button>: ''}
                         {(header === '글수정삭제' && option === '삭제') ? <button className='yes btn-m' onClick={onClickDelete}>yes</button>: ''}
                         {(header === '친구삭제') ? <button className='yes btn-m' onClick={onClickUnfriend}>yes</button>: ''}
-                        <button className='close' onClick={close}>close</button>
+                        {(header === '구글 연동') ? <><button className='yes btn-m' onClick={onClickGoogleLogin}>yes</button><button className='close' onClick={onClickGoogleNo}>no</button></>: ''}
+                        {(header === '구글 로그인 실패') ? <button className='close' onClick={onClickGoogleNo}>close</button>: ''}
+                        {(header === '구글 연동')||(header === '구글 로그인 실패') ? '' : <button className='close' onClick={close}>close</button>}
                     </footer>
                 </section>
             }

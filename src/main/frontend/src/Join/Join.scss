@@ -86,3 +86,21 @@ div.session {
 .newPwd {
     letter-spacing: -0.5px;
 }
+//email auth 인증
+.email_auth {
+    input{
+        width: 250px;
+        vertical-align: middle;
+    }
+    button{
+        margin: 0 0 0 3px;
+        width: 97px;
+        height: 40px;
+        border: none;
+        vertical-align: middle;
+        font-size: 14px;
+    }
+    &:first-of-type{
+        margin-bottom: 3px;
+    }
+}
