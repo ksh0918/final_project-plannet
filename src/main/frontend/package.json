@@ -12,6 +12,7 @@
     "axios": "^1.2.1",
     "moment": "^2.29.4",
     "react": "^18.2.0",
+    "react-beforeunload": "^2.5.3",
     "react-calendar": "^4.0.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.5",
@@ -19,6 +20,7 @@
     "sass": "^1.56.2",
     "styled-component": "^2.8.0",
     "styled-components": "^5.3.6",
+    "sweetalert": "^2.1.2",
     "web-vitals": "^2.1.0"
   },
   "scripts": {

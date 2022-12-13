@@ -4,7 +4,8 @@ import styled from "styled-components";
 import Api from "../api/plannetApi";
 import Nav from "../Utill/Nav";
 import PlanList from "./PlanList";
-import Modal from "../Utill/Modal";
+import Swal from 'sweetalert';
+import { useBeforeunload } from "react-beforeunload";
 
 const Wrap = styled.div`
     width: 1130px;
@@ -213,22 +214,47 @@ const Section = styled.div`
         text-decoration: line-through;
     }
 `;
-
 const Write = () => {
-    const [comment, setComment] = useState("");
-    const [modalOpen, setModalOpen] = useState(false);
-    const [header, setHeader] = useState("");
-    window.onpopstate = (event) =>{
-        if(event){
-            setModalOpen(true);
-            setHeader('뒤로가기');
-            setComment('변경 내용이 저장이 되지 않을 수 있습니다. 뒤로 가시겠습니까?');
-        };
-        console.log("뒤로가기");      
-    };
-    const closeModal = () => {
-        setModalOpen(false);
-    };      
+//    window. = (event) =>{
+//        event.preventDefault();
+//        if(event){
+//            console.log('if문 안');
+//            console.log(event);
+//            Swal({
+//                title : "저장이 되지 않습니다!",
+//                text : "저장이 되지 않습니다 뒤로 가시겠습니까?",
+//                icon : "warning",
+//                buttons : {
+//                    bnt1 : {
+//                        text : "No",
+//                        value : "NoBack"
+//                    },
+//                    bnt2 : {
+//                        text : "Yes",
+//                        value : "goBack"
+//                    }
+//                },
+//            })
+//            .then((value) => {
+//                switch(value) {
+//                    case "NoBack" :
+//
+//                        break;
+//                    case "goBack" :
+//                        break;
+//                }
+//            });
+//        };
+//        console.log("뒤로가기");
+//    };
+
+    window.addEventListener('beforeunload', (event) => {
+        // 표준에 따라 기본 동작 방지
+        event.preventDefault();
+        // Chrome에서는 returnValue 설정이 필요함
+        event.returnValue = '';
+    });
+
     const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
         const { date } = useParams();
@@ -297,7 +323,7 @@ const Write = () => {
                 </div>
             </Section>
             <div className="copy">&#169; Plannet.</div>
-            {<Modal open={modalOpen} close={closeModal} header={header}>{comment}</Modal>}
+            
         </Wrap>
     );
 }
