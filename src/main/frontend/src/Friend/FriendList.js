@@ -1,14 +1,17 @@
 import styled from 'styled-components';
 
 const Friends = styled.div`
+    overflow-y: scroll;
     width: 100%;
     height: calc(100% - 80px);
     border-radius: 5px;
     background-color: #f9f9f9;
-    overflow: hidden;
     transition: all .5s ease-in;
     margin-top: 10px;
     text-align: center;
+    &::-webkit-scrollbar {
+        display: none;
+    }
     p.nothing{
         position: relative;
         top: 50%;
@@ -18,9 +21,6 @@ const Friends = styled.div`
             color: #d9d9d9;
             font-size: 17px;
         }
-    }
-    &::-webkit-scrollbar {
-        display: none;
     }
     ul>p{
         margin-top: 10px;
@@ -70,10 +70,10 @@ const Friends = styled.div`
             span:last-child{
                 color: #bbb;
             }
-        }
-        p:last-of-type{
+            &:last-of-type{
             top: 38px;
             color: #888;
+            }
         }
     }        
     .unfriend_btn{
@@ -89,7 +89,6 @@ const Friends = styled.div`
     .scalFriend_btn {
         font-size: 20px;
         float: right;
-
     }
 `;
 
@@ -113,11 +112,10 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
             <ul>
                 {friendList.map(e =>{return(
                     <li>
-                        <div><img src={e.proImg} alt="profileImg" /></div>
-                        {/* <div><img src={"https://khprojectplannet.s3.ap-northeast-2.amazonaws.com/"+e.proImg} alt="profileImg" /></div> */}
+                        <div><img src={"https://khprojectplannet.s3.ap-northeast-2.amazonaws.com/" + e.proImg} alt="profileImg" /></div>
                         <p>
                             <span>{e.nickname}</span>
-                            <span>{e.userCode}</span>
+                            <span>&#35;{e.userCode}</span>
                         </p>
                         <p>{e.profile}</p>
                         {isPage === "친구삭제" && <i className="bi bi-x-lg unfriend_btn" onClick={onClickUnfriend}></i>}

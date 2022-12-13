@@ -240,10 +240,23 @@ const plannetApi = {
     scalCreate: async function(id, title, friendList) {
         const object = {
             id: id,
-        title: title
+            title: title
         };
         return await axios.post(PLANNET_DOMAIN + "scal/create", object, HEADER);
-    }
+    },
+
+    //친구 추가 요청
+    notiAddFriend: async function(id, keyword) {
+        const object = {
+            id: id,
+            keyword: keyword
+        };
+        return await axios.post(PLANNET_DOMAIN + "noti/add_friend", object, HEADER);
+    },
+    //친구 페이지 불러오기
+    friendPageLoad: async function(id) {
+        return await axios.get(PLANNET_DOMAIN + `noti/friend_page_load?id=${id}`, HEADER);
+    },
 }
 
 export default plannetApi;

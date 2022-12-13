@@ -16,10 +16,10 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.*;
 
-@Service
-@RequiredArgsConstructor
-@Transactional
 @Slf4j
+@Service
+@Transactional
+@RequiredArgsConstructor
 public class WriteService {
     private final MemberRepository memberRepository;
     private final DiaryRepository diaryRepository;

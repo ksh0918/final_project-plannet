@@ -12,8 +12,8 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.EmptyStackException;
 
-@Service
 @Slf4j
+@Service
 @Transactional
 @RequiredArgsConstructor
 public class MemberService {
