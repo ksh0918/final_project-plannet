@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Modal from '../Utill/Modal';
 import Api from '../api/plannetApi'
 import Nav from '../Utill/Nav';
+import { useNavigate  } from "react-router-dom";
 import moment from 'moment';
 
 const Wrap = styled.div`
@@ -156,11 +157,11 @@ const Section = styled.div`
         table{width: 100%; margin: 10px 0;}
         table, tr, td{
             border-collapse: collapse;
-            padding: 20px;
             border: 1px solid white;
             background: none;
             border-bottom: 1px solid #ddd;
         }
+        td {padding: 20px;}
         th {
             text-align: left;
             font-size: 20px;
@@ -175,7 +176,7 @@ const Section = styled.div`
             padding: 5px 15px;
         }
         td:last-child {
-            width: 200px;
+            width: 130px;
             font-size: 8px;
         }
     }
@@ -210,6 +211,7 @@ const Section = styled.div`
 `;
 
 const PostView = () => {
+    const navigate = useNavigate();
     // localStorage 저장 정보
     const getId = window.localStorage.getItem("userId");
     let params = useParams(); // url에서 boardNo를 가져오기 위해 uesParams() 사용
@@ -260,6 +262,13 @@ const PostView = () => {
         setCommentsList(response.data);
         setComments(''); // 등록 후 댓글창 빈칸으로 만들기
     } 
+    // 댓글 삭제
+    const onClickDeleteComment = async(commentNo) => {
+        await Api.commentsDelete(commentNo); 
+        const link = "post_view/" + getNum;
+        navigate(0);
+
+    } 
     
     // 본문 불러오기
     useEffect(() => {
@@ -280,7 +289,6 @@ const PostView = () => {
                 // 댓글 불러오기
                 const response = await Api.commentsLoad(getNum);
                 console.log(response);
-                // window.localStorage.setItem("commentNum",response4.data.value[1]);
                 setCommentsList(response.data);
                 console.log(comments);
             } catch (e) {
@@ -289,7 +297,7 @@ const PostView = () => {
         };
         postViewLoad();
     }, [getNum]);
-    // console.log(commentsList);
+    console.log(commentsList);
 
     return(
         <Wrap>
@@ -328,11 +336,11 @@ const PostView = () => {
                             <th>Comment</th>
                             <th className='th_3'>Date</th>
                         </tr>
-                        {commentsList.map(({no, writerId, nickname, detail, date})=>(
+                        {commentsList.map(({no, commentNo, writerId, nickname, detail, date})=>(
                             <tr key={no}>
                                 <td>{nickname}</td>
                                 <td>{detail}</td>
-                                <td>{date}{getId === writerId ? <i class="bi bi-x"></i> : null}</td>
+                                <td>{date}{getId === writerId ? <button><i class="bi bi-x" onClick={()=> onClickDeleteComment(commentNo)}></i></button> : null}</td>
                             </tr>
                         ))}
                     </table>

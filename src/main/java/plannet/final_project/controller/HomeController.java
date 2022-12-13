@@ -14,9 +14,9 @@ import plannet.final_project.vo.HomeDTO;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequestMapping("/home")
-@Slf4j
 @RequiredArgsConstructor
 public class HomeController {
     private final HomeService homeService;

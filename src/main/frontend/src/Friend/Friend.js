@@ -134,7 +134,7 @@ const Friend = () => {
     useEffect(() => {
         const personalHome = async() => {
             try{
-                const response = await Api.personalHome(getId);
+                // const response = await Api.personalHome(getId); //친구랑 알림 목록 불러오기
             } catch(e){
             console.log(e);
             }
@@ -148,8 +148,11 @@ const Friend = () => {
         else setIsAdd(true);
     }
 
-    const onClickaddSCal = () => {
-        navigate("/scal/create");
+    const onClickAddSCal = () => {
+        // const response = await Api.personalHome(getId); //2개이상의 scal에 참여중인지 확인 2개 이하면 true, 이상이면 false
+        // if(response.data) {
+        //     navigate("/scal/create");
+        // }
     }
 
     const [comment, setCommnet] = useState("");
@@ -174,8 +177,8 @@ const Friend = () => {
                 </div>
                 <div className='noti'>
                     <h2>Notification</h2>
-                    <FriendNoti notiList={notiList} setOption={setOption}/>
-                    <div onClick={onClickaddSCal}>공유캘린더 생성하기<i className="bi bi-chevron-compact-right"/></div>
+                    <FriendNoti setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} notiList={notiList} setOption={setOption}/>
+                    <div onClick={onClickAddSCal}>공유캘린더 생성하기<i className="bi bi-chevron-compact-right"/></div>
                 </div>
             </Section>
             <div className="copy">&#169; Plannet.</div>
