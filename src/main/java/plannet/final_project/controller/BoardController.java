@@ -141,7 +141,7 @@ public class BoardController {
         }
     }
 
-    // 자유게시판 글 작성
+    // 자유게시판 글 작성 //
     @PostMapping("/board_write")
     public ResponseEntity<Boolean> boardWrite(@RequestBody Map<String, String> boardWriteDate) {
         String id = boardWriteDate.get("id");
