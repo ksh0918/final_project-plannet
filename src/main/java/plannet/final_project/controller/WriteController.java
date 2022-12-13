@@ -13,10 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@RestController
-@RequiredArgsConstructor
 @Slf4j
+@RestController
 @RequestMapping("/write")
+@RequiredArgsConstructor
 public class WriteController {
     private final WriteService writeService;
 

@@ -23,10 +23,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 
+@Slf4j
 @Controller
 @RequestMapping(value = "/google")
 @RequiredArgsConstructor
-@Slf4j
 public class GoogleController {
     private final ConfigUtils configUtils;
     private final MemberService memberService;

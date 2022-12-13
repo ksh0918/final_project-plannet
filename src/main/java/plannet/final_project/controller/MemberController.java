@@ -1,5 +1,6 @@
 package plannet.final_project.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,14 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@RestController
 @Slf4j
+@RestController
 @RequestMapping("/member")
+@RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
-    public MemberController(MemberService memberService){
-        this.memberService = memberService;
-    }
 
     @PostMapping("/login")
     public ResponseEntity<Boolean> memberLogin(@RequestBody Map<String, String> loginData){
