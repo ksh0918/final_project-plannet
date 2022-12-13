@@ -60,9 +60,6 @@ const Modal = (props) => {
     const onClickBackYes = async() => {
         navigate(-1);
     }
-    const onClickBackNo = async() => {
-
-    }
     return (
         <div className={open ? 'openModal modal' : 'modal'}>
             {open && 
