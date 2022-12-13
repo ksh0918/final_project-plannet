@@ -22,9 +22,4 @@ public class Friend {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "friend_id")
     private Member friendId;
-
-    @Column(name = "isaccept", nullable = false)
-    @ColumnDefault("0")
-    private int isAccept;
 }
-
