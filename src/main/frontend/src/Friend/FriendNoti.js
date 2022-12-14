@@ -1,6 +1,19 @@
 import styled from 'styled-components';
 
 const Noti = styled.div`
+    p.nothing{
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+        text-align: center;
+        color: #d9d9d9;
+    }
+    ul{
+        overflow-y: scroll;
+        &::-webkit-scrollbar {
+            display: none;
+        }   
+    }
     li {
         padding: 10px 16px;
         overflow: hidden;
@@ -9,8 +22,9 @@ const Noti = styled.div`
         p:first-child{
             font-size: 12px;
             span{
+                font-size: 12px;
                 color: #ccc;
-                font-weight: 300;
+                font-weight: 200;
             }
         }
         p:last-of-type{
@@ -51,12 +65,8 @@ const Noti = styled.div`
 
 const FriendNoti = ({setCommnet, setModalHeader, setModalOpen, setOption, notiList}) => {
     const onClickNoti = (e, status) => {
-        if(e.desc === '공유캘린더 초대') {
-            setOption(e.key+"#SCAL#"+status);
-        } else {
-            setOption(e.key+"#Friend#"+status);    
-        }
-        setCommnet(e.desc + "을 " + status + "합니다.");
+        setOption("?key=" + e.key + "&type=" + e.type + "&status=" + status);
+        setCommnet((e.desc === 'F'? '친구 요청을 ' : '공유캘린더 초대를 ') + (status? '승락' : '거절') + '합니다.');
         setModalHeader(e.desc);
         setModalOpen(true);
     }
@@ -68,17 +78,17 @@ const FriendNoti = ({setCommnet, setModalHeader, setModalOpen, setOption, notiLi
                     <li>
                         <div>
                             <p>{e.nickname}<span>#{e.userCode}</span>님의</p>
-                            <p>{e.desc}</p>
+                            <p>{e.type === 'F'? '친구 요청' : '공유캘린더 초대'}</p>
                         </div>
                         <div>                        
-                            <div onClick={() => onClickNoti(e, "승락")}>승락</div>
-                            <div onClick={() => onClickNoti(e, "거절")}>거절</div>
+                            <div onClick={() => onClickNoti(e, true)}>승락</div>
+                            <div onClick={() => onClickNoti(e, false)}>거절</div>
                         </div>
                     </li>
                 );})}
             </ul>
             :
-            <p className='nothing'><b>등록된 친구가 아직 없습니다.</b><br/>상단 오른쪽의 버튼을 눌러 친구를 추가해보세요!</p>}
+            <p className='nothing'>알림 없음</p>}
         </Noti>
     );
 }

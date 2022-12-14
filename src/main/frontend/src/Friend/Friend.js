@@ -19,23 +19,8 @@ const Section = styled.div`
     height: calc(100vh - 40px);
     float: left;
     position: relative;
-    overflow-y: scroll;
+    overflow-y: hidden;
     overflow-x: hidden;
-    &::-webkit-scrollbar {
-        width: 20px;
-        padding: 15px;
-    }
-    &::-webkit-scrollbar-thumb {
-        height: 30%; /* 스크롤바의 길이 */
-        background: #ddd; /* 스크롤바의 색상 */
-        border-radius: 10px;
-        border: 7px solid transparent;
-        background-clip: padding-box;
-    }
-    &::-webkit-scrollbar-track {
-        background: none;
-        /*스크롤바 뒷 배경 색상*/
-    }
     .friend, .noti {
         height: 550px;
         height: 100%;
@@ -47,7 +32,7 @@ const Section = styled.div`
     }
     .friend {
         width: 70%;
-        padding-left: 30px;     
+        padding-left: 30px;       
     }
     .noti {
         width: 30%;
@@ -57,7 +42,7 @@ const Section = styled.div`
             background-color: #f9f9f9;
             border-radius: 5px;
             border: 2px solid #f9f9f9;
-            overflow: hidden;
+            overflow-y: scroll;
             &::-webkit-scrollbar {
                 display: none;
             }
@@ -121,25 +106,24 @@ const Section = styled.div`
 const Friend = () => {
     const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
-    const [friendList, setFriendList] = useState([
-        {key: 1, proImg: "https://images.unsplash.com/photo-1668603145974-c05f7a0e4552?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80", nickname: "안녕하세요", userCode: "0000", profile: "자기소개입니다"}, 
-        {key: 2, proImg: "https://images.unsplash.com/photo-1669847171248-8f12c8160d57?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80", nickname: "안녕하세요", userCode: "0000", profile: "자기소개입니다"}]);
-    const [notiList, setNotiList] = useState([
-        {key: 3, nickname: "ㅇㅇㅇ", userCode: "0000", desc: "공유캘린더 초대"}, 
-        {key: 4, nickname: "ㅇㅇㅇ", userCode: "0000", desc: "친구 요청"}
-    ]);
+    const [friendList, setFriendList] = useState();
+    const [notiList, setNotiList] = useState();
     const [isAdd, setIsAdd] = useState(false);
     const [option, setOption] = useState("");
 
     useEffect(() => {
-        const personalHome = async() => {
+        const friendPage = async() => {
             try{
-                // const response = await Api.personalHome(getId); //친구랑 알림 목록 불러오기
+                const response = await Api.friendPageLoad(getId); //친구랑 알림 목록 불러오기
+                setFriendList(response.data.friendList);
+                setNotiList(response.data.notiList);
+                console.log(response.data.friendList);
+                console.log(response.data.notiList);
             } catch(e){
             console.log(e);
             }
         }
-        personalHome();
+        friendPage();
     },[getId]);
 
     
@@ -172,7 +156,7 @@ const Friend = () => {
             <Section>
                 <div className="friend">
                     <h2>Friend<i className={'bi bi-person-fill-add ' + (isAdd? 'add_active_logo' : '')} onClick={onClickaddFriend}></i></h2>
-                    <FriendAdd setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} isAdd={isAdd} />
+                    <FriendAdd setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} isAdd={isAdd} getId={getId}/>
                     <FriendList setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} friendList={friendList} isAdd={isAdd} setOption={setOption}/>
                 </div>
                 <div className='noti'>

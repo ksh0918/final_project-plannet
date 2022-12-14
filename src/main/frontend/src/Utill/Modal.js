@@ -82,11 +82,12 @@ const Modal = (props) => {
                         {(header === '친구 요청') ? <button className='yes btn-m' onClick={onClickAddFriend}>yes</button>: ''}
                         {(header === '공유캘린더 초대') ? <button className='yes btn-m' onClick={onClickInviteSCAL}>yes</button>: ''}
 
-
                         {(header === '구글 연동') ? <><button className='yes btn-m' onClick={onClickGoogleLogin}>yes</button><button className='close' onClick={onClickGoogleNo}>no</button></>: ''}
                         {(header === '구글 로그인 실패') ? <button className='close' onClick={onClickGoogleNo}>close</button>: ''}
+                        {(header === '뒤로가기') ? <button className='yes btn-m' onClick={onClickBackYes}>yes</button> : ''}
+
+                        {/* 헤더가 구글연동과 구글로그인 실패가 아니라면 close버튼이 뜨도록 */}
                         {(header === '구글 연동')||(header === '구글 로그인 실패') ? '' : <button className='close' onClick={close}>close</button>}
-                        {(header === '뒤로가기') ? <button className='yes btn-m' onClick={onClickBackYes}>yes</button> : <button className='close' onClick={close}>close</button>}
                     </footer>
                 </section>
             }
