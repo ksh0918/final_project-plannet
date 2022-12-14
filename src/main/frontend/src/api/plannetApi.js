@@ -243,7 +243,14 @@ const plannetApi = {
         title: title
         };
         return await axios.post(PLANNET_DOMAIN + "scal/create", object, HEADER);
-    }
+    },
+    // 공유 캘린더 home/달력/주간일정/메모/명언 출력
+    scalHome: async function(id) {
+        const object = {
+            id: id
+        };
+        return await axios.post(PLANNET_DOMAIN + "scal/home", object, HEADER);
+    },
 }
 
 export default plannetApi;
