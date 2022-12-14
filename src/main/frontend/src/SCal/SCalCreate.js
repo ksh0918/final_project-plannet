@@ -96,7 +96,7 @@ const Section = styled.div`
             }
         }
     }
-    .ggg {
+    .friend_back {
     background-color: #e8f0fe;
     height:700px;
     }
@@ -136,11 +136,12 @@ const SCalCreate = () => {
     const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
     const [title, setTitle] = useState(''); // 공유캘린더 이름
+    const [searchKeyword, setSearchKeyword] = useState(''); // 친구 검색
     const [friendList, setFriendList] = useState([
         {proImg: "https://images.unsplash.com/photo-1668603145974-c05f7a0e4552?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80", nickname: "안녕하세요", userCode: "#0000", profile: "자기소개입니다"},
         {proImg: "https://images.unsplash.com/photo-1669847171248-8f12c8160d57?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80", nickname: "안녕하세요", userCode: "#0000", profile: "자기소개입니다"}]);
     const [isAdd, setIsAdd] = useState(false); // 친구추가
-    const [searchKeyword, setSearchKeyword] = useState('');
+
     const [comment, setComment] = useState("");
     const [modalHeader, setModalHeader] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
@@ -148,8 +149,15 @@ const SCalCreate = () => {
     const add = "공유캘린더";
     const cancel = "친구삭제";
 
+    // 공유 캘린더 이름 입력
+   const onChangeTitle = (e) => {
+            setTitle(e.target.value);
+            console.log("타이틀 : " + title);
+        }
+    // 친구 검색 입력
     const onChangeSearchKeyword = (e) => {
         setSearchKeyword(e.target.value);
+        console.log("서치키워드 : " + searchKeyword);
     }
 
     const onKeyPressSearch = async(e) => {
@@ -159,9 +167,17 @@ const SCalCreate = () => {
         }
     }
 
-    const onChangeTitle = (e) => {
-        setTitle(e.target.value);
-    }
+    useEffect(() => {
+        const myFriend = async() => {
+            try{
+                const response = await Api.friendPageLoad(getId); //친구랑 알림 목록 불러오기
+                setFriendList(response.data.friendList);
+            } catch(e) {
+                console.log(e);
+            }
+
+        }
+    })
 
     const onClickaddFriend = (e) => {
         if(isAdd) setIsAdd(false);
@@ -207,7 +223,7 @@ const SCalCreate = () => {
                         </div>
                         <div className="friend">
                             <p>Friend</p>
-                            <div className="ggg">
+                            <div className="friend_back">
                                 <div className="friend_search">
                                 <input title="검색" placeholder="친구 검색" onChange={onChangeSearchKeyword} onKeyDown={onKeyPressSearch} value={searchKeyword}/>
                                 <a href="#" onClick={onClickSearch}><i className="bi bi-search"></i></a>
