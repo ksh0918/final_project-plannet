@@ -105,6 +105,7 @@ const Section = styled.div`
 
 const Friend = () => {
     const navigate = useNavigate();
+    const isPage = "친구삭제";
     const getId = window.localStorage.getItem("userId");
     const [friendList, setFriendList] = useState();
     const [notiList, setNotiList] = useState();
@@ -117,8 +118,6 @@ const Friend = () => {
                 const response = await Api.friendPageLoad(getId); //친구랑 알림 목록 불러오기
                 setFriendList(response.data.friendList);
                 setNotiList(response.data.notiList);
-                console.log(response.data.friendList);
-                console.log(response.data.notiList);
             } catch(e){
             console.log(e);
             }
@@ -135,7 +134,7 @@ const Friend = () => {
     const onClickAddSCal = () => {
         // const response = await Api.personalHome(getId); //2개이상의 scal에 참여중인지 확인 2개 이하면 true, 이상이면 false
         // if(response.data) {
-        //     navigate("/scal/create");
+            navigate("/scal/create");
         // }
     }
 
@@ -157,7 +156,7 @@ const Friend = () => {
                 <div className="friend">
                     <h2>Friend<i className={'bi bi-person-fill-add ' + (isAdd? 'add_active_logo' : '')} onClick={onClickaddFriend}></i></h2>
                     <FriendAdd setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} isAdd={isAdd} getId={getId}/>
-                    <FriendList setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} friendList={friendList} isAdd={isAdd} setOption={setOption}/>
+                    <FriendList setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} friendList={friendList} isAdd={isAdd} setOption={setOption} isPage={isPage}/>
                 </div>
                 <div className='noti'>
                     <h2>Notification</h2>

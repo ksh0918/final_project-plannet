@@ -6,9 +6,11 @@ import org.springframework.stereotype.Service;
 import plannet.final_project.dao.FriendRepository;
 import plannet.final_project.dao.MemberRepository;
 import plannet.final_project.dao.NotiRepository;
+import plannet.final_project.dao.SMEMRepository;
 import plannet.final_project.entity.Friend;
 import plannet.final_project.entity.Member;
 import plannet.final_project.entity.Noti;
+import plannet.final_project.entity.SMEM;
 import plannet.final_project.vo.NotiDTO;
 
 import javax.persistence.EntityNotFoundException;
@@ -27,6 +29,7 @@ public class NotiService {
     private final MemberRepository memberRepository;
     private final FriendRepository friendRepository;
     private final NotiRepository notiRepository;
+    private final SMEMRepository smemRepository;
 
     public int addFriend (String id, String keyword){
         //해당 유저가 없다면 0
@@ -115,5 +118,37 @@ public class NotiService {
         notiDTO.setNotiList(notiList);
 
         return notiDTO;
+    }
+
+    public boolean notiAnswer(Long key, boolean status) {
+        try{
+            Noti noti = notiRepository.findById(key).orElseThrow();
+            if(status) { // 초대/요청 승락
+                if(noti.getType().equals("F")) { // 친구 승락이라면
+                    Friend friend1 = new Friend();
+                    //A>B 친구등록
+                    friend1.setUserId(noti.getUserId());
+                    friend1.setFriendId(noti.getReceiveId());
+                    friendRepository.save(friend1);
+                    //B>A 친구등록
+                    Friend friend2 = new Friend();
+                    friend2.setUserId(noti.getReceiveId());
+                    friend2.setFriendId(noti.getUserId());
+                    friendRepository.save(friend2);
+                } else {//캘린더에 멤버 등록
+                    SMEM smem = new SMEM();
+                    smem.setCalNo(noti.getCalNo());
+                    smem.setUserId(noti.getReceiveId());
+                    smem.setIsOwner(0);
+                    smemRepository.save(smem);
+                }
+            }
+            //알림 안뜨도록
+            noti.setIsChecked(1);
+            notiRepository.save(noti);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

@@ -257,6 +257,10 @@ const plannetApi = {
     friendPageLoad: async function(id) {
         return await axios.get(PLANNET_DOMAIN + `noti/friend_page_load?id=${id}`, HEADER);
     },
+    //알림 승락거절
+    notiAnswer: async function(option) {
+        return await axios.get(PLANNET_DOMAIN + `noti/noti_answer${option}`, HEADER);
+    },
 }
 
 export default plannetApi;

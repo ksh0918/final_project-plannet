@@ -48,5 +48,10 @@ public class NotiController {
         }
         return new ResponseEntity(friendPageList, HttpStatus.OK);
     }
+    @GetMapping("/noti_answer")
+    public ResponseEntity<Boolean> notiAnswer(@RequestParam Long key, boolean status) {
+        boolean isOk = notiService.notiAnswer(key, status);
+        return new ResponseEntity(isOk, HttpStatus.OK);
+    }
 
 }
