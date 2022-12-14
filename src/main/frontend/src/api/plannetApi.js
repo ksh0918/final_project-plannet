@@ -240,26 +240,16 @@ const plannetApi = {
     scalCreate: async function(id, title, friendList) {
         const object = {
             id: id,
-            title: title
+        title: title
         };
         return await axios.post(PLANNET_DOMAIN + "scal/create", object, HEADER);
     },
-
-    //친구 추가 요청
-    notiAddFriend: async function(id, keyword) {
+    // 공유 캘린더 home/달력/주간일정/메모/명언 출력
+    scalHome: async function(id) {
         const object = {
-            id: id,
-            keyword: keyword
+            id: id
         };
-        return await axios.post(PLANNET_DOMAIN + "noti/add_friend", object, HEADER);
-    },
-    //친구 페이지 불러오기
-    friendPageLoad: async function(id) {
-        return await axios.get(PLANNET_DOMAIN + `noti/friend_page_load?id=${id}`, HEADER);
-    },
-    //알림 승락거절
-    notiAnswer: async function(option) {
-        return await axios.get(PLANNET_DOMAIN + `noti/noti_answer${option}`, HEADER);
+        return await axios.post(PLANNET_DOMAIN + "scal/home", object, HEADER);
     },
 }
 
