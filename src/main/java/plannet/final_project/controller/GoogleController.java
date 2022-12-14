@@ -94,6 +94,7 @@ public class GoogleController {
                 String name = userInfoDto.getName();
                 int regStatus = memberService.googleLoginReg(email);
 
+//                return "redirect:"+ UriComponentsBuilder.fromUriString("http://15.165.75.129:8111/social")
                 return "redirect:"+ UriComponentsBuilder.fromUriString("http://localhost:8111/social")
                         .queryParam("id", id)
                         .queryParam("name", name)
@@ -110,6 +111,7 @@ public class GoogleController {
             e.printStackTrace();
         }
 
+//        return "redirect:"+ UriComponentsBuilder.fromUriString("http://15.165.75.129:8111/social")
         return "redirect:"+ UriComponentsBuilder.fromUriString("http://localhost:8111/social")
                 .queryParam("regStatus", "3") //오류시 3을 보냄
                 .build();
