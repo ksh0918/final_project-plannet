@@ -236,6 +236,22 @@ const plannetApi = {
         };
         return await axios.post(PLANNET_DOMAIN + "board/board_delete", object, HEADER);
     },
+    //친구 추가 요청
+    notiAddFriend: async function(id, keyword) {
+        const object = {
+            id: id,
+            keyword: keyword
+        };
+        return await axios.post(PLANNET_DOMAIN + "noti/add_friend", object, HEADER);
+    },
+    //친구 페이지 불러오기
+    friendPageLoad: async function(id) {
+        return await axios.get(PLANNET_DOMAIN + `noti/friend_page_load?id=${id}`, HEADER);
+    },
+    //알림 승락거절
+    notiAnswer: async function(option) {
+        return await axios.get(PLANNET_DOMAIN + `noti/noti_answer${option}`, HEADER);
+    },
     // 공유 캘린더 생성
     scalCreate: async function(id, title, friendList) {
         const object = {
