@@ -96,7 +96,7 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
 
     // 친구삭제 버튼 팝업(수정해야함)
     const onClickUnfriend = (e) => {
-        setOption(e.key);
+        setOption(e);
         setCommnet("친구를 삭제하시겠습니까?</br>(삭제 시 상호 삭제됩니다)");
         setModalHeader("친구삭제");
         setModalOpen(true);
@@ -112,13 +112,13 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
             <ul>
                 {friendList.map(e =>{return(
                     <li>
-                        <div><img src={"https://khprojectplannet.s3.ap-northeast-2.amazonaws.com/" + e.proImg} alt="profileImg" /></div>
+                        <div><img src={"https://plannetmanager5.s3.ap-northeast-2.amazonaws.com/" + e.proImg} alt="profileImg" /></div>
                         <p>
                             <span>{e.nickname}</span>
                             <span>&#35;{e.userCode}</span>
                         </p>
                         <p>{e.profile}</p>
-                        {isPage === "친구삭제" && <i className="bi bi-x-lg unfriend_btn" onClick={onClickUnfriend}></i>}
+                        {isPage === "친구삭제" && <i className="bi bi-x-lg unfriend_btn" onClick={() => onClickUnfriend(e.key)}></i>}
                         {isPage === "공유캘린더" && <i className="bi bi-plus-lg scalFriend_btn" onClick={onClickSCalfriend}></i>}
 
                     </li>

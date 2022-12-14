@@ -34,20 +34,21 @@ const Modal = (props) => {
         await Api.boardDelete(boardNo);
         navigate('/board');
     }
-    const onClickUnfriend = async() => { //수정해야함
-        // await Api.unfriend(option); // 백엔드 구현해야함
-        window.location.reload();
+    const onClickUnfriend = async() => {
+        await Api.notiUnfriend(option);
+        navigate(0);
     }
-    const onClickAddFriend = async() => { //수정해야함
-        // await Api.unfriend(option); // 백엔드 구현해야함
-        window.location.reload();
+    const onClickNotiAnswer = async() => {
+        await Api.notiAnswer(option);
+        navigate(0);
     }
+
     const onClickInviteSCAL = async() => { //수정해야함
         // await Api.unfriend(option); // 백엔드 구현해야함
         alert(option);
-        window.location.reload();
+        navigate(0);
     }
-
+    
     const onClickGoogleLogin = async() => {
         const response = await Api.changeSocialLogin(option);
         window.localStorage.setItem("userId", response.data);
@@ -60,6 +61,7 @@ const Modal = (props) => {
     const onClickBackYes = async() => {
         navigate(-1);
     }
+    
     return (
         <div className={open ? 'openModal modal' : 'modal'}>
             {open && 
@@ -79,7 +81,7 @@ const Modal = (props) => {
                         {(header === '글수정삭제' && option === '삭제') ? <button className='yes btn-m' onClick={onClickDelete}>yes</button>: ''}
                         
                         {(header === '친구삭제') ? <button className='yes btn-m' onClick={onClickUnfriend}>yes</button>: ''}
-                        {(header === '친구 요청') ? <button className='yes btn-m' onClick={onClickAddFriend}>yes</button>: ''}
+                        {(header === '알림반응') ? <button className='yes btn-m' onClick={onClickNotiAnswer}>yes</button>: ''}
                         {(header === '공유캘린더 초대') ? <button className='yes btn-m' onClick={onClickInviteSCAL}>yes</button>: ''}
 
                         {(header === '구글 연동') ? <><button className='yes btn-m' onClick={onClickGoogleLogin}>yes</button><button className='close' onClick={onClickGoogleNo}>no</button></>: ''}

@@ -202,8 +202,9 @@ function Create() {
             setComment("제목과 내용을 입력해 주세요");
             setModalOpen(true); 
         } else {
-            await Api.boardWrite(getId, title, detail, isChecked);
-            navigate('/board');
+            const resultNo = await Api.boardWrite(getId, title, detail, isChecked);
+            const linkNo = resultNo.data;
+            navigate('/board/post_view/' + linkNo);
         }
     }
 
