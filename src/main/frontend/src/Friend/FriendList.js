@@ -112,7 +112,7 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
             <ul>
                 {friendList.map(e =>{return(
                     <li>
-                        <div><img src={"https://khprojectplannet.s3.ap-northeast-2.amazonaws.com/" + e.proImg} alt="profileImg" /></div>
+                        <div><img src={"https://plannetmanager5.s3.ap-northeast-2.amazonaws.com/" + e.proImg} alt="profileImg" /></div>
                         <p>
                             <span>{e.nickname}</span>
                             <span>&#35;{e.userCode}</span>
