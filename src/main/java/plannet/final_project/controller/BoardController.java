@@ -141,23 +141,18 @@ public class BoardController {
         }
     }
 
-    // 자유게시판 글 작성 //
+    // 자유게시판 글 작성
     @PostMapping("/board_write")
-    public ResponseEntity<Boolean> boardWrite(@RequestBody Map<String, String> boardWriteDate) {
+    public ResponseEntity<Long> boardWrite(@RequestBody Map<String, String> boardWriteDate) {
         String id = boardWriteDate.get("id");
         String title = boardWriteDate.get("title");
         String detail = boardWriteDate.get("detail");
         int isChecked = 0;
         if (boardWriteDate.get("isChecked").equals("true")){
-             isChecked = 1;
+            isChecked = 1;
         }
-        boolean result = boardService.boardWrite(id, title, detail, isChecked);
-        if(result) {
-            return new ResponseEntity(true, HttpStatus.OK);
-        }
-        else {
-            return new ResponseEntity(false, HttpStatus.OK);
-        }
+        Long resultNo = boardService.boardWrite(id, title, detail, isChecked);
+        return new ResponseEntity(resultNo, HttpStatus.OK);
     }
 
     // 자유게시판 글 수정

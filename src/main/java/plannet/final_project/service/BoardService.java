@@ -2,6 +2,7 @@ package plannet.final_project.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToFile;
 import org.springframework.stereotype.Service;
 import plannet.final_project.dao.BoardRepository;
 import plannet.final_project.dao.CommentsRepository;
@@ -254,7 +255,8 @@ public class BoardService {
     }
 
     // 자유게시판 글 작성하기
-    public boolean boardWrite(String id, String title, String detail, int isChecked){
+    public Long boardWrite(String id, String title, String detail, int isChecked){
+        Long resultNo = Long.valueOf(0);
         try {
             Board board = new Board();
             board.setUserId(memberRepository.findById(id).orElseThrow());
@@ -263,11 +265,13 @@ public class BoardService {
             board.setIsChecked(isChecked);
             board.setWriteDate(LocalDateTime.now());
             boardRepository.save(board);
-            return true;
+            resultNo = boardRepository.findLastBoardNo(id);
+            return resultNo;
         } catch (Exception e) {
-            return true;
+            return resultNo;
         }
     }
+
 
     // 자유게시판 글 수정하기
     public boolean boardEdit(String userId, Long boardNo, String title, String detail) {
