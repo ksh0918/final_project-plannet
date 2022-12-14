@@ -34,20 +34,21 @@ const Modal = (props) => {
         await Api.boardDelete(boardNo);
         navigate('/board');
     }
-    const onClickUnfriend = async() => { //수정해야함 친구 삭제하기
-        // await Api.unfriend(option); // 백엔드 구현해야함
+    const onClickUnfriend = async() => {
+        await Api.notiUnfriend(option);
         navigate(0);
     }
+    const onClickNotiAnswer = async() => {
+        await Api.notiAnswer(option);
+        navigate(0);
+    }
+
     const onClickInviteSCAL = async() => { //수정해야함
         // await Api.unfriend(option); // 백엔드 구현해야함
         alert(option);
         navigate(0);
     }
-    const onClickNotiAnswer = async() => { //알림에 반응 전송
-        await Api.notiAnswer(option);
-        navigate(0);
-    }
-
+    
     const onClickGoogleLogin = async() => {
         const response = await Api.changeSocialLogin(option);
         window.localStorage.setItem("userId", response.data);

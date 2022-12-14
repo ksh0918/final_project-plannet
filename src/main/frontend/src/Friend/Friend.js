@@ -131,11 +131,15 @@ const Friend = () => {
         else setIsAdd(true);
     }
 
-    const onClickAddSCal = () => {
-        // const response = await Api.personalHome(getId); //2개이상의 scal에 참여중인지 확인 2개 이하면 true, 이상이면 false
-        // if(response.data) {
+    const onClickAddSCal = async () => {
+        const response = await Api.scalCheck(getId); //2개이상의 scal에 참여중인지 확인 2개 이하면 true, 이상이면 false
+        console.log(response.data);
+        if(response.data) {
             navigate("/scal/create");
-        // }
+        } else {
+            setCommnet('최대 공유 캘린더 개수(2개)를 넘어 공유 캘린더를 생성할 수 없습니다.');
+            setModalOpen(true);
+        }
     }
 
     const [comment, setCommnet] = useState("");

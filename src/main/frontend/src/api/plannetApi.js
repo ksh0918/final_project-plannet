@@ -244,6 +244,13 @@ const plannetApi = {
         };
         return await axios.post(PLANNET_DOMAIN + "noti/add_friend", object, HEADER);
     },
+    //친구삭제
+    notiUnfriend: async function(option) {
+        const object = {
+            key: option
+        };
+        return await axios.post(PLANNET_DOMAIN + "noti/unfriend", object, HEADER);
+    },
     //친구 페이지 불러오기
     friendPageLoad: async function(id) {
         return await axios.get(PLANNET_DOMAIN + `noti/friend_page_load?id=${id}`, HEADER);
@@ -252,11 +259,15 @@ const plannetApi = {
     notiAnswer: async function(option) {
         return await axios.get(PLANNET_DOMAIN + `noti/noti_answer${option}`, HEADER);
     },
+    // 공유 캘린더 갯수 확인
+    scalCheck: async function(id) {
+        return await axios.get(PLANNET_DOMAIN + `noti/check?id=${id}`, HEADER);
+    },
     // 공유 캘린더 생성
     scalCreate: async function(id, title, friendList) {
         const object = {
             id: id,
-        title: title
+            title: title
         };
         return await axios.post(PLANNET_DOMAIN + "scal/create", object, HEADER);
     },
