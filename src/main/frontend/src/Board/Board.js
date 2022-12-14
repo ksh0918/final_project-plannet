@@ -84,15 +84,13 @@ const Section = styled.div`
         td:first-child {border-left: none};
         td:nth-child(2) {width: 400px; text-align: left; padding-left: 20px;}  
         tr:hover td, tr:hover a{color: #4555AE; background-color: #efefef; cursor: pointer;}
-        .bi-heart-fill {padding-right:5px; color:#ff41a0;}
-        .top3_List {
-            td {
-                color: #5a6fe9;
-                font-weight: 400;
-            }   
-            tr {border-bottom: solid 2px #7a7a7a;}
-        }
+        .bi-heart-fill {padding-right:5px; color:#fcb1d3;}
+        .top3_List {background-color: #939FDD;}
+        .top3_List:last-child{border-bottom: solid 1px #23338a;}
+        td {font-weight: 600;}   
     }
+
+
     .util_box {
         .page_list {
             width: 500px; 
@@ -186,6 +184,11 @@ const Board = () => {
         navigate(link);
     };
 
+    const onClickToCreate = () => {
+        const link = "create/"
+        navigate(link);
+    }
+
     // boardList & top3List 불러오기
     useEffect(() => {
         const boardData = async () => {
@@ -218,7 +221,7 @@ const Board = () => {
                     <h2>자유게시판</h2>
                     <p>
                         <span>전 세계의 Plannet 이용자들과 한 곳에서 소통해 보세요!</span>
-                        <Link to='/create'><button>글쓰기</button></Link>
+                        <button onClick={onClickToCreate}>글쓰기</button>
                     </p>
                     <table>
                         <tr>

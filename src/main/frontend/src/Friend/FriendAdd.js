@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import Api from "../api/plannetApi";
 
 const FriendFind = styled.div`
     overflow: hidden;
@@ -46,7 +47,7 @@ const FriendFind = styled.div`
     }
 `;
 
-const FriendAdd = ({setCommnet, setModalHeader, setModalOpen, isAdd}) => {
+const FriendAdd = ({setCommnet, setModalHeader, setModalOpen, isAdd, getId}) => {
     const [addInput, setAddInput] = useState();
     const [inputMessage, setInputMessage] = useState(''); 
     const [isOk, setIsOk] = useState(true); 
@@ -64,26 +65,43 @@ const FriendAdd = ({setCommnet, setModalHeader, setModalOpen, isAdd}) => {
         }
     }
 
-    // 친구요청 버튼 팝업(수정해야함)
-    const onClickAddBtn = () => {
-        if(true) { // 자신의 친구 목록에 없고 유효한 사용자
+    const onClickAddBtn = async() => {
+        console.log(getId, addInput);
+        const response = await Api.notiAddFriend(getId, addInput);
+        if(response.data === 1) { // 자신의 친구 목록에 없고 유효한 사용자
             setCommnet("친구 신청이 되었습니다.");
             setModalHeader("친구신청");
-        } else if(false) { //자신의 친구목록에 있음
+            setAddInput("");
+        } else if(response.data === 2) { //자신의 친구목록에 있음
             setCommnet("이미 친구 등록된 사용자입니다.");
-            setModalHeader("친구신청 실패");
+            setModalHeader("친구신청");
+        } else if(response.data === 3) { //이미 내가 친구 신청함
+            setCommnet("이미 친구 요청한 사용자입니다.");
+            setModalHeader("친구신청");
+        } else if(response.data === 4) { //이미 상대가 친구 신청함
+            setCommnet("친구 요청이 있는 사용자입니다. </br>알림창을 확인해주세요.");
+            setModalHeader("친구신청");
+        } else if(response.data === 5) { //본인에게 친구신청
+            setCommnet("본인에게 친구 요청할 수 없습니다.");
+            setModalHeader("친구신청");
         } else { // 검색결과가 없는 유효하지 않은 사용자
             setCommnet("닉네임과 유저코드를 다시 확인해주세요.");
-            setModalHeader("친구신청 실패");
+            setModalHeader("친구신청");
         }
         setModalOpen(true);
+    }
+
+    const onKeyPressEnter = (e) => {
+        if(e.key === 'Enter'){
+            onClickAddBtn();
+        }
     }
 
     return (
         <FriendFind className={isAdd? 'add_active_addbox' : ''}>
             <label>
                 <p>
-                    <input type="text" maxLength={25} placeholder='Nickname#0000' value={addInput} onChange={onChangeAddInput}/>
+                    <input type="text" maxLength={25} placeholder='Nickname#0000' value={addInput} onChange={onChangeAddInput} onKeyDown={onKeyPressEnter}/>
                     <span>{inputMessage}</span>
                 </p>
             </label>

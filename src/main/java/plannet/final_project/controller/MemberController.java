@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import plannet.final_project.service.MemberService;
 import plannet.final_project.vo.MemberDTO;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 

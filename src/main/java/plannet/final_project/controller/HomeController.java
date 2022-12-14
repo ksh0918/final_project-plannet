@@ -31,7 +31,7 @@ public class HomeController {
             personalHome.put("planMark", homeDTO.getPlanMark());
             personalHome.put("memo", homeDTO.getMemo());
             personalHome.put("quote", homeDTO.getQuote());
-
+            log.warn(String.valueOf(personalHome));
             return new ResponseEntity(personalHome, HttpStatus.OK);
         } else {
             return new ResponseEntity(null, HttpStatus.OK);
