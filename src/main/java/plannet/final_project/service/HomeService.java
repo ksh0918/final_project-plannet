@@ -13,6 +13,7 @@ import plannet.final_project.vo.HomeDTO;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
+import java.time.temporal.WeekFields;
 import java.util.*;
 
 @Slf4j
@@ -28,16 +29,17 @@ public class HomeService {
         try{
             Member member = memberRepository.findById(id).orElseThrow();
             LocalDate[] weekDay = {
-                    LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY)),
-                    LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)),
-                    LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.TUESDAY)),
-                    LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.WEDNESDAY)),
-                    LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.THURSDAY)),
-                    LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.FRIDAY)),
-                    LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.SATURDAY))
+                    LocalDate.now().with(WeekFields.of(Locale.KOREA).dayOfWeek(), 1),
+                    LocalDate.now().with(WeekFields.of(Locale.KOREA).dayOfWeek(), 2),
+                    LocalDate.now().with(WeekFields.of(Locale.KOREA).dayOfWeek(), 3),
+                    LocalDate.now().with(WeekFields.of(Locale.KOREA).dayOfWeek(), 4),
+                    LocalDate.now().with(WeekFields.of(Locale.KOREA).dayOfWeek(), 5),
+                    LocalDate.now().with(WeekFields.of(Locale.KOREA).dayOfWeek(), 6),
+                    LocalDate.now().with(WeekFields.of(Locale.KOREA).dayOfWeek(), 7)
             };
             List<List<Map<String, Object>>> weekPlan = new ArrayList<>();
             for(int i = 0; i < 7; i++) {
+                log.warn(String.valueOf(weekDay[i]));
                 List<Map<String, Object>> dayPlan = new ArrayList<>();
                 List<Plan> dayPlanOrigin = planRepository.findByUserIdAndPlanDateOrderByPlanNoAsc(member, weekDay[i]);
                 for(Plan e : dayPlanOrigin) {
@@ -46,6 +48,7 @@ public class HomeService {
                     plan.put("plan", e.getPlan());
                     plan.put("checked", e.getPlanChecked());
                     dayPlan.add(plan);
+                    log.warn(String.valueOf(plan));
                 }
                 weekPlan.add(dayPlan);
             }

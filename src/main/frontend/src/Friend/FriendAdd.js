@@ -56,7 +56,6 @@ const FriendAdd = ({setCommnet, setModalHeader, setModalOpen, isAdd, getId}) => 
         const regex = /^([^#@:]\s?){2,32}#[0-9]{4}$/
         const current = e.target.value;
         setAddInput(current);
-        console.log(current);
         if (!regex.test(current)) {
             setInputMessage('친구의 닉네임#유저코드 형식')
             setIsOk(true)
@@ -66,19 +65,13 @@ const FriendAdd = ({setCommnet, setModalHeader, setModalOpen, isAdd, getId}) => 
         }
     }
 
-    // 친구요청 버튼 팝업(수정해야함)
-    //해당 유저가 없다면 0
-    //친구추가를 할 수 있는 유저라면 1
-    //친구추가가 되어있다면 2
-    //이미 내가 친구 신청을 했다면 3
-    //이미 상대가 친구 신청을 했다면 4
-    //자기 자신에게 친구 신청을 했다면 5
     const onClickAddBtn = async() => {
         console.log(getId, addInput);
         const response = await Api.notiAddFriend(getId, addInput);
         if(response.data === 1) { // 자신의 친구 목록에 없고 유효한 사용자
             setCommnet("친구 신청이 되었습니다.");
             setModalHeader("친구신청");
+            setAddInput("");
         } else if(response.data === 2) { //자신의 친구목록에 있음
             setCommnet("이미 친구 등록된 사용자입니다.");
             setModalHeader("친구신청");
@@ -98,11 +91,17 @@ const FriendAdd = ({setCommnet, setModalHeader, setModalOpen, isAdd, getId}) => 
         setModalOpen(true);
     }
 
+    const onKeyPressEnter = (e) => {
+        if(e.key === 'Enter'){
+            onClickAddBtn();
+        }
+    }
+
     return (
         <FriendFind className={isAdd? 'add_active_addbox' : ''}>
             <label>
                 <p>
-                    <input type="text" maxLength={25} placeholder='Nickname#0000' value={addInput} onChange={onChangeAddInput}/>
+                    <input type="text" maxLength={25} placeholder='Nickname#0000' value={addInput} onChange={onChangeAddInput} onKeyDown={onKeyPressEnter}/>
                     <span>{inputMessage}</span>
                 </p>
             </label>

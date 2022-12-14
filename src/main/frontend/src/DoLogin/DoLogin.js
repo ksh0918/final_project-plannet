@@ -101,10 +101,10 @@ const DoLogin = () => {
                         <img src={kakaoimg} alt="카카오로고" className="logImg"/>
                         카카오톡으로 로그인
                     </button>
-                    <a href="../google/login"><button className="login-btn2">
+                    <a href='../google/login'><button className="login-btn2"  onClick={onClickGoogle}>
                         <img src={googleimg1} alt="구글로고" className="logImg"/>
                         구글로 로그인
-                        </button></a>
+                    </button></a>
                     <button className="login-btn3" onClick={onClickLink}>
                         <img src={naverimg} alt="네이버로고" className="logImg"/>
                         네이버로 로그인

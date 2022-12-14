@@ -26,9 +26,14 @@ public class NotiController {
         String id = data.get("id");
         String keyword = data.get("keyword");
         int status = notiService.addFriend(id, keyword);
-        //해당 유저가 없다면 0
-        //친구추가를 할 수 있는 유저라면 1
-        //친구추가가 되어있다면 2
+        return new ResponseEntity(status, HttpStatus.OK);
+    }
+    @PostMapping("/unfriend")
+    public ResponseEntity<Integer> unfriend(@RequestBody Map<String, Long> data) {
+        System.out.println(data.get("key"));
+        // 서비스를 다녀옴
+        long key = data.get("key");
+        boolean status = notiService.unfriend(key);
         return new ResponseEntity(status, HttpStatus.OK);
     }
 
@@ -48,5 +53,17 @@ public class NotiController {
         }
         return new ResponseEntity(friendPageList, HttpStatus.OK);
     }
+    @GetMapping("/noti_answer")
+    public ResponseEntity<Boolean> notiAnswer(@RequestParam Long key, boolean status) {
+        boolean isOk = notiService.notiAnswer(key, status);
+        return new ResponseEntity(isOk, HttpStatus.OK);
+    }
+    @GetMapping("/check")
+    public ResponseEntity<Boolean> scalCheck(@RequestParam String id) {
+        boolean isOk = notiService.scalCheck(id);
+        return new ResponseEntity(isOk, HttpStatus.OK);
+    }
+
+
 
 }

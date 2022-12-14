@@ -65,9 +65,9 @@ const Noti = styled.div`
 
 const FriendNoti = ({setCommnet, setModalHeader, setModalOpen, setOption, notiList}) => {
     const onClickNoti = (e, status) => {
-        setOption("?key=" + e.key + "&type=" + e.type + "&status=" + status);
-        setCommnet((e.desc === 'F'? '친구 요청을 ' : '공유캘린더 초대를 ') + (status? '승락' : '거절') + '합니다.');
-        setModalHeader(e.desc);
+        setOption("?key=" + e.key + "&status=" + status);
+        setCommnet((e.type === 'F'? '친구 요청을 ' : '공유캘린더 초대를 ') + (status? '승락' : '거절') + '합니다.');
+        setModalHeader("알림반응");
         setModalOpen(true);
     }
     return (
