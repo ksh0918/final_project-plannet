@@ -6,6 +6,7 @@ import FriendAdd from './FriendAdd';
 import Api from "../api/plannetApi";
 import Modal from '../Utill/Modal';
 import FriendNoti from './FriendNoti';
+import { useNavigate } from 'react-router-dom';
 
 const Wrap = styled.div`
     width: 1130px;
@@ -18,23 +19,8 @@ const Section = styled.div`
     height: calc(100vh - 40px);
     float: left;
     position: relative;
-    overflow-y: scroll;
+    overflow-y: hidden;
     overflow-x: hidden;
-    &::-webkit-scrollbar {
-        width: 20px;
-        padding: 15px;
-    }
-    &::-webkit-scrollbar-thumb {
-        height: 30%; /* 스크롤바의 길이 */
-        background: #ddd; /* 스크롤바의 색상 */
-        border-radius: 10px;
-        border: 7px solid transparent;
-        background-clip: padding-box;
-    }
-    &::-webkit-scrollbar-track {
-        background: none;
-        /*스크롤바 뒷 배경 색상*/
-    }
     .friend, .noti {
         height: 550px;
         height: 100%;
@@ -46,20 +32,44 @@ const Section = styled.div`
     }
     .friend {
         width: 70%;
-        padding-left: 30px;     
+        padding-left: 30px;       
     }
     .noti {
         width: 30%;
-        div {
+        >div:first-of-type {
             width: 100%;
-            height: calc(100% - 70px);
-            padding: 10px;
+            height: calc(100% - 130px);
             background-color: #f9f9f9;
             border-radius: 5px;
             border: 2px solid #f9f9f9;
-            overflow: hidden;
+            overflow-y: scroll;
             &::-webkit-scrollbar {
                 display: none;
+            }
+        }
+        >div:last-of-type {
+            margin-top: 10px;
+            height: 50px;
+            border-radius: 25px;
+            text-align: center;
+            color: white;
+            font-size: 18px;
+            line-height: 50px;
+            background-color: #333;
+            transition: all .1s ease-in;
+            cursor: pointer;
+            i{
+                color: white;
+                font-size: 24px;
+                vertical-align: middle;
+                transition: all .1s ease-in;
+            }
+            &:hover{
+                background-color: #666;
+                color: #888;
+            }
+            &:hover i{
+                color: #888;
             }
         }
     }
@@ -94,28 +104,42 @@ const Section = styled.div`
 `;
 
 const Friend = () => {
+    const navigate = useNavigate();
+    const isPage = "친구삭제";
     const getId = window.localStorage.getItem("userId");
-    const [friendList, setFriendList] = useState([
-        {proImg: "https://images.unsplash.com/photo-1668603145974-c05f7a0e4552?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80", nickname: "안녕하세요", userCode: "#0000", profile: "자기소개입니다"}, 
-        {proImg: "https://images.unsplash.com/photo-1669847171248-8f12c8160d57?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80", nickname: "안녕하세요", userCode: "#0000", profile: "자기소개입니다"}]);
-    
+    const [friendList, setFriendList] = useState();
+    const [notiList, setNotiList] = useState();
     const [isAdd, setIsAdd] = useState(false);
+    const [option, setOption] = useState("");
 
     useEffect(() => {
-        const personalHome = async() => {
+        const friendPage = async() => {
             try{
-                const response = await Api.personalHome(getId);
+                const response = await Api.friendPageLoad(getId); //친구랑 알림 목록 불러오기
+                setFriendList(response.data.friendList);
+                setNotiList(response.data.notiList);
             } catch(e){
             console.log(e);
             }
         }
-        personalHome();
+        friendPage();
     },[getId]);
 
     
     const onClickaddFriend = (e) => {
         if(isAdd) setIsAdd(false);
         else setIsAdd(true);
+    }
+
+    const onClickAddSCal = async () => {
+        const response = await Api.scalCheck(getId); //2개이상의 scal에 참여중인지 확인 2개 이하면 true, 이상이면 false
+        console.log(response.data);
+        if(response.data) {
+            navigate("/scal/create");
+        } else {
+            setCommnet('최대 공유 캘린더 개수(2개)를 넘어 공유 캘린더를 생성할 수 없습니다.');
+            setModalOpen(true);
+        }
     }
 
     const [comment, setCommnet] = useState("");
@@ -126,20 +150,22 @@ const Friend = () => {
     const closeModal = () => {
         setModalOpen(false);
     };
+    
 
     return (
         <Wrap>
-            <Modal open={modalOpen} close={closeModal} header={modalHeader}>{comment}</Modal>
+            <Modal open={modalOpen} close={closeModal} header={modalHeader} option={option}><p dangerouslySetInnerHTML={{__html: comment}}></p></Modal>
             <Nav/>
             <Section>
                 <div className="friend">
                     <h2>Friend<i className={'bi bi-person-fill-add ' + (isAdd? 'add_active_logo' : '')} onClick={onClickaddFriend}></i></h2>
-                    <FriendAdd setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} isAdd={isAdd} />
-                    <FriendList setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} friendList={friendList} isAdd={isAdd}/>
+                    <FriendAdd setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} isAdd={isAdd} getId={getId}/>
+                    <FriendList setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} friendList={friendList} isAdd={isAdd} setOption={setOption} isPage={isPage}/>
                 </div>
                 <div className='noti'>
                     <h2>Notification</h2>
-                    <FriendNoti/>
+                    <FriendNoti setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} notiList={notiList} setOption={setOption}/>
+                    <div onClick={onClickAddSCal}>공유캘린더 생성하기<i className="bi bi-chevron-compact-right"/></div>
                 </div>
             </Section>
             <div className="copy">&#169; Plannet.</div>

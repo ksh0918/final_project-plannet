@@ -14,9 +14,9 @@ import plannet.final_project.vo.HomeDTO;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequestMapping("/home")
-@Slf4j
 @RequiredArgsConstructor
 public class HomeController {
     private final HomeService homeService;
@@ -31,7 +31,7 @@ public class HomeController {
             personalHome.put("planMark", homeDTO.getPlanMark());
             personalHome.put("memo", homeDTO.getMemo());
             personalHome.put("quote", homeDTO.getQuote());
-
+            log.warn(String.valueOf(personalHome));
             return new ResponseEntity(personalHome, HttpStatus.OK);
         } else {
             return new ResponseEntity(null, HttpStatus.OK);

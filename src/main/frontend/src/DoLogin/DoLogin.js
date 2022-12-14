@@ -68,10 +68,13 @@ const DoLogin = () => {
     const onClickLogin = async() => {
         try {
             const res = await Api.userLogin(inputId, inputPw);
-            if(res.data) {
+            if(res.data === 'normal') {
                 window.localStorage.setItem("isLogin", "true");
                 window.localStorage.setItem("userId", inputId);
                 navigate('/home');
+            } else if(res.data === 'google') {
+                setCommnet("구글 로그인을 이용해주세요.");
+                setModalOpen(true);
             } else {
                 setCommnet("아이디 또는 비밀번호가 정확하지 않습니다.");
                 setModalOpen(true);
@@ -98,10 +101,10 @@ const DoLogin = () => {
                         <img src={kakaoimg} alt="카카오로고" className="logImg"/>
                         카카오톡으로 로그인
                     </button>
-                    <a href="../google/login"><button className="login-btn2">
+                    <a href='../google/login'><button className="login-btn2"  onClick={onClickGoogle}>
                         <img src={googleimg1} alt="구글로고" className="logImg"/>
                         구글로 로그인
-                        </button></a>
+                    </button></a>
                     <button className="login-btn3" onClick={onClickLink}>
                         <img src={naverimg} alt="네이버로고" className="logImg"/>
                         네이버로 로그인

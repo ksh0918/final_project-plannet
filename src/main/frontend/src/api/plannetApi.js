@@ -57,17 +57,26 @@ const plannetApi = {
         };
         return await axios.post(PLANNET_DOMAIN + "member/delete", memberObj, HEADER);
     },
-    // 첫 소셜로그인시 정보 불러오기
-    changeSocialLogin: async function(email){ // 일반로그인에서 > 소셜로그인으로 전환
+    // 일반로그인에서 > 소셜로그인으로 전환
+    changeSocialLogin: async function(email){ 
         const reg = {
             email : email,
         };
         return await axios.post(PLANNET_DOMAIN + "member/change_social_login", reg, HEADER);
     },
+    // 소셜로그인
+    socialLoginFindId: async function(email){
+        const reg = {
+            email : email,
+        };
+        return await axios.post(PLANNET_DOMAIN + "member/social_login_find_id", reg, HEADER);
+    },
     // 첫 소셜로그인시 정보 저장하기
-    memberNewSocialSave: async function(id, nickname, tel){
+    memberNewSocialSave: async function(id, name, email, nickname, tel){
         const reg = {
             id : id,
+            name : name,
+            email : email,
             nickname : nickname,
             tel : tel,
         };
@@ -196,9 +205,9 @@ const plannetApi = {
     commentsWrite: async function(boardNo, id, detail){
         return await axios.get(PLANNET_DOMAIN + `board/comments_write?boardNo=${boardNo}&id=${id}&detail=${detail}`, HEADER);
     },
-    // 해당 게시물에 댓글 작성
+    // 해당 게시물에 댓글 삭제
     commentsDelete: async function(commentNo){
-        return await axios.get(PLANNET_DOMAIN + `board/comments_write?commentNo=${commentNo}`, HEADER);
+        return await axios.get(PLANNET_DOMAIN + `board/comments_delete?commentNo=${commentNo}`, HEADER);
     },
     // 자유게시판 글 작성
     boardWrite: async function(id, title, detail, isChecked){
@@ -226,7 +235,49 @@ const plannetApi = {
             num : num
         };
         return await axios.post(PLANNET_DOMAIN + "board/board_delete", object, HEADER);
-    }
+    },
+    //친구 추가 요청
+    notiAddFriend: async function(id, keyword) {
+        const object = {
+            id: id,
+            keyword: keyword
+        };
+        return await axios.post(PLANNET_DOMAIN + "noti/add_friend", object, HEADER);
+    },
+    //친구삭제
+    notiUnfriend: async function(option) {
+        const object = {
+            key: option
+        };
+        return await axios.post(PLANNET_DOMAIN + "noti/unfriend", object, HEADER);
+    },
+    //친구 페이지 불러오기
+    friendPageLoad: async function(id) {
+        return await axios.get(PLANNET_DOMAIN + `noti/friend_page_load?id=${id}`, HEADER);
+    },
+    //알림 승락거절
+    notiAnswer: async function(option) {
+        return await axios.get(PLANNET_DOMAIN + `noti/noti_answer${option}`, HEADER);
+    },
+    // 공유 캘린더 갯수 확인
+    scalCheck: async function(id) {
+        return await axios.get(PLANNET_DOMAIN + `noti/check?id=${id}`, HEADER);
+    },
+    // 공유 캘린더 생성
+    scalCreate: async function(id, title, friendList) {
+        const object = {
+            id: id,
+            title: title
+        };
+        return await axios.post(PLANNET_DOMAIN + "scal/create", object, HEADER);
+    },
+    // 공유 캘린더 home/달력/주간일정/메모/명언 출력
+    scalHome: async function(id) {
+        const object = {
+            id: id
+        };
+        return await axios.post(PLANNET_DOMAIN + "scal/home", object, HEADER);
+    },
 }
 
 export default plannetApi;

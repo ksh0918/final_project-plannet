@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Modal from '../Utill/Modal';
 import Api from '../api/plannetApi'
 import Nav from '../Utill/Nav';
+import { useNavigate  } from "react-router-dom";
 import moment from 'moment';
 
 const Wrap = styled.div`
@@ -120,7 +121,7 @@ const Section = styled.div`
         .left-space {
             margin-left: 10px;
         }
-        .bi {color: #ff41a0;}
+        .bi {color: #fcb1d3;}
     }
     .util_box{
         .page_list {
@@ -153,31 +154,32 @@ const Section = styled.div`
     .comment_box {
         width: 100%;
         min-height: 300px;
+        text-align: left;
         table{width: 100%; margin: 10px 0;}
         table, tr, td{
             border-collapse: collapse;
-            padding: 20px;
-            border: 1px solid white;
             background: none;
             border-bottom: 1px solid #ddd;
         }
         th {
-            text-align: left;
             font-size: 20px;
+            padding: 0px 0px 15px 5px;
+            border-bottom: 2px solid #ddd;
         }
-        .th_3 {
-            width: 100px;
-        }
+        tr td {padding: 0px 10px;}
         tr td:first-child {
-            width: 100px;
+            width: 130px;
         }
         tr td:nth-child(2) {
             padding: 5px 15px;
+            word-break: break-all;
         }
         td:last-child {
-            width: 200px;
-            font-size: 8px;
+            width: 140px;
+            font-size: 12px;
         }
+        button {padding: 0px;}
+        .bi {font-size:12px; padding-left: 5px;}
     }
     .button-area2 {
         text-align: right;
@@ -210,6 +212,7 @@ const Section = styled.div`
 `;
 
 const PostView = () => {
+    const navigate = useNavigate();
     // localStorage 저장 정보
     const getId = window.localStorage.getItem("userId");
     let params = useParams(); // url에서 boardNo를 가져오기 위해 uesParams() 사용
@@ -260,6 +263,11 @@ const PostView = () => {
         setCommentsList(response.data);
         setComments(''); // 등록 후 댓글창 빈칸으로 만들기
     } 
+    // 댓글 삭제
+    const onClickDeleteComment = async(commentNo) => {
+        await Api.commentsDelete(commentNo); 
+        navigate(0);
+    } 
     
     // 본문 불러오기
     useEffect(() => {
@@ -279,17 +287,13 @@ const PostView = () => {
 
                 // 댓글 불러오기
                 const response = await Api.commentsLoad(getNum);
-                console.log(response);
-                // window.localStorage.setItem("commentNum",response4.data.value[1]);
                 setCommentsList(response.data);
-                console.log(comments);
             } catch (e) {
                 console.log(e);
             } 
         };
         postViewLoad();
     }, [getNum]);
-    // console.log(commentsList);
 
     return(
         <Wrap>
@@ -326,13 +330,13 @@ const PostView = () => {
                         <tr>
                             <th>Writer</th>
                             <th>Comment</th>
-                            <th className='th_3'>Date</th>
+                            <th>Date</th>
                         </tr>
-                        {commentsList.map(({no, writerId, nickname, detail, date})=>(
+                        {commentsList.map(({no, commentNo, writerId, nickname, detail, date})=>(
                             <tr key={no}>
                                 <td>{nickname}</td>
                                 <td>{detail}</td>
-                                <td>{date}{getId === writerId ? <i class="bi bi-x"></i> : null}</td>
+                                <td>{date}{getId === writerId ? <button><i class="bi bi-x-lg" onClick={()=> onClickDeleteComment(commentNo)}></i></button> : null}</td>
                             </tr>
                         ))}
                     </table>

@@ -239,7 +239,7 @@ const Nav = () => {
                 <h2>Let's plan it!</h2>
             </div>
             <div className="userinfo">
-                <div className="userImgBox" style={{backgroundImage: "url('https://khprojectplannet.s3.ap-northeast-2.amazonaws.com/"+ userInfo[3] +"')"}}/>
+                <div className="userImgBox" style={{backgroundImage: "url('https://plannetmanager5.s3.ap-northeast-2.amazonaws.com/"+ userInfo[3] +"')"}}/>
                 <p className="userName">{userInfo[0]}</p>
                 <p className="userId"># {userInfo[1]}<span className="tooltip"><Link to="/setting"><i className="bi bi-gear-fill"/><span class="tooltiptext tooltip-bottom">설정</span></Link></span><span className="tooltip"><i className="bi bi-box-arrow-right" onClick={onClickBtn}></i><span class="tooltiptext tooltip-bottom">로그아웃</span></span></p>
                 <div className="userPro" style={{height: 'calc(80vh - ' + proHeight + 'px)'}}>{userInfo[2]}</div>

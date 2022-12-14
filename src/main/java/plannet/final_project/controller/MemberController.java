@@ -1,5 +1,6 @@
 package plannet.final_project.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -7,18 +8,15 @@ import org.springframework.web.bind.annotation.*;
 import plannet.final_project.service.MemberService;
 import plannet.final_project.vo.MemberDTO;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@RestController
 @Slf4j
+@RestController
 @RequestMapping("/member")
+@RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
-    public MemberController(MemberService memberService){
-        this.memberService = memberService;
-    }
 
     @PostMapping("/login")
     public ResponseEntity<Boolean> memberLogin(@RequestBody Map<String, String> loginData){
@@ -116,9 +114,11 @@ public class MemberController {
     @PostMapping("/new_social_save")
     public ResponseEntity<Boolean> newSocialSave(@RequestBody Map<String,String> save){
         String id = save.get("id");
+        String name = save.get("name");
+        String email = save.get("email");
         String nickname = save.get("nickname");
         String tel = save.get("tel");
-        boolean isSave = memberService.newSocialSave(id, nickname, tel);
+        boolean isSave = memberService.newSocialSave(id, name, email, nickname, tel);
         if(isSave){
             return new ResponseEntity(true,HttpStatus.OK);
         }
@@ -128,14 +128,26 @@ public class MemberController {
     }
 
     @PostMapping("/change_social_login")
-    public ResponseEntity<Boolean> changeSocialLogin(@RequestBody Map<String,String> change){
+    public ResponseEntity<String> changeSocialLogin(@RequestBody Map<String,String> change){
         String email = change.get("email");
-        boolean isSave = memberService.changeSocialLogin(email);
-        if(isSave){
-            return new ResponseEntity(true,HttpStatus.OK);
+        String userId = memberService.changeSocialLogin(email);
+        if(!userId.equals("NOK")){
+            return new ResponseEntity(userId,HttpStatus.OK);
         }
         else{
-            return new ResponseEntity(false,HttpStatus.OK);
+            return new ResponseEntity("NOK",HttpStatus.OK);
+        }
+    }
+    @PostMapping("/social_login_find_id")
+    public ResponseEntity<String> socialLoginFindId(@RequestBody Map<String,String> change){
+        String email = change.get("email");
+        String userId = "userID:" + memberService.socialLoginFindId(email);
+        if(!userId.equals("NOK")){
+            System.out.println(userId);
+            return new ResponseEntity(userId,HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity("NOK",HttpStatus.OK);
         }
     }
 }

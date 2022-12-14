@@ -4,6 +4,8 @@ import styled from "styled-components";
 import Api from "../api/plannetApi";
 import Nav from "../Utill/Nav";
 import PlanList from "./PlanList";
+import Swal from 'sweetalert';
+import { useBeforeunload } from "react-beforeunload";
 
 const Wrap = styled.div`
     width: 1130px;
@@ -212,8 +214,29 @@ const Section = styled.div`
         text-decoration: line-through;
     }
 `;
-
 const Write = () => {
+    window.onpopstate = (event) =>{
+             event.preventDefault();
+             if(event){
+                 console.log('if문 안');
+                 console.log(event);
+                 Swal({
+                     title : "저장이 되지 않습니다!",
+                     text : "저장을 누르지 않고 뒤로가기 시에 저장이 되지 않습니다.",
+                     icon : "warning",
+                     buttons : "확인",
+                 })
+             };
+             console.log("뒤로가기");
+         };
+
+    window.addEventListener('beforeunload', (event) => {
+        // 표준에 따라 기본 동작 방지
+        event.preventDefault();
+        // Chrome에서는 returnValue 설정이 필요함
+        event.returnValue = '';
+    });
+
     const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
         const { date } = useParams();
@@ -252,38 +275,39 @@ const Write = () => {
         await Api.writeSave(getId, date, planList, diary);
         navigate("/home");
     }
-        return (
-            <Wrap>
-                <Nav/>
-                <Section>
-                    <div className="btnbox">
-                        <button className="back" onClick={onClickSave}>
+    return (
+        <Wrap>
+            <Nav/>
+            <Section>
+                <div className="btnbox">
+                    <button className="back" onClick={onClickSave}>
                         <i className="bi bi-chevron-compact-left"/>{date}
+                    </button>
+                </div>
+                <div className="plan_it sub_box">
+                    <h2>Plan it</h2>
+                    <div className="write_box">
+                        <PlanList planList={planList} setPlanList={setPlanList}/>
+                        <hr/>
+                        <button onClick={onClickAddList}>
+                            <i className="bi bi-plus-lg"></i> 추가하기
                         </button>
                     </div>
-                    <div className="plan_it sub_box">
-                        <h2>Plan it</h2>
-                        <div className="write_box">
-                            <PlanList planList={planList} setPlanList={setPlanList}/>
-                            <hr/>
-                            <button onClick={onClickAddList}>
-                                <i className="bi bi-plus-lg"></i> 추가하기
-                            </button>
-                        </div>
+                </div>
+                <div className="diary sub_box">
+                    <h2>Diary</h2>
+                    <div className="write_box">
+                        <textarea maxLength={800} onChange={onChangeDiary} value={diary}></textarea>
                     </div>
-                    <div className="diary sub_box">
-                        <h2>Diary</h2>
-                        <div className="write_box">
-                            <textarea maxLength={800} onChange={onChangeDiary} value={diary}></textarea>
-                        </div>
-                    </div>
-                    <div className="btnbox">
-                        <button className="save" onClick={onClickSave}>SAVE</button>
-                    </div>
-                </Section>
-                <div className="copy">&#169; Plannet.</div>
-            </Wrap>
-        );
+                </div>
+                <div className="btnbox">
+                    <button className="save" onClick={onClickSave}>SAVE</button>
+                </div>
+            </Section>
+            <div className="copy">&#169; Plannet.</div>
+            
+        </Wrap>
+    );
 }
 
 export default Write;

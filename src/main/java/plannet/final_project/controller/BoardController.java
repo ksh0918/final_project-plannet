@@ -1,5 +1,6 @@
 package plannet.final_project.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +15,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-@RestController
 @Slf4j
+@RestController
 @RequestMapping("/board")
+@RequiredArgsConstructor
 public class BoardController {
     // Service 로직 연결
     private final BoardService boardService;
-    public BoardController(BoardService boardService) { this.boardService = boardService; }
 
     // 전체 보드 리스트 불러오기
     @GetMapping("/list")
@@ -142,19 +143,16 @@ public class BoardController {
 
     // 자유게시판 글 작성
     @PostMapping("/board_write")
-    public ResponseEntity<Boolean> boardWrite(@RequestBody Map<String, String> boardWriteDate) {
+    public ResponseEntity<Long> boardWrite(@RequestBody Map<String, String> boardWriteDate) {
         String id = boardWriteDate.get("id");
         String title = boardWriteDate.get("title");
         String detail = boardWriteDate.get("detail");
-        int isChecked = Integer.parseInt(boardWriteDate.get("isChecked"));
-
-        boolean result = boardService.boardWrite(id, title, detail, isChecked);
-        if(result) {
-            return new ResponseEntity(true, HttpStatus.OK);
+        int isChecked = 0;
+        if (boardWriteDate.get("isChecked").equals("true")){
+            isChecked = 1;
         }
-        else {
-            return new ResponseEntity(false, HttpStatus.BAD_REQUEST);
-        }
+        Long resultNo = boardService.boardWrite(id, title, detail, isChecked);
+        return new ResponseEntity(resultNo, HttpStatus.OK);
     }
 
     // 자유게시판 글 수정

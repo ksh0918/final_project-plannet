@@ -6,6 +6,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Api from "../api/plannetApi";
 import Nav from "../Utill/Nav";
 import axios, { Axios } from 'axios';
+import Modal from '../Utill/Modal';
 
 const Wrap = styled.div`
     width: 1130px;
@@ -191,14 +192,20 @@ const Section = styled.div`
 function Create() {
     const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
-    const [title, setTitle] = useState();
-    const [detail, setDetail] = useState();
+    const [title, setTitle] = useState("");
+    const [detail, setDetail] = useState("");
     const [isChecked, setIsChecked] = useState(false);
     const [lengthCheck, setLengthCheck] = useState(false);
 
     const onClickSave = async() => {
-        await Api.boardWrite(getId, title, detail, isChecked);
-        navigate('/board/board_write');
+        if (detail.length === 0 || title.length === 0) {
+            setComment("제목과 내용을 입력해 주세요");
+            setModalOpen(true); 
+        } else {
+            const resultNo = await Api.boardWrite(getId, title, detail, isChecked);
+            const linkNo = resultNo.data;
+            navigate('/board/post_view/' + linkNo);
+        }
     }
 
     const onChangeTitle = (e) => {
@@ -208,9 +215,17 @@ function Create() {
     const handleChecked = (e) => {
         setIsChecked(e.target.checked);
       };
+    
+    // 제목, 내용 null 방지
+    const [comment, setComment] = useState("");
+    const [modalOpen, setModalOpen] = useState(false);
+    const closeModal = () => {
+        setModalOpen(false);
+    };
 
     return (
         <Wrap>
+            <Modal open={modalOpen} close={closeModal} header="글쓰기 안내">{comment}</Modal>
             <Nav></Nav>
             <Section>
                 <div className="board_list sub_box">

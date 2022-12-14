@@ -21,11 +21,12 @@ import plannet.final_project.service.MemberService;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 
+@Slf4j
 @Controller
 @RequestMapping(value = "/google")
 @RequiredArgsConstructor
-@Slf4j
 public class GoogleController {
     private final ConfigUtils configUtils;
     private final MemberService memberService;
@@ -93,12 +94,14 @@ public class GoogleController {
                 String name = userInfoDto.getName();
                 int regStatus = memberService.googleLoginReg(email);
 
+//                return "redirect:"+ UriComponentsBuilder.fromUriString("http://15.165.75.129:8111/social")
                 return "redirect:"+ UriComponentsBuilder.fromUriString("http://localhost:8111/social")
                         .queryParam("id", id)
                         .queryParam("name", name)
                         .queryParam("email", email)
                         .queryParam("regStatus", regStatus) //구글로 가입된 회원은 0 , 일반 회원은 1, 첫 구글로그인 2
-                        .build();
+                        .build()
+                        .encode(StandardCharsets.UTF_8);
             }
             else {
                 throw new Exception("Google OAuth failed!");
@@ -108,6 +111,7 @@ public class GoogleController {
             e.printStackTrace();
         }
 
+//        return "redirect:"+ UriComponentsBuilder.fromUriString("http://15.165.75.129:8111/social")
         return "redirect:"+ UriComponentsBuilder.fromUriString("http://localhost:8111/social")
                 .queryParam("regStatus", "3") //오류시 3을 보냄
                 .build();

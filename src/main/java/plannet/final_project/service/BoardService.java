@@ -2,6 +2,7 @@ package plannet.final_project.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToFile;
 import org.springframework.stereotype.Service;
 import plannet.final_project.dao.BoardRepository;
 import plannet.final_project.dao.CommentsRepository;
@@ -21,10 +22,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 // 의존성 주입을 받는다: 객체 생성 없이 사용할 수 있게 한다
-@Service
-@RequiredArgsConstructor
 @Slf4j // log를 찍기 위한 어노테이션
+@Service
 @Transactional
+@RequiredArgsConstructor
 public class BoardService {
     private final MemberRepository memberRepository;
     private final BoardRepository boardRepository; // 의존성 주입을 받음
@@ -60,14 +61,7 @@ public class BoardService {
 
     // 인기글 리스트 불러오기
     public BoardDTO getTop3List() {
-        System.out.println("여긴오니1");
         List<Integer> top3BoardNo = likeCntRepository.findAllTop3GroupByBoardNoOrderByCountByBoardNoDescBoardNoDesc();
-        System.out.println("여긴오니2");
-        for (Integer e : top3BoardNo) {
-            System.out.println("여기는");
-            System.out.println(e);
-        }
-        System.out.println("여기가 출력입니다:" + top3BoardNo);
         BoardDTO boardDTO = new BoardDTO();
         List<Map<String, Object>> boardList = new ArrayList<>();
         try {
@@ -202,6 +196,7 @@ public class BoardService {
             List<Comments> data = commentsRepository.findByBoardNo(board);
             for (Comments e : data) {
                 Map<String, Object> comments = new HashMap<>();
+                comments.put("commentNo", e.getCommentNo());
                 comments.put("writerId", e.getUserId().getId());
                 comments.put("nickname", e.getUserId().getNickname());
                 comments.put("detail", e.getDetail());
@@ -234,18 +229,8 @@ public class BoardService {
 
     // 자유게시판 댓글 삭제하기
     public boolean commentsDelete(Long commentNo) {
-        System.out.println("여긴 들어오니");
         try {
-            System.out.println("여긴");
             commentsRepository.deleteById(commentNo);
-            System.out.println("여긴?");
-//            Comments comments = new Comments();
-//
-//            comments.setUserId(memberRepository.findById(id).orElseThrow());
-//            comments.setBoardNo(boardRepository.findById(boardNo).orElseThrow());
-//            comments.setDetail(detail);
-//            comments.setWriteDate(LocalDateTime.now());
-//            commentsRepository.save(comments);
             return true;
         } catch (Exception e) {
             return true;
@@ -253,7 +238,8 @@ public class BoardService {
     }
 
     // 자유게시판 글 작성하기
-    public boolean boardWrite(String id, String title, String detail, int isChecked){
+    public Long boardWrite(String id, String title, String detail, int isChecked){
+        Long resultNo = Long.valueOf(0);
         try {
             Board board = new Board();
             board.setUserId(memberRepository.findById(id).orElseThrow());
@@ -262,11 +248,13 @@ public class BoardService {
             board.setIsChecked(isChecked);
             board.setWriteDate(LocalDateTime.now());
             boardRepository.save(board);
-            return true;
+            resultNo = boardRepository.findLastBoardNo(id);
+            return resultNo;
         } catch (Exception e) {
-            return true;
+            return resultNo;
         }
     }
+
 
     // 자유게시판 글 수정하기
     public boolean boardEdit(String userId, Long boardNo, String title, String detail) {
