@@ -61,14 +61,7 @@ public class BoardService {
 
     // 인기글 리스트 불러오기
     public BoardDTO getTop3List() {
-        System.out.println("여긴오니1");
         List<Integer> top3BoardNo = likeCntRepository.findAllTop3GroupByBoardNoOrderByCountByBoardNoDescBoardNoDesc();
-        System.out.println("여긴오니2");
-        for (Integer e : top3BoardNo) {
-            System.out.println("여기는");
-            System.out.println(e);
-        }
-        System.out.println("여기가 출력입니다:" + top3BoardNo);
         BoardDTO boardDTO = new BoardDTO();
         List<Map<String, Object>> boardList = new ArrayList<>();
         try {
@@ -236,18 +229,8 @@ public class BoardService {
 
     // 자유게시판 댓글 삭제하기
     public boolean commentsDelete(Long commentNo) {
-        System.out.println("여긴 들어오니");
         try {
-            System.out.println("여긴");
             commentsRepository.deleteById(commentNo);
-            System.out.println("여긴?");
-//            Comments comments = new Comments();
-//
-//            comments.setUserId(memberRepository.findById(id).orElseThrow());
-//            comments.setBoardNo(boardRepository.findById(boardNo).orElseThrow());
-//            comments.setDetail(detail);
-//            comments.setWriteDate(LocalDateTime.now());
-//            commentsRepository.save(comments);
             return true;
         } catch (Exception e) {
             return true;
