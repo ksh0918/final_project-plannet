@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Nav from "../Utill/Nav";
 import Api from '../api/plannetApi'
@@ -201,7 +201,7 @@ const Board = () => {
     // 타이틀 클릭 시 작성자 id 와 다르면 조회수 +1
     const viewsUp = async (boardNo, writerId) => {
         if(writerId !== getId) {
-            const response = await Api.boardViewsUp(boardNo);
+            await Api.boardViewsUp(boardNo);
         }
         const link = "post_view/" + boardNo;
         navigate(link);
