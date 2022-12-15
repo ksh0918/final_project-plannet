@@ -16,9 +16,9 @@ import PostView from './Board/PostView';
 import PublicRoute from './Lib/PublicRoute';
 import PrivateRoute from './Lib/PrivateRoute';
 import Friend from './Friend/Friend';
-import SCalCreate from './SCal/SCalCreate';
-import SCalHome from './SCal/SCalHome';
-import SCalWrite from './SCal/SCalWrite';
+import SCalCreate from './SCAL/SCalCreate';
+import SCalHome from './SCAL/SCalHome';
+import SCalWrite from './SCAL/SCalWrite';
 
 function App() {
     return (
