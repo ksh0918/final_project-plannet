@@ -87,6 +87,7 @@ const Friends = styled.div`
         transform:translateY(-50%);
     }
     .scalFriend_btn {
+        transition: all .3s ease-in;
         font-size: 20px;
         float: right;
     }
@@ -96,15 +97,15 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
 
     // 친구삭제 버튼 팝업(수정해야함)
     const onClickUnfriend = (e) => {
-        setOption(e.key);
+        setOption(e);
         setCommnet("친구를 삭제하시겠습니까?</br>(삭제 시 상호 삭제됩니다)");
         setModalHeader("친구삭제");
         setModalOpen(true);
     }
-// 친구 추가?
-    const onClickSCalfriend = () => {
-
-    }
+// 공유 캘린더 멤버로 추가
+//    const onClickSCalfriend = (e) => {
+//
+//    }
 
     return (
         <Friends className={(friendList? 'is_list' : '') + ' ' + (isAdd? 'add_active_box' : '')}>
@@ -118,12 +119,12 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
                             <span>&#35;{e.userCode}</span>
                         </p>
                         <p>{e.profile}</p>
-                        {isPage === "친구삭제" && <i className="bi bi-x-lg unfriend_btn" onClick={onClickUnfriend}></i>}
-                        {isPage === "공유캘린더" && <i className="bi bi-plus-lg scalFriend_btn" onClick={onClickSCalfriend}></i>}
+                        {isPage === "친구삭제" && <i className="bi bi-x-lg unfriend_btn" onClick={() => onClickUnfriend(e.key)}></i>}
+                        {isPage === "공유캘린더" && <i className="bi bi-plus-lg scalFriend_btn"></i>}
 
                     </li>
                 );})}
-                {isPage === "친구추가" && <p>더 많은 친구를 추가해보세요!</p>}
+                {isPage === "친구삭제" && <p>더 많은 친구를 추가해보세요!</p>}
             </ul>
             :
             <p className='nothing'><b>등록된 친구가 아직 없습니다.</b><br/>상단 오른쪽의 버튼을 눌러 친구를 추가해보세요!</p>}

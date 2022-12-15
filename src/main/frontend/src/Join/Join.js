@@ -263,10 +263,10 @@ const Join = () => {
                         <input type='email' placeholder="이메일" value={inputEmail}  onChange={onChangeEmail} onBlur={onBlurEmailCheck}/>
                         <button type='button' onClick={onClickAuth}>인증번호 받기</button>
                     </div>
+                    {inputAuth.length > 0 && <span>{authMessage}</span>}
                     <div className='email_auth'>
                         <input type='text'placeholder="인증번호 확인" value = {inputAuth} onChange={onChangeAuth} disabled={!clickAuth}></input>
                         <button type='button' onClick={onCheckAuth} disabled={!clickAuth}>인증하기</button>
-                        {inputAuth.length > 0 && <span>{authMessage}</span>}
                     </div>
                     
                 </div>

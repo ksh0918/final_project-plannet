@@ -2,7 +2,11 @@ package plannet.final_project.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import plannet.final_project.dao.FriendRepository;
 import plannet.final_project.dao.MemberRepository;
 import plannet.final_project.dao.NotiRepository;
@@ -84,6 +88,18 @@ public class NotiService {
             return result; // 해당유저 없음 0
         }
     }
+    public boolean unfriend(long key) {
+        try{
+            Friend f1 = friendRepository.findById(key).orElseThrow(EntityNotFoundException::new);
+            Member m1 = f1.getUserId();
+            Member m2 = f1.getFriendId();
+            friendRepository.deleteById(key);
+            friendRepository.deleteById(friendRepository.findByUserIdAndFriendId(m2, m1).getFriendNo());
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
     public NotiDTO friendPageLoad(String id) {
         NotiDTO notiDTO = new NotiDTO();
         Member member = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
@@ -147,6 +163,16 @@ public class NotiService {
             noti.setIsChecked(1);
             notiRepository.save(noti);
             return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    public boolean scalCheck(String id) {
+        try{
+            Member member = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+            log.warn(String.valueOf(smemRepository.findByUserId(member).size()));
+            if(smemRepository.findByUserId(member).size() < 2) return true;
+            else return false;
         } catch (Exception e) {
             return false;
         }

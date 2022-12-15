@@ -1,12 +1,28 @@
 package plannet.final_project.vo;
 
-import java.time.LocalDateTime;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+@Getter @Setter
 public class ShareDTO {
     //s_cal
     private Long calNo; // 공유 캘린더 고유번호
     private String calName; // 공유 캘린더 이름
     private String calMemo; // 공유 캘린더 메모
+
+    private List<List<Map<String, Object>>> weekPlan;
+    private List<Set<LocalDate>> planMark;
+    private List<Map<String, Object>> memberList;
+    private String memo;
+    private boolean isOk;
+
+
 
     //s_mem
     private boolean calOwner; // 공유 캘린더 만든이 여부

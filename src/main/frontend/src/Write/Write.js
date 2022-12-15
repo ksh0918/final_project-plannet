@@ -215,38 +215,20 @@ const Section = styled.div`
     }
 `;
 const Write = () => {
-//    window. = (event) =>{
-//        event.preventDefault();
-//        if(event){
-//            console.log('if문 안');
-//            console.log(event);
-//            Swal({
-//                title : "저장이 되지 않습니다!",
-//                text : "저장이 되지 않습니다 뒤로 가시겠습니까?",
-//                icon : "warning",
-//                buttons : {
-//                    bnt1 : {
-//                        text : "No",
-//                        value : "NoBack"
-//                    },
-//                    bnt2 : {
-//                        text : "Yes",
-//                        value : "goBack"
-//                    }
-//                },
-//            })
-//            .then((value) => {
-//                switch(value) {
-//                    case "NoBack" :
-//
-//                        break;
-//                    case "goBack" :
-//                        break;
-//                }
-//            });
-//        };
-//        console.log("뒤로가기");
-//    };
+    window.onpopstate = (event) =>{
+             event.preventDefault();
+             if(event){
+                 console.log('if문 안');
+                 console.log(event);
+                 Swal({
+                     title : "저장이 되지 않습니다!",
+                     text : "저장을 누르지 않고 뒤로가기 시에 저장이 되지 않습니다.",
+                     icon : "warning",
+                     buttons : "확인",
+                 })
+             };
+             console.log("뒤로가기");
+         };
 
     window.addEventListener('beforeunload', (event) => {
         // 표준에 따라 기본 동작 방지
