@@ -277,12 +277,41 @@ const plannetApi = {
         return await axios.post(PLANNET_DOMAIN + "scal/create", object, HEADER);
     },
     // 공유 캘린더 home/달력/주간일정/메모/명언 출력
-    scalHome: async function(id) {
-        const object = {
-            id: id
-        };
-        return await axios.post(PLANNET_DOMAIN + "scal/home", object, HEADER);
+    sharingHome: async function(calNo) {
+        return await axios.get(PLANNET_DOMAIN + `scal/sharing?calNo=${calNo}`, HEADER);
     },
+    // 공유 캘린더 메모 저장
+    scalMemoSave: async function(calNo, detail) {
+        const object = {
+            calNo: calNo,
+            detail: detail
+        };
+        return await axios.post(PLANNET_DOMAIN + "scal/memo", object, HEADER);
+    },
+    // 공유 캘린더 일정 불러오기
+    scalPlanLoad: async function(calNo) {
+        const object = {
+            calNo: calNo,
+            date: date
+        };
+        return await axios.get(PLANNET_DOMAIN + "scal/plan_load", object, HEADER);
+    },
+    // // 해당 캘린더에 작성된 댓글 불러오기
+    // scalCommentsLoad: async function(calNo) {
+    //     const object = {
+    //         calNo: calNo,
+    //         date: date
+    //     };
+    //     return await axios.get(PLANNET_DOMAIN + "scal/plan_load", object, HEADER);
+    // },
+    // // 해당 캘린더에 댓글 작성
+    // commentsWrite: async function(boardNo, id, detail){
+    //     return await axios.get(PLANNET_DOMAIN + `board/comments_write?boardNo=${boardNo}&id=${id}&detail=${detail}`, HEADER);
+    // },
+    // // 해당 캘린더에 댓글 삭제
+    // commentsDelete: async function(commentNo){
+    //     return await axios.get(PLANNET_DOMAIN + `board/comments_delete?commentNo=${commentNo}`, HEADER);
+    // },
     // 공유 캘린더 멤버 추가 요청
     scalAddMember: async function(id, keyword) {
         const object = {
