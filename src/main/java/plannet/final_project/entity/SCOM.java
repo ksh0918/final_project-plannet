@@ -6,6 +6,7 @@ import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter @Setter
@@ -22,7 +23,7 @@ public class SCOM {
     private SCAL calNo;
 
     @CreatedDate
-    private LocalDateTime planDate;
+    private LocalDate planDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id")

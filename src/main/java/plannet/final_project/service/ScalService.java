@@ -5,15 +5,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import plannet.final_project.dao.*;
 import plannet.final_project.entity.*;
+import plannet.final_project.vo.BoardDTO;
 import plannet.final_project.vo.ShareDTO;
 import plannet.final_project.entity.Diary;
 import plannet.final_project.entity.Member;
 import plannet.final_project.entity.Plan;
 
+import javax.crypto.ExemptionMechanismException;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 
@@ -29,6 +33,7 @@ public class ScalService {
     private final MemberRepository memberRepository;
     private final DiaryRepository diaryRepository;
     private final PlanRepository planRepository;
+    private final SCOMRepository scomRepository;
 
     // 내용 로드
     public ShareDTO homeList(Long calNo) {
@@ -134,5 +139,55 @@ public class ScalService {
             shareDTO.setOk(false);
         }
         return shareDTO;
+    }
+
+    // 공유캘린더 댓글 불러오기
+    public ShareDTO getCommentsLoad (Long calNo, LocalDate planDate) {
+        ShareDTO shareDTO = new ShareDTO();
+        try {
+            List<Map<String, Object>> commentsList = new ArrayList<>();
+            SCAL scal = scalRepository.findById(calNo).orElseThrow();
+            List<SCOM> data = scomRepository.findByCalNoAndPlanDate(scal, planDate);
+            for (SCOM e : data) {
+                Map<String, Object> comments = new HashMap<>();
+                comments.put("commentNo", e.getCommentNo());
+                comments.put("writerId", e.getUserId().getId());
+                comments.put("nickname", e.getUserId().getNickname());
+                comments.put("detail", e.getDetail());
+                comments.put("date", e.getWriteDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+                commentsList.add(comments);
+            }
+            shareDTO.setComentsList(commentsList);
+            shareDTO.setOk(true);
+        } catch (Exception e) {
+            shareDTO.setOk(false);
+        }
+        return shareDTO;
+    }
+
+    // 공유캘린더 댓글 작성하기
+    public boolean commentsWrite(Long calNo, LocalDate planDate, String id, String detail) {
+        try {
+            SCOM scomComments = new SCOM();
+            scomComments.setUserId(memberRepository.findById(id).orElseThrow());
+            scomComments.setCalNo(scalRepository.findById(calNo).orElseThrow());
+            scomComments.setPlanDate(planDate);
+            scomComments.setWriteDate(LocalDateTime.now());
+            scomComments.setDetail(detail);
+            scomRepository.save(scomComments);
+            return true;
+        } catch (Exception e) {
+            return true;
+        }
+    }
+
+    // 공유캘린더 댓글 삭제하기
+    public boolean commentsDelete(Long commentNo) {
+        try {
+            scomRepository.deleteById(commentNo);
+            return true;
+        } catch (Exception e) {
+            return true;
+        }
     }
 }
