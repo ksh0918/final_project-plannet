@@ -5,13 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import plannet.final_project.dao.*;
 import plannet.final_project.entity.*;
-import plannet.final_project.vo.BoardDTO;
 import plannet.final_project.vo.ShareDTO;
-import plannet.final_project.entity.Diary;
-import plannet.final_project.entity.Member;
-import plannet.final_project.entity.Plan;
 
-import javax.crypto.ExemptionMechanismException;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.time.DayOfWeek;
@@ -30,7 +25,9 @@ public class ScalService {
     private final SMEMRepository smemRepository;
     private final SPLANRepository splanRepository;
     private final SCALRepository scalRepository;
+    private final FriendRepository friendRepository;
     private final MemberRepository memberRepository;
+    private final NotiRepository notiRepository;
     private final DiaryRepository diaryRepository;
     private final PlanRepository planRepository;
     private final SCOMRepository scomRepository;
@@ -105,7 +102,7 @@ public class ScalService {
         return shareDTO;
     }
 
-    // 메모 불러오기 & 수정
+    // 메모 수정
     public boolean memoWrite(Long calNo, String detail) {
         try {
             SCAL scal = scalRepository.findById(calNo).orElseThrow();
@@ -188,6 +185,108 @@ public class ScalService {
             return true;
         } catch (Exception e) {
             return true;
+        }
+    }
+
+    public ShareDTO infoLoad(Long calNo, String id) {
+        ShareDTO shareDTO = new ShareDTO();
+        List<Map<String, Object>> memberList = new ArrayList<>();
+        try {
+            SCAL scal = scalRepository.findById(calNo).orElseThrow(EntityNotFoundException::new);
+            List<SMEM> memberData = smemRepository.findByCalNo(scal);
+
+            if(scal.getUserId().getId().equals(id)) { // 오너인 경우
+                Member owner = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+                List<Friend> friendData = friendRepository.findByUserId(owner);
+                List<String> memberId = new ArrayList<>();
+                for(SMEM e : memberData) {
+                    memberId.add(e.getUserId().getId());
+                }
+                for(Friend e : friendData) {
+                    Map<String, Object> friend = new HashMap<>();
+                    friend.put("key", e.getFriendNo());
+                    friend.put("id", e.getUserId().getId());
+                    friend.put("proImg", e.getUserId().getProImg());
+                    friend.put("nickname", e.getUserId().getNickname());
+                    friend.put("userCode", e.getUserId().getUserCode());
+                    friend.put("profile", e.getUserId().getProfile());
+
+                    Noti alreadyInvite = notiRepository.findByReceiveIdAndIsCheckedAndCalNo(e.getUserId(), 0, scal);
+                    if(memberId.contains(e.getUserId().getId())) { //멤버라면 1
+                        friend.put("status", 1);
+                    } else if(alreadyInvite != null) { // 이미 초대한 기록이 있으면 2
+                        friend.put("status", 2);
+                    } else { // 멤버도 초대한 사람도 아님
+                        friend.put("status", 0);
+                    }
+
+                    memberList.add(friend);
+                }
+            } else { // 오너가 아닌 경우
+                for(SMEM e : memberData) {
+                    Map<String, Object> member = new HashMap<>();
+                    member.put("key", e.getSmemNo());
+                    member.put("proImg", e.getUserId().getProImg());
+                    member.put("nickname", e.getUserId().getNickname());
+                    member.put("userCode", e.getUserId().getUserCode());
+                    member.put("profile", e.getUserId().getProfile());
+                    member.put("isOwner", e.getUserId().getId().equals(scal.getUserId().getId()));
+                    memberList.add(member);
+                } // 멤버의 정보를 불러온다.
+            }
+            shareDTO.setOk(true);
+            shareDTO.setCalName(scal.getCalName()); // 캘린더 이름
+            shareDTO.setMemberList(memberList);
+        } catch (Exception e) {
+            shareDTO.setOk(false);
+        }
+        return shareDTO;
+    }
+
+    public boolean infoSave(Long calNo, String calName) {
+        try {
+            // 캘린더 이름 저장
+            SCAL scal = scalRepository.findById(calNo).orElseThrow(EntityNotFoundException::new);
+            if(!scal.getCalName().equals(calName)) { // 이름이 다르면 변경
+                scal.setCalName(calName);
+                scalRepository.save(scal);
+            }
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    public boolean inviteMember(Long calNo, String id) {
+        try {
+            Noti noti = new Noti();
+            // 멤버초대
+            SCAL scal = scalRepository.findById(calNo).orElseThrow(EntityNotFoundException::new);
+            Member sendId = scal.getUserId();
+            Member receiveId = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+
+            noti.setUserId(sendId);
+            noti.setReceiveId(receiveId);
+            noti.setType("S");
+            noti.setIsChecked(0);
+            noti.setCalNo(scal);
+            noti.setInviteDate(LocalDateTime.now());
+            notiRepository.save(noti);
+
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    public boolean dropMember(Long calNo, String id) {
+        try {
+            SCAL scal = scalRepository.findById(calNo).orElseThrow(EntityNotFoundException::new);
+            Member dropId = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+            SMEM smem = smemRepository.findByCalNoAndUserId(scal, dropId);
+            smemRepository.deleteById(smem.getSmemNo());
+
+            return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 }

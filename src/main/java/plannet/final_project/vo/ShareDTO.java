@@ -21,6 +21,7 @@ public class ShareDTO {
     private List<Map<String, Object>> memberList;
     private List<Map<String, Object>> planList;
     private String memo;
+    private boolean isOwner; // 오너 여부
     private boolean isOk;
 
 
@@ -45,4 +46,6 @@ public class ShareDTO {
 
     //etc
     private int pes; // 공유 캘린더 일정 달성률
+
+
 }
