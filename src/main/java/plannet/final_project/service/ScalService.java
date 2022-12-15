@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 import plannet.final_project.dao.*;
 import plannet.final_project.entity.*;
 import plannet.final_project.vo.ShareDTO;
+import plannet.final_project.entity.Diary;
+import plannet.final_project.entity.Member;
+import plannet.final_project.entity.Plan;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
@@ -23,6 +26,9 @@ public class ScalService {
     private final SMEMRepository smemRepository;
     private final SPLANRepository splanRepository;
     private final SCALRepository scalRepository;
+    private final MemberRepository memberRepository;
+    private final DiaryRepository diaryRepository;
+    private final PlanRepository planRepository;
 
     // 내용 로드
     public ShareDTO homeList(Long calNo) {
@@ -94,7 +100,7 @@ public class ScalService {
         return shareDTO;
     }
 
-    // 메모 수정
+    // 메모 불러오기 & 수정
     public boolean memoWrite(Long calNo, String detail) {
         try {
             SCAL scal = scalRepository.findById(calNo).orElseThrow();
@@ -105,5 +111,28 @@ public class ScalService {
         catch (Exception e) {
             return false;
         }
+    }
+
+    // 일정 불러오기
+    public ShareDTO planLoad(Long calNo, LocalDate date) {
+        ShareDTO shareDTO = new ShareDTO();
+        try{
+            SCAL scal = scalRepository.findById(calNo).orElseThrow();
+            List<SPLAN> plans = splanRepository.findByCalNoAndPlanDateOrderBySplanNoAsc(scal, date);
+            List<Map<String, Object>> planList = new ArrayList<>();
+            for (SPLAN e : plans) {
+                Map<String, Object> plan = new HashMap<>();
+                plan.put("key", e.getSplanNo());
+                plan.put("checked", e.getPlanChecked());
+                plan.put("text", e.getPlan());
+                plan.put("deleted", false);
+                planList.add(plan);
+            }
+            shareDTO.setPlanList(planList);
+            shareDTO.setOk(true);
+        } catch (Exception e) {
+            shareDTO.setOk(false);
+        }
+        return shareDTO;
     }
 }
