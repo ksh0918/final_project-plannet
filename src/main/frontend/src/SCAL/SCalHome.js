@@ -5,9 +5,6 @@ import Nav from '../Utill/Nav';
 import Memo from '../Home/Memo';
 import List from '../Home/List';
 import Api from "../api/plannetApi";
-import FriendAdd from '../Friend/FriendAdd';
-import FriendList from '../Friend/FriendList';
-import Modal from '../Utill/Modal';
 
 const Wrap = styled.div`
     width: 1130px;
