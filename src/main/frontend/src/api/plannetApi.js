@@ -236,6 +236,11 @@ const plannetApi = {
         };
         return await axios.post(PLANNET_DOMAIN + "board/board_delete", object, HEADER);
     },
+    //쪽지 불러오기
+    messageList: async function(){
+        return await axios.get(PLANNET_DOMAIN + "message/list", HEADER);
+    },
+
     //친구 추가 요청
     notiAddFriend: async function(id, keyword) {
         const object = {

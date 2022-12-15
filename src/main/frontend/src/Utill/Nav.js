@@ -228,8 +228,8 @@ const Nav = () => {
 
     // 친구 알림 띄우기
     const fNotiCount = window.localStorage.getItem("friendNotiCount");
-    // 쪽지 알림 띄우기 (쪽지 창 생기면 만들기)
-    const mNotiCount = window.localStorage.getItem("friendNotiCount");
+    // 쪽지 알림 띄우기
+    const mNotiCount = window.localStorage.getItem("messageNotiCount");
 
     // 로그아웃 팝업
     const [comment, setCommnet] = useState("");
@@ -292,7 +292,7 @@ const Nav = () => {
                 <ul className="menu">
                     <li><Link to="/board">자유게시판</Link></li>
                     <li><Link to="/friend">친구목록{fNotiCount >0 &&<span className="notiCount"><p className="notiCountText" >{fNotiCount>=100 ? "99+": fNotiCount}</p></span>}</Link></li>
-                    <li><Link to="#">쪽지{mNotiCount >0 &&<span className="notiCount"><p className="notiCountText" >{mNotiCount>=100 ? "99+": mNotiCount}</p></span>}</Link></li>
+                    <li><Link to="/message">쪽지{mNotiCount >0 &&<span className="notiCount"><p className="notiCountText" >{mNotiCount>=100 ? "99+": mNotiCount}</p></span>}</Link></li>
                     <Modal open={modalOpen} close={closeModal} header="안내">{comment}</Modal>
                 </ul>
             </div>
