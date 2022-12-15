@@ -19,6 +19,7 @@ public class ShareDTO {
     private List<List<Map<String, Object>>> weekPlan;
     private List<Set<LocalDate>> planMark;
     private List<Map<String, Object>> memberList;
+    private List<Map<String, Object>> planList;
     private String memo;
     private boolean isOk;
 
@@ -40,6 +41,7 @@ public class ShareDTO {
     private String commentWriter; // 공유 캘린더 댓글 작성자
     private LocalDateTime commentDate; // 공유 캘린더 댓글 날짜
     private String comment; // 공유 캘린더 댓글 내용
+    private List<Map<String, Object>> comentsList;
 
     //etc
     private int pes; // 공유 캘린더 일정 달성률

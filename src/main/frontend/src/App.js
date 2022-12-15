@@ -19,6 +19,7 @@ import Friend from './Friend/Friend';
 import SCalCreate from './SCAL/SCalCreate';
 import SCalHome from './SCAL/SCalHome';
 import SCalWrite from './SCAL/SCalWrite';
+import Message from './Message/Message';
 
 function App() {
     return (
@@ -41,6 +42,7 @@ function App() {
                 <Route path="/scal/create" element={<PrivateRoute><SCalCreate /></PrivateRoute>}/>
                 <Route path="/scal/home" element={<PrivateRoute><SCalHome /></PrivateRoute>}/>
                 <Route path="/scal/write/:date" element={<PrivateRoute><SCalWrite /></PrivateRoute>}/>
+                <Route path="/message" element={<PrivateRoute><Message /></PrivateRoute>}/>
             </Routes>
         </Router>
     );

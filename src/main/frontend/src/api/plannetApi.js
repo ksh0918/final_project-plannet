@@ -236,6 +236,11 @@ const plannetApi = {
         };
         return await axios.post(PLANNET_DOMAIN + "board/board_delete", object, HEADER);
     },
+    //쪽지 불러오기
+    messageList: async function(){
+        return await axios.get(PLANNET_DOMAIN + "message/list", HEADER);
+    },
+
     //친구 추가 요청
     notiAddFriend: async function(id, keyword) {
         const object = {
@@ -278,6 +283,15 @@ const plannetApi = {
         };
         return await axios.post(PLANNET_DOMAIN + "scal/home", object, HEADER);
     },
+    // 공유 캘린더 멤버 추가 요청
+    scalAddMember: async function(id, keyword) {
+        const object = {
+            id: id,
+            keyword: keyword
+        };
+        return await axios.post(PLANNET_DOMAIN + "scal/add_member", object, HEADER);
+    },
+
 }
 
 export default plannetApi;

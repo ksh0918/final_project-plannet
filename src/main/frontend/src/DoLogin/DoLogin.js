@@ -118,7 +118,7 @@ const DoLogin = () => {
                     <Modal open={modalOpen} close={closeModal} header="오류">아이디 및 패스워드를 재확인해 주세요.</Modal>
                 </div>
                 <div className="else">
-                    <Link to="/join" className="join">회원가입</Link>
+                    <Link to="/terms" className="join">회원가입</Link>
                     <Link to="/find" className="join">아이디 / 비밀번호 찾기</Link>
                 </div>   
                 {<Modal open={modalOpen} close={closeModal} header="오류">{comment}</Modal>}     

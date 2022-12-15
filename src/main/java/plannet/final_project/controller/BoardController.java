@@ -37,7 +37,6 @@ public class BoardController {
     // 인기글 top3 목록 출력
     @GetMapping("/top3_list")
     public ResponseEntity<List<BoardDTO>> top3List() {
-        System.out.println("들어옴");
         BoardDTO top3List = boardService.getTop3List();
         if(top3List.isOk()) {
             return new ResponseEntity(top3List.getBoardList(), HttpStatus.OK);
