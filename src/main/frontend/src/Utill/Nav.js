@@ -104,6 +104,7 @@ const Box = styled.div`
                     &:hover{
                         color: #4555AE;
                     }
+                    
                 }
                 .notiCount{
                     line-height: 16.2px;
@@ -120,7 +121,7 @@ const Box = styled.div`
                         color: #ddd;
                     }
                 }
-            li:first-child a{border-left: none;}
+                &:first-of-type a{border-left: none;}
             }
         }
         .calList{
