@@ -141,9 +141,7 @@ const Section = styled.div`
     const getId = window.localStorage.getItem("userId");
     const [title, setTitle] = useState(''); // 공유캘린더 이름
     const [searchKeyword, setSearchKeyword] = useState('');
-    const [friendList, setFriendList] = useState([
-        {proImg: "https://images.unsplash.com/photo-1668603145974-c05f7a0e4552?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80", nickname: "안녕하세요", userCode: "#0000", profile: "자기소개입니다"},
-        {proImg: "https://images.unsplash.com/photo-1669847171248-8f12c8160d57?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80", nickname: "안녕하세요", userCode: "#0000", profile: "자기소개입니다"}]);
+    const [friendList, setFriendList] = useState();
     const [isAdd, setIsAdd] = useState(false); // 친구추가
 
     const [comment, setCommnet] = useState("");
@@ -175,16 +173,19 @@ const Section = styled.div`
     };
 
     useEffect(() => {
-        const myFriend = async() => {
+        const myfriends = async() => {
             try{
-                const response = await Api.friendPageLoad(getId); //친구랑 알림 목록 불러오기
-                setFriendList(response.data.friendList);
+            console.log(getId);
+            const response = await Api.friendPageLoad(getId); //친구랑 알림 목록 불러오기
+            setFriendList(response.data.friendList);
+            console.log("프렌드리스트 : " + friendList);
+            console.log(friendList);
             } catch(e) {
-                console.log(e);
+            console.log(e);
             }
-
         }
-    })
+         myfriends();
+    },[getId]);
 
     const onClickSearch = async () => {
         try {

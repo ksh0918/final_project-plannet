@@ -86,16 +86,23 @@ const Friends = styled.div`
         top: 50%;
         transform:translateY(-50%);
     }
-    .scalFriend_check {
+`;
+const StyledInput = styled.input`
         transition: all .3s ease-in;
                 cursor: pointer;
                 position: absolute;
-                font-size: 20px;
                 color: #f9f9f9;
                 right: 30px;
                 top: 50%;
                 transform:translateY(-50%);
 
+        &:checked {
+            border-color: transparent;
+            background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M5.707 7.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4a1 1 0 0 0-1.414-1.414L7 8.586 5.707 7.293z'/%3e%3c/svg%3e");
+            background-size: 150% 150%;
+            background-position: 50%;
+            background-repeat: no-repeat;
+            background-color: #4555AE;
     }
 `;
 
@@ -129,7 +136,7 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
                         </p>
                         <p>{e.profile}</p>
                         {isPage === "친구삭제" && <i className="bi bi-x-lg unfriend_btn" onClick={() => onClickUnfriend(e.key)}></i>}
-                        {isPage === "공유캘린더" && <input class="form-check-input scalFriend_check" onClick={() => onClickSCalfriend(e.key)} type="checkbox" id="checkboxNoLabel" value="" aria-label="..." />}
+                        {isPage === "공유캘린더" && <StyledInput class="form-check-input scalFriend_check" onClick={() => onClickSCalfriend(e.key)} type="checkbox" id="checkboxNoLabel" value="" aria-label="..." />}
 
                     </li>
                 );})}
