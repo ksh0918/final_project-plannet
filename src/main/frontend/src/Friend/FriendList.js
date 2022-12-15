@@ -103,9 +103,9 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
         setModalOpen(true);
     }
 // 공유 캘린더 멤버로 추가
-    const onClickSCalfriend = (e) => {
-
-    }
+//    const onClickSCalfriend = (e) => {
+//
+//    }
 
     return (
         <Friends className={(friendList? 'is_list' : '') + ' ' + (isAdd? 'add_active_box' : '')}>
@@ -120,7 +120,7 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
                         </p>
                         <p>{e.profile}</p>
                         {isPage === "친구삭제" && <i className="bi bi-x-lg unfriend_btn" onClick={() => onClickUnfriend(e.key)}></i>}
-                        {isPage === "공유캘린더" && <i className="bi bi-plus-lg scalFriend_btn" onClick={() = > onClickSCalfriend(e.key)}></i>}
+                        {isPage === "공유캘린더" && <i className="bi bi-plus-lg scalFriend_btn"></i>}
 
                     </li>
                 );})}
