@@ -22,5 +22,4 @@ public interface PlanRepository extends JpaRepository<Plan, Long> {
     @Transactional
     @Query(value="delete from plan where id = (:userId) and plan_date = (:date)", nativeQuery = true)
     void deleteByUserIdAndPlanDate(@Param("userId") String userId, @Param("date") LocalDate date);
-
 }
