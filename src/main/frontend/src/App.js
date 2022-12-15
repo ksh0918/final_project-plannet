@@ -16,8 +16,9 @@ import PostView from './Board/PostView';
 import PublicRoute from './Lib/PublicRoute';
 import PrivateRoute from './Lib/PrivateRoute';
 import Friend from './Friend/Friend';
-import SCalCreate from './SCal/SCalCreate';
-import SCalHome from './SCal/SCalHome';
+import SCalCreate from './SCAL/SCalCreate';
+import SCalHome from './SCAL/SCalHome';
+import SCalWrite from './SCAL/SCalWrite';
 
 function App() {
     return (
@@ -36,9 +37,10 @@ function App() {
                 <Route path="/board" element={<PrivateRoute><Board /></PrivateRoute>}/>
                 <Route path="/board/create" element={<PrivateRoute><Create /></PrivateRoute>}/>
                 <Route path="/edit/:no" element={<PrivateRoute><Edit /></PrivateRoute>}/>
-                <Route exact path='/board/post_view/:no' element={<PrivateRoute><PostView /></PrivateRoute>}/>
+                <Route path='/board/post_view/:no' element={<PrivateRoute><PostView /></PrivateRoute>}/>
                 <Route path="/scal/create" element={<PrivateRoute><SCalCreate /></PrivateRoute>}/>
                 <Route path="/scal/home" element={<PrivateRoute><SCalHome /></PrivateRoute>}/>
+                <Route path="/scal/write/:date" element={<PrivateRoute><SCalWrite /></PrivateRoute>}/>
             </Routes>
         </Router>
     );
