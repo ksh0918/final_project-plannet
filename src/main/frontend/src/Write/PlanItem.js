@@ -20,7 +20,7 @@ const StyledInput = styled.input`
     }
 `;
 
-const PlanItem = ({planItem, planList, setPlanList}) => {
+const PlanItem = ({planItem, planList, setPlanList, isPage}) => {
     const [edited, setEdited] = useState(false);
         const [newText, setNewText] = useState(planItem.text);
 
@@ -76,10 +76,11 @@ const PlanItem = ({planItem, planList, setPlanList}) => {
             <li>
                 <StyledInput type="checkbox" checked={planItem.checked} onChange={onChangeCheckbox}/>
                 {edited ?
-                    (<input type="text" value={newText} ref={editInputRef} onFocus={onFocusInput} onChange={onChangeEditInput} onBlur={onBlurSubmit}/>)
+                    (<input type="text" value={newText} ref={editInputRef} onFocus={onFocusInput} onChange={onChangeEditInput} onBlur={onBlurSubmit} maxLength={30}/>)
                     : (<span className={testStyle} onClick={onClickEdit}>{planItem.text}</span>)
                 }
                 <button onClick={onClickRemove}><i className="bi bi-trash3-fill" /></button>
+                {isPage === '공유'? <span className="plan_writer">작성자 이름</span> : ''}
             </li>
         );
 }
