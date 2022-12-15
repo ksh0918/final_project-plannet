@@ -5,6 +5,7 @@ import Nav from '../Utill/Nav';
 import Memo from '../Home/Memo';
 import List from '../Home/List';
 import Api from "../api/plannetApi";
+import SCalAdd from "./SCalAdd";
 
 const Wrap = styled.div`
     width: 1130px;
@@ -65,10 +66,10 @@ const Section = styled.div`
     }
     .etc {
         width: 30%;
-        .f-list h2 {
+        .m-list h2 {
             margin-top: 20px;
         }
-        .f-list-detail {
+        .m-list-detail {
             width: 100%;
             height: 400px;
             resize: none;
@@ -171,6 +172,11 @@ const SCalHome = () => {
         else setIsAdd(true);
     }
 
+    const [comment, setComment] = useState("");
+    const [modalHeader, setModalHeader] = useState("");
+    const [modalOpen, setModalOpen] = useState(false);
+
+
 
     return (
         <Wrap>
@@ -185,9 +191,10 @@ const SCalHome = () => {
                         <h2>Memo</h2>
                         <Memo props={friendData.memo}/>
                     </div>
-                    <div className='f-list'>
-                        <h2>Friend List<i className={'bi bi-person-fill-add ' + (isAdd? 'add_active_logo' : '')} onClick={onClickaddFriend}></i></h2>
-                        <div className='f-list-detail'>
+                    <div className='m-list'>
+                        <h2>Member List<i className={'bi bi-person-fill-add ' + (isAdd? 'add_active_logo' : '')} onClick={onClickaddFriend}></i></h2>
+                        <SCalAdd setCommnet={setComment} setModalHeader={setModalHeader} setModalOpen={setModalOpen} isAdd={isAdd} getId={getId}/>
+                        <div className='m-list-detail'>
                             <p className='nothing'><b>친구와 캘린더를 공유하세요!</b></p>
                         </div>
                     </div>

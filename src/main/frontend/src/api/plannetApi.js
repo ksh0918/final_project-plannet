@@ -278,6 +278,15 @@ const plannetApi = {
         };
         return await axios.post(PLANNET_DOMAIN + "scal/home", object, HEADER);
     },
+    // 공유 캘린더 멤버 추가 요청
+    scalAddMember: async function(id, keyword) {
+        const object = {
+            id: id,
+            keyword: keyword
+        };
+        return await axios.post(PLANNET_DOMAIN + "scal/add_member", object, HEADER);
+    },
+
 }
 
 export default plannetApi;
