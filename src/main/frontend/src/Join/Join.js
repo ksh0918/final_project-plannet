@@ -46,7 +46,6 @@ const Join = () => {
     const [nicknameMessage, setNicknameMessage] = useState("");
     const [emailMessage, setEmailMessage] = useState("");
     const [telMessage, setTelMessage] = useState("");
-    const [authMessage,setAuthMessage] = useState("");
  
     // 유효성 검사
     const [isId, setIsId] = useState(false);
@@ -151,11 +150,11 @@ const Join = () => {
     // 이메일 인증번호 확인
     const onCheckAuth = async() => {
         if(authNum === inputAuth){
-            setAuthMessage("인증이 완료되었습니다.")
+            setEmailMessage("인증이 완료되었습니다.")
             setIsAuth(true)
         }
         else{
-            setAuthMessage("인증이 완료되지 않았습니다.")
+            setEmailMessage("인증이 완료되지 않았습니다.")
             setIsAuth(false)
         }
     }
@@ -263,7 +262,7 @@ const Join = () => {
                         <input type='email' placeholder="이메일" value={inputEmail}  onChange={onChangeEmail} onBlur={onBlurEmailCheck}/>
                         <button type='button' onClick={onClickAuth}>인증번호 받기</button>
                     </div>
-                    {inputAuth.length > 0 && <span>{authMessage}</span>}
+                    {/* {inputAuth.length > 0 && <span>{authMessage}</span>} */}
                     <div className='email_auth'>
                         <input type='text'placeholder="인증번호 확인" value = {inputAuth} onChange={onChangeAuth} disabled={!clickAuth}></input>
                         <button type='button' onClick={onCheckAuth} disabled={!clickAuth}>인증하기</button>

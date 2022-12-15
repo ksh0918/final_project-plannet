@@ -5,7 +5,6 @@ import Modal from '../Utill/Modal';
 import Api from '../api/plannetApi'
 import Nav from '../Utill/Nav';
 import { useNavigate  } from "react-router-dom";
-import moment from 'moment';
 
 const Wrap = styled.div`
     width: 1130px;
@@ -62,17 +61,10 @@ const Section = styled.div`
         border: none;
         padding-right: 20px; 
         background: none;
-        font-size: 16px; 
         color: #bbb;
         font-weight: 700;
         transition: all .1s ease-in;
         &:hover, &:hover i {color: #888;}
-        i {
-            font-size: 16px; 
-            line-height: 48px; 
-            color: #bbb;
-            transition: all .1s ease-in;
-        }
     }
     .postInfo {
         border-collapse: collapse; 
@@ -103,6 +95,7 @@ const Section = styled.div`
         }
     }
     .button-area1 {
+        height: 55px;
         text-align: right;
         .btn {
             cursor: pointer;
@@ -121,7 +114,11 @@ const Section = styled.div`
         .left-space {
             margin-left: 10px;
         }
-        .bi {color: #fcb1d3;}
+        .bi {
+            color: #FC5C7D;
+            line-height: 35px;
+            font-size: 20px;
+        }
     }
     .util_box{
         .page_list {
@@ -149,37 +146,41 @@ const Section = styled.div`
         font-size: 28px;
         font-weight: 900;
         width: 100%;
-        padding: 10px 30px;
+        padding: 10px 30px 0;
     }
     .comment_box {
         width: 100%;
         min-height: 300px;
         text-align: left;
-        table{width: 100%; margin: 10px 0;}
+        padding-top: 0;
+        table{width: 100%;}
         table, tr, td{
             border-collapse: collapse;
             background: none;
             border-bottom: 1px solid #ddd;
         }
-        th {
-            font-size: 20px;
-            padding: 0px 0px 15px 5px;
+        tr:last-child{
             border-bottom: 2px solid #ddd;
         }
-        tr td {padding: 0px 10px;}
-        tr td:first-child {
-            width: 130px;
-        }
-        tr td:nth-child(2) {
-            padding: 5px 15px;
+        tr td {
+            padding: 8px 10px;
             word-break: break-all;
+            &:first-child {
+                width: 130px;
+                
+            }
+            &:last-child {
+                width: 140px;
+                font-size: 12px;
+            }
         }
-        td:last-child {
-            width: 140px;
-            font-size: 12px;
+        button {
+            padding: 0px;
+            .bi {
+                font-size:12px; 
+                padding-left: 8px;
+            }
         }
-        button {padding: 0px;}
-        .bi {font-size:12px; padding-left: 5px;}
     }
     .button-area2 {
         text-align: right;
@@ -325,25 +326,25 @@ const PostView = () => {
                     </div>
                     </>))}
                     <h3>댓글</h3>
-                    <div className='comment_box'>
-                    <table>
-                        <tr>
-                            <th>Writer</th>
-                            <th>Comment</th>
-                            <th>Date</th>
-                        </tr>
-                        {commentsList.map(({no, commentNo, writerId, nickname, detail, date})=>(
-                            <tr key={no}>
-                                <td>{nickname}</td>
-                                <td>{detail}</td>
-                                <td>{date}{getId === writerId ? <button><i class="bi bi-x-lg" onClick={()=> onClickDeleteComment(commentNo)}></i></button> : null}</td>
-                            </tr>
-                        ))}
-                    </table>
-                    </div>
                     <div className="button-area2">
-                    <input type='text' className='comment_text' placeholder='댓글 달기...' value={comments} onChange={onChangeComments} name='comments' size='60'></input>
-                    <button className='comment_btn' onClick={onClickSaveComments}>SAVE</button>
+                        <input type='text' className='comment_text' placeholder='댓글 달기...' value={comments} onChange={onChangeComments} name='comments' size='60'></input>
+                        <button className='comment_btn' onClick={onClickSaveComments}>SAVE</button>
+                    </div>
+                    <div className='comment_box'>
+                        <table>
+                            {/* <tr>
+                                <th>Writer</th>
+                                <th>Comment</th>
+                                <th>Date</th>
+                            </tr> */}
+                            {commentsList.map(({no, commentNo, writerId, nickname, detail, date})=>(
+                                <tr key={no}>
+                                    <td>{nickname}</td>
+                                    <td>{detail}</td>
+                                    <td>{date}{getId === writerId ? <button><i class="bi bi-x-lg" onClick={()=> onClickDeleteComment(commentNo)}></i></button> : null}</td>
+                                </tr>
+                            ))}
+                        </table>
                     </div>
             </Section>
             <div className="copy">&#169; Plannet.</div>

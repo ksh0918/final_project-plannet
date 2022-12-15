@@ -11,4 +11,5 @@ public interface CommentsRepository extends JpaRepository<Comments, Long> {
     void deleteByBoardNo(Board board);
     void deleteById(Long commentNo);
     void deleteByUserId (Member member);
+    List<Comments> findByBoardNoOrderByWriteDateDesc(Board board);
 }

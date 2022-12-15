@@ -5,6 +5,9 @@ import Nav from '../Utill/Nav';
 import Memo from '../Home/Memo';
 import List from '../Home/List';
 import Api from "../api/plannetApi";
+import FriendAdd from '../Friend/FriendAdd';
+import FriendList from '../Friend/FriendList';
+import Modal from '../Utill/Modal';
 
 const Wrap = styled.div`
     width: 1130px;
@@ -120,13 +123,38 @@ const Section = styled.div`
         font-weight: 900;
         margin-bottom: 10px;
     }
+    i {
+        position: absolute;
+        right: 30px;
+        font-size: 25px;
+        line-height: 34px;
+        transition: color .3s ease-in;
+    &:hover {
+        color: #555;
+    }
+    }
+    .add_active_logo{
+        color: #888;
+    }
+    .is_list{
+        background-color: white !important;
+    }
+    .add_active_box{
+        height: calc(100% - 160px) !important;
+    }
+    .add_active_addbox{
+        height: 80px !important;
+    }
+            
 `;
+
 
 const SCalHome = () => {
     const getId = window.localStorage.getItem("userId");
     const [friendData, setFriendData] = useState([]);
     const [friendDoMark, setFriendDoMark] = useState([]);
     const [friendEndMark, setFriendEndMark] = useState([]);
+    const [isAdd, setIsAdd] = useState(false);
     useEffect(() => {
         const scalHome = async() => {
             try{
@@ -140,8 +168,12 @@ const SCalHome = () => {
         }
         scalHome();
     },[getId]);
-
     
+    const onClickaddFriend = (e) => {
+        if(isAdd) setIsAdd(false);
+        else setIsAdd(true);
+    }
+
 
     return (
         <Wrap>
@@ -157,7 +189,7 @@ const SCalHome = () => {
                         <Memo props={friendData.memo}/>
                     </div>
                     <div className='f-list'>
-                        <h2>Friend List</h2>
+                        <h2>Friend List<i className={'bi bi-person-fill-add ' + (isAdd? 'add_active_logo' : '')} onClick={onClickaddFriend}></i></h2>
                         <div className='f-list-detail'>
                             <p className='nothing'><b>친구와 캘린더를 공유하세요!</b></p>
                         </div>
