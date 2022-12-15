@@ -215,6 +215,7 @@ const Section = styled.div`
     }
 `;
 const Write = () => {
+    // 뒤로가기 시 경고창 등장
     window.onpopstate = (event) =>{
              event.preventDefault();
              if(event){
@@ -229,7 +230,7 @@ const Write = () => {
              };
              console.log("뒤로가기");
          };
-
+    // 새로고침 시 경고 창 등장    
     window.addEventListener('beforeunload', (event) => {
         // 표준에 따라 기본 동작 방지
         event.preventDefault();

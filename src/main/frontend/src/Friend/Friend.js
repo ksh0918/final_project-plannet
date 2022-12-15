@@ -111,6 +111,7 @@ const Friend = () => {
     const [notiList, setNotiList] = useState();
     const [isAdd, setIsAdd] = useState(false);
     const [option, setOption] = useState("");
+    const [fNotiCount , setfNotiCount] = useState("");
 
     useEffect(() => {
         const friendPage = async() => {
@@ -118,6 +119,8 @@ const Friend = () => {
                 const response = await Api.friendPageLoad(getId); //친구랑 알림 목록 불러오기
                 setFriendList(response.data.friendList);
                 setNotiList(response.data.notiList);
+                setfNotiCount(response.data.notiList.length);
+                window.localStorage.setItem("friendNotiCount", fNotiCount);
             } catch(e){
             console.log(e);
             }
