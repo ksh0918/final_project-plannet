@@ -53,24 +53,22 @@ const Section = styled.div`
             overflow: hidden;
         }
     }
-    li {
-        padding: 15px 20px;
-        overflow: hidden;
-        border-bottom: 1px solid #f3f3f3;
-        transition: all .2s ease-in;
-        p {
-        font-size: 15px;
-        }
-        &:hover{
-            background-color: #f4f4f4;
+    p.nothing{
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #d9d9d9;
+        b{
+            color: #d9d9d9;
+            font-size: 17px;
         }
     }
     .etc {
         width: 30%;
-        .m-list h2 {
+        .f-list h2 {
             margin-top: 20px;
         }
-        .m-list-detail {
+        .f-list-detail {
             width: 100%;
             height: 400px;
             resize: none;
@@ -84,7 +82,7 @@ const Section = styled.div`
         }
         textarea {
             width: 100%;
-            height: 320px;
+            height: 340px;
             resize: none;
             outline: none;
             padding: 10px;
@@ -111,7 +109,7 @@ const Section = styled.div`
             }
         }
     }
-    .lit {
+    .list {
         width: 100%;
         height: 300px;
         padding: 20px 30px 10px;
@@ -122,35 +120,64 @@ const Section = styled.div`
         font-weight: 900;
         margin-bottom: 10px;
     }
+    i {
+        position: absolute;
+        right: 30px;
+        font-size: 25px;
+        line-height: 34px;
+        transition: color .3s ease-in;
+    &:hover {
+        color: #555;
+    }
+    }
+    .add_active_logo{
+        color: #888;
+    }
+    .is_list{
+        background-color: white !important;
+    }
+    .add_active_box{
+        height: calc(100% - 160px) !important;
+    }
+    .add_active_addbox{
+        height: 80px !important;
+    }
+            
 `;
+
 
 const SCalHome = () => {
     const getId = window.localStorage.getItem("userId");
     const [friendData, setFriendData] = useState([]);
     const [friendDoMark, setFriendDoMark] = useState([]);
     const [friendEndMark, setFriendEndMark] = useState([]);
+    const [isAdd, setIsAdd] = useState(false);
     useEffect(() => {
         const scalHome = async() => {
             try{
                 const response = await Api.scalHome(getId);
                 setFriendData(response.data)
                 setFriendDoMark(response.data.friendPlanMark[0]);
-                setFriendEndMark(response.data.frinedPlanMark[1]);
+                setFriendEndMark(response.data.friendPlanMark[1]);
             } catch(e){
             console.log(e);
             }
         }
         scalHome();
     },[getId]);
-
     
+    const onClickaddFriend = (e) => {
+        if(isAdd) setIsAdd(false);
+        else setIsAdd(true);
+    }
+
 
     return (
         <Wrap>
             <Nav/>
             <Section>
                 <div className="plan">
-                    <h2>Plan it</h2>
+                    <h2>Share Calendar</h2>
                     <Calendar doMark={friendDoMark} endMark={friendEndMark}/>
                 </div>
                 <div className='etc'>
@@ -158,16 +185,10 @@ const SCalHome = () => {
                         <h2>Memo</h2>
                         <Memo props={friendData.memo}/>
                     </div>
-                    <div className='m-list'>
-                        <h2>Member List</h2>
-                        <div className='m-list-detail'>
-                            <ul>
-                                <li>
-                                    <div>
-                                        <p>멤버 1</p>
-                                    </div>
-                                </li>
-                            </ul>
+                    <div className='f-list'>
+                        <h2>Friend List<i className={'bi bi-person-fill-add ' + (isAdd? 'add_active_logo' : '')} onClick={onClickaddFriend}></i></h2>
+                        <div className='f-list-detail'>
+                            <p className='nothing'><b>친구와 캘린더를 공유하세요!</b></p>
                         </div>
                     </div>
                 </div>

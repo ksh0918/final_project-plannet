@@ -3,9 +3,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Api from "../api/plannetApi";
 import Nav from "../Utill/Nav";
-import PlanList from "./PlanList";
+import PlanList from "../Write/PlanList";
 import Swal from 'sweetalert';
-import { useBeforeunload } from "react-beforeunload";
+import Comments from '../Board/Comment';
 
 const Wrap = styled.div`
     width: 1130px;
@@ -72,8 +72,9 @@ const Section = styled.div`
                 color: #888;}
         }       
     }
-    .btnbox:last-of-type {
-        height: 50px;
+    .savebox {
+        height: 40px;
+        padding: 0 30px;
     }
     .btnbox:first-of-type:hover i, .btnbox:first-of-type:hover button {
         color: #bbb;
@@ -138,6 +139,18 @@ const Section = styled.div`
                     color: #4555AE;
                 }
             }
+            .plan_writer{
+                display: inline;
+                width: auto;
+                font-size: 12px;
+                color: #777;
+                line-height: 19px;
+                text-align: center;
+                border-radius: 14.5px;
+                float: right; 
+                margin: 7px 10px 0 0;
+                padding: 0;
+            }
         }
         button {
             border: none;
@@ -166,37 +179,12 @@ const Section = styled.div`
             display: inline-block;
             outline: none;
         }
+        
     }
-    .diary {
+    .comment {
         height: 350px;
-        .write_box {
-            height: 280px;
-            textarea {
-                line-height: 1.4;
-                width: 765px;
-                height: 240px;
-                border: none;
-                resize: none;
-                background: none;
-                overflow-y: scroll;
-                &:focus {outline: none;}
-                &::-webkit-scrollbar {
-                    width: 20px;
-                    padding: 15px;
-                }
-                &::-webkit-scrollbar-thumb {
-                    height: 30%; /* 스크롤바의 길이 */
-                    background: #ddd; /* 스크롤바의 색상 */
-                    border-radius: 10px;
-                    border: 7px solid transparent;
-                    background-clip: padding-box;
-                }
-                &::-webkit-scrollbar-track {
-                    background: none;
-                    /*스크롤바 뒷 배경 색상*/
-                }
-            }
-        }
+        >div>div{padding: 10px 0;}
+        h2{margin: 0;}
     }
     hr {
         border: none;
@@ -214,8 +202,7 @@ const Section = styled.div`
         text-decoration: line-through;
     }
 `;
-const Write = () => {
-    // 뒤로가기 시 경고창 등장
+const SCalWrite = () => {
     window.onpopstate = (event) =>{
              event.preventDefault();
              if(event){
@@ -230,7 +217,7 @@ const Write = () => {
              };
              console.log("뒤로가기");
          };
-    // 새로고침 시 경고 창 등장    
+
     window.addEventListener('beforeunload', (event) => {
         // 표준에 따라 기본 동작 방지
         event.preventDefault();
@@ -238,43 +225,41 @@ const Write = () => {
         event.returnValue = '';
     });
 
-    const isPage = "개인";
+    const isPage = "공유";
+    const getNum = 1; //공유캘린더 번호
     const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
-        const { date } = useParams();
-        const [planList, setPlanList] = useState([]);
-        const [diary, setDiary] = useState();
+    const { date } = useParams();
+    const [planList, setPlanList] = useState([]);
+    const [commentsList, setCommentsList] = useState([]);
 
-        const onChangeDiary = (e) => {
-            setDiary(e.target.value);
-        }
-        const onClickAddList = () => {
-            const nextPlanList = planList.concat({
-                key: planList.length+1,
-                checked: false,
-                text: "일정을 입력해주세요.",
-                deleted: false
-            });
-            setPlanList(nextPlanList);
-        }
 
-        useEffect(() => {
-            const writeLoad = async() => {
-                try{
-                    const response = await Api.writeLoad(getId, date);
-                    console.log(response.data[0]);
-                    setPlanList(response.data[0]);
-                    setDiary(response.data[1]);
-                } catch(e){
-                    console.log(e);
-                }
+    const onClickAddList = () => {
+        const nextPlanList = planList.concat({
+            key: planList.length+1,
+            checked: false,
+            text: "일정을 입력해주세요.",
+            deleted: false
+        });
+        setPlanList(nextPlanList);
+    }
+
+    useEffect(() => {
+        const writeLoad = async() => {
+            try{
+                const response = await Api.writeLoad(getId, date);
+                console.log(response.data[0]);
+                setPlanList(response.data[0]);
+            } catch(e){
+                console.log(e);
             }
-            writeLoad();
-            console.log(planList);
-        },[getId, date]);
+        }
+        writeLoad();
+        console.log(planList);
+    },[getId, date, planList]);
 
     const onClickSave = async() => {
-        await Api.writeSave(getId, date, planList, diary);
+        await Api.writeSave(getId, date, planList);
         navigate("/home");
     }
     return (
@@ -296,15 +281,14 @@ const Write = () => {
                         </button>
                     </div>
                 </div>
-                <div className="diary sub_box">
-                    <h2>Diary</h2>
-                    <div className="write_box">
-                        <textarea maxLength={800} onChange={onChangeDiary} value={diary}></textarea>
-                    </div>
-                </div>
-                <div className="btnbox">
+                <div className="btnbox savebox">
                     <button className="save" onClick={onClickSave}>SAVE</button>
                 </div>
+                <div className="comment sub_box">
+                    <h2>Comment</h2>
+                    <Comments getId={getId} getNum={getNum} setCommentsList={setCommentsList} commentsList={commentsList}/>
+                </div>
+                
             </Section>
             <div className="copy">&#169; Plannet.</div>
             
@@ -312,4 +296,4 @@ const Write = () => {
     );
 }
 
-export default Write;
+export default SCalWrite;

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Nav from "../Utill/Nav";
 import Api from '../api/plannetApi'
@@ -76,18 +76,41 @@ const Section = styled.div`
         background-color: #4555AE;
         border-bottom: solid 1px #4555AE;
         text-align: center;
-        tr:nth-child(2n) td {background-color: #f9f9f9;}
+        tr:nth-child(2n) td {background-color: #fbfbfb;}
         th { 
             padding: 10px; 
             color: white;}
-        td {padding: 10px; background-color: white; border-left: solid 1px #bbb; border-top: solid 1px #ddd;}
-        td:first-child {border-left: none};
-        td:nth-child(2) {width: 400px; text-align: left; padding-left: 20px;}  
-        tr:hover td, tr:hover a{color: #4555AE; background-color: #efefef; cursor: pointer;}
-        .bi-heart-fill {padding-right:5px; color:#fcb1d3;}
-        .top3_List {background-color: #939FDD;}
-        .top3_List:last-child{border-bottom: solid 1px #23338a;}
-        td {font-weight: 600;}   
+        td{
+            padding: 10px; 
+            background-color: white; 
+            border-left: solid 1px #bbb; 
+            border-top: solid 1px #ddd;
+            font-weight: 400;
+        }
+        td:first-child {
+            border-left: none
+        };
+        td:nth-child(2) {
+            width: 400px; 
+            text-align: left; 
+            padding-left: 20px;
+        }  
+        tr:hover td, tr:hover a{
+            color: #4555AE; 
+            background-color: #efefef; 
+            cursor: pointer;
+        }
+        .bi-heart-fill {
+            padding-right:5px; 
+            color:#FC5C7D;
+        }
+        .top3_List td{
+            background-color: #f2f2ff !important; 
+            font-weight: 700;
+        }
+        .top3_List:last-child td{
+            border-bottom: 1px solid #23338a;
+        }  
     }
 
 
@@ -178,7 +201,7 @@ const Board = () => {
     // 타이틀 클릭 시 작성자 id 와 다르면 조회수 +1
     const viewsUp = async (boardNo, writerId) => {
         if(writerId !== getId) {
-            const response = await Api.boardViewsUp(boardNo);
+            await Api.boardViewsUp(boardNo);
         }
         const link = "post_view/" + boardNo;
         navigate(link);
@@ -271,7 +294,7 @@ const Board = () => {
                     </ul> 
                     <div className="search">
                         <input name="product_search" title="검색" placeholder="검색어 입력" onChange={onChangeSearchKeyword} onKeyDown={onKeyPressSearch} value={searchKeyword}/>
-                        <a href="#" onClick={onClickSearch}><i className="bi bi-search"></i></a>
+                        <span onClick={onClickSearch}><i className="bi bi-search"></i></span>
                     </div> 
                 </div>
             </Section>

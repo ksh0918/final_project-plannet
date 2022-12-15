@@ -7,7 +7,7 @@ import Api from "../api/plannetApi";
 
 
 const Box = styled.div`
-    width: 280px;
+    width:280px;
     height: 100vh;
     background-color: #e8f0fe;
     float: left;
@@ -90,23 +90,39 @@ const Box = styled.div`
             background-size: cover;
         };
         .menu{
-            width: 179.11px;
+            display :table;
             height: 40px;
             margin: 0 auto;
             li{
                 float: left;
                 a, span{
                     padding: 0px 7px; 
-                    line-height:40px; 
+                    line-height:50px; 
                     border-left: 1px solid #555; 
                     font-weight: 600; 
                     cursor: pointer;
                     &:hover{
                         color: #4555AE;
                     }
+                    
                 }
+                .notiCount{
+                    line-height: 16.2px;
+                    width: 20px;
+                    height: 20px;
+                    background-color: #4555AE;
+                    z-index: 1;
+                    padding: 2px 0;
+                    position: absolute;
+                    border: 1px solid balck;
+                    border-radius: 10px 10px 10px 0px;
+                    .notiCountText{
+                        font-size: 10px;
+                        color: #ddd;
+                    }
+                }
+                &:first-of-type a{border-left: none;}
             }
-            li:first-child a{border-left: none;}
         }
         .calList{
             clear: both;
@@ -210,6 +226,11 @@ const Nav = () => {
         userInfoLoad();
     },[userId]);
 
+    // 친구 알림 띄우기
+    const fNotiCount = window.localStorage.getItem("friendNotiCount");
+    // 쪽지 알림 띄우기 (쪽지 창 생기면 만들기)
+    const mNotiCount = window.localStorage.getItem("friendNotiCount");
+
     // 로그아웃 팝업
     const [comment, setCommnet] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
@@ -270,8 +291,8 @@ const Nav = () => {
                 </div>
                 <ul className="menu">
                     <li><Link to="/board">자유게시판</Link></li>
-                    <li><Link to="/friend">친구목록</Link></li>
-                    <li><Link to="#">쪽지</Link></li>
+                    <li><Link to="/friend">친구목록{fNotiCount >0 &&<span className="notiCount"><p className="notiCountText" >{fNotiCount>=100 ? "99+": fNotiCount}</p></span>}</Link></li>
+                    <li><Link to="#">쪽지{mNotiCount >0 &&<span className="notiCount"><p className="notiCountText" >{mNotiCount>=100 ? "99+": mNotiCount}</p></span>}</Link></li>
                     <Modal open={modalOpen} close={closeModal} header="안내">{comment}</Modal>
                 </ul>
             </div>
