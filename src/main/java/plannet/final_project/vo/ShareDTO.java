@@ -19,6 +19,7 @@ public class ShareDTO {
     private List<List<Map<String, Object>>> weekPlan;
     private List<Set<LocalDate>> planMark;
     private List<Map<String, Object>> memberList;
+    private List<Map<String, Object>> planList;
     private String memo;
     private boolean isOk;
 
