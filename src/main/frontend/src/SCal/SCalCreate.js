@@ -179,10 +179,6 @@ const SCalCreate = () => {
         }
     })
 
-    const onClickaddFriend = (e) => {
-        if(isAdd) setIsAdd(false);
-        else setIsAdd(true);
-    }
 
     const onClickSearch = async () => {
         try {
