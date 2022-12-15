@@ -1,0 +1,237 @@
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+import styled from "styled-components";
+import Api from "../api/plannetApi";
+import Nav from "../Utill/Nav";
+import FriendList from '../Friend/FriendList';
+import Modal from '../Utill/Modal';
+
+const Wrap = styled.div`
+    width: 1130px;
+    height: 100vh;
+    background-color: white;
+    margin: 0 auto;
+`;
+const Section = styled.div`
+    width: 850px;
+    height: calc(100vh - 40px);
+    float: left;
+    position: relative;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    &::-webkit-scrollbar {
+        width: 20px;
+        padding: 15px;
+    }
+    &::-webkit-scrollbar-thumb {
+        height: 30%; /* 스크롤바의 길이 */
+        background: #ddd; /* 스크롤바의 색상 */
+        border-radius: 10px;
+        border: 7px solid transparent;
+        background-clip: padding-box;
+    }
+    &::-webkit-scrollbar-track {
+        background: none;
+        /*스크롤바 뒷 배경 색상*/
+    }
+    div {
+        padding-top: 30px;
+    }
+    h2 {
+      font-size: 28px;
+      font-weight: 900;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+     .scalCreate {
+        padding: 28px;
+        .scalForm {
+            display:flex;
+            justify-content:center;
+            align-items: center;
+            flex-direction: column;
+           p {
+                align-items: flex-start;
+                font-size: 20px;
+                font-weight: 600;
+                line-height: 18px;
+                margin-bottom: 10px;
+           }
+            .title {
+                padding: 10px 30px;
+                width: 500px;
+                margin-top: 0;
+                input {
+                    padding: 0 15px;
+                    border-radius: 5px;
+                    width: 440px;
+                    height: 30px;
+                    color: #333;
+                    background: #e8f0fe;
+                    border: none;
+                    font-weight: 500;
+                    outline: none;
+                    &:focus {
+                        background-color: #b8b9f1;
+                        color: #222;
+                    }
+                    &:focus::placeholder {
+                        color: #888;
+                    }
+                    &::placeholder {
+                        color: #bbb;
+                    }
+                    &:read-only{
+                        background-color: #eee;
+                        color: #aaa;
+                    }
+                }
+            }
+            .friend{
+                width: 500px;
+                padding: 20px 30px;
+                .friend_search{
+                    margin: 0;
+                    width: 444px;
+                    height: 31px;
+                    border: solid 2px #ddd;
+                    padding: 0;
+                    input {
+                        width: 410px;
+                        height: 25px;
+                        border: 0px;
+                        outline: none;
+                        margin: 0;
+                    }
+                }
+            }
+            .friend_list {
+                height: 500px;
+                padding:0;
+                p {
+                    font-size: 15px;
+                }
+            }
+            .scal_add {
+                padding : 0;
+                button {
+                    cursor: pointer;
+                    font-weight: 600;
+                    float: right;
+                    font-size: 16px;
+                    padding: 8px 35px;
+                    border-radius: 25px;
+                    background-color: #333;
+                    color: white;
+                    border: none;
+                    transition: all .1s ease-in;
+                    &:hover{
+                        background-color: #666;
+                        color: #888;
+                    }
+                }
+            }
+        }
+    }
+`;
+
+    const SCalCreate = () => {
+    const navigate = useNavigate();
+    const getId = window.localStorage.getItem("userId");
+    const [title, setTitle] = useState(''); // 공유캘린더 이름
+    const [searchKeyword, setSearchKeyword] = useState('');
+    const [friendList, setFriendList] = useState([
+        {proImg: "https://images.unsplash.com/photo-1668603145974-c05f7a0e4552?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80", nickname: "안녕하세요", userCode: "#0000", profile: "자기소개입니다"},
+        {proImg: "https://images.unsplash.com/photo-1669847171248-8f12c8160d57?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80", nickname: "안녕하세요", userCode: "#0000", profile: "자기소개입니다"}]);
+    const [isAdd, setIsAdd] = useState(false); // 친구추가
+
+    const [comment, setCommnet] = useState("");
+    const [modalHeader, setModalHeader] = useState("");
+    const [modalOpen, setModalOpen] = useState(false);
+    const [option, setOption] = useState("");
+    const page = "공유캘린더";
+
+    // 공유 캘린더 이름 입력
+   const onChangeTitle = (e) => {
+            setTitle(e.target.value);
+            console.log("타이틀 : " + title);
+        }
+    // 친구 검색 입력
+    const onChangeSearchKeyword = (e) => {
+        setSearchKeyword(e.target.value);
+        console.log("서치키워드 : " + searchKeyword);
+    }
+
+    const onKeyPressSearch = async(e) => {
+        if(e.key === 'Enter'){
+            onClickSearch();
+            setSearchKeyword(''); // 검색 후 검색창 빈칸으로 만들기
+        }
+    }
+
+    const closeModal = () => {
+        setModalOpen(false);
+    };
+
+    useEffect(() => {
+        const myFriend = async() => {
+            try{
+                const response = await Api.friendPageLoad(getId); //친구랑 알림 목록 불러오기
+                setFriendList(response.data.friendList);
+            } catch(e) {
+                console.log(e);
+            }
+
+        }
+    })
+
+    const onClickSearch = async () => {
+        try {
+            const response = await Api.searchList(searchKeyword);
+            setFriendList(response.data);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    const onClickSCalAdd = async() => {
+        const response = await Api.scalCreate(getId, title, friendList); // 변수 미정
+        const link = "/scal/" // + response.data를 바로 변수에 대입! 그래야 순서가 안 꼬임
+        window.location.assign(link);
+    }
+    // 디비에 갖다와서 user가 공유 캘린더가 2개 있으면 화면에도 접근 못하게 처리
+
+    return (
+        <Wrap>
+            <Modal open={modalOpen} close={closeModal} header={modalHeader} option={option}><p dangerouslySetInnerHTML={{__html: comment}}></p></Modal>
+            <Nav></Nav>
+            <Section>
+                <div className="scalCreate">
+                    <h2>공유 캘린더</h2>
+                    <div className="scalForm">
+                        <div className="title">
+                            <p>공유 캘린더 이름</p>
+                            <input onChange={onChangeTitle} value={title} placeholder="공유 캘린더 이름" />
+                        </div>
+                        <div className="friend">
+                            <p>친구 추가</p>
+                            <div className="friend_search">
+                                <input title="검색" placeholder="친구 검색" onChange={onChangeSearchKeyword} onKeyDown={onKeyPressSearch} value={searchKeyword}/>
+                                <a href="#" onClick={onClickSearch}><i className="bi bi-search"></i></a>
+                            </div>
+                            <div className="friend_list">
+                                <FriendList setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} friendList={friendList} isAdd={isAdd} setOption={setOption} isPage={page}/>
+                            </div>
+                        </div>
+                        <div className="scal_add">
+                         <button onClick={onClickSCalAdd} disabled={friendList}>공유캘린더 생성하기</button>
+                        </div>
+                    </div>
+                </div>
+            </Section>
+            <div className="copy">&#169; Plannet.</div>
+        </Wrap>
+    )
+}
+export default SCalCreate;

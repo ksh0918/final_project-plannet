@@ -2,12 +2,17 @@ package plannet.final_project.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.bytebuddy.asm.Advice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import plannet.final_project.service.ScalService;
 import plannet.final_project.vo.ShareDTO;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +41,7 @@ public class ScalController {
         }
     }
 
-    // 메모 불러오기
+    // 메모 불러오기 & 수정
     @PostMapping("/memo")
     public ResponseEntity<Boolean> memoWrite(@RequestBody Map<String, String> calMemo) {
         Long calNo = Long.parseLong(calMemo.get("calNo"));
@@ -46,5 +51,18 @@ public class ScalController {
         boolean memoWrite = scalService.memoWrite(calNo, detail);
         if(memoWrite) return new ResponseEntity(memoWrite, HttpStatus.OK);
         else return new ResponseEntity(null, HttpStatus.OK);
+    }
+
+    // 일정 불러오기
+    @GetMapping("/plan_load")
+    public ResponseEntity<List<ShareDTO>> planLoad(@RequestBody Map<String, String> planLoad) {
+        Long calNo = Long.valueOf(planLoad.get("calNo"));
+        LocalDate date = LocalDate.parse(planLoad.get("date"));
+        ShareDTO shareDTO = scalService.planLoad(calNo, date);
+        if (shareDTO.isOk()) {
+            return new ResponseEntity(shareDTO.getPlanList(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity(null, HttpStatus.OK);
+        }
     }
 }

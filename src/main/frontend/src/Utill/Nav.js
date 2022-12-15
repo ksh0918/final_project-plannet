@@ -7,7 +7,7 @@ import Api from "../api/plannetApi";
 
 
 const Box = styled.div`
-    display : table;
+    width:280px;
     height: 100vh;
     background-color: #e8f0fe;
     float: left;
@@ -90,7 +90,7 @@ const Box = styled.div`
             background-size: cover;
         };
         .menu{
-            width: 200px;
+            display :table;
             height: 40px;
             margin: 0 auto;
             li{
@@ -104,6 +104,7 @@ const Box = styled.div`
                     &:hover{
                         color: #4555AE;
                     }
+                    
                 }
                 .notiCount{
                     line-height: 16.2px;
@@ -120,7 +121,7 @@ const Box = styled.div`
                         color: #ddd;
                     }
                 }
-            li:first-child a{border-left: none;}
+                &:first-of-type a{border-left: none;}
             }
         }
         .calList{
