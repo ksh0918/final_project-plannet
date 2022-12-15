@@ -86,10 +86,16 @@ const Friends = styled.div`
         top: 50%;
         transform:translateY(-50%);
     }
-    .scalFriend_btn {
+    .scalFriend_check {
         transition: all .3s ease-in;
-        font-size: 20px;
-        float: right;
+                cursor: pointer;
+                position: absolute;
+                font-size: 20px;
+                color: #f9f9f9;
+                right: 30px;
+                top: 50%;
+                transform:translateY(-50%);
+
     }
 `;
 
@@ -103,9 +109,12 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
         setModalOpen(true);
     }
 // 공유 캘린더 멤버로 추가
-//    const onClickSCalfriend = (e) => {
-//
-//    }
+   const onClickSCalfriend = (target) => {
+        console.log(target.checked);
+        console.log(target.key);
+        if(target.checked) setOption(target.key);
+
+   }
 
     return (
         <Friends className={(friendList? 'is_list' : '') + ' ' + (isAdd? 'add_active_box' : '')}>
@@ -120,7 +129,7 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
                         </p>
                         <p>{e.profile}</p>
                         {isPage === "친구삭제" && <i className="bi bi-x-lg unfriend_btn" onClick={() => onClickUnfriend(e.key)}></i>}
-                        {isPage === "공유캘린더" && <i className="bi bi-plus-lg scalFriend_btn"></i>}
+                        {isPage === "공유캘린더" && <input class="form-check-input scalFriend_check" onClick={() => onClickSCalfriend(e.key)} type="checkbox" id="checkboxNoLabel" value="" aria-label="..." />}
 
                     </li>
                 );})}
