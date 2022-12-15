@@ -31,6 +31,8 @@ const AgreeBox = styled.div`
     border-radius : 5px;
     border: solid #eeeeee;
     margin-bottom: 30px;
+    justify-content:center;
+    align-items: center;
     .check {
         width : 760px;
         height : 200px;
@@ -54,6 +56,11 @@ const Button = styled.button`
     margin-bottom: 50px;
     width: 150px;
     height: 40px;
+    font-size: 18px;
+    font-weight: 500;
+    background-color: #4555AE;
+    color: white;
+    border-radius: 10px;
 `;
 
 
@@ -163,7 +170,7 @@ const Terms = () => {
 
                             제 1조 (목적)
 
-                            이 약관은 주식회사 뮤트(Plannet)(이하 "회사"라 합니다)이 운영, 제공하는 서비스의 이용과 관련하여 “회사”와 “회원”과의 권리, 의무 및 책임사항, 기타 필요한 사항을 규정함을 목적으로 합니다.
+                            이 약관은 주식회사 Plannet(이하 "회사"라 합니다)이 운영, 제공하는 서비스의 이용과 관련하여 “회사”와 “회원”과의 권리, 의무 및 책임사항, 기타 필요한 사항을 규정함을 목적으로 합니다.
 
                             제 2조 (용어의 정의)
 
@@ -256,7 +263,7 @@ const Terms = () => {
                         <br/>
                         <div className='check'>
                             <div className='text'><input type="checkbox" checked={userCheck} onClick={userBtnEvent}/> 개인정보 이용 약관에 동의합니다.<b>(필수)</b></div>
-                            <textarea className='text_box'>(주)Plannet('https://www.plannet.com/'이하 '회사') 는 고객의 개인정보보호를 소중하게 생각하고, 고객의 개인정보를 보호하기 위하여 항상 최선을 다해 노력하고 있습니다. 회사 는 「개인정보보호법」, 「정보통신망 이용촉진 및 정보보호 등에 관한 법률」을 비롯한 모든 개인정보보호 관련 법률규정을 준수하고 있습니다.
+                            <textarea className='text_box'>(주)Plannet('https://www.plannet.shop/'이하 '회사') 는 고객의 개인정보보호를 소중하게 생각하고, 고객의 개인정보를 보호하기 위하여 항상 최선을 다해 노력하고 있습니다. 회사 는 「개인정보보호법」, 「정보통신망 이용촉진 및 정보보호 등에 관한 법률」을 비롯한 모든 개인정보보호 관련 법률규정을 준수하고 있습니다.
                             1. 수집하는 개인정보의 항목 및 수집방법
 
                             개인정보 수집에 대한 동의
@@ -423,11 +430,11 @@ const Terms = () => {
 
                             회사 가 개인정보의 수집을 위해 "이용자"의 동의를 받아야 하는 경우에는 개인 정보 관리 책임자의 신원 (소속, 성명 및 전화번호, 기타 연락처), 정보의 수집 목적 및 이용 목적, 제 3자에 대한 정보 제공 관련 사항 (제공 받은 자, 제공 목적 및 제공할 정보의 내용)등 정보통신망 이용촉진 및 정보보호 등에 관한 법률 등의 요구하는 사항을 명시하거나 고지해야 하며 "이용자"는 언제든지 이 동의를 철회할 수 있습니다.
 
-                            이와 관련한 각종 문의 및 요청은 서비스 담당자(support@mute.com)에게 메일을 보내 변경 및 열람을 신청 하셔야 합니다.
+                            이와 관련한 각종 문의 및 요청은 서비스 담당자(plannet_corp@naver.com)에게 메일을 보내 변경 및 열람을 신청 하셔야 합니다.
 
                             회원 정보는 로그인 후 회원 정보 페이지 상에서 "이용자"가 직접 자신 혹은 당해 만 14세 미만 아동의 개인 정보를 변경 또는 열람할 수 있습니다.
 
-                            "이용자"의 법정 대리인이 "이용자"의 개인 정보의 열람 및 변경을 원할 경우 서비스 담당자(support@mute.com)에게 메일로 문의하시고 서비스 담당자의 지시에 따라 법정 대리인임을 증명할 자료 및 증표를 제시 하셔야 합니다.
+                            "이용자"의 법정 대리인이 "이용자"의 개인 정보의 열람 및 변경을 원할 경우 서비스 담당자(plannet_corp@naver.com)에게 메일로 문의하시고 서비스 담당자의 지시에 따라 법정 대리인임을 증명할 자료 및 증표를 제시 하셔야 합니다.
 
 
 
@@ -454,7 +461,7 @@ const Terms = () => {
 
                             정보주체는 개인정보 보호법 제35조부터 제37조에 따른 개인정보의 열람청, 정정, 삭제, 처리정지를 아래의 부서에 할 수 있습니다. 회사 는 정보주체의 개인정보 열람청구, 정정, 삭제, 처리정지가 신속하게 처리되도록 노력하겠습니다.
 
-                            이와 관련한 각종 문의 및 요청은 "서비스" 사이트 (http://www.plannet.com/)의 서비스 담당자(plannet_corp@naver.com)에게 메일로 신청하셔야 합니다.
+                            이와 관련한 각종 문의 및 요청은 "서비스" 사이트 (http://www.plannet.shop/)의 서비스 담당자(plannet_corp@naver.com)에게 메일로 신청하셔야 합니다.
 
                             ▶ 개인정보 열람청구, 정정, 삭제, 처리정지 접수 처리 부서
 
@@ -579,16 +586,16 @@ const Terms = () => {
                         <div className='check2'>
                             <div className='text'>
                                 <input type="checkbox" checked={marketingCheck} onClick={marketingBtnEvent}/>
-                                마케팅 활용 약관에 동의합니다.(선택) ( <input type="checkbox" checked={marketingEmailCheck} onClick={marketingEmailBtnEvent}/>
+                                 마케팅 활용 약관에 동의합니다.(선택) ( <input type="checkbox" checked={marketingEmailCheck} onClick={marketingEmailBtnEvent}/>
                                 <span> 이메일 </span>
-                                <input type="checkbox" checked={marketingSMSCheck} onClick={marketingSMSBtnEvent}/><span> SMS )</span><br/> </div>
+                                <input type="checkbox" checked={marketingSMSCheck} onClick={marketingSMSBtnEvent}/><span> SMS )</span><br/></div>
                         </div>
                     </div>
                 </AgreeBox>
-                <div><input type="checkbox" checked={allCheck} onClick={allBtnEvent}/> 전체 약관에 동의합니다.</div>
+                <div><input type="checkbox" checked={allCheck} onClick={allBtnEvent}/><b> 전체 약관에 동의합니다. </b></div>
                 <br/>
                 <br/>
-                <Button onClick={istrue} className='lastBtn'>다음단계</Button>
+                <Button onClick={istrue} className="lastBtn">다음단계</Button>
                 {/* 모달 */}
                 {modalOpenSignUp && <Modal open={modalOpenSignUp} close={closeModalSignUp} header="확인">필수 항목을 모두 체크해주세요.</Modal>}
             </ContainerTerms>
