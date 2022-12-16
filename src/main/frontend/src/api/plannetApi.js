@@ -1,5 +1,6 @@
 import axios from "axios";
 const HEADER = 'application/json';
+//const PLANNET_DOMAIN = "http://plannet.shop/";
 const PLANNET_DOMAIN = "http://localhost:8111/";
 
 const plannetApi = {
@@ -237,10 +238,21 @@ const plannetApi = {
         return await axios.post(PLANNET_DOMAIN + "board/board_delete", object, HEADER);
     },
     //쪽지 불러오기
-    messageList: async function(){
-        return await axios.get(PLANNET_DOMAIN + "message/list", HEADER);
+    messageList: async function(id){
+        const object = {
+            id : id
+        }
+        return await axios.get(PLANNET_DOMAIN + "message/list",object, HEADER);
     },
-
+    //쪽지 보내기
+    messageSend : async function(id,receiveId,detail){
+        const object = {
+            id : id,
+            receiveId : receiveId,
+            detail : detail,
+        };
+        return await axios.post(PLANNET_DOMAIN+"message/send",object,HEADER);
+    },
     //친구 추가 요청
     notiAddFriend: async function(id, keyword) {
         const object = {
@@ -289,7 +301,7 @@ const plannetApi = {
         return await axios.post(PLANNET_DOMAIN + "scal/memo", object, HEADER);
     },
     // 공유 캘린더 일정 불러오기
-    scalPlanLoad: async function(calNo) {
+    scalPlanLoad: async function(calNo, date) {
         const object = {
             calNo: calNo,
             date: date

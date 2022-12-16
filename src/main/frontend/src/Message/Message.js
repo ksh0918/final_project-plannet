@@ -131,9 +131,10 @@ const Section = styled.div`
 
 const Message = () => {
     const navigate = useNavigate();
+    const getId = window.localStorage.getItem("userId");
     const [mNotiCount,setmNotiCount] = useState("");
     const onClickToCreate = () => {
-        const link = "#"
+        const link = "/send"
         navigate(link);
     }
     const [messageList, setMessageList] = useState([]); // boardList 불러오기
@@ -144,8 +145,9 @@ const Message = () => {
     const offset = (page - 1) * limit; // 게시물 위치 계산, 시작점과 끝점을 구하는 offset
     const numPages = Math.ceil(messageList.length / limit); // 필요한 페이지 개수
     const [currPage, setCurrPage] = useState(page)
-    let firstNum = currPage - (currPage % 5) + 1
-    let lastNum = currPage - (currPage % 5) + 5
+    let firstNum = currPage - (currPage % 5) + 1;
+    let lastNum = currPage - (currPage % 5) + 5;
+    
     const postsData = (posts) => {
         if(posts){
           let result = posts.slice(offset, offset + limit);
@@ -177,7 +179,7 @@ const Message = () => {
     useEffect(() => {
         const messageData = async () => {
             try{
-                const result = await Api.messageList();
+                const result = await Api.messageList(getId);
                 setMessageList(result.data);
                 setmNotiCount(result.data.notiList.length);
                 window.localStorage.setItem("messageNotiCount", mNotiCount);
@@ -185,6 +187,7 @@ const Message = () => {
                 console.log(e);
             }
         }
+        messageData();
     },[]);
     return (
         <Wrap>
@@ -200,12 +203,20 @@ const Message = () => {
                     <table>
                         <tr>
                             <th><input type="checkbox" id="checkall"/></th>
-                            <th>No.</th>
                             <th>State</th>
                             <th>Sender</th>
-                            <th>Title</th>
+                            <th>Detail</th>
                             <th>Date</th>
                         </tr>
+                        {messageList.slice(offset,offset+limit).map(({isRead,sendId,detail,sendDate,receiveId})=>(
+                            <tr key={receiveId}>
+                                <td><input type="checkbox" id="checkone"/></td>
+                                <td>{isRead}</td>
+                                <td>{sendId}</td>
+                                <td>{detail}</td>
+                                <td>{sendDate.substring(0, 10)}</td>
+                            </tr>
+                        ))}
                     </table>
                 </div>
                 <div className="util_box">
