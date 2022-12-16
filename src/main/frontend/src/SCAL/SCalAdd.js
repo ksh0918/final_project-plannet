@@ -63,6 +63,7 @@ const SCalAdd = ({setComment, setModalHeader, setModalOpen, isAdd, getId}) => {
             setInputMessage('')
             setIsOk(false);
         }
+        console.log("친구코드 : " + addInput);
     }
 
     const onClickAddBtn = async() => {
@@ -76,12 +77,12 @@ const SCalAdd = ({setComment, setModalHeader, setModalOpen, isAdd, getId}) => {
             setComment("친구 등록이 되지 않은 사용자입니다.");
             setModalHeader("멤버신청");
         } else if(response.data === 3) { // 이미 공유 캘린더에 등록되어 있음
-            setComment("이미 등록된 멤버 입니다.");
+            setComment("이미 등록 되어 있는 멤버 입니다.");
             setModalHeader("멤버신청");
         } else if(response.data === 4) { //이미 내가 멤버 요청함
-            setComment("이미 멤버 요청한 친구 입니다.");
+            setComment("이미 멤버 요청을 보낸 친구 입니다.");
             setModalHeader("멤버신청");
-        } else if(response.data === 5) { //이미 상대가 멤버 신청함
+        } else if(response.data === 5) { //이미 상대가 멤버 요청함
             setComment("멤버 요청이 있는 친구입니다. </br>알림창을 확인해주세요.");
             setModalHeader("멤버신청");
         } else { // 검색결과가 없는 유효하지 않은 사용자

@@ -289,7 +289,7 @@ const plannetApi = {
         return await axios.post(PLANNET_DOMAIN + "scal/memo", object, HEADER);
     },
     // 공유 캘린더 일정 불러오기
-    scalPlanLoad: async function(calNo) {
+    scalPlanLoad: async function(calNo, date) {
         const object = {
             calNo: calNo,
             date: date
@@ -323,7 +323,7 @@ const plannetApi = {
             id: id,
             keyword: keyword
         };
-        return await axios.post(PLANNET_DOMAIN + "scal/add_member", object, HEADER);
+        return await axios.post(PLANNET_DOMAIN + "scal/invite_member", object, HEADER);
     },
 
 }
