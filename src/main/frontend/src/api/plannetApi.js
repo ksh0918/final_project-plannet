@@ -327,7 +327,7 @@ const plannetApi = {
             id: id,
             keyword: keyword
         };
-        return await axios.post(PLANNET_DOMAIN + "scal/add_member", object, HEADER);
+        return await axios.post(PLANNET_DOMAIN + "scal/invite_member", object, HEADER);
     },
 
 }

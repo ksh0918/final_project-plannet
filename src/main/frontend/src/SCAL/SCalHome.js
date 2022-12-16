@@ -4,8 +4,9 @@ import Calendar from '../Home/Calendar';
 import Nav from '../Utill/Nav';
 import Memo from '../Home/Memo';
 import List from '../Home/List';
-import SCalAdd from "./SCalAdd";
 import Api from "../api/plannetApi";
+import SCalAdd from "./SCalAdd";
+import Modal from '../Utill/Modal';
 
 const Wrap = styled.div`
     width: 1130px;
@@ -176,12 +177,19 @@ const SCalHome = () => {
     const [modalHeader, setModalHeader] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
 
+    const closeModal = () => {
+        setModalOpen(false);
+    };
+
+
+
     return (
         <Wrap>
+             <Modal open={modalOpen} close={closeModal} header={modalHeader} option={option}><p dangerouslySetInnerHTML={{__html: comment}}></p></Modal>
             <Nav/>
             <Section>
                 <div className="plan">
-                    <h2>Share Calendar</h2>
+                    <h2>Plan it / Share Calendar</h2>
                     <Calendar doMark={friendDoMark} endMark={friendEndMark}/>
                 </div>
                 <div className='etc'>
