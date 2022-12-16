@@ -86,7 +86,7 @@ public class ScalController {
         return new ResponseEntity(commentsWriteResult, HttpStatus.OK);
     }
 
-    // 자유게시판 댓글 삭제하기
+    // 공유캘린더 댓글 삭제하기
     @PostMapping("/comments_delete")
     public ResponseEntity<Boolean> commentsDelete(@RequestBody Map<String, String> commentsDelete) {
         Long commentsNo = Long.valueOf(commentsDelete.get("commentsNo"));

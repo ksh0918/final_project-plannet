@@ -296,24 +296,29 @@ const plannetApi = {
         };
         return await axios.get(PLANNET_DOMAIN + "scal/plan_load", object, HEADER);
     },
-    // // 해당 캘린더에 작성된 댓글 불러오기
-    // scalCommentsLoad: async function(calNo) {
-    //     const object = {
-    //         calNo: calNo,
-    //         date: date
-    //     };
-    //     return await axios.get(PLANNET_DOMAIN + "scal/plan_load", object, HEADER);
-    // },
-    // // 해당 캘린더에 댓글 작성
-    // commentsWrite: async function(boardNo, id, detail){
-    //     return await axios.get(PLANNET_DOMAIN + `board/comments_write?boardNo=${boardNo}&id=${id}&detail=${detail}`, HEADER);
-    // },
-    // // 해당 캘린더에 댓글 삭제
-    // commentsDelete: async function(commentNo){
-    //     return await axios.get(PLANNET_DOMAIN + `board/comments_delete?commentNo=${commentNo}`, HEADER);
-    // },
+    // 해당 캘린더에 작성된 댓글 불러오기
+    scalCommentsLoad: async function(calNo) {
+        return await axios.get(PLANNET_DOMAIN + "scal/comments_load", HEADER);
+    },
+    // 해당 캘린더에 댓글 작성
+    scalCommentsWrite: async function(calNo, date, id, detail){
+        const object = {
+            calNo: calNo,
+            date: date,
+            id: id,
+            detail
+        };
+        return await axios.post(PLANNET_DOMAIN + "scal/comments_write", object, HEADER);
+    },
+    // 해당 캘린더에 댓글 삭제
+    scalCommentsDelete: async function(commentsNo){
+        const object = {
+            commentsNo: commentsNo
+        };
+        return await axios.post(PLANNET_DOMAIN + "scal/comments_delete", object, HEADER);
+    },
     // 공유 캘린더 멤버 추가 요청
-    scalAddMember: async function(id, keyword) {
+        scalAddMember: async function(id, keyword) {
         const object = {
             id: id,
             keyword: keyword
