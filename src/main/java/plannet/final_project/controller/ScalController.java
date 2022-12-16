@@ -2,17 +2,13 @@ package plannet.final_project.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.bytebuddy.asm.Advice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import plannet.final_project.service.ScalService;
 import plannet.final_project.vo.ShareDTO;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +49,7 @@ public class ScalController {
         else return new ResponseEntity(null, HttpStatus.OK);
     }
 
-    // 일정 불러오기
+    // 공유캘린더 일정 불러오기
     @GetMapping("/plan_load")
     public ResponseEntity<List<ShareDTO>> planLoad(@RequestBody Map<String, String> planLoad) {
         Long calNo = Long.valueOf(planLoad.get("calNo"));
@@ -64,5 +60,75 @@ public class ScalController {
         } else {
             return new ResponseEntity(null, HttpStatus.OK);
         }
+    }
+
+    // 공유캘린더 댓글 불러오기
+    @GetMapping("/comments_load")
+    public ResponseEntity<List<Map<String, Object>>> commentsLoad(@RequestBody Map<String, String> commentsLoad) {
+        Long calNo = Long.valueOf(commentsLoad.get("calNo"));
+        LocalDate planDate = LocalDate.parse(commentsLoad.get("date"));
+        ShareDTO shareDTO = scalService.getCommentsLoad(calNo, planDate);
+        System.out.println("scalService");
+        if(shareDTO.isOk()) {
+            List<Map<String, Object>> commentsList = shareDTO.getComentsList();
+            return new ResponseEntity(commentsList, HttpStatus.OK);
+        } else return new ResponseEntity<>(null, HttpStatus.OK);
+    }
+
+    // 공유캘린더 댓글 작성
+    @PostMapping("/comments_write")
+    public ResponseEntity<Boolean> commentsWrite(@RequestBody Map<String, String> commentsWrite) {
+        Long calNo = Long.valueOf(commentsWrite.get("calNo"));
+        LocalDate planDate = LocalDate.parse(commentsWrite.get("date"));
+        String id = commentsWrite.get("id");
+        String detail = commentsWrite.get("detail");
+        boolean commentsWriteResult = scalService.commentsWrite(calNo, planDate, id, detail);
+        return new ResponseEntity(commentsWriteResult, HttpStatus.OK);
+    }
+
+    // 공유캘린더 댓글 삭제하기
+    @PostMapping("/comments_delete")
+    public ResponseEntity<Boolean> commentsDelete(@RequestBody Map<String, String> commentsDelete) {
+        Long commentsNo = Long.valueOf(commentsDelete.get("commentsNo"));
+        boolean commentsDeleteResult = scalService.commentsDelete(commentsNo);
+        return new ResponseEntity(commentsDeleteResult, HttpStatus.OK);
+    }
+
+    // 설정 불러오기
+    @GetMapping("/info_load")
+    public ResponseEntity<Map<String, Object>> infoLoad(@RequestParam Long calNo, String id) {
+        Map<String, Object> scalInfo = new HashMap<>();
+        ShareDTO shareDTO = scalService.infoLoad(calNo, id);
+        // 캘린더 이름 / 캘린더 멤버 / 오너 여부
+        if(shareDTO.isOk()) {
+            scalInfo.put("calName", shareDTO.getCalName());
+            scalInfo.put("calMember", shareDTO.getMemberList());
+            return new ResponseEntity(scalInfo, HttpStatus.OK);
+        }
+        return new ResponseEntity(null, HttpStatus.OK);
+    }
+    // 설정 저장하기
+    @PostMapping("/info_save")
+    public ResponseEntity<Boolean> infoSave(@RequestBody Map<String, Object> data) {
+        Long calNo = (long)data.get("calNo");
+        String calName = (String)data.get("calName");
+        boolean result = scalService.infoSave(calNo, calName);
+        return new ResponseEntity(result, HttpStatus.OK);
+    }
+    // 멤버 초대하기
+    @PostMapping("/invite_member")
+    public ResponseEntity<Boolean> inviteMember(@RequestBody Map<String, Object> data) {
+        long calNo = (long) data.get("calNo");
+        String id = (String)data.get("id");
+        boolean result = scalService.inviteMember(calNo, id);
+        return new ResponseEntity(result, HttpStatus.OK);
+    }
+    // 멤버 강퇴
+    @PostMapping("/drop_member")
+    public ResponseEntity<Boolean> dropMember(@RequestBody Map<String, Object> data) {
+        Long calNo = (long)data.get("calNo");
+        String id = (String)data.get("id");
+        boolean result = scalService.dropMember(calNo, id);
+        return new ResponseEntity(result, HttpStatus.OK);
     }
 }
