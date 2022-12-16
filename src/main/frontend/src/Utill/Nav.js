@@ -219,12 +219,20 @@ const Nav = () => {
                 setUserInfo(response.data.userInfo);
                 setScalInfo(response.data.scalInfo);
                 setProHeight(response.data.scalInfo.length * 47 + 390);
+                console.log(response.data);
             } catch(e){
                 console.log(e);
             }
         }
         userInfoLoad();
     },[userId]);
+    console.log(userInfo);
+
+    // 캘린더 클릭시 해당 캘린더로 이동
+    const moveLink = async (calNo, userId) => {
+        const link = "/scal/home/" + calNo;
+        navigate(link);
+    };
 
     // 친구 알림 띄우기
     const fNotiCount = window.localStorage.getItem("friendNotiCount");
@@ -276,15 +284,12 @@ const Nav = () => {
                         </Link>
                         {scalInfo&&scalInfo.map(e => {
                             return(
-                            <Link to="/home">
-                                {/* 추후 링크 변경 */}
-                                <li>
-                                    <p className="calTitle"><span>{e[1]}</span><span><i class="bi bi-caret-right-fill"></i></span></p>
-                                    <div className="chartBackground">
-                                        <div className="chartBar" style={{width: e[2]+'%'}}></div>
-                                    </div>
-                                </li>
-                            </Link>
+                            <li onClick={()=> moveLink(e[0], userId)}>
+                                <p className="calTitle"><span>{e[1]}</span><span><i class="bi bi-caret-right-fill"></i></span></p>
+                                <div className="chartBackground">
+                                    <div className="chartBar" style={{width: e[2]+'%'}}></div>
+                                </div>
+                            </li>
                         )})}
                         
                     </ul>

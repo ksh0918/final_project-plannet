@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import styled from "styled-components";
 import Api from "../api/plannetApi";
+import Modal from '../Utill/Modal';
 import Nav from "../Utill/Nav";
 import FriendList from '../Friend/FriendList';
-import Modal from '../Utill/Modal';
 
 const Wrap = styled.div`
     width: 1130px;
@@ -31,20 +30,10 @@ const Section = styled.div`
         border: 7px solid transparent;
         background-clip: padding-box;
     }
-    &::-webkit-scrollbar-track {
-        background: none;
-        /*스크롤바 뒷 배경 색상*/
-    }
-    div {
-        padding-top: 30px;
-    }
-    h2 {
-      font-size: 28px;
-      font-weight: 900;
-      margin-top: 20px;
-      margin-bottom: 10px;
-    }
-     .scalCreate {
+    &::-webkit-scrollbar-track {background: none; /*스크롤바 뒷 배경 색상*/}
+    div {padding-top: 30px;}
+    h2 {font-size: 28px; font-weight: 900; margin-top: 20px; margin-bottom: 10px;}
+    .scalCreate {
         padding: 28px;
         .scalForm {
             display:flex;
@@ -57,7 +46,7 @@ const Section = styled.div`
                 font-weight: 600;
                 line-height: 18px;
                 margin-bottom: 10px;
-           }
+            }
             .title {
                 padding: 10px 30px;
                 width: 500px;
@@ -72,23 +61,14 @@ const Section = styled.div`
                     border: none;
                     font-weight: 500;
                     outline: none;
-                    &:focus {
-                        background-color: #b8b9f1;
-                        color: #222;
+                    &:focus {background-color: #b8b9f1; color: #222;
                     }
-                    &:focus::placeholder {
-                        color: #888;
-                    }
-                    &::placeholder {
-                        color: #bbb;
-                    }
-                    &:read-only{
-                        background-color: #eee;
-                        color: #aaa;
-                    }
+                    &:focus::placeholder {color: #888;}
+                    &::placeholder {color: #bbb;}
+                    &:read-only{background-color: #eee; color: #aaa;}
                 }
             }
-            .friend{
+            .friend {
                 width: 500px;
                 padding: 20px 30px;
                 .friend_search{
@@ -114,7 +94,7 @@ const Section = styled.div`
                 }
             }
             .scal_add {
-                padding : 0;
+                padding: 0;
                 button {
                     cursor: pointer;
                     font-weight: 600;
@@ -126,9 +106,7 @@ const Section = styled.div`
                     color: white;
                     border: none;
                     transition: all .1s ease-in;
-                    &:hover{
-                        background-color: #666;
-                        color: #888;
+                    &:hover{ background-color: #666; color: #888;
                     }
                 }
             }
@@ -136,7 +114,7 @@ const Section = styled.div`
     }
 `;
 
-    const SCalCreate = () => {
+const SCalCreate = () => {
     const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
     const [title, setTitle] = useState(''); // 공유캘린더 이름
@@ -151,7 +129,7 @@ const Section = styled.div`
     const page = "공유캘린더";
 
     // 공유 캘린더 이름 입력
-   const onChangeTitle = (e) => {
+const onChangeTitle = (e) => {
             setTitle(e.target.value);
             console.log("타이틀 : " + title);
         }
@@ -184,7 +162,7 @@ const Section = styled.div`
             console.log(e);
             }
         }
-         myfriends();
+        myfriends();
     },[getId]);
 
     const onClickSearch = async () => {
@@ -226,7 +204,7 @@ const Section = styled.div`
                             </div>
                         </div>
                         <div className="scal_add">
-                         <button onClick={onClickSCalAdd} disabled={friendList}>공유캘린더 생성하기</button>
+                        <button onClick={onClickSCalAdd} disabled={friendList}>공유캘린더 생성하기</button>
                         </div>
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 import axios from "axios";
 const HEADER = 'application/json';
-const PLANNET_DOMAIN = "http://localhost:8111/";
+const PLANNET_DOMAIN = "http://plannet.shop/";
 
 const plannetApi = {
     // MemberController
@@ -202,11 +202,11 @@ const plannetApi = {
         return await axios.post(PLANNET_DOMAIN + "board/comments_load", object, HEADER);
     },
     // 해당 게시물에 댓글 작성
-    commentsWrite: async function(boardNo, id, detail){
+    commentWrite: async function(boardNo, id, detail){
         return await axios.get(PLANNET_DOMAIN + `board/comments_write?boardNo=${boardNo}&id=${id}&detail=${detail}`, HEADER);
     },
     // 해당 게시물에 댓글 삭제
-    commentsDelete: async function(commentNo){
+    commentDelete: async function(commentNo){
         return await axios.get(PLANNET_DOMAIN + `board/comments_delete?commentNo=${commentNo}`, HEADER);
     },
     // 자유게시판 글 작성
@@ -289,7 +289,7 @@ const plannetApi = {
         return await axios.post(PLANNET_DOMAIN + "scal/memo", object, HEADER);
     },
     // 공유 캘린더 일정 불러오기
-    scalPlanLoad: async function(calNo) {
+    scalPlanLoad: async function(calNo, date) {
         const object = {
             calNo: calNo,
             date: date
@@ -297,21 +297,25 @@ const plannetApi = {
         return await axios.get(PLANNET_DOMAIN + "scal/plan_load", object, HEADER);
     },
     // 해당 캘린더에 작성된 댓글 불러오기
-    scalCommentsLoad: async function(calNo) {
-        return await axios.get(PLANNET_DOMAIN + "scal/comments_load", HEADER);
-    },
-    // 해당 캘린더에 댓글 작성
-    scalCommentsWrite: async function(calNo, date, id, detail){
+    scalCommentsLoad: async function(calNo, date) {
         const object = {
             calNo: calNo,
             date: date,
+        };
+        return await axios.get(PLANNET_DOMAIN + "scal/comments_load", object, HEADER);
+    },
+    // 해당 캘린더에 댓글 작성
+    scalCommentWrite: async function(id, calNo, date, detail){
+        const object = {
             id: id,
+            calNo: calNo,
+            date: date,
             detail
         };
         return await axios.post(PLANNET_DOMAIN + "scal/comments_write", object, HEADER);
     },
     // 해당 캘린더에 댓글 삭제
-    scalCommentsDelete: async function(commentsNo){
+    scalCommentDelete: async function(commentsNo){
         const object = {
             commentsNo: commentsNo
         };

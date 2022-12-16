@@ -4,8 +4,8 @@ import Calendar from '../Home/Calendar';
 import Nav from '../Utill/Nav';
 import Memo from '../Home/Memo';
 import List from '../Home/List';
-import Api from "../api/plannetApi";
 import SCalAdd from "./SCalAdd";
+import Api from "../api/plannetApi";
 
 const Wrap = styled.div`
     width: 1130px;
@@ -175,8 +175,6 @@ const SCalHome = () => {
     const [comment, setComment] = useState("");
     const [modalHeader, setModalHeader] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
-
-
 
     return (
         <Wrap>

@@ -1,5 +1,5 @@
-import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import './App.css';
 import Main from './Main/Main';
 import DoLogin from './DoLogin/DoLogin';
 import Social from './Join/Social';
@@ -40,11 +40,11 @@ function App() {
                 <Route path="/edit/:no" element={<PrivateRoute><Edit /></PrivateRoute>}/>
                 <Route path='/board/post_view/:no' element={<PrivateRoute><PostView /></PrivateRoute>}/>
                 <Route path="/scal/create" element={<PrivateRoute><SCalCreate /></PrivateRoute>}/>
-                <Route path="/scal/home" element={<PrivateRoute><SCalHome /></PrivateRoute>}/>
-                <Route path="/scal/write/:date" element={<PrivateRoute><SCalWrite /></PrivateRoute>}/>
+                <Route path="/scal/home/:no" element={<PrivateRoute><SCalHome /></PrivateRoute>}/>
+                <Route path="/scal/write/:no*/:date" element={<PrivateRoute><SCalWrite /></PrivateRoute>}/>
                 <Route path="/message" element={<PrivateRoute><Message /></PrivateRoute>}/>
             </Routes>
-        </Router>
+        </Router> 
     );
 }
 

@@ -71,7 +71,8 @@ public class ScalController {
         System.out.println("scalService");
         if(shareDTO.isOk()) {
             List<Map<String, Object>> commentsList = shareDTO.getComentsList();
-            return new ResponseEntity(commentsList, HttpStatus.OK);
+            return new ResponseEntity(commentsList, HttpStatus
+                    .OK);
         } else return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
