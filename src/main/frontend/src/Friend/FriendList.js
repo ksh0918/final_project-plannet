@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
+import Api from "../api/plannetApi";
 
 const Friends = styled.div`
     overflow-y: scroll;
@@ -75,7 +78,7 @@ const Friends = styled.div`
             color: #888;
             }
         }
-    }        
+    }
     .unfriend_btn{
         transition: all .3s ease-in;
         cursor: pointer;
@@ -91,22 +94,26 @@ const StyledInput = styled.input`
         transition: all .3s ease-in;
                 cursor: pointer;
                 position: absolute;
+                font-size: 20px;
                 color: #f9f9f9;
                 right: 30px;
                 top: 50%;
                 transform:translateY(-50%);
 
-        &:checked {
-            border-color: transparent;
-            background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M5.707 7.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4a1 1 0 0 0-1.414-1.414L7 8.586 5.707 7.293z'/%3e%3c/svg%3e");
-            background-size: 150% 150%;
-            background-position: 50%;
-            background-repeat: no-repeat;
-            background-color: #4555AE;
+    &:checked {
+        border-color: transparent;
+        background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M5.707 7.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4a1 1 0 0 0-1.414-1.414L7 8.586 5.707 7.293z'/%3e%3c/svg%3e");
+        background-size: 150% 150%;
+        background-position: 50%;
+        background-repeat: no-repeat;
+        background-color: #4555AE;
     }
 `;
 
-const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,setOption, isPage}) => {
+const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,setOption, isPage, title}) => {
+    const navigate = useNavigate();
+    const getId = window.localStorage.getItem("userId");
+    const [checkedButtons, setCheckedButtons] = useState([]); // 체크박스를 데이터를 넣을 빈배열
 
     // 친구삭제 버튼 팝업(수정해야함)
     const onClickUnfriend = (e) => {
@@ -115,17 +122,43 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
         setModalHeader("친구삭제");
         setModalOpen(true);
     }
-// 공유 캘린더 멤버로 추가
-   const onClickSCalfriend = (target) => {
-        console.log(target.checked);
-        console.log(target.key);
-        if(target.checked) setOption(target.key);
 
-   }
+   console.log("프렌드리스트 페이지 : ");
+   console.log(friendList);
+   
+   // onChange함수를 사용하여 이벤트 감지, 필요한 값 받아오기 
+   const changeHandler = (checked, e) => {
+     // check가 되었을 경우 checkedButtons에 friendList의 객체를 추가
+     if (checked) {
+       setCheckedButtons([...checkedButtons, e]);
+     // check가 해제되었을 경우 checkedButtons 배열 형태에서 friendList의 객체를 삭제했다.
+     } else {
+       setCheckedButtons(checkedButtons.filter(button => button !== e));
+     }
+   };
 
+   console.log("체크버튼 : ");
+   console.log(checkedButtons);
+   
+    const onClickSCalAdd = async() => {
+        const response = await Api.scalCheck(getId); //2개이상의 scal에 참여중인지 확인 2개 이하면 true, 이상이면 false
+        console.log(response.data);
+        if(response.data) {
+            const res = await Api.scalCreate(getId, title, checkedButtons); 
+            const resultNo = await Api.scalNo(getId);
+            const linkNo = resultNo.data;
+            navigate('/scal/' + linkNo);
+        } else {
+            setCommnet('최대 공유 캘린더 개수(2개)를 넘어 공유 캘린더를 생성할 수 없습니다.');
+            setModalOpen(true);
+        }
+        
+    }
+   
     return (
+        <>
         <Friends className={(friendList? 'is_list' : '') + ' ' + (isAdd? 'add_active_box' : '')}>
-            {friendList? 
+            {friendList?
             <ul>
                 {friendList.map(e =>{return(
                     <li>
@@ -135,8 +168,10 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
                             <span>&#35;{e.userCode}</span>
                         </p>
                         <p>{e.profile}</p>
-                        {isPage === "친구삭제" && <i className="bi bi-x-lg unfriend_btn" onClick={() => onClickUnfriend(e.key)}></i>}
-                        {isPage === "공유캘린더" && <StyledInput class="form-check-input scalFriend_check" onClick={() => onClickSCalfriend(e.key)} type="checkbox" id="checkboxNoLabel" value="" aria-label="..." />}
+                        {isPage === "친구삭제" && <i className="bi bi-x-lg unfriend_btn" onClick={() => onClickUnfriend(e.key)}></i>} 
+                        {/* checked: 체크표시 & 해제를 시키는 로직. 배열에 e.key가 있으면 true, 없으면 false                       onChange: onChange이벤트가 발생하면 check여부와 e.key값을 전달하여 배열에 friendList의 객체를 넣어준다. */}
+                        {isPage === "공유캘린더" && <StyledInput class="form-check-input scalFriend_check" id="checkboxNoLabel" onChange={check => { changeHandler(check.currentTarget.checked, e);}} 
+                            checked={checkedButtons.includes(e) ? true : false} type="checkbox" aria-label="..." />} 
 
                     </li>
                 );})}
@@ -145,6 +180,11 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
             :
             <p className='nothing'><b>등록된 친구가 아직 없습니다.</b><br/>상단 오른쪽의 버튼을 눌러 친구를 추가해보세요!</p>}
         </Friends>
+        {isPage === "공유캘린더" && <div className="scal_add">
+        <button onClick={onClickSCalAdd}>공유캘린더 생성하기</button>
+        </div>}
+        </>
+        
     );
 }
 
