@@ -56,7 +56,6 @@ const Join = () => {
     const [isEmail, setIsEmail] = useState(false);
     const [isTel, setIsTel] = useState(true);
     const [isAuth,setIsAuth] = useState(false);
-
     const [clickAuth, setClickAuth] = useState(false);
  
     // ID 길이 체크
@@ -180,26 +179,28 @@ const Join = () => {
         const memberCheck = await Api.memberRegCheck(inputEmail, "TYPE_EMAIL");
         if (memberCheck.data && isEmail) {
             setEmailMessage("사용가능한 Email입니다.");
+            setClickAuth(true);
         } else {
             setEmailMessage("이미 사용하고 있는 Email입니다.");
+            setClickAuth(false);
             setIsEmail(false);
         } 
     }
 
     const onChangeTel = (e) => {
         setInputTel(e.target.value.replace(/[^0-9]/g, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`));
-     }
- 
-     const onBlurTelCheck = async() => {
+    }
+
+    const onBlurTelCheck = async() => {
          // 가입 여부 우선 확인
-         const memberCheck = await Api.memberRegCheck(inputTel, "TYPE_TEL");
-         if (memberCheck.data) {
-             setTelMessage("사용가능한 전화번호입니다.");
-         } else {
-             setTelMessage("이미 사용하고 있는 전화번호입니다.");
-             setIsTel(false)
-         } 
-     }
+        const memberCheck = await Api.memberRegCheck(inputTel, "TYPE_TEL");
+        if (memberCheck.data) {
+            setTelMessage("사용가능한 전화번호입니다.");
+        } else {
+            setTelMessage("이미 사용하고 있는 전화번호입니다.");
+            setIsTel(false)
+        } 
+    }
 
     // ENTER 키를 눌렀을 때 회원가입 전송
     const onKeyDownJoin = (e) => {
@@ -260,7 +261,7 @@ const Join = () => {
                     </p>
                     <div className='email_auth'>
                         <input type='email' placeholder="이메일" value={inputEmail}  onChange={onChangeEmail} onBlur={onBlurEmailCheck}/>
-                        <button type='button' onClick={onClickAuth}>인증번호 받기</button>
+                        <button type='button' onClick={onClickAuth} disabled={!clickAuth}>인증번호 받기</button>
                     </div>
                     <div className='email_auth'>
                         <input type='text'placeholder="인증번호 확인" value = {inputAuth} onChange={onChangeAuth} disabled={!clickAuth}></input>
