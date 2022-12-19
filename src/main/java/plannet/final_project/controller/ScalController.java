@@ -19,15 +19,15 @@ import java.util.Map;
 public class ScalController {
     // Service 로직 연결
     private final ScalService scalService;
-    @PostMapping("/scal/create")
-    public ResponseEntity<Boolean> scalWrite(@RequestBody Map<String, Object> write) {
-        String userId = (String)write.get("id");
-        String title = (String)write.get("title");
-        List<Map<String, Object>> smember = (List<Map<String, Object>>)write.get("checkedButtons");
+    @PostMapping("/create")
+    public ResponseEntity<Boolean> scalCreate(@RequestBody Map<String, Object> create) {
+        String userId = (String)create.get("id");
+        String title = (String)create.get("title");
+        List<Map<String, Object>> smember = (List<Map<String, Object>>)create.get("checkedButtons");
 
-        boolean result = scalService.scalWrite(userId, title, smember);
-        if(result) {
-            return new ResponseEntity(true, HttpStatus.OK);
+        Long result = scalService.scalCreate(userId, title, smember);
+        if(result != -1) {
+            return new ResponseEntity(result, HttpStatus.OK);
         } else {
             return new ResponseEntity(false, HttpStatus.OK);
         }
