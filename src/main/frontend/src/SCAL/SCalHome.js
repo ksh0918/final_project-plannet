@@ -192,6 +192,7 @@ const SCalHome = () => {
     },[getId]);
     
     console.log(memberList);
+    console.log(scalData);
 
     const onClickSetting = () => {
         //해당캘린더의 설정페이지로 옮겨가는 부분 구현 필요
@@ -203,7 +204,7 @@ const SCalHome = () => {
             <Section>
                 <div className="plan">
                     {/* <h2>{scalData.calName}</h2> */}
-                    <h2>A<i className="bi bi-gear-fill" onClick={onClickSetting}/></h2>
+                    <h2>{scalData.calName}<i className="bi bi-gear-fill" onClick={onClickSetting}/></h2>
                     <Calendar doMark={memberDoMark} endMark={memberEndMark}/>
                 </div>
                 <div className='etc'>
