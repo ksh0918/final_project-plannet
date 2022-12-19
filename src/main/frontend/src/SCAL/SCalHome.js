@@ -147,7 +147,6 @@ const Section = styled.div`
             
 `;
 
-
 const SCalHome = () => {
     const getId = window.localStorage.getItem("userId");
     const [friendData, setFriendData] = useState([]);
