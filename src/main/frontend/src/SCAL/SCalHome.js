@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import styled from 'styled-components';
 import Calendar from '../Home/Calendar';
 import Nav from '../Utill/Nav';
@@ -167,6 +168,9 @@ const Section = styled.div`
 
 const SCalHome = () => {
     const getId = window.localStorage.getItem("userId");
+    let params = useParams(); // url에서 calNo를 가져오기 위해 uesParams() 사용
+    const getNum = params.no; // params는 객체이기 때문에 풀어줘서 다시 getNum에 대입해줌
+
     const [scalData, setScalData] = useState([]);
     const [memberDoMark, setMemberDoMark] = useState([]);
     const [memberEndMark, setMemberEndMark] = useState([]);
@@ -175,16 +179,19 @@ const SCalHome = () => {
     useEffect(() => {
         const scalHome = async() => {
             try{
-                const response = await Api.scalHome(getId);
+                const response = await Api.sharingHome(getNum);
                 setScalData(response.data)
                 setMemberDoMark(response.data.planMark[0]);
-                setMemberEndMark(response.data.planMark[1]);
+                setMemberEndMark(response.data.planMark[1]); 
+                setMemberList(response.data.memberList);
             } catch(e){
             console.log(e);
             }
         }
         scalHome();
     },[getId]);
+    
+    console.log(memberList);
 
     const onClickSetting = () => {
         //해당캘린더의 설정페이지로 옮겨가는 부분 구현 필요
@@ -211,7 +218,7 @@ const SCalHome = () => {
                                 <ul>
                                     {/* memberList */}
                                     {memberList.map((e) => {
-                                        if(e.isOwner) return(<li style={{listStyleImage:'url(/crown.svg)'}} className="owner">닉네임 <span>#0000</span></li>);
+                                        if(e.isOwner) return(<li style={{listStyleImage:'url(/crown.svg)'}} className="owner">{e.nickname} <span>#{e.userCode}</span></li>);
                                         else return(<li>{e.nickname} <span>#{e.userCode}</span></li>);
                                     })}
                                 </ul> :

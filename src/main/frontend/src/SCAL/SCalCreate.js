@@ -31,10 +31,20 @@ const Section = styled.div`
         border: 7px solid transparent;
         background-clip: padding-box;
     }
-    &::-webkit-scrollbar-track {background: none; /*스크롤바 뒷 배경 색상*/}
-    div {padding-top: 30px;}
-    h2 {font-size: 28px; font-weight: 900; margin-top: 20px; margin-bottom: 10px;}
-    .scalCreate {
+    &::-webkit-scrollbar-track {
+        background: none;
+        /*스크롤바 뒷 배경 색상*/
+    }
+    div {
+        padding-top: 30px;
+    }
+    h2 {
+      font-size: 28px;
+      font-weight: 900;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+     .scalCreate {
         padding: 28px;
         .scalForm {
             display:flex;
@@ -47,7 +57,7 @@ const Section = styled.div`
                 font-weight: 600;
                 line-height: 18px;
                 margin-bottom: 10px;
-            }
+           }
             .title {
                 padding: 10px 30px;
                 width: 500px;
@@ -62,11 +72,20 @@ const Section = styled.div`
                     border: none;
                     font-weight: 500;
                     outline: none;
-                    &:focus {background-color: #b8b9f1; color: #222;
+                    &:focus {
+                        background-color: #b8b9f1;
+                        color: #222;
                     }
-                    &:focus::placeholder {color: #888;}
-                    &::placeholder {color: #bbb;}
-                    &:read-only{background-color: #eee; color: #aaa;}
+                    &:focus::placeholder {
+                        color: #888;
+                    }
+                    &::placeholder {
+                        color: #bbb;
+                    }
+                    &:read-only{
+                        background-color: #eee;
+                        color: #aaa;
+                    }
                 }
             }
             .friend{
@@ -107,7 +126,9 @@ const Section = styled.div`
                     color: white;
                     border: none;
                     transition: all .1s ease-in;
-                    &:hover{ background-color: #666; color: #888;
+                    &:hover{
+                        background-color: #666;
+                        color: #888;
                     }
                 }
             }
@@ -116,6 +137,7 @@ const Section = styled.div`
 `;
 
     const SCalCreate = () => {
+    // const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
     const [title, setTitle] = useState(''); // 공유캘린더 이름
      const [searchKeyword, setSearchKeyword] = useState('');
@@ -127,6 +149,7 @@ const Section = styled.div`
     const [modalOpen, setModalOpen] = useState(false);
     const [option, setOption] = useState("");
 
+    // const [checkedButtons, setCheckedButtons] = useState([]); // 체크박스를 데이터를 넣을 빈배열
     const page = "공유캘린더";
 
 
@@ -160,7 +183,7 @@ const Section = styled.div`
      console.log(searchKeyword);
 
      }
-     
+
      let filterNames="";
      // DB에서 친구 목록을 가져오기 전에 실행되지 않는 조건문
      if(friendList != null) {
@@ -169,7 +192,7 @@ const Section = styled.div`
             return e.nickname.toLowerCase().includes(searchKeyword); // input 검색어가 포함되어 있는 friendList배열의 객체 반환
           });
      }
-     
+
 
     // const onClickSCalAdd = async() => {
     //     const response = await Api.scalCreate(getId, title); // 변수 미정
@@ -193,7 +216,7 @@ const Section = styled.div`
                         <div className="friend">
                             <p>친구 추가</p>
                             <div className="friend_search">
-                            <input title="검색" placeholder="친구 닉네임을 검색해보세요" onChange={onChangeSearchKeyword} value={searchKeyword}  /> 
+                            <input title="검색" placeholder="친구 닉네임을 검색해보세요" onChange={onChangeSearchKeyword} value={searchKeyword}  />
                             {/* <span onClick={onClicks}><i className="bi bi-search"></i></span> */}
                             {/* onKeyDown={onKeyPressSearch} */}
                             </div>

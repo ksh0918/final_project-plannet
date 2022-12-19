@@ -104,7 +104,7 @@ const Comments = ({getId, getNum, getDate, setCommentsList, commentsList}) => {
     } 
 
     if(currentPath == '/board') {
-        return( 
+        return ( 
             <Comment>
                 <div className="button-area2">
                     <input type='text' className='comment_text' placeholder='댓글 달기...' value={comment} onChange={onChangeComment} name='comments' size='58.5'></input>

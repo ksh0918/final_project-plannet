@@ -80,7 +80,7 @@ const PlanItem = ({planItem, planList, setPlanList, isPage}) => {
                     : (<span className={testStyle} onClick={onClickEdit}>{planItem.text}</span>)
                 }
                 <button onClick={onClickRemove}><i className="bi bi-trash3-fill" /></button>
-                {isPage === '공유'? <span className="plan_writer">작성자 이름</span> : ''}
+                {isPage === '공유'? <span className="plan_writer">작성자</span> : ''}
             </li>
         );
 }
