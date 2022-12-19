@@ -113,7 +113,7 @@ const StyledInput = styled.input`
 const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,setOption, isPage, title}) => {
     const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
-    const [checkedButtons, setCheckedButtons] = useState([]); // 체크박스를 데이터를 넣을 빈배열
+    const [checkedButtons, setCheckedButtons] = useState([]); // 체크박스를 체크한 데이터를 넣을 빈배열
 
     // 친구삭제 버튼 팝업(수정해야함)
     const onClickUnfriend = (e) => {
@@ -131,8 +131,7 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
      // check가 되었을 경우 checkedButtons에 friendList의 객체를 추가
      if (checked) {
        setCheckedButtons([...checkedButtons, e]);
-     // check가 해제되었을 경우 checkedButtons 배열 형태에서 friendList의 객체를 삭제했다.
-     } else {
+     } else { // check가 해제되었을 경우 checkedButtons 배열 형태에서 friendList의 객체를 삭제함
        setCheckedButtons(checkedButtons.filter(button => button !== e));
      }
    };
@@ -145,9 +144,10 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
         console.log(response.data);
         if(response.data) {
             const res = await Api.scalCreate(getId, title, checkedButtons); 
-            const resultNo = await Api.scalNo(getId);
-            const linkNo = resultNo.data;
-            navigate('/scal/' + linkNo);
+            // const resultNo = await Api.scalNo(getId);
+            // const linkNo = resultNo.data;
+            // navigate('/scal/' + linkNo);
+            navigate('/scal/1');
         } else {
             setCommnet('최대 공유 캘린더 개수(2개)를 넘어 공유 캘린더를 생성할 수 없습니다.');
             setModalOpen(true);
@@ -171,7 +171,7 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
                         {isPage === "친구삭제" && <i className="bi bi-x-lg unfriend_btn" onClick={() => onClickUnfriend(e.key)}></i>} 
                         {/* checked: 체크표시 & 해제를 시키는 로직. 배열에 e.key가 있으면 true, 없으면 false                       onChange: onChange이벤트가 발생하면 check여부와 e.key값을 전달하여 배열에 friendList의 객체를 넣어준다. */}
                         {isPage === "공유캘린더" && <StyledInput class="form-check-input scalFriend_check" id="checkboxNoLabel" onChange={check => { changeHandler(check.currentTarget.checked, e);}} 
-                            checked={checkedButtons.includes(e) ? true : false} type="checkbox" aria-label="..." />} 
+                            checked={checkedButtons.includes(e) ? true : false}  type="checkbox" aria-label="..." />} 
 
                     </li>
                 );})}
