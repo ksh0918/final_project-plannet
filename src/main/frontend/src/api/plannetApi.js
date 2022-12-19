@@ -239,10 +239,7 @@ const plannetApi = {
     },
     //쪽지 불러오기
     messageList: async function(id){
-        const object = {
-            id : id
-        }
-        return await axios.get(PLANNET_DOMAIN + "message/list",object, HEADER);
+        return await axios.get(PLANNET_DOMAIN + `message/list?receiveId=${id}`, HEADER);
     },
     //쪽지 보내기
     messageSend : async function(id,receiveId,detail){

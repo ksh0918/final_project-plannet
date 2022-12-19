@@ -83,7 +83,7 @@ const Section = styled.div`
         td:first-child {
             border-left: none
         };
-        td:nth-child(2) {
+        td:nth-child(4) {
             width: 400px; 
             text-align: left; 
             padding-left: 20px;
@@ -133,12 +133,25 @@ const Message = () => {
     const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
     const [mNotiCount,setmNotiCount] = useState("");
+    const [allCheck, setAllCheck] = useState(false);
+    const [check,setCheck] = useState(false);
     const onClickToCreate = () => {
         const link = "/send"
         navigate(link);
     }
     const [messageList, setMessageList] = useState([]); // boardList 불러오기
     
+    //전체 체크
+    const allBtnCheck= (e) => {
+        setAllCheck(e.target.checked);
+        setCheck(e.target.checked);
+    }
+    // 각각 메세지 체크
+    const oneBtnCheck = (e) => {
+        if(e.target.checked === false) setAllCheck(false);
+        setCheck(e.target.checked)
+    }
+
     // 페이지네이션
     const limit = 12; // 페이지당 게시물 수 (현재는 12개 고정)
     const [page, setPage] = useState(1); // 현재 페이지 번호
@@ -181,7 +194,7 @@ const Message = () => {
             try{
                 const result = await Api.messageList(getId);
                 setMessageList(result.data);
-                setmNotiCount(result.data.notiList.length);
+                // setmNotiCount(result.data.notiList.length);
                 window.localStorage.setItem("messageNotiCount", mNotiCount);
             }catch(e){
                 console.log(e);
@@ -202,18 +215,18 @@ const Message = () => {
                     </p>
                     <table>
                         <tr>
-                            <th><input type="checkbox" id="checkall"/></th>
+                            <th><input type="checkbox" id="checkall" checked={allCheck} onClick={allBtnCheck}/></th>
                             <th>State</th>
                             <th>Sender</th>
                             <th>Detail</th>
-                            <th>Date</th>
+                            <th>SendDate</th>
                         </tr>
                         {messageList.slice(offset,offset+limit).map(({isRead,sendId,detail,sendDate,receiveId})=>(
                             <tr key={receiveId}>
-                                <td><input type="checkbox" id="checkone"/></td>
+                                <td><input type="checkbox" id="checkone" checked={check} onClick={oneBtnCheck}/></td>
                                 <td>{isRead}</td>
                                 <td>{sendId}</td>
-                                <td>{detail}</td>
+                                <td>{<div className='detail' dangerouslySetInnerHTML={{__html: detail}}></div>}</td>
                                 <td>{sendDate.substring(0, 10)}</td>
                             </tr>
                         ))}

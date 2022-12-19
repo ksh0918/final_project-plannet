@@ -11,6 +11,7 @@ import plannet.final_project.entity.Message;
 import plannet.final_project.vo.MessageDTO;
 
 import javax.transaction.Transactional;
+import javax.xml.bind.SchemaOutputResolver;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,7 +50,7 @@ public class MessageService {
             for(Message e : messageData){
                 Map<String,Object> message = new HashMap<>();
                 message.put("messageNo",e.getMessageNo());
-                message.put("receiveId",e.getReceiveId());
+                message.put("receiveId",e.getReceiveId().getId());
                 message.put("sendId",e.getUserId().getNickname()+"#"+e.getUserId().getUserCode());
                 message.put("isRead",e.getIsRead());
                 message.put("detail",e.getDetail());
@@ -57,9 +58,10 @@ public class MessageService {
                 messageList.add(message);
             }
             messageDTO.setMessageList(messageList);
+            System.out.println(messageDTO.getMessageList());
             messageDTO.setOk(true);
         }catch (Exception e){
-            messageDTO.setOk(false);
+            messageDTO.setMessageList(null);
         }
         return messageDTO;
     }
