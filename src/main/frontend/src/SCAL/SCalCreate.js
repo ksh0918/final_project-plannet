@@ -137,7 +137,6 @@ const Section = styled.div`
 `;
 
     const SCalCreate = () => {
-    // const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
     const [title, setTitle] = useState(''); // 공유캘린더 이름
      const [searchKeyword, setSearchKeyword] = useState('');
@@ -149,7 +148,6 @@ const Section = styled.div`
     const [modalOpen, setModalOpen] = useState(false);
     const [option, setOption] = useState("");
 
-    // const [checkedButtons, setCheckedButtons] = useState([]); // 체크박스를 데이터를 넣을 빈배열
     const page = "공유캘린더";
 
 
@@ -192,7 +190,6 @@ const Section = styled.div`
             return e.nickname.toLowerCase().includes(searchKeyword); // input 검색어가 포함되어 있는 friendList배열의 객체 반환
           });
      }
-     
 
     // const onClickSCalAdd = async() => {
     //     const response = await Api.scalCreate(getId, title); // 변수 미정
