@@ -28,7 +28,6 @@ public class WriteController {
         LocalDate date = LocalDate.parse((String)wrSave.get("date"));
         List<Map<String, Object>> plan = (List<Map<String, Object>>)wrSave.get("plan");
         String diary= (String)wrSave.get("diary");
-        System.out.println("2222222222222222222222222222222222");
         boolean result = writeService.writeSave(userId, date, plan, diary);
         if(result) {
             return new ResponseEntity(true, HttpStatus.OK);

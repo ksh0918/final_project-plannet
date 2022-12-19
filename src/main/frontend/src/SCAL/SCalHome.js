@@ -167,6 +167,7 @@ const Section = styled.div`
 `;
 
 const SCalHome = () => {
+    const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
     let params = useParams(); // url에서 calNo를 가져오기 위해 uesParams() 사용
     const getNum = params.no; // params는 객체이기 때문에 풀어줘서 다시 getNum에 대입해줌
@@ -175,17 +176,33 @@ const SCalHome = () => {
     const [memberDoMark, setMemberDoMark] = useState([]);
     const [memberEndMark, setMemberEndMark] = useState([]);
     const [memberList, setMemberList] = useState([{}]);
-    const [isAdd, setIsAdd] = useState(false);
+
+    const isExistsChecked = false;
+    const isExists(element) {
+        if(element.id == getId) {
+            isExistsChecked = true;
+        }
+    }
+
     useEffect(() => {
         const scalHome = async() => {
             try{
                 const response = await Api.sharingHome(getNum);
+                // 다른 사용자의 게시물 Edit 페이지에 아예 주소접근으로도 못 하게 방지
+                // EB에서 가져온 memberList 정보에서 사용자의 id가 존재하지 않으면 접근불가
+                const memberListData = response.data.memberList;
+                memberListData.filter(isExists);
+                if (!isExistsChecked) {
+                    alert("본인이 속한 캘린더만 접근할 수 있습니다.")
+                    navigate("/home");
+                    return; 
+                }
                 setScalData(response.data)
                 setMemberDoMark(response.data.planMark[0]);
                 setMemberEndMark(response.data.planMark[1]); 
-                setMemberList(response.data.memberList);
+                setMemberList(memberListData);
             } catch(e){
-            console.log(e);
+                console.log(e);
             }
         }
         scalHome();
@@ -203,7 +220,6 @@ const SCalHome = () => {
             <Nav/>
             <Section>
                 <div className="plan">
-                    {/* <h2>{scalData.calName}</h2> */}
                     <h2>{scalData.calName}<i className="bi bi-gear-fill" onClick={onClickSetting}/></h2>
                     <Calendar doMark={memberDoMark} endMark={memberEndMark}/>
                 </div>
@@ -240,5 +256,3 @@ const SCalHome = () => {
 }
 
 export default SCalHome;
-
-

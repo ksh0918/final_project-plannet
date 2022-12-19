@@ -79,7 +79,7 @@ public class WriteService {
                     }
                     plans.setPlan((String)p.get("text"));
                     Plan rst = planRepository.save(plans);
-                    log.warn(rst.toString());
+//                    log.warn(rst.toString());
                 }
             }
             // diary 업데이트
