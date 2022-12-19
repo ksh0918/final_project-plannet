@@ -281,10 +281,11 @@ const plannetApi = {
         return await axios.get(PLANNET_DOMAIN + `noti/check?id=${id}`, HEADER);
     },
     // 공유 캘린더 생성
-    scalCreate: async function(id, title, friendList) {
+    scalCreate: async function(id, title, checkedButtons) {
         const object = {
             id: id,
-            title: title
+            title: title,
+            checkedButtons: checkedButtons
         };
         return await axios.post(PLANNET_DOMAIN + "scal/create", object, HEADER);
     },
@@ -323,7 +324,7 @@ const plannetApi = {
         return await axios.post(PLANNET_DOMAIN + "scal/comments_write", object, HEADER);
     },
     // 해당 캘린더에 댓글 삭제
-    scalCommentsDelete: async function(commentsNo){
+    scalCommentDelete: async function(commentsNo){
         const object = {
             commentsNo: commentsNo
         };

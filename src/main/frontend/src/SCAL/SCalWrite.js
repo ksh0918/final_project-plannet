@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Api from "../api/plannetApi";
 import Nav from "../Utill/Nav";
-import PlanList from "../Write/PlanList";
 import Swal from 'sweetalert';
+import PlanList from "../Write/PlanList";
 import Comments from '../Board/Comment';
 
 const Wrap = styled.div`
@@ -20,10 +20,7 @@ const Section = styled.div`
     position: relative;
     overflow-y: scroll;
     overflow-x: hidden;
-    &::-webkit-scrollbar {
-        width: 20px;
-        padding: 15px;
-    }
+    &::-webkit-scrollbar {width: 20px; padding: 15px;}
     &::-webkit-scrollbar-thumb {
         height: 30%; /* 스크롤바의 길이 */
         background: #ddd; /* 스크롤바의 색상 */
@@ -31,14 +28,8 @@ const Section = styled.div`
         border: 7px solid transparent;
         background-clip: padding-box;
     }
-    &::-webkit-scrollbar-track {
-        background: none;
-        /*스크롤바 뒷 배경 색상*/
-    }
-    div {
-        width: 100%;
-        padding: 10px 30px;
-    }
+    &::-webkit-scrollbar-track {background: none;} /*스크롤바 뒷 배경 색상*/
+    div {width: 100%; padding: 10px 30px;}
     .btnbox {
         height: 90px;
         line-height: 70px;
@@ -68,17 +59,11 @@ const Section = styled.div`
             color: white;
             border: none;
             transition: all .1s ease-in;
-            &:hover{background-color: #666;
-                color: #888;}
+            &:hover{background-color: #666; color: #888;}
         }       
     }
-    .savebox {
-        height: 40px;
-        padding: 0 30px;
-    }
-    .btnbox:first-of-type:hover i, .btnbox:first-of-type:hover button {
-        color: #bbb;
-    }
+    .savebox {height: 40px; padding: 0 30px;}
+    .btnbox:first-of-type:hover i, .btnbox:first-of-type:hover button {color: #bbb;}
     .sub_box {
         h2 {
             font-size: 28px;
@@ -94,37 +79,26 @@ const Section = styled.div`
     }
     .plan_it {
         height: 370px;
-        .write_box {
-            height: 300px;
-            padding-bottom: 0;
-        }
+        .write_box {height: 300px; padding-bottom: 0;}
         ul {height: 230px;
             overflow-y: scroll;
-                &:focus {outline: none;}
-                &::-webkit-scrollbar {
-                    width: 20px;
-                    padding: 15px;
-                }
-                &::-webkit-scrollbar-thumb {
-                    height: 30%; /* 스크롤바의 길이 */
-                    background: #ddd; /* 스크롤바의 색상 */
-                    border-radius: 10px;
-                    border: 7px solid transparent;
-                    background-clip: padding-box;
-                }
-                &::-webkit-scrollbar-track {
-                    background: none;
-                    /*스크롤바 뒷 배경 색상*/
-                }
+            &:focus {outline: none;}
+            &::-webkit-scrollbar {width: 20px; padding: 15px;}
+            &::-webkit-scrollbar-thumb {
+                height: 30%; /* 스크롤바의 길이 */
+                background: #ddd; /* 스크롤바의 색상 */
+                border-radius: 10px;
+                border: 7px solid transparent;
+                background-clip: padding-box;
+            }
+            &::-webkit-scrollbar-track {background: none;} /*스크롤바 뒷 배경 색상*/
         }
         li {
             line-height: 33px; 
             margin-bottom: 5px; 
             border-bottom: 2px solid #f5f5f5;
             transition: all .1s ease-in;
-            &:focus-within {
-                border-bottom-color: #4555AE;
-            }
+            &:focus-within {border-bottom-color: #4555AE;}
             button {
                 display: block;
                 float: right;
@@ -135,9 +109,7 @@ const Section = styled.div`
                     color: #bbb;
                     transition: all .1s ease-in;
                 }
-                &:hover i {
-                    color: #4555AE;
-                }
+                &:hover i {color: #4555AE;}
             }
             .plan_writer{
                 display: inline;
@@ -161,12 +133,7 @@ const Section = styled.div`
             font-weight: 700;
             transition: all .1s ease-in;
             &:hover, &:hover i {color: #888;}
-            i {
-                font-size: 16px; 
-                line-height: 48px; 
-                color: #bbb;
-                transition: all .1s ease-in;
-            }
+            i {font-size: 16px; line-height: 48px; color: #bbb; transition: all .1s ease-in;}
         }
         input, span {vertical-align: middle;}
         input[type="text"], span {
@@ -179,60 +146,51 @@ const Section = styled.div`
             display: inline-block;
             outline: none;
         }
-        
     }
-    .comment {
-        height: 350px;
+    .comment {height: 350px;
         >div>div{padding: 10px 0;}
         h2{margin: 0;}
     }
-    hr {
-        border: none;
-         background: #ddd;
-        height: 2px; 
-    }
-    .defaultPlanColor {
-        color:#333;
-    }
-    .firstPlanColor {
-        color: #bbb;
-    }
-    .donePlan {
-        color: #bbb;
-        text-decoration: line-through;
-    }
+    hr {border: none; background: #ddd; height: 2px; }
+    .defaultPlanColor {color:#333;}
+    .firstPlanColor {color: #bbb;}
+    .donePlan {color: #bbb; text-decoration: line-through;}
 `;
+
 const SCalWrite = () => {
-    window.onpopstate = (event) =>{
-             event.preventDefault();
-             if(event){
-                 console.log('if문 안');
-                 console.log(event);
-                 Swal({
-                     title : "저장이 되지 않습니다!",
-                     text : "저장을 누르지 않고 뒤로가기 시에 저장이 되지 않습니다.",
-                     icon : "warning",
-                     buttons : "확인",
-                 })
-             };
-             console.log("뒤로가기");
-         };
-
-    window.addEventListener('beforeunload', (event) => {
-        // 표준에 따라 기본 동작 방지
-        event.preventDefault();
-        // Chrome에서는 returnValue 설정이 필요함
-        event.returnValue = '';
-    });
-
-    const isPage = "공유";
-    const getNum = 1; //공유캘린더 번호
     const navigate = useNavigate();
-    const getId = window.localStorage.getItem("userId");
-    const { date } = useParams();
+    const getId = window.localStorage.getItem("userId"); // localStorage 저장 정보
+    const isPage = "공유";
+
+    let params = useParams(); // url에서 calNo를 가져오기 위해 uesParams() 사용
+    const getNum = params.no; // params는 객체이기 때문에 풀어줘서 다시 getNum에 대입해줌
+
+    // 링크에서 date 추출
+    const currentLink = useLocation(); // 현재 링크 얻기
+    const getDate = currentLink.pathname.slice(-10); // currentLink.pathname에서 slice로 date 부분만 추출
+
     const [planList, setPlanList] = useState([]);
     const [commentsList, setCommentsList] = useState([]);
 
+
+    // 작성 중 새로고침 및 페이지 이동 방지
+    window.addEventListener('beforeunload', (event) => {
+        event.preventDefault(); // 표준에 따라 기본 동작 방지
+        event.returnValue = ''; // Chrome에서는 returnValue 설정이 필요함
+    });
+    // 작성 중 뒤로가기 방지
+    window.onpopstate = (event) => {
+        // event.preventDefault();
+        if(event) {
+            Swal({
+                title : "저장이 되지 않습니다!",
+                text : "저장을 누르지 않고 뒤로가기 시에 저장이 되지 않습니다.",
+                icon : "warning",
+                buttons : "확인",
+            })
+        };
+        console.log("뒤로가기");
+    };
 
     const onClickAddList = () => {
         const nextPlanList = planList.concat({
@@ -243,38 +201,45 @@ const SCalWrite = () => {
         });
         setPlanList(nextPlanList);
     }
+    const onClickSave = async() => {
+        await Api.writeSave(getId, getDate, planList);
+        navigate(-1);
+    }
 
     useEffect(() => {
         const writeLoad = async() => {
             try{
-                const response = await Api.writeLoad(getId, date);
-                console.log(response.data[0]);
-                setPlanList(response.data[0]);
+                // 플랜 불러오기
+                const plans = await Api.scalPlanLoad(getNum, getDate);
+                setPlanList(plans.data);
+                console.log(plans.data);
+
+                // 댓글 불러오기
+                const comments = await Api.scalCommentsLoad(getNum, getDate);
+                setCommentsList(comments.data);
             } catch(e){
                 console.log(e);
             }
         }
         writeLoad();
         console.log(planList);
-    },[getId, date, planList]);
+    }, [getId, getDate, planList]);
 
-    const onClickSave = async() => {
-        await Api.writeSave(getId, date, planList);
-        navigate("/home");
-    }
+    console.log(planList)
+
     return (
         <Wrap>
             <Nav/>
             <Section>
                 <div className="btnbox">
                     <button className="back" onClick={onClickSave}>
-                        <i className="bi bi-chevron-compact-left"/>{date}
+                        <i className="bi bi-chevron-compact-left"/>{getDate}
                     </button>
                 </div>
                 <div className="plan_it sub_box">
                     <h2>Plan it</h2>
                     <div className="write_box">
-                        <PlanList planList={planList} setPlanList={setPlanList} isPage={isPage}/>
+                        <PlanList planList={planList} setPlanList={setPlanList} setPlanDate={getDate} isPage={isPage}/>
                         <hr/>
                         <button onClick={onClickAddList}>
                             <i className="bi bi-plus-lg"></i> 추가하기
@@ -286,12 +251,11 @@ const SCalWrite = () => {
                 </div>
                 <div className="comment sub_box">
                     <h2>Comment</h2>
-                    <Comments getId={getId} getNum={getNum} setCommentsList={setCommentsList} commentsList={commentsList}/>
+                    <Comments getId={getId} getNum={getNum} getDate={getDate} setCommentsList={setCommentsList} commentsList={commentsList}/>
                 </div>
                 
             </Section>
             <div className="copy">&#169; Plannet.</div>
-            
         </Wrap>
     );
 }

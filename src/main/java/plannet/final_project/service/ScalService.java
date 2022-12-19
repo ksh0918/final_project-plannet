@@ -32,6 +32,39 @@ public class ScalService {
     private final PlanRepository planRepository;
     private final SCOMRepository scomRepository;
 
+    // 공유 캘린더 생성
+    public boolean scalWrite(String userId, String title, List<Map<String, Object>> smember) {
+//        -- <공유캘린더 생성시 보내야 할 repository>
+//        SELECT * FROM SCAL;
+//        select * from smem;
+//        select * from noti;
+
+//        try {
+//            Member member = memberRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
+//            // 공유 캘린더 설정
+//            SCAL scal = new SCAL();
+//            scal.setUserId(member);
+//            scal.setCalName(title);
+//            scalRepository.save(scal);
+//            // 공유 캘린더 멤버 설정
+//            SMEM smem = new SMEM();
+//            smem.setCalNo(scal);
+//            smem.setUserId(member);
+//            smem.setIsOwner(1); // 공유 캘린더 주인이면 1 아니면 0
+//            smemRepository.save(smem);
+//            // 초대 멤버들에게 알림 보내기
+//            Noti noti = new Noti();
+//            noti.setUserId(member); // 보내는 이
+//            for (Map<String, Object> s : smember) {
+////                Member friend = memberRepository.fins.get("userCode");
+////                noti.setReceiveId();
+//            }
+//        }
+        return true;
+
+    }
+
+
     // 내용 로드
     public ShareDTO homeList(Long calNo) {
         ShareDTO shareDTO = new ShareDTO();
@@ -128,6 +161,7 @@ public class ScalService {
                 plan.put("checked", e.getPlanChecked());
                 plan.put("text", e.getPlan());
                 plan.put("deleted", false);
+                plan.put("writerId", e.getUserId().getNickname());
                 planList.add(plan);
             }
             shareDTO.setPlanList(planList);

@@ -1,47 +1,41 @@
-import React, { useState, } from 'react';
+import React, { useState } from 'react';
+import { useNavigate, useLocation } from "react-router-dom";
 import styled from 'styled-components';
 import Api from '../api/plannetApi'
-import { useNavigate  } from "react-router-dom";
 
 const Comment = styled.div`
     padding: 0 !important;
-
     .comment_box {
         width: 100%;
         text-align: left;
         padding-top: 0;
-        table{width: 100%;}
-        table, tr, td{
+        table {width: 100%;}
+        table, tr, td {
             border-collapse: collapse;
             background: none;
             border-bottom: 1px solid #ddd;
         }
-        tr:last-child{
-            border-bottom: 2px solid #ddd;
-        }
+        tr:last-child {border-bottom: 2px solid #ddd;}
         tr td {
             padding: 8px 10px;
             word-break: break-all;
-            &:first-child {
-                width: 130px;
-                
-            }
-            &:last-child {
-                width: 140px;
-                font-size: 12px;
-            }
+            &:first-child {width: 130px;}
+            &:last-child {width: 140px; font-size: 12px;}
         }
         button {
-            padding: 0px;
-            .bi {
-                font-size:12px; 
-                padding-left: 8px;
-            }
+            cursor: pointer;
+            border: none;
+            padding-right: 20px;
+            background: none;
+            color: rgb(187, 187, 187);
+            font-weight: 700;
+            transition: all 0.1s ease-in 0s;
+            .bi {font-size:12px; padding-left: 8px;}
         }
     }
     .button-area2 {
         text-align: right;
-        .comment_btn{
+        .comment_btn {
             cursor: pointer;
             font-weight: 600;
             float: right;
@@ -52,8 +46,7 @@ const Comment = styled.div`
             color: white;
             border: none;
             transition: all .1s ease-in;
-            &:hover{background-color: #666;
-                color: #888;}
+            &:hover {background-color: #666; color: #888;}
         }
         .comment_text {
             position: relative;
@@ -70,46 +63,87 @@ const Comment = styled.div`
     }
 `;
 
-const Comments = ({getNum, getId, setCommentsList, commentsList}) => {
+const Comments = ({getId, getNum, getDate, setCommentsList, commentsList}) => {
     const navigate = useNavigate();
-    const [comments, setComments] = useState(''); 
+
+    // 링크에서 personal인지 scal인지 구분  
+    const currenLink = useLocation(); // 현재 링크 얻기
+    const currentPath = currenLink.pathname.substring(0, 6); // Object 타입의 currentLink에서 pathname 정보 취득 + 일부 자리만 잘라 비교하기
+
+    const [comment, setComment] = useState(''); 
 
     // 댓글 입력
-    const onChangeComments = (e) => {
-        setComments(e.target.value);
+    const onChangeComment = (e) => {
+        setComment(e.target.value);
     }
     // 댓글 저장
-    const onClickSaveComments = async() => {
-        await Api.commentsWrite(getNum, getId, comments);
-        const response = await Api.commentsLoad(getNum);
-        setCommentsList(response.data);
-        setComments(''); // 등록 후 댓글창 빈칸으로 만들기
+    const onClickSaveComment = async() => {
+        let commentsData = '';
+        if (currentPath == "/board") {
+            await Api.commentWrite(getNum, getId, comment);
+            commentsData = await Api.commentsLoad(getNum);
+        }
+        else {
+            await Api.scalCommentWrite(getNum, getDate, getId, comment);
+            commentsData = await Api.scalCommentsLoad(getNum, getDate);
+        }
+        setCommentsList(commentsData.data);
+        setComment(''); // 등록 후 댓글창 빈칸으로 만들기
     } 
     // 댓글 삭제
     const onClickDeleteComment = async(commentNo) => {
-        await Api.commentsDelete(commentNo); 
-        navigate(0);
+        if (currentPath == "/board") {
+            await Api.commentDelete(commentNo); 
+            navigate(0);    
+        }
+        else {
+            console.log("삭제의 false 들어옴");
+            await Api.scalCommentDelete(commentNo); 
+            navigate(0);   
+        }
     } 
 
-    return(
-        <Comment>
-            <div className="button-area2">
-                <input type='text' className='comment_text' placeholder='댓글 달기...' value={comments} onChange={onChangeComments} name='comments' size='58.5'></input>
-                <button className='comment_btn' onClick={onClickSaveComments}>REPLY</button>
-            </div>
-            <div className='comment_box'>
-                <table>
-                    {commentsList.map(({no, commentNo, writerId, nickname, detail, date})=>(
-                        <tr key={no}>
-                            <td>{nickname}</td>
-                            <td>{detail}</td>
-                            <td>{date}{getId === writerId ? <button><i class="bi bi-x-lg" onClick={()=> onClickDeleteComment(commentNo)}></i></button> : null}</td>
-                        </tr>
-                    ))}
-                </table>
-            </div>
-        </Comment>
-    )
+    if(currentPath == '/board') {
+        return( 
+            <Comment>
+                <div className="button-area2">
+                    <input type='text' className='comment_text' placeholder='댓글 달기...' value={comment} onChange={onChangeComment} name='comments' size='58.5'></input>
+                    <button className='comment_btn' onClick={onClickSaveComment}>REPLY</button>
+                </div>
+                <div className='comment_box'>
+                    <table>
+                        {commentsList.map(({no, commentNo, writerId, nickname, detail, date})=>(
+                            <tr key={no}>
+                                <td>{nickname}</td>
+                                <td>{detail}</td>
+                                {<td>{date}{getId === writerId ? <button><i class="bi bi-x-lg" onClick={()=> onClickDeleteComment(commentNo)}></i></button> : null}</td>}
+                            </tr>
+                        ))}
+                    </table>
+                </div>
+            </Comment>    
+        )
+    } else {
+        return( 
+            <Comment>
+                <div className="button-area2">
+                    <input type='text' className='comment_text' placeholder='댓글 달기...' value={comment} onChange={onChangeComment} name='comments' size='58.5'></input>
+                    <button className='comment_btn' onClick={onClickSaveComment}>REPLY</button>
+                </div>
+                <div className='comment_box'>
+                    <table>
+                        {commentsList.map(({no, commentNo, writerId, nickname, detail, date})=>(
+                            <tr key={no}>
+                                <td>{nickname}</td>
+                                <td>{detail}</td>
+                                {<td>{date}{getId === writerId ? <button><i class="bi bi-x-lg" onClick={()=> onClickDeleteComment(commentNo)}></i></button> : null}</td>}
+                            </tr>
+                        ))}
+                    </table>
+                </div>
+            </Comment>    
+        )
+    }
 };
 
 export default Comments;
