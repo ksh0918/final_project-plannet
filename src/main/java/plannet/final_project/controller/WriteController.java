@@ -23,11 +23,12 @@ public class WriteController {
     // 일정 저장
     @PostMapping("/save")
     public ResponseEntity<Boolean> writeSave(@RequestBody Map<String, Object> wrSave) {
+        System.out.println("11111111111111111111");
         String userId = (String)wrSave.get("id");
         LocalDate date = LocalDate.parse((String)wrSave.get("date"));
         List<Map<String, Object>> plan = (List<Map<String, Object>>)wrSave.get("plan");
         String diary= (String)wrSave.get("diary");
-
+        System.out.println("2222222222222222222222222222222222");
         boolean result = writeService.writeSave(userId, date, plan, diary);
         if(result) {
             return new ResponseEntity(true, HttpStatus.OK);

@@ -1,11 +1,10 @@
-import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Api from "../api/plannetApi";
 import Nav from "../Utill/Nav";
 import PlanList from "./PlanList";
 import Swal from 'sweetalert';
-import { useBeforeunload } from "react-beforeunload";
 
 const Wrap = styled.div`
     width: 1130px;
@@ -68,16 +67,11 @@ const Section = styled.div`
             color: white;
             border: none;
             transition: all .1s ease-in;
-            &:hover{background-color: #666;
-                color: #888;}
+            &:hover {background-color: #666; color: #888;}
         }       
     }
-    .btnbox:last-of-type {
-        height: 50px;
-    }
-    .btnbox:first-of-type:hover i, .btnbox:first-of-type:hover button {
-        color: #bbb;
-    }
+    .btnbox:last-of-type {height: 50px;}
+    .btnbox:first-of-type:hover i, .btnbox:first-of-type:hover button {color: #bbb;}
     .sub_box {
         h2 {
             font-size: 28px;
@@ -99,31 +93,23 @@ const Section = styled.div`
         }
         ul {height: 230px;
             overflow-y: scroll;
-                &:focus {outline: none;}
-                &::-webkit-scrollbar {
-                    width: 20px;
-                    padding: 15px;
-                }
-                &::-webkit-scrollbar-thumb {
-                    height: 30%; /* 스크롤바의 길이 */
-                    background: #ddd; /* 스크롤바의 색상 */
-                    border-radius: 10px;
-                    border: 7px solid transparent;
-                    background-clip: padding-box;
-                }
-                &::-webkit-scrollbar-track {
-                    background: none;
-                    /*스크롤바 뒷 배경 색상*/
-                }
+            &:focus {outline: none;}
+            &::-webkit-scrollbar {width: 20px; padding: 15px;}
+            &::-webkit-scrollbar-thumb {
+                height: 30%; /* 스크롤바의 길이 */
+                background: #ddd; /* 스크롤바의 색상 */
+                border-radius: 10px;
+                border: 7px solid transparent;
+                background-clip: padding-box;
+            }
+            &::-webkit-scrollbar-track {background: none;} /*스크롤바 뒷 배경 색상*/
         }
         li {
             line-height: 33px; 
             margin-bottom: 5px; 
             border-bottom: 2px solid #f5f5f5;
             transition: all .1s ease-in;
-            &:focus-within {
-                border-bottom-color: #4555AE;
-            }
+            &:focus-within {border-bottom-color: #4555AE;}
             button {
                 display: block;
                 float: right;
@@ -191,10 +177,7 @@ const Section = styled.div`
                     border: 7px solid transparent;
                     background-clip: padding-box;
                 }
-                &::-webkit-scrollbar-track {
-                    background: none;
-                    /*스크롤바 뒷 배경 색상*/
-                }
+                &::-webkit-scrollbar-track {background: none;} /*스크롤바 뒷 배경 색상*/
             }
         }
     }
@@ -203,80 +186,74 @@ const Section = styled.div`
          background: #ddd;
         height: 2px; 
     }
-    .defaultPlanColor {
-        color:#333;
-    }
-    .firstPlanColor {
-        color: #bbb;
-    }
-    .donePlan {
-        color: #bbb;
-        text-decoration: line-through;
-    }
+    .defaultPlanColor {color:#333;}
+    .firstPlanColor {color: #bbb;}
+    .donePlan {color: #bbb; text-decoration: line-through;}
 `;
-const Write = () => {
-    // 뒤로가기 시 경고창 등장
-    window.onpopstate = (event) =>{
-             event.preventDefault();
-             if(event){
-                 console.log('if문 안');
-                 console.log(event);
-                 Swal({
-                     title : "저장이 되지 않습니다!",
-                     text : "저장을 누르지 않고 뒤로가기 시에 저장이 되지 않습니다.",
-                     icon : "warning",
-                     buttons : "확인",
-                 })
-             };
-             console.log("뒤로가기");
-         };
-    // 새로고침 시 경고 창 등장    
-    window.addEventListener('beforeunload', (event) => {
-        // 표준에 따라 기본 동작 방지
-        event.preventDefault();
-        // Chrome에서는 returnValue 설정이 필요함
-        event.returnValue = '';
-    });
 
-    const isPage = "개인";
+const Write = () => {
     const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
-        const { date } = useParams();
-        const [planList, setPlanList] = useState([]);
-        const [diary, setDiary] = useState();
+    const isPage = "개인";
 
-        const onChangeDiary = (e) => {
-            setDiary(e.target.value);
-        }
-        const onClickAddList = () => {
-            const nextPlanList = planList.concat({
-                key: planList.length+1,
-                checked: false,
-                text: "일정을 입력해주세요.",
-                deleted: false
-            });
-            setPlanList(nextPlanList);
-        }
+    // 뒤로가기 시 경고창 등장
+    window.onpopstate = (event) =>{
+        event.preventDefault();
+        if(event){
+            console.log('if문 안');
+            console.log(event);
+            Swal({
+                title : "저장이 되지 않습니다!",
+                text : "저장을 누르지 않고 뒤로가기 시에 저장이 되지 않습니다.",
+                icon : "warning",
+                buttons : "확인",
+            })
+        };
+        console.log("뒤로가기");
+    };
+    // 새로고침 시 경고 창 등장    
+    window.addEventListener('beforeunload', (event) => {
+        event.preventDefault(); // 표준에 따라 기본 동작 방지
+        event.returnValue = ''; // Chrome에서는 returnValue 설정이 필요함
+    });
 
-        useEffect(() => {
-            const writeLoad = async() => {
-                try{
-                    const response = await Api.writeLoad(getId, date);
-                    console.log(response.data[0]);
-                    setPlanList(response.data[0]);
-                    setDiary(response.data[1]);
-                } catch(e){
-                    console.log(e);
-                }
+    const { date } = useParams();
+    const [planList, setPlanList] = useState([]);
+    const [diary, setDiary] = useState();
+
+    const onChangeDiary = (e) => {
+        setDiary(e.target.value);
+    }
+    const onClickAddList = () => {
+        const nextPlanList = planList.concat({
+            key: planList.length+1,
+            checked: false,
+            text: "일정을 입력해주세요.",
+            deleted: false
+        });
+        setPlanList(nextPlanList);
+    }
+
+    useEffect(() => {
+        const writeLoad = async() => {
+            try{
+                const response = await Api.writeLoad(getId, date);
+                console.log(response.data[0]);
+                setPlanList(response.data[0]);
+                setDiary(response.data[1]);
+            } catch(e){
+                console.log(e);
             }
-            writeLoad();
-            console.log(planList);
-        },[getId, date]);
+        }
+        writeLoad();
+        console.log(planList);
+    },[getId, date]);
 
     const onClickSave = async() => {
         await Api.writeSave(getId, date, planList, diary);
         navigate("/home");
     }
+    
     return (
         <Wrap>
             <Nav/>

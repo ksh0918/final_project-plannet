@@ -153,13 +153,13 @@ const Section = styled.div`
         const countCal = async() => { // 2개 이상의 scal에 참여 중이면 주소로도 공유 캘린더 생성 페이지에 접근 못하게 막음
             const res = await Api.scalCheck(getId); //2개 이상의 scal에 참여중인지 확인 2개 이하면 true, 이상이면 false
             if(res.data) { // 2개 이함이면 친구 목록 불러 오기
-                const myfriends = async() => { 
+                const myfriends = async() => {
                     try{
                         const response = await Api.friendPageLoad(getId); //친구 목록 불러오기
                         setFriendList(response.data.friendList);
                     } catch(e) {
                         console.log(e);
-                    } 
+                    }
             }
              myfriends();
             } else { // 3개 이상이면 알림창이 뜨고 home 페이지로 이동
@@ -169,10 +169,6 @@ const Section = styled.div`
         }
         countCal();
     },[getId]);
-
-    const onClickAddSCal = async () => {
-        
-    }
 
     // 공유 캘린더 이름 입력
     const onChangeTitle = (e) => {
@@ -195,6 +191,7 @@ const Section = styled.div`
             return e.nickname.toLowerCase().includes(searchKeyword); // input 검색어가 포함되어 있는 friendList배열의 객체 반환
           });
      }
+     
 
      const closeModal = () => {
         setModalOpen(false);
@@ -215,7 +212,7 @@ const Section = styled.div`
                         <div className="friend">
                             <p>친구 추가</p>
                             <div className="friend_search">
-                            <input title="검색" placeholder="친구 닉네임을 검색해보세요" onChange={onChangeSearchKeyword} value={searchKeyword}  /> 
+                            <input title="검색" placeholder="친구 닉네임을 검색해보세요" onChange={onChangeSearchKeyword} value={searchKeyword}  />
                             </div>
                             <div className="friend_list">
                                 <FriendList setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} friendList={filterNames} isAdd={isAdd} setOption={setOption} isPage={page} title={title}/>

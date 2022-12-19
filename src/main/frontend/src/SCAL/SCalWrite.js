@@ -202,7 +202,7 @@ const SCalWrite = () => {
         setPlanList(nextPlanList);
     }
     const onClickSave = async() => {
-        await Api.writeSave(getId, getDate, planList);
+        await Api.scalPlanSave(getId, getNum, getDate, planList);
         navigate(-1);
     }
 
@@ -212,7 +212,7 @@ const SCalWrite = () => {
                 // 플랜 불러오기
                 const plans = await Api.scalPlanLoad(getNum, getDate);
                 setPlanList(plans.data);
-                console.log(plans.data);
+                console.log(plans.data);    
 
                 // 댓글 불러오기
                 const comments = await Api.scalCommentsLoad(getNum, getDate);
@@ -223,7 +223,7 @@ const SCalWrite = () => {
         }
         writeLoad();
         console.log(planList);
-    }, [getId, getDate, planList]);
+    }, [getId]);
 
     console.log(planList)
 

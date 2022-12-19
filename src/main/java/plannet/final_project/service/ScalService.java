@@ -176,6 +176,40 @@ public class ScalService {
         return shareDTO;
     }
 
+    // 일정 저장
+    public boolean writeSave(Long calNo, String userId, LocalDate date, List<Map<String, Object>> plan) {
+        try {
+            Member member = memberRepository.findById(userId).orElseThrow(EntityNotFoundException::new); // 회원 정보가 담긴 객체 가져옴
+            splanRepository.deleteByPlanDateAndCalNo(date, calNo); // 기존의 일정 삭제. 삭제 안 하면 기존의 것들이 DB에 계속 있음
+            SCAL scal = scalRepository.findById(calNo).orElseThrow();
+            // plan 저장
+            for(Map<String, Object> p : plan) {
+                if(!(Boolean)p.get("deleted")) { // p.get("deleted") == false 이면 일정 저장
+                    SPLAN splans = new SPLAN();
+                    splans.setUserId(member);
+                    splans.setPlanDate(date);
+                    String checked = String.valueOf(p.get("checked"));
+                    if(checked.equals("0")) { // 수정하지 않은 기본의 것들은 checked가 1 또는 0으로 로드되기 때문에 따로 확인해줘야 함
+                        splans.setPlanChecked(0);
+                    } else if (checked.equals("1")) {
+                        splans.setPlanChecked(1);
+                    } else if (checked.equals("false")) { // 새로 생성하거나 수정한 checked는 true/false로 request함
+                        splans.setPlanChecked(0);
+                    } else if (checked.equals("true")) {
+                        splans.setPlanChecked(1);
+                    }
+                    splans.setCalNo(scal);
+                    splans.setPlan((String)p.get("text"));
+                    SPLAN rst = splanRepository.save(splans);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
     // 공유캘린더 댓글 불러오기
     public ShareDTO getCommentsLoad (Long calNo, LocalDate planDate) {
         ShareDTO shareDTO = new ShareDTO();

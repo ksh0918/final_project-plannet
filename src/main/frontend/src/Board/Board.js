@@ -136,11 +136,19 @@ const Board = () => {
     let firstNum = currPage - (currPage % 5) + 1
     let lastNum = currPage - (currPage % 5) + 5
 
-    const postsData = (posts) => {
-      if(posts){
-        let result = posts.slice(offset, offset + limit);
-        return result;
-      }
+    // 타이틀 클릭 시 작성자 id 와 다르면 조회수 +1
+    const viewsUp = async (boardNo, writerId) => {
+        if(writerId !== getId) {
+            await Api.boardViewsUp(boardNo);
+        }
+        const link = "post_view/" + boardNo;
+        navigate(link);
+    };
+
+    // 글쓰기 버튼 클릭시 글쓰기 페이지로 이동
+    const onClickToCreate = () => {
+        const link = "create/"
+        navigate(link);
     }
 
     // 검색
@@ -153,11 +161,9 @@ const Board = () => {
             console.log(e);
         }
     }
-
     const onChangeSearchKeyword = (e) => {
         setSearchKeyword(e.target.value);
     }
-
     // 엔터를 눌렀을 때도 검색 되게
     const onKeyPressSearch = async(e) => {
         if(e.key === 'Enter'){
@@ -166,42 +172,26 @@ const Board = () => {
         }
     }
 
-    // 타이틀 클릭 시 작성자 id 와 다르면 조회수 +1
-    const viewsUp = async (boardNo, writerId) => {
-        if(writerId !== getId) {
-            await Api.boardViewsUp(boardNo);
-        }
-        const link = "post_view/" + boardNo;
-        navigate(link);
-    };
-
-    const onClickToCreate = () => {
-        const link = "create/"
-        navigate(link);
-    }
-
-    // boardList & top3List 불러오기
+    // top3List & boardList 불러오기
     useEffect(() => {
         const boardData = async () => {
             try {
-                const response = await Api.boardList();
-                setBoardList(response.data);
-                console.log(response.data);
+                const boardListData = await Api.boardList();
+                setBoardList(boardListData.data);
             } catch (e) {
                 console.log(e);
             }
         };
-        
         const top3Data = async () => {
             try {
-                const response = await Api.top3List();
-                setTop3List(response.data);
+                const top3ListData = await Api.top3List();
+                setTop3List(top3ListData.data);
             } catch (e) {
                 console.log(e);
             }
         };
-        boardData();
         top3Data();
+        boardData();
     }, []);
 
     return (
