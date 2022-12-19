@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import styled from "styled-components";
 import Api from "../api/plannetApi";
@@ -94,7 +95,7 @@ const Section = styled.div`
                 }
             }
             .scal_add {
-                padding: 0;
+                padding : 0;
                 button {
                     cursor: pointer;
                     font-weight: 600;
@@ -114,22 +115,24 @@ const Section = styled.div`
     }
 `;
 
-const SCalCreate = () => {
+    const SCalCreate = () => {
     const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
     const [title, setTitle] = useState(''); // 공유캘린더 이름
-    const [searchKeyword, setSearchKeyword] = useState('');
+     const [searchKeyword, setSearchKeyword] = useState('');
     const [friendList, setFriendList] = useState();
-    const [isAdd, setIsAdd] = useState(false); // 친구추가
+    const [isAdd, setIsAdd] = useState(false);
 
     const [comment, setCommnet] = useState("");
     const [modalHeader, setModalHeader] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
     const [option, setOption] = useState("");
+
+    // const [checkedButtons, setCheckedButtons] = useState([]); // 체크박스를 데이터를 넣을 빈배열
     const page = "공유캘린더";
 
     // 공유 캘린더 이름 입력
-const onChangeTitle = (e) => {
+   const onChangeTitle = (e) => {
             setTitle(e.target.value);
             console.log("타이틀 : " + title);
         }
@@ -162,24 +165,38 @@ const onChangeTitle = (e) => {
             console.log(e);
             }
         }
-        myfriends();
+         myfriends();
     },[getId]);
 
-    const onClickSearch = async () => {
-        try {
-            const response = await Api.searchList(searchKeyword);
-            setFriendList(response.data);
-        } catch (e) {
-            console.log(e);
-        }
+    // 공유 캘린더 이름 입력
+    const onChangeTitle = (e) => {
+        setTitle(e.target.value);
+        console.log("타이틀 : " + title);
     }
+    //  친구 검색 입력
+     const onChangeSearchKeyword = (e) => {
+     setSearchKeyword(e.target.value);
+     console.log("서치키워드 : " + searchKeyword);
+     console.log(searchKeyword);
 
-    const onClickSCalAdd = async() => {
-        const response = await Api.scalCreate(getId, title, friendList); // 변수 미정
-        const link = "/scal/" // + response.data를 바로 변수에 대입! 그래야 순서가 안 꼬임
-        window.location.assign(link);
-    }
-    // 디비에 갖다와서 user가 공유 캘린더가 2개 있으면 화면에도 접근 못하게 처리
+     }
+
+     let filterNames="";
+     // DB에서 친구 목록을 가져오기 전에 실행되지 않는 조건문
+     if(friendList != null) {
+        // 친구 닉네임 검색
+        filterNames = friendList.filter((e) => {
+            return e.nickname.toLowerCase().includes(searchKeyword); // input 검색어가 포함되어 있는 friendList배열의 객체 반환
+          });
+     }
+
+
+    // const onClickSCalAdd = async() => {
+    //     const response = await Api.scalCreate(getId, title); // 변수 미정
+    //     const link = "/scal/" // + response.data를 바로 변수에 대입! 그래야 순서가 안 꼬임
+    //     window.location.assign(link);
+    // }
+    // // 디비에 갖다와서 suser가 공유 캘린더가 2개 있으면 화면에도 접근 못하게 처리
 
     return (
         <Wrap>
@@ -196,16 +213,17 @@ const onChangeTitle = (e) => {
                         <div className="friend">
                             <p>친구 추가</p>
                             <div className="friend_search">
-                                <input title="검색" placeholder="친구 검색" onChange={onChangeSearchKeyword} onKeyDown={onKeyPressSearch} value={searchKeyword}/>
-                                <a href="#" onClick={onClickSearch}><i className="bi bi-search"></i></a>
+                            <input title="검색" placeholder="친구 닉네임을 검색해보세요" onChange={onChangeSearchKeyword} value={searchKeyword}  />
+                            {/* <span onClick={onClicks}><i className="bi bi-search"></i></span> */}
+                            {/* onKeyDown={onKeyPressSearch} */}
                             </div>
                             <div className="friend_list">
-                                <FriendList setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} friendList={friendList} isAdd={isAdd} setOption={setOption} isPage={page}/>
+                                <FriendList setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} friendList={filterNames} isAdd={isAdd} setOption={setOption} isPage={page} title={title}/>
                             </div>
                         </div>
-                        <div className="scal_add">
-                        <button onClick={onClickSCalAdd} disabled={friendList}>공유캘린더 생성하기</button>
-                        </div>
+                        {/* <div className="scal_add">
+                         <button onClick={() => onClickSCalAdd(e)}>공유캘린더 생성하기</button>
+                        </div> */}
                     </div>
                 </div>
             </Section>

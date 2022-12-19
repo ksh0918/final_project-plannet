@@ -20,6 +20,7 @@ import SCalCreate from './SCAL/SCalCreate';
 import SCalHome from './SCAL/SCalHome';
 import SCalWrite from './SCAL/SCalWrite';
 import Message from './Message/Message';
+import Send from './Message/Send';
 
 function App() {
     return (
@@ -43,6 +44,7 @@ function App() {
                 <Route path="/scal/home/:no" element={<PrivateRoute><SCalHome /></PrivateRoute>}/>
                 <Route path="/scal/write/:no*/:date" element={<PrivateRoute><SCalWrite /></PrivateRoute>}/>
                 <Route path="/message" element={<PrivateRoute><Message /></PrivateRoute>}/>
+                <Route path="/send" element={<PrivateRoute><Send /></PrivateRoute>}/>
             </Routes>
         </Router> 
     );

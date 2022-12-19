@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 public class Message {
     @Id
     @Column(name = "message_no")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MESSAGE_GENERATOR")
     private Long messageNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
