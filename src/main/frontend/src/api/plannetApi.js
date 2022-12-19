@@ -324,7 +324,7 @@ const plannetApi = {
         return await axios.post(PLANNET_DOMAIN + "scal/comments_write", object, HEADER);
     },
     // 해당 캘린더에 댓글 삭제
-    scalCommentsDelete: async function(commentsNo){
+    scalCommentDelete: async function(commentsNo){
         const object = {
             commentsNo: commentsNo
         };

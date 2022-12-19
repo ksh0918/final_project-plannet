@@ -161,6 +161,7 @@ public class ScalService {
                 plan.put("checked", e.getPlanChecked());
                 plan.put("text", e.getPlan());
                 plan.put("deleted", false);
+                plan.put("writerId", e.getUserId().getNickname());
                 planList.add(plan);
             }
             shareDTO.setPlanList(planList);

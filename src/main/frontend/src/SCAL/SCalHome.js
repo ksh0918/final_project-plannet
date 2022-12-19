@@ -5,8 +5,6 @@ import Nav from '../Utill/Nav';
 import Memo from '../Home/Memo';
 import List from '../Home/List';
 import Api from "../api/plannetApi";
-import SCalAdd from "./SCalAdd";
-import Modal from '../Utill/Modal';
 
 const Wrap = styled.div`
     width: 1130px;
@@ -60,10 +58,7 @@ const Section = styled.div`
         top: 50%;
         transform: translateY(-50%);
         color: #d9d9d9;
-        b{
-            color: #d9d9d9;
-            font-size: 17px;
-        }
+        text-align: center;
     }
     .etc {
         width: 30%;
@@ -72,7 +67,7 @@ const Section = styled.div`
         }
         .m-list-detail {
             width: 100%;
-            height: 400px;
+            height: 135px;
             resize: none;
             outline: none;
             padding: 10px;
@@ -80,11 +75,31 @@ const Section = styled.div`
             border-radius: 5px;
             border: 2px solid #f9f9f9;
             transition: all .1s ease-in;
-
+            ul{
+                li{
+                    list-style-type: disc;
+                    margin-left: 24px;
+                    line-height: 22px;
+                    span{color:#bbb; font-weight: 200;}
+                    &::marker{
+                        color: #aed0f5;
+                    }
+                    &.owner{
+                        font-weight: 600;
+                        &::marker{
+                            color:#ffca3a;
+                            font-size: 24px;
+                            line-height: 12px;
+                        }
+                        span{font-weight: 300;}
+                    }
+                }
+                
+            }
         }
         textarea {
             width: 100%;
-            height: 340px;
+            height: 250px;
             resize: none;
             outline: none;
             padding: 10px;
@@ -121,16 +136,19 @@ const Section = styled.div`
         font-size: 28px;
         font-weight: 900;
         margin-bottom: 10px;
+        position: relative;
     }
     i {
         position: absolute;
-        right: 30px;
+        right: 0;
+        color: #ddd;
         font-size: 25px;
         line-height: 34px;
-        transition: color .3s ease-in;
-    &:hover {
-        color: #555;
-    }
+        transition: color .1s ease-in;
+        cursor: pointer;
+        &:hover {
+            color: #555;
+        }
     }
     .add_active_logo{
         color: #888;
@@ -147,69 +165,65 @@ const Section = styled.div`
             
 `;
 
-
 const SCalHome = () => {
     const getId = window.localStorage.getItem("userId");
-    const [friendData, setFriendData] = useState([]);
-    const [friendDoMark, setFriendDoMark] = useState([]);
-    const [friendEndMark, setFriendEndMark] = useState([]);
+    const [scalData, setScalData] = useState([]);
+    const [memberDoMark, setMemberDoMark] = useState([]);
+    const [memberEndMark, setMemberEndMark] = useState([]);
+    const [memberList, setMemberList] = useState([{}]);
     const [isAdd, setIsAdd] = useState(false);
-    const [option, setOption] = useState("");
     useEffect(() => {
         const scalHome = async() => {
             try{
                 const response = await Api.scalHome(getId);
-                setFriendData(response.data)
-                setFriendDoMark(response.data.friendPlanMark[0]);
-                setFriendEndMark(response.data.friendPlanMark[1]);
+                setScalData(response.data)
+                setMemberDoMark(response.data.planMark[0]);
+                setMemberEndMark(response.data.planMark[1]);
             } catch(e){
             console.log(e);
             }
         }
         scalHome();
     },[getId]);
-    
-    const onClickaddFriend = (e) => {
-        if(isAdd) setIsAdd(false);
-        else setIsAdd(true);
+
+    const onClickSetting = () => {
+        //해당캘린더의 설정페이지로 옮겨가는 부분 구현 필요
     }
-
-    const [comment, setComment] = useState("");
-    const [modalHeader, setModalHeader] = useState("");
-    const [modalOpen, setModalOpen] = useState(false);
-
-    const closeModal = () => {
-        setModalOpen(false);
-    };
-
-
 
     return (
         <Wrap>
-             <Modal open={modalOpen} close={closeModal} header={modalHeader} option={option}><p dangerouslySetInnerHTML={{__html: comment}}></p></Modal>
             <Nav/>
             <Section>
                 <div className="plan">
-                    <h2>Plan it / Share Calendar</h2>
-                    <Calendar doMark={friendDoMark} endMark={friendEndMark}/>
+                    {/* <h2>{scalData.calName}</h2> */}
+                    <h2>A<i className="bi bi-gear-fill" onClick={onClickSetting}/></h2>
+                    <Calendar doMark={memberDoMark} endMark={memberEndMark}/>
                 </div>
                 <div className='etc'>
                     <div className='memo'>
                         <h2>Memo</h2>
-                        <Memo props={friendData.memo}/>
+                        <Memo props={scalData.memo}/>
                     </div>
                     <div className='m-list'>
-                        <h2>Member List<i className={'bi bi-person-fill-add ' + (isAdd? 'add_active_logo' : '')} onClick={onClickaddFriend}></i></h2>
-                        <SCalAdd setCommnet={setComment} setModalHeader={setModalHeader} setModalOpen={setModalOpen} isAdd={isAdd} getId={getId}/>
+                        <h2>Member List</h2>
                         <div className='m-list-detail'>
-                            <p className='nothing'><b>친구와 캘린더를 공유하세요!</b></p>
+                            {memberList? 
+                                <ul>
+                                    {/* memberList */}
+                                    {memberList.map((e) => {
+                                        if(e.isOwner) return(<li style={{listStyleImage:'url(/crown.svg)'}} className="owner">닉네임 <span>#0000</span></li>);
+                                        else return(<li>{e.nickname} <span>#{e.userCode}</span></li>);
+                                    })}
+                                </ul> :
+                                <p className='nothing'>친구와 캘린더를 공유하세요!</p>
+                            }
                         </div>
                     </div>
                 </div>
                 <div className="list">
                     <h2>List</h2>
                     <div className="history"></div>
-                    <List props={friendData.list}/>
+                    <List props={scalData.list}/>
                 </div>
             </Section>
             <div className="copy">&#169; Plannet.</div>

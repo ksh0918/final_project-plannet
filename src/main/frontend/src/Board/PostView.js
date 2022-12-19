@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams } from "react-router-dom";
-import styled from 'styled-components';
+import { useNavigate, Link, useParams } from "react-router-dom";
+import styled from 'styled-components';import Api from '../api/plannetApi'
 import Modal from '../Utill/Modal';
-import Api from '../api/plannetApi'
 import Nav from '../Utill/Nav';
-import { useNavigate  } from "react-router-dom";
 import Comments from './Comment';
 
 const Wrap = styled.div`
@@ -27,10 +25,7 @@ const Section = styled.div`
     position: relative;
     overflow-y: scroll;
     overflow-x: hidden;
-    &::-webkit-scrollbar {
-        width: 20px;
-        padding: 15px;
-    }
+    &::-webkit-scrollbar {width: 20px; padding: 15px;}
     &::-webkit-scrollbar-thumb {
         height: 30%; /* 스크롤바의 길이 */
         background: #ddd; /* 스크롤바의 색상 */
@@ -38,25 +33,11 @@ const Section = styled.div`
         border: 7px solid transparent;
         background-clip: padding-box;
     }
-    &::-webkit-scrollbar-track {
-        background: none;
-        /*스크롤바 뒷 배경 색상*/
-    }
-    div {
-        width: 100%;
-        padding: 10px 30px;
-    }
+    &::-webkit-scrollbar-track {background: none;} /*스크롤바 뒷 배경 색상*/
+    div {width: 100%; padding: 10px 30px;}
     .sub_box {
-        h2 {
-            font-size: 28px;
-            margin-top: 35px;
-            font-weight: 900;
-        }
-        span {
-            float: left;
-            margin-top: 10px;
-            margin-bottom: 15px;
-        }
+        h2 {font-size: 28px; margin-top: 35px; font-weight: 900;}
+        span {float: left; margin-top: 10px; margin-bottom: 15px;}
     }
     button {
         border: none;

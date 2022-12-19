@@ -59,7 +59,8 @@ const Modal = (props) => {
         navigate('/doLogin');
     }
     const onClickBackYes = async() => {
-        navigate(-1);
+        // event.preventDefault();
+        // navigate(-1);
     }
     
     return (

@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Nav from "../Utill/Nav";
 import Api from '../api/plannetApi'
+import Nav from "../Utill/Nav";
 
 const Wrap = styled.div`
     width: 1130px;
@@ -17,7 +17,6 @@ const Wrap = styled.div`
         float: left;
     }
 `;
-
 const Section = styled.div`
     width: 850px;
     height: calc(100vh - 40px);
@@ -25,10 +24,7 @@ const Section = styled.div`
     position: relative;
     overflow-y: scroll;
     overflow-x: hidden;
-    &::-webkit-scrollbar {
-        width: 20px;
-        padding: 15px;
-    }
+    &::-webkit-scrollbar {width: 20px; padding: 15px;}
     &::-webkit-scrollbar-thumb {
         height: 30%; /* 스크롤바의 길이 */
         background: #ddd; /* 스크롤바의 색상 */
@@ -36,25 +32,11 @@ const Section = styled.div`
         border: 7px solid transparent;
         background-clip: padding-box;
     }
-    &::-webkit-scrollbar-track {
-        background: none;
-        /*스크롤바 뒷 배경 색상*/
-    }
-    div {
-        width: 100%;
-        padding: 10px 30px;
-    }
+    &::-webkit-scrollbar-track {background: none;} /*스크롤바 뒷 배경 색상*/ 
+    div {width: 100%; padding: 10px 30px;}
     .sub_box {
-        h2 {
-            font-size: 28px;
-            margin-top: 35px;
-            font-weight: 900;
-        }
-        span {
-            float: left;
-            margin-top: 10px;
-            margin-bottom: 15px;
-        }
+        h2 {font-size: 28px; margin-top: 35px; font-weight: 900;}
+        span {float: left; margin-top: 10px; margin-bottom: 15px;}
         button {
             cursor: pointer;
             font-weight: 600;
@@ -66,8 +48,7 @@ const Section = styled.div`
             color: white;
             border: none;
             transition: all .1s ease-in;
-            &:hover{background-color: #666;
-                color: #888;}
+            &:hover{background-color: #666; color: #888;}
         }
     }
     table {
@@ -76,26 +57,16 @@ const Section = styled.div`
         background-color: #4555AE;
         border-bottom: solid 1px #4555AE;
         text-align: center;
+        th { padding: 10px; color: white;}
         tr:nth-child(2n) td {background-color: #fbfbfb;}
-        th { 
-            padding: 10px; 
-            color: white;}
-        td{
-            padding: 10px; 
-            background-color: white; 
-            border-left: solid 1px #bbb; 
-            border-top: solid 1px #ddd;
-            font-weight: 400;
-        }
-        td:first-child {
-            border-left: none
-        };
+        td { padding: 10px; background-color: white; border-left: solid 1px #bbb; border-top: solid 1px #ddd; font-weight: 400;}
+        td:first-child { border-left: none;}
         td:nth-child(2) {
             width: 400px; 
             text-align: left; 
             padding-left: 20px;
         }  
-        tr:hover td, tr:hover a{
+        tr:hover td, tr:hover a {
             color: #4555AE; 
             background-color: #efefef; 
             cursor: pointer;
@@ -104,16 +75,14 @@ const Section = styled.div`
             padding-right:5px; 
             color:#FC5C7D;
         }
-        .top3_List td{
+        .top3_List td {
             background-color: #f2f2ff !important; 
             font-weight: 700;
         }
-        .top3_List:last-child td{
+        .top3_List:last-child td {
             border-bottom: 1px solid #23338a;
         }  
     }
-
-
     .util_box {
         .page_list {
             width: 500px; 
@@ -150,9 +119,8 @@ const Section = styled.div`
 `;
 
 const Board = () => {
-    const navigate = useNavigate();
-    // localStorage 저장 정보
-    const getId = window.localStorage.getItem("userId");
+    const navigate = useNavigate(); // navigate를 사용하기 위해 선언
+    const getId = window.localStorage.getItem("userId"); // localStorage에 현재 로그인한 userId 저장
 
     // 값 불러오기 & 값 
     const [boardList, setBoardList] = useState([]); // boardList 불러오기

@@ -63,7 +63,7 @@ public class ScalController {
     }
 
     // 공유캘린더 일정 불러오기
-    @GetMapping("/plan_load")
+    @PostMapping("/plan_load")
     public ResponseEntity<List<ShareDTO>> planLoad(@RequestBody Map<String, String> planLoad) {
         Long calNo = Long.valueOf(planLoad.get("calNo"));
         LocalDate date = LocalDate.parse(planLoad.get("date"));
@@ -75,21 +75,38 @@ public class ScalController {
         }
     }
 
+//    // 공유캘린더 일정 작성하기
+//    @PostMapping("/plan_save")
+//    public ResponseEntity<Boolean> writeSave(@RequestBody Map<String, Object> scalWrSave) {
+//        String userId = (String)scalWrSave.get("id");
+//        LocalDate date = LocalDate.parse((String)scalWrSave.get("date"));
+//        List<Map<String, Object>> plan = (List<Map<String, Object>>)scalWrSave.get("plan");
+//
+//        boolean result = writeService.writeSave(userId, date, plan, diary);
+//        if(result) {
+//            return new ResponseEntity(true, HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity(false, HttpStatus.OK);
+//        }
+//    }
+
     // 공유캘린더 댓글 불러오기
-    @GetMapping("/comments_load")
+    @PostMapping("/comments_load")
     public ResponseEntity<List<Map<String, Object>>> commentsLoad(@RequestBody Map<String, String> commentsLoad) {
+        System.out.println("1111111111111111111111111111111111111111111111111111111");
         Long calNo = Long.valueOf(commentsLoad.get("calNo"));
         LocalDate planDate = LocalDate.parse(commentsLoad.get("date"));
         ShareDTO shareDTO = scalService.getCommentsLoad(calNo, planDate);
         System.out.println("scalService");
         if(shareDTO.isOk()) {
             List<Map<String, Object>> commentsList = shareDTO.getComentsList();
-            return new ResponseEntity(commentsList, HttpStatus.OK);
+            return new ResponseEntity(commentsList, HttpStatus
+                    .OK);
         } else return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
     // 공유캘린더 댓글 작성
-    @PostMapping("/comments_write")
+    @PostMapping("/comment_write")
     public ResponseEntity<Boolean> commentsWrite(@RequestBody Map<String, String> commentsWrite) {
         Long calNo = Long.valueOf(commentsWrite.get("calNo"));
         LocalDate planDate = LocalDate.parse(commentsWrite.get("date"));
@@ -100,9 +117,9 @@ public class ScalController {
     }
 
     // 공유캘린더 댓글 삭제하기
-    @PostMapping("/comments_delete")
+    @PostMapping("/comment_delete")
     public ResponseEntity<Boolean> commentsDelete(@RequestBody Map<String, String> commentsDelete) {
-        Long commentsNo = Long.valueOf(commentsDelete.get("commentsNo"));
+        Long commentsNo = Long.valueOf(commentsDelete.get("commentNo"));
         boolean commentsDeleteResult = scalService.commentsDelete(commentsNo);
         return new ResponseEntity(commentsDeleteResult, HttpStatus.OK);
     }
