@@ -19,6 +19,19 @@ import java.util.Map;
 public class ScalController {
     // Service 로직 연결
     private final ScalService scalService;
+    @PostMapping("/scal/create")
+    public ResponseEntity<Boolean> scalWrite(@RequestBody Map<String, Object> write) {
+        String userId = (String)write.get("id");
+        String title = (String)write.get("title");
+        List<Map<String, Object>> smember = (List<Map<String, Object>>)write.get("checkedButtons");
+
+        boolean result = scalService.scalWrite(userId, title, smember);
+        if(result) {
+            return new ResponseEntity(true, HttpStatus.OK);
+        } else {
+            return new ResponseEntity(false, HttpStatus.OK);
+        }
+    }
 
     // 해당 캘린더의 각 정보 불러오기
     @GetMapping("/sharing")
