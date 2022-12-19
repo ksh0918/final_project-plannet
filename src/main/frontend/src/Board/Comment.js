@@ -57,7 +57,7 @@ const Comment = styled.div`
     }
 `;
 
-const Comments = ({getNum, getId, setCommentsList, commentsList}) => {
+const Comments = ({getId, getNum, getDate, setCommentsList, commentsList}) => {
     const navigate = useNavigate();
 
     // 링크에서 home인지 scal인지 구분  
@@ -66,11 +66,11 @@ const Comments = ({getNum, getId, setCommentsList, commentsList}) => {
 
     const [comments, setComment] = useState(''); 
 
-    // 자유게시판 댓글 입력
+    // 댓글 입력
     const onChangeComment = (e) => {
         setComment(e.target.value);
     }
-    // 자유게시판 댓글 저장
+    // 댓글 저장
     const onClickSaveComment = async() => {
         let commentsData = '';
         if (currentPath == "/board") {
@@ -78,29 +78,23 @@ const Comments = ({getNum, getId, setCommentsList, commentsList}) => {
             commentsData = await Api.commentsLoad(getNum);
         }
         else {
-            console.log("저장의 false 들어옴");
-            await Api.scalCommentWrite(getNum, getId, comments);
-            commentsData = await Api.scalCommentsLoad(getNum);
+            await Api.scalCommentWrite(getNum, getDate, getId, comments);
+            commentsData = await Api.scalCommentsLoad(getNum, getDate);
         }
         setCommentsList(commentsData.data);
         setComment(''); // 등록 후 댓글창 빈칸으로 만들기
     } 
-    // 자유게시판 댓글 삭제
+    // 댓글 삭제
     const onClickDeleteComment = async(commentNo) => {
-        await Api.commentDelete(commentNo); 
-        navigate(0);
-    } 
-    // 공유캘린더 댓글 저장
-    const onClickSaveScalComment = async() => {
-        await Api.commentWrite(getNum, getId, comments);
-        const commentsData = await Api.commentsLoad(getNum);
-        setCommentsList(commentsData.data);
-        setComment(''); // 등록 후 댓글창 빈칸으로 만들기
-    } 
-    // 공유캘린더 댓글 삭제
-    const onClickDeleteScalComment = async(commentNo) => {
-        await Api.scalCommentDelete(commentNo); 
-        navigate(0);
+        if (currentPath == "/board") {
+            await Api.commentDelete(commentNo); 
+            navigate(0);    
+        }
+        else {
+            console.log("삭제의 false 들어옴");
+            await Api.scalCommentDelete(commentNo); 
+            navigate(0);   
+        }
     } 
 
     if(currentPath == '/board') {
@@ -136,7 +130,7 @@ const Comments = ({getNum, getId, setCommentsList, commentsList}) => {
                             <tr key={no}>
                                 <td>{nickname}</td>
                                 <td>{detail}</td>
-                                {<td>{date}{getId === writerId ? <button><i class="bi bi-x-lg" onClick={()=> onClickDeleteScalComment(commentNo)}></i></button> : null}</td>}
+                                {<td>{date}{getId === writerId ? <button><i class="bi bi-x-lg" onClick={()=> onClickDeleteComment(commentNo)}></i></button> : null}</td>}
                             </tr>
                         ))}
                     </table>
