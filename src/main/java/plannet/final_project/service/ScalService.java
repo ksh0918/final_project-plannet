@@ -197,7 +197,6 @@ public class ScalService {
                     splans.setCalNo(scal);
                     splans.setPlan((String)p.get("text"));
                     SPLAN rst = splanRepository.save(splans);
-                    log.warn(rst.toString());
                 }
             }
         } catch (Exception e) {
