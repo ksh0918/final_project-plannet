@@ -178,7 +178,7 @@ const SCalHome = () => {
     const [memberList, setMemberList] = useState([{}]);
 
     const isExistsChecked = false;
-    const isExists = (element) => {
+    const isExists(element) {
         if(element.id == getId) {
             isExistsChecked = true;
         }
@@ -186,37 +186,33 @@ const SCalHome = () => {
 
     useEffect(() => {
         const scalHome = async() => {
-            try {
+            try{
                 const response = await Api.sharingHome(getNum);
                 // 다른 사용자의 게시물 Edit 페이지에 아예 주소접근으로도 못 하게 방지
-                // DB에서 가져온 memberList 정보에서 사용자의 id가 존재하지 않으면 접근불가
+                // EB에서 가져온 memberList 정보에서 사용자의 id가 존재하지 않으면 접근불가
                 const memberListData = response.data.memberList;
-
-                let isExistsChecked = false;
-                memberListData.map(({id}) => {
-                    if (id == getId) isExistsChecked = true;});
-                if (isExistsChecked) {
-                    setScalData(response.data);
-                    setMemberDoMark(response.data.planMark[0]);
-                    setMemberEndMark(response.data.planMark[1]); 
-                    setMemberList(memberListData);
-                } else { 
+                memberListData.filter(isExists);
+                if (!isExistsChecked) {
                     alert("본인이 속한 캘린더만 접근할 수 있습니다.")
                     navigate("/home");
+                    return; 
                 }
+                setScalData(response.data)
+                setMemberDoMark(response.data.planMark[0]);
+                setMemberEndMark(response.data.planMark[1]); 
+                setMemberList(memberListData);
             } catch(e){
                 console.log(e);
             }
         }
         scalHome();
-    },[getNum]);
-    
+    },[getId]);
     
     console.log(memberList);
     console.log(scalData);
 
     const onClickSetting = () => {
-        navigate("/scal/info/" + getNum);
+        //해당캘린더의 설정페이지로 옮겨가는 부분 구현 필요
     }
 
     return (
