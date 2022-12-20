@@ -33,38 +33,42 @@ public class ScalService {
     private final SCOMRepository scomRepository;
 
     // 공유 캘린더 생성
-    public boolean scalWrite(String userId, String title, List<Map<String, Object>> smember) {
-//        -- <공유캘린더 생성시 보내야 할 repository>
-//        SELECT * FROM SCAL;
-//        select * from smem;
-//        select * from noti;
-
-//        try {
-//            Member member = memberRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
-//            // 공유 캘린더 설정
-//            SCAL scal = new SCAL();
-//            scal.setUserId(member);
-//            scal.setCalName(title);
-//            scalRepository.save(scal);
-//            // 공유 캘린더 멤버 설정
-//            SMEM smem = new SMEM();
-//            smem.setCalNo(scal);
-//            smem.setUserId(member);
-//            smem.setIsOwner(1); // 공유 캘린더 주인이면 1 아니면 0
-//            smemRepository.save(smem);
-//            // 초대 멤버들에게 알림 보내기
-//            Noti noti = new Noti();
-//            noti.setUserId(member); // 보내는 이
-//            for (Map<String, Object> s : smember) {
-////                Member friend = memberRepository.fins.get("userCode");
-////                noti.setReceiveId();
-//            }
-//        }
-        return true;
-
+    public Long scalCreate(String userId, String title, List<Map<String, Object>> smember) {
+        Long calNo;
+        try {
+            Member member = memberRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
+            // 공유 캘린더 설정
+            SCAL scal = new SCAL();
+            scal.setUserId(member);
+            scal.setCalName(title);
+            scalRepository.save(scal);
+            calNo = scalRepository.findMaxCalNo(userId);
+            System.out.println("서비스 캘린더 번호 : " + calNo);
+            // 공유 캘린더 친구 설정
+            SMEM smem = new SMEM();
+            smem.setCalNo(scal);
+            smem.setUserId(member);
+            smem.setIsOwner(1); // 공유 캘린더 주인이면 1 아니면 0
+            smemRepository.save(smem);
+            // 초대할 친구들에게 알림 보내기
+            for (Map<String, Object> s : smember) {
+                Noti noti = new Noti();
+                noti.setUserId(member); // 보내는 이
+                Member friend = memberRepository.findByUserCode((String)s.get("userCode"));
+                noti.setReceiveId(friend); // 초대할 친구들
+                noti.setCalNo(scal);
+                noti.setType("S");
+                noti.setCalNo(scal);
+                noti.setInviteDate(LocalDateTime.now());
+                noti.setIsChecked(0); // 수락 여부, 0이면 미수락, 1이면 수락
+                notiRepository.save(noti);
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+            return Long.valueOf(-1);
+        }
+        return calNo;
     }
-
-
     // 내용 로드
     public ShareDTO homeList(Long calNo) {
         ShareDTO shareDTO = new ShareDTO();
@@ -170,6 +174,40 @@ public class ScalService {
             shareDTO.setOk(false);
         }
         return shareDTO;
+    }
+
+    // 일정 저장
+    public boolean writeSave(Long calNo, String userId, LocalDate date, List<Map<String, Object>> plan) {
+        try {
+            Member member = memberRepository.findById(userId).orElseThrow(EntityNotFoundException::new); // 회원 정보가 담긴 객체 가져옴
+            splanRepository.deleteByPlanDateAndCalNo(date, calNo); // 기존의 일정 삭제. 삭제 안 하면 기존의 것들이 DB에 계속 있음
+            SCAL scal = scalRepository.findById(calNo).orElseThrow();
+            // plan 저장
+            for(Map<String, Object> p : plan) {
+                if(!(Boolean)p.get("deleted")) { // p.get("deleted") == false 이면 일정 저장
+                    SPLAN splans = new SPLAN();
+                    splans.setUserId(member);
+                    splans.setPlanDate(date);
+                    String checked = String.valueOf(p.get("checked"));
+                    if(checked.equals("0")) { // 수정하지 않은 기본의 것들은 checked가 1 또는 0으로 로드되기 때문에 따로 확인해줘야 함
+                        splans.setPlanChecked(0);
+                    } else if (checked.equals("1")) {
+                        splans.setPlanChecked(1);
+                    } else if (checked.equals("false")) { // 새로 생성하거나 수정한 checked는 true/false로 request함
+                        splans.setPlanChecked(0);
+                    } else if (checked.equals("true")) {
+                        splans.setPlanChecked(1);
+                    }
+                    splans.setCalNo(scal);
+                    splans.setPlan((String)p.get("text"));
+                    SPLAN rst = splanRepository.save(splans);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     // 공유캘린더 댓글 불러오기

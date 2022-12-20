@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import styled from 'styled-components';
 import Calendar from '../Home/Calendar';
 import Nav from '../Utill/Nav';
@@ -166,25 +167,49 @@ const Section = styled.div`
 `;
 
 const SCalHome = () => {
+    const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
+    let params = useParams(); // url에서 calNo를 가져오기 위해 uesParams() 사용
+    const getNum = params.no; // params는 객체이기 때문에 풀어줘서 다시 getNum에 대입해줌
+
     const [scalData, setScalData] = useState([]);
     const [memberDoMark, setMemberDoMark] = useState([]);
     const [memberEndMark, setMemberEndMark] = useState([]);
     const [memberList, setMemberList] = useState([{}]);
-    const [isAdd, setIsAdd] = useState(false);
+
+    const isExistsChecked = false;
+    const isExists(element) {
+        if(element.id == getId) {
+            isExistsChecked = true;
+        }
+    }
+
     useEffect(() => {
         const scalHome = async() => {
             try{
-                const response = await Api.scalHome(getId);
+                const response = await Api.sharingHome(getNum);
+                // 다른 사용자의 게시물 Edit 페이지에 아예 주소접근으로도 못 하게 방지
+                // EB에서 가져온 memberList 정보에서 사용자의 id가 존재하지 않으면 접근불가
+                const memberListData = response.data.memberList;
+                memberListData.filter(isExists);
+                if (!isExistsChecked) {
+                    alert("본인이 속한 캘린더만 접근할 수 있습니다.")
+                    navigate("/home");
+                    return; 
+                }
                 setScalData(response.data)
                 setMemberDoMark(response.data.planMark[0]);
-                setMemberEndMark(response.data.planMark[1]);
+                setMemberEndMark(response.data.planMark[1]); 
+                setMemberList(memberListData);
             } catch(e){
-            console.log(e);
+                console.log(e);
             }
         }
         scalHome();
     },[getId]);
+    
+    console.log(memberList);
+    console.log(scalData);
 
     const onClickSetting = () => {
         //해당캘린더의 설정페이지로 옮겨가는 부분 구현 필요
@@ -195,8 +220,7 @@ const SCalHome = () => {
             <Nav/>
             <Section>
                 <div className="plan">
-                    {/* <h2>{scalData.calName}</h2> */}
-                    <h2>A<i className="bi bi-gear-fill" onClick={onClickSetting}/></h2>
+                    <h2>{scalData.calName}<i className="bi bi-gear-fill" onClick={onClickSetting}/></h2>
                     <Calendar doMark={memberDoMark} endMark={memberEndMark}/>
                 </div>
                 <div className='etc'>
@@ -211,7 +235,7 @@ const SCalHome = () => {
                                 <ul>
                                     {/* memberList */}
                                     {memberList.map((e) => {
-                                        if(e.isOwner) return(<li style={{listStyleImage:'url(/crown.svg)'}} className="owner">닉네임 <span>#0000</span></li>);
+                                        if(e.isOwner) return(<li style={{listStyleImage:'url(/crown.svg)'}} className="owner">{e.nickname} <span>#{e.userCode}</span></li>);
                                         else return(<li>{e.nickname} <span>#{e.userCode}</span></li>);
                                     })}
                                 </ul> :
@@ -232,5 +256,3 @@ const SCalHome = () => {
 }
 
 export default SCalHome;
-
-

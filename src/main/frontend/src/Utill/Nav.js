@@ -274,7 +274,7 @@ const Nav = () => {
                 <div className="userPro" style={{height: 'calc(80vh - ' + proHeight + 'px)'}}>{userInfo[2]}</div>
                 <div className="calList">
                     <ul>
-                        <Link to="/scal/home">
+                        <Link to="/home">
                             <li>
                                 <p className="calTitle"><span>{userInfo[0]}님의 플래너</span><span><i class="bi bi-caret-right-fill"></i></span></p>
                                 <div className="chartBackground">
