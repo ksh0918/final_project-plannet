@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
+import './media.scss';
 import Main from './Main/Main';
 import DoLogin from './DoLogin/DoLogin';
 import Social from './Join/Social';

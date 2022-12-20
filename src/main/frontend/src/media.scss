@@ -5,14 +5,67 @@
         flex-direction: column;
         >div{
             width: 100vw;
-            height: 50vh;
             h1, h2{display: none;} 
-            div{color: #4555ae;}
-            .wrap{
-                position: static;
-                margin: 0 auto;
-                >div:first-of-type{font-size: 32px;}
+            &:first-of-type{
+                height: 45vh;
+                svg{width: 45vw; height: 30vh; max-width: 50vh; max-height: 30vw;}
+                .wrap{
+                    height: auto;
+                    bottom: 20px;
+                    top: auto;
+                    left:50%;
+                    transform: translateX(-50%);
+                    >div:first-of-type{
+                        font-size: 48px; 
+                        width: 22ch; 
+                        animation: typing 2s steps(100);
+                        white-space: nowrap;
+                        overflow: hidden;
+                    }
+                    >div:last-of-type{
+                        font-size: 24px;
+                        width: 22ch; 
+                        animation: typing2 2s steps(100);
+                        white-space: nowrap;
+                        overflow: hidden;
+                    }
+                }
             }
+            @keyframes typing {from {width: 0}}
+            @keyframes typing2 {from {width: 0}30%{width: 0}}
+            &:nth-of-type(2){
+                height: 55vh;
+                margin: 0;
+                justify-content:flex-start;
+                >div{
+                    padding: 20px 0 40px;
+                    width: auto;
+                    line-height: 1.4;
+                    font-weight: 400;
+                    font-size: 13px;
+                    color: #555;
+                    text-align: center;
+                }
+                >div, a{
+                    margin: 0 auto;
+                }
+                .doLogin{
+                    width: 250px;
+                    line-height: 35px;
+                    height: 37px;
+                    padding: 0;
+                    margin-bottom: 8px;
+                    border-radius: 21.5px;
+                    border: 1px solid rgb(69, 85, 174);
+                    background-color: rgba(255,255,255);
+                    color: #4555ae;
+                    &:hover{
+                        background-color: rgb(69, 85, 174);
+                        color: white;
+                    }
+                }
+            }
+
         }
     }
     
@@ -21,77 +74,115 @@
         .plan, .etc{
             float: none;
             width: 100vw;
-            height: 520px;
+            height: auto !important;
         }
+        .list{display: none;}
         .etc{padding-left: 30px; height: 480px;}
         .moti{display: none;}
-        .moti2{
-            display: block;
-            padding: 15px 15px;
-            margin-top: 5px;
-            border-radius: 5px;
-            height: auto;
-            position: relative;
-            overflow: hidden;
-            background-color: #fcfcfc;
-            h2{display: none;}
-            p{
-                float: left;
-                width: calc(100% - 56px);
-                padding: 5px 20px;
-                word-break: break-all;
-                text-align: center;
-                font-size: 15px;
+        .moti2{display: block;}
+        .etc textarea {height: 240px !important;}
+    }
+    //write
+    #write{
+        .plan_it{
+            input[type="text"], span {width: calc(100% - 50px);}
+            span{height: 16px; overflow: hidden; text-overflow: ellipsis; white-space:nowrap}
+        }
+    }
+    
+    #board{
+        table{
+            border-top: 1px solid #4555AE;
+            th, td:nth-child(4){display: none;}
+            td{display: block; float: left;}
+
+            tr:first-child td{
+                border-top: none;
             }
-            i{
-                float: left;
-                width: 28px;
-                display: block;
-                font-size: 28px;
-                text-align: center;
+
+            td:first-child{
+                border-bottom: none;
+                height: 74px;
+                line-height: 60px;
+            }
+            td:nth-child(2){
+                width: calc(100% - 80px) !important;
+                border-left: none;
+                font-weight: 600; 
+            }
+            td:nth-child(3){
+                font-size: 13px;
+                border-top: none;
+                width: auto;
+                padding-right: 0px;
+                padding-top: 5px;
+                border-left: none;
+                &:after{
+                    content: '';
+                    line-height: 16px;
+                    border-right: 1px solid #bbb;
+                    margin-left: 10px;
+                }
+            }
+            td:nth-child(5){
+                padding-top: 5px;
+                font-size: 13px;
+                border-top: none;
+                border-left: none;
+                width: auto;
+                text-align: left;
+            }
+        }
+        .util_box {
+            ul{width: 250px;}
+            .search{
+                width: calc(100% - 250px);
+                max-width: 200px;
+                input{width: calc(100% - 24px)};
             }
         }
     }
 }
 @media screen and (max-width : 799px) {
     #terms{
-        .check{
-            width: 100vw;
-            overflow: hidden;
-            background-color: red;
+        >div:nth-of-type(2){
+            width: 90vw;
         }
     }
 }
 
 @media screen and (max-width : 1129px) {
+    //공통
     #nav, .section{float: none !important; position: absolute;}
-    .section{z-index: 0; height: calc(100vh - 100px) !important;}
-    #topbar{
-        display: block;
-    }
-    #nav{
-        transition: right .7s ease-in;
-        right: -280px;
-        position: fixed;
-        z-index: 2;
-    }
-    .section{width: 100vw !important;}
-    .back_side_open{
-        display: block;
-        opacity: .7;
-        visibility: visible;
-        z-index: 1;
-    }
-    .copy{float: none;}
+    .section{z-index: 0; height: calc(100vh - 100px) !important; width: 100vw !important;}
+    #topbar{display: block;}
+    #nav{transition: right .7s ease-in; right: -280px; position: fixed; z-index: 2;}
+    .back_side_open{opacity: .7; visibility: visible;}
+    .copy{width: 100vw; float: none;}
 
     //home
-    .react-calendar{width:100% !important;}
     #home{
+        .react-calendar{width:100% !important;}
         .plan, .etc{padding-top: 5px;}
         .list{
             padding-top: 0;
             h2{margin-top: 0px;}
         }
+        h2{margin-top: 20px;}
+    }
+    //setting
+    #setting {
+        .setting{padding-top: 5px;}
+        h2{margin-top: 20px;}
+    }
+    //write
+    #write {
+        .sub_box{padding-top: 5px;}
+        .btnbox{height: 60px; line-height: 40px; }
+        h2{margin-top: 0px;}
+    }
+    #board {
+        .board_list{padding-top: 5px;}
         h2{margin-top: 20px;}
     }
 }
@@ -105,14 +196,11 @@
         }
     }
     #terms {
-        >div:nth-child(2){
-            padding: 5px;
-        }
         .check{
-            padding: 10px 10px;
+            padding: 5px 20px;
             &:nth-child(2){padding-top: 0;}
             textarea{
-                height: 100px;
+                height: 80px;
             }
         }
         

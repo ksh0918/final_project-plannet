@@ -178,11 +178,11 @@ const SCalHome = () => {
     const [memberList, setMemberList] = useState([{}]);
 
     const isExistsChecked = false;
-    const isExists(element) {
-        if(element.id == getId) {
-            isExistsChecked = true;
-        }
-    }
+    // const isExists(element) {
+    //     if(element.id == getId) {
+    //         isExistsChecked = true;
+    //     }
+    // }
 
     useEffect(() => {
         const scalHome = async() => {
@@ -191,7 +191,7 @@ const SCalHome = () => {
                 // 다른 사용자의 게시물 Edit 페이지에 아예 주소접근으로도 못 하게 방지
                 // EB에서 가져온 memberList 정보에서 사용자의 id가 존재하지 않으면 접근불가
                 const memberListData = response.data.memberList;
-                memberListData.filter(isExists);
+                // memberListData.filter(isExists);
                 if (!isExistsChecked) {
                     alert("본인이 속한 캘린더만 접근할 수 있습니다.")
                     navigate("/home");

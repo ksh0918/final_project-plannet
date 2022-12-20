@@ -7,7 +7,7 @@ import Modal from "../Utill/Modal";
 import "./Join.scss"
 import "../App";
 
-const ContainerJoin = styled.div`
+const ContainerFind = styled.div`
     height: 100vh;
     display:flex ;
     justify-content:center;
@@ -177,7 +177,7 @@ const Find = () =>{
     }
 
     return (
-        <ContainerJoin>
+        <ContainerFind id="find">
             <Modal open={modalOpen} close={closeModal} header={header}>{comment}</Modal>
             <Logo><LogoImg width="90px" viewBox="30 150 430 220"/><Link to="/" className="logo">Plannet</Link></Logo>
             <div>
@@ -225,7 +225,7 @@ const Find = () =>{
                     </div>
                 } 
             </div>
-        </ContainerJoin>
+        </ContainerFind>
     );
 }
 

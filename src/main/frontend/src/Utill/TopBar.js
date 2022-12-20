@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import {ReactComponent as Logo} from "../Images/planet-001.svg";
 
@@ -16,11 +17,13 @@ const Bar = styled.div`
         font-size: 36px;
         border-radius: 5px;
         transition: background-color 0.2s ease-in;
+        cursor: pointer;
         &:hover{
             background-color: #d7e0f0;
         }
     }
     p{
+        cursor: pointer;
         display: inline-block;
         span{
             position: absolute;
@@ -41,13 +44,19 @@ const logoStyle = {
 };
 
 const TopBar = ({sideBar, setSideBar}) => {
+    const navigate = useNavigate();
+
+    const onClickLogo = () => {
+        navigate("/home");
+    }
+
     const onClickSideBar = () => {
-        sideBar? setSideBar(false) : setSideBar(true);
+        setSideBar(true);
         console.log(sideBar);
     }
     return(
         <Bar id="topbar">
-            <p><Logo style={logoStyle}/><span>Plannet</span></p>
+            <p onClick={onClickLogo}><Logo style={logoStyle}/><span>Plannet</span></p>
             <i className="bi bi-list" onClick={onClickSideBar}/>
         </Bar>
     );

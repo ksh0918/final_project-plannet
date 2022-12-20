@@ -26,41 +26,54 @@ const Logo = styled.div`
 `;
 const AgreeBox = styled.div`
     width: 780px;
-    height: 500px;
-    margin: 0 auto;
+    margin: 20px auto;
     border-radius : 5px;
     border: solid #eeeeee;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     justify-content:center;
     align-items: center;
     .check {
-        width : 760px;
-        height : 200px;
-        padding-left: 20px;
+        margin-right: 0;
+        width : 100%;
+        padding: 5px 20px;
         border-radius : 5px;
+        margin: 5px 0;
         .text_box {
-            width: 700px;
+            width: 100%;
             height: 140px;
+            resize: none;
+            word-break: break-all;
+            overflow-x: hidden;
+            font-size: 13px;
+            line-height: 1.3;
+            padding: 5px;
+            margin: 5px 0;
+        }
+        &:first-child{
+            padding-top: 20px;
         }
     }
     .check2 {
-            width : 760px;
-            height : 50px;
-            padding-left: 20px;
-            border-radius : 5px;
-        }
+        height : 50px;
+        padding-left: 20px;
+    }
 `;
 
 const Button = styled.button`
     border: none;
-    margin-bottom: 50px;
+    margin: 20px 0;
     width: 150px;
     height: 40px;
     font-size: 18px;
-    font-weight: 500;
+    font-weight: 600;
     background-color: #4555AE;
     color: white;
-    border-radius: 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    &:hover{
+        background-color: rgb(55, 67, 134);
+        color: #eee;
+    }
 `;
 
 
@@ -155,17 +168,12 @@ const Terms = () => {
         }
     }
     return(
-        <>
-            <ContainerTerms>
+            <ContainerTerms id="terms">
                 <Logo><LogoImg width="90px" viewBox="30 150 430 220"/><Link to="/" className="logo">Plannet</Link></Logo>
-                <br/>
-                <br/>
                 <AgreeBox>
                     <div>
                         <div className='check'>
-                            <br/>
-                            <br/>
-                            <div className='text'><input type="checkbox" checked={serviceCheck} onClick={serviceBtnEvent}/> 서비스 이용 약관에 동의합니다.<b>(필수)</b></div>
+                            <div className='text'><label><input type="checkbox" checked={serviceCheck} onClick={serviceBtnEvent}/> 서비스 이용 약관에 동의합니다.<b>(필수)</b></label></div>
                             <textarea className='text_box'>Plannet 서비스 이용 약관동의
 
                             제 1조 (목적)
@@ -259,10 +267,8 @@ const Terms = () => {
                             공고일자: 2020년 6월 10일
                             시행일자: 2020년 6월 10일</textarea>
                         </div>
-                        <br/>
-                        <br/>
                         <div className='check'>
-                            <div className='text'><input type="checkbox" checked={userCheck} onClick={userBtnEvent}/> 개인정보 이용 약관에 동의합니다.<b>(필수)</b></div>
+                            <div className='text'><label><input type="checkbox" checked={userCheck} onClick={userBtnEvent}/> 개인정보 이용 약관에 동의합니다.<b>(필수)</b></label></div>
                             <textarea className='text_box'>(주)Plannet('https://www.plannet.shop/'이하 '회사') 는 고객의 개인정보보호를 소중하게 생각하고, 고객의 개인정보를 보호하기 위하여 항상 최선을 다해 노력하고 있습니다. 회사 는 「개인정보보호법」, 「정보통신망 이용촉진 및 정보보호 등에 관한 법률」을 비롯한 모든 개인정보보호 관련 법률규정을 준수하고 있습니다.
                             1. 수집하는 개인정보의 항목 및 수집방법
 
@@ -585,21 +591,20 @@ const Terms = () => {
                         </div>
                         <div className='check2'>
                             <div className='text'>
-                                <input type="checkbox" checked={marketingCheck} onClick={marketingBtnEvent}/>
-                                 마케팅 활용 약관에 동의합니다.(선택) ( <input type="checkbox" checked={marketingEmailCheck} onClick={marketingEmailBtnEvent}/>
-                                <span> 이메일 </span>
-                                <input type="checkbox" checked={marketingSMSCheck} onClick={marketingSMSBtnEvent}/><span> SMS )</span><br/></div>
+                                    <label>
+                                        <input type="checkbox" checked={marketingCheck} onClick={marketingBtnEvent}/> 마케팅 활용 약관에 동의합니다.(선택) (&nbsp;
+                                            <label><input type="checkbox" checked={marketingEmailCheck} onClick={marketingEmailBtnEvent}/> 이메일&nbsp;</label>
+                                            <label><input type="checkbox" checked={marketingSMSCheck} onClick={marketingSMSBtnEvent}/> SMS )</label>
+                                    </label>
+                            </div>
                         </div>
                     </div>
                 </AgreeBox>
-                <div><input type="checkbox" checked={allCheck} onClick={allBtnEvent}/><b> 전체 약관에 동의합니다. </b></div>
-                <br/>
-                <br/>
+                <div><label><input type="checkbox" checked={allCheck} onClick={allBtnEvent}/><b> 전체 약관에 동의합니다. </b></label></div>
                 <Button onClick={istrue} className="lastBtn">다음단계</Button>
                 {/* 모달 */}
                 {modalOpenSignUp && <Modal open={modalOpenSignUp} close={closeModalSignUp} header="확인">필수 항목을 모두 체크해주세요.</Modal>}
             </ContainerTerms>
-        </>
     );
 }
 
