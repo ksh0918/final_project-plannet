@@ -34,6 +34,20 @@ const Section = styled.div`
             margin-top: 10px;
             margin-bottom: 15px;
         }
+        .readBtn{
+            cursor: pointer;
+            font-weight: 600;
+            float: right;
+            font-size: 16px;
+            padding: 8px 35px;
+            border-radius: 25px;
+            background-color: #333;
+            color: white;
+            border: none;
+            transition: all .1s ease-in;
+            &:hover{background-color: #666;
+                color: #888;}
+        }
         .sendBtn{
             cursor: pointer;
             font-weight: 600;
@@ -132,19 +146,14 @@ const Section = styled.div`
 const Message = () => {
     const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
-    const [mNotiCount,setmNotiCount] = useState("");
+    const [mNotiCount,setmNotiCount] = useState();
     const [checkItems, setCheckItems] = useState([]);
-    const [modalOpen, setModalOpen] = useState(false); // 모달에 띄워줄 메세지 문구
-    const [modalOption, setModalOption] = useState('');
-    const [comment, setComment] = useState("");
-    const closeModal = () => {
-        setModalOpen(false);
-    };
     
     const onClickToCreate = () => {
         const link = "/send"
         navigate(link);
     }
+
     const [messageList, setMessageList] = useState([]); // boardList 불러오기
 
     // 체크박스 전체 선택
@@ -240,6 +249,7 @@ const Message = () => {
                     <h2>Message</h2>
                     <p>
                         <span>Plannet 친구들과 소통해 보세요!</span>
+                        {/* <button onClick={onClickRead} className="readBtn">읽음</button> */}
                         <button onClick={onClickToCreate} className="sendBtn">쪽지쓰기</button>
                         <button onClick={onClickDelete} className="deleteBtn">선택삭제</button>
                     </p>
@@ -261,7 +271,9 @@ const Message = () => {
                                     //  checkItems 에 해당 쪽지의 postNum 이 있으면 true, 아니면 false
                                     checked={checkItems.includes(message.messageNo) ? true : false}
                                 /></td> 
-                                <td>{message.isRead}</td>
+                                <td>{
+                                    message.isRead===0?"안읽음":"읽음"
+                                }</td>
                                 <td>{message.sendId}</td>
                                 <td>{<div className='detail' dangerouslySetInnerHTML={{__html: message.detail}}></div>}</td>
                                 <td>{message.sendDate}</td>

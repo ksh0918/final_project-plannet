@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Api from "../api/plannetApi";
 
 const Friends = styled.div`
@@ -92,16 +92,28 @@ const Friends = styled.div`
         top: 50%;
         transform:translateY(-50%);
     }
+    .drop, .wait, .invite {
+        transition: all .3s ease-in;
+        cursor: pointer;
+        position: absolute;
+        font-size: 15px;
+        color: black;
+        background-color: red;
+        right: 30px;
+        top: 50%;
+        transform:translateY(-50%);
+    }
 `;
+
 const StyledInput = styled.input`
         transition: all .3s ease-in;
-                cursor: pointer;
-                position: absolute;
-                font-size: 20px;
-                color: #f9f9f9;
-                right: 30px;
-                top: 50%;
-                transform:translateY(-50%);
+        cursor: pointer;
+        position: absolute;
+        font-size: 20px;
+        color: #f9f9f9;
+        right: 30px;
+        top: 50%;
+        transform:translateY(-50%);
 
     &:checked {
         border-color: transparent;
@@ -113,9 +125,11 @@ const StyledInput = styled.input`
     }
 `;
 
-const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,setOption, isPage, title}) => {
+const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,setOption, isPage, title, calNo}) => {
     const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
+    let params = useParams(); // url에서 boardNo를 가져오기 위해 uesParams() 사용
+    let getNum = params.no; // params는 객체이기 때문에 풀어줘서 다시 getNum에 대입해줌
     const [checkedButtons, setCheckedButtons] = useState([]); // 체크박스를 체크한 데이터를 넣을 빈배열
 
     // 친구삭제 버튼 팝업(수정해야함)
@@ -153,7 +167,19 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
             setCommnet('최대 공유 캘린더 개수(2개)를 넘어 공유 캘린더를 생성할 수 없습니다.');
             setModalOpen(true);
         }
-        
+    }
+
+    const onClickDrop = async(getNum, userCode) => {
+        setOption(userCode);
+        setCommnet("멤버를 삭제하시겠습니까?");
+        setModalHeader("멤버삭제");
+        setModalOpen(true);
+    }
+    const onClickWait = async() => {
+
+    }
+    const onClickInvite = async() => {
+
     }
    
     return (
@@ -170,9 +196,12 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
                         </p>
                         <p>{e.profile}</p>
                         {isPage === "친구삭제" && <i className="bi bi-x-lg unfriend_btn" onClick={() => onClickUnfriend(e.key)}></i>} 
-                        {/* checked: 체크표시 & 해제를 시키는 로직. 배열에 e 데이터가 있으면 true, 없으면 false                       onChange: onChange이벤트가 발생하면 check여부와 e 데이터를 전달하여 배열에 friendList의 객체를 넣어준다. */}
+                        {/* checked: 체크표시 & 해제를 시키는 로직. 배열에 e 데이터가 있으면 true, 없으면 false                     onChange: onChange이벤트가 발생하면 check여부와 e 데이터를 전달하여 배열에 friendList의 객체를 넣어준다. */}
                         {isPage === "공유캘린더" && <StyledInput class="form-check-input scalFriend_check" id="checkboxNoLabel" onChange={check => { changeHandler(check.currentTarget.checked, e);}} 
                             checked={checkedButtons.includes(e) ? true : false}  type="checkbox" aria-label="..." />} 
+                        {e.status == 1 &&<button className='drop' onClick={() => onClickDrop(getNum, e.userCode)}>삭제</button>}
+                        {e.status == 2 &&<button className='wait'onClick={onClickWait}>대기</button>}
+                        {e.status == 0 &&<button className='invite' oncClick={onClickInvite}>초대</button>}
 
                     </li>
                 );})}
@@ -182,7 +211,6 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
             <p className='nothing'><b>등록된 친구가 아직 없습니다.</b><br/>상단 오른쪽의 버튼을 눌러 친구를 추가해보세요!</p>}
         </Friends>
         {isPage === "공유캘린더" && <div className="scal_add"><button onClick={onClickSCalAdd}>공유캘린더 생성하기</button></div>}
-        
         </>
         
     );

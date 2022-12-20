@@ -3,7 +3,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import styled from "styled-components";
 import Api from "../api/plannetApi";
 import Nav from "../Utill/Nav";
+// import SCalFriendList from './SCalFriendList';
 import FriendList from '../Friend/FriendList';
+
 import Modal from '../Utill/Modal';
 
 const Wrap = styled.div`
@@ -151,7 +153,7 @@ const SCalSetting = () => {
     const [modalHeader, setModalHeader] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
     const [option, setOption] = useState("");
-    const page = "설정";
+    const isPage = "설정";
 
 
     useEffect(() => {
@@ -202,7 +204,7 @@ const SCalSetting = () => {
 
     return (
         <Wrap>
-            <Modal open={modalOpen} close={closeModal} header={modalHeader} option={option}><p dangerouslySetInnerHTML={{__html: comment}}></p></Modal>
+            <Modal open={modalOpen} close={closeModal} header={modalHeader} option={option} calNo={getNum}><p dangerouslySetInnerHTML={{__html: comment}}></p></Modal>
             <Nav></Nav>
             <Section>
                 <div className="scalCreate">
