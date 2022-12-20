@@ -302,6 +302,14 @@ const plannetApi = {
         };
         return await axios.post(PLANNET_DOMAIN + "scal/info_save", object, HEADER);
     },
+    // 공유 캘린더 멤버 삭제
+    scalDrop: async function(calNo, userCode) {
+        const object = {
+            calNo: calNo,
+            userCode: userCode
+        };
+        return await axios.post(PLANNET_DOMAIN + "scal/drop_member", object, HEADER);
+    },
     // 공유 캘린더 home/달력/주간일정/메모/명언 출력
     sharingHome: async function(calNo) {
         return await axios.get(PLANNET_DOMAIN + `scal/sharing?calNo=${calNo}`, HEADER);

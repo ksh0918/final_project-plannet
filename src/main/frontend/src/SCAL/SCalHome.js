@@ -177,10 +177,13 @@ const SCalHome = () => {
     const [memberEndMark, setMemberEndMark] = useState([]);
     const [memberList, setMemberList] = useState([{}]);
 
-    const isExistsChecked = false;
+    let isExistsChecked = false;
     const isExists = (element) => {
-        if(element.id == getId) {
+        console.log("데이타의 아이디");
+        console.log(element.id);
+        if(element.id === getId) {
             isExistsChecked = true;
+            return isExistsChecked;
         }
     }
 

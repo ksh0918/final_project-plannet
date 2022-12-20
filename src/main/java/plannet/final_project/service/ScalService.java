@@ -351,7 +351,7 @@ public class ScalService {
             return false;
         }
     }
-    // 공유 캘린더 멤버 강퇴퇴
+    // 공유 캘린더 멤버 삭제
     public boolean dropMember(Long calNo, String userCode) {
         try {
             SCAL scal = scalRepository.findById(calNo).orElseThrow(EntityNotFoundException::new);
