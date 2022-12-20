@@ -1,13 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Api from "../api/plannetApi";
 import Nav from "../Utill/Nav";
-import { useNavigate  } from "react-router-dom";
-
-
 
 const Wrap = styled.div`
     width: 1130px;

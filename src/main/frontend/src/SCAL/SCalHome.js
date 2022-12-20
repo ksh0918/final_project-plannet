@@ -212,7 +212,7 @@ const SCalHome = () => {
     console.log(scalData);
 
     const onClickSetting = () => {
-        //해당캘린더의 설정페이지로 옮겨가는 부분 구현 필요
+        navigate("/scal/info/" + getNum);
     }
 
     return (
