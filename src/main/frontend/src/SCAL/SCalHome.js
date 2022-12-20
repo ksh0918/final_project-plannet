@@ -178,7 +178,7 @@ const SCalHome = () => {
     const [memberList, setMemberList] = useState([{}]);
 
     const isExistsChecked = false;
-    const isExists(element) {
+    const isExists = (element) => {
         if(element.id == getId) {
             isExistsChecked = true;
         }
