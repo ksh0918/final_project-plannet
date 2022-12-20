@@ -111,14 +111,6 @@ const Section = styled.div`
         td:nth-child(2) {width: 400px; text-align: left; padding-left: 20px;}  
         tr:hover td, tr:hover a {color: #4555AE;}
     }
-    .copy {
-        width: 850px;
-        position: absolute;
-        bottom: 0;
-        text-align: center;
-        color: #dfdfdf;
-        line-height: 50px;
-    }
     .util_box {
         .page_list {
             width: 500px; float:left;
