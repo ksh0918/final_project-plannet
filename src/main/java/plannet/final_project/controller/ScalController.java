@@ -19,7 +19,9 @@ import java.util.Map;
 public class ScalController {
     // Service 로직 연결
     private final ScalService scalService;
-    @PostMapping("/create")
+
+    // 공유 캘린더 생성하기
+   @PostMapping("/create")
     public ResponseEntity<Boolean> scalCreate(@RequestBody Map<String, Object> create) {
         String userId = (String)create.get("id");
         String title = (String)create.get("title");
@@ -140,7 +142,7 @@ public class ScalController {
     // 설정 저장하기
     @PostMapping("/info_save")
     public ResponseEntity<Boolean> infoSave(@RequestBody Map<String, Object> data) {
-        Long calNo = (long)data.get("calNo");
+        Long calNo = Long.parseLong((String)data.get("calNo"));
         String calName = (String)data.get("calName");
         boolean result = scalService.infoSave(calNo, calName);
         return new ResponseEntity(result, HttpStatus.OK);
@@ -148,17 +150,17 @@ public class ScalController {
     // 멤버 초대하기
     @PostMapping("/invite_member")
     public ResponseEntity<Boolean> inviteMember(@RequestBody Map<String, Object> data) {
-        long calNo = (long) data.get("calNo");
-        String id = (String)data.get("id");
-        boolean result = scalService.inviteMember(calNo, id);
+        Long calNo = Long.parseLong((String)data.get("calNo"));
+        String userCode = (String)data.get("userCode");
+        boolean result = scalService.inviteMember(calNo, userCode);
         return new ResponseEntity(result, HttpStatus.OK);
     }
     // 멤버 강퇴
     @PostMapping("/drop_member")
     public ResponseEntity<Boolean> dropMember(@RequestBody Map<String, Object> data) {
-        Long calNo = (long)data.get("calNo");
-        String id = (String)data.get("id");
-        boolean result = scalService.dropMember(calNo, id);
+        Long calNo = Long.parseLong((String)data.get("calNo"));
+        String userCode = (String)data.get("userCode");
+        boolean result = scalService.dropMember(calNo, userCode);
         return new ResponseEntity(result, HttpStatus.OK);
     }
 }

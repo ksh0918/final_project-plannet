@@ -167,7 +167,7 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
                         </p>
                         <p>{e.profile}</p>
                         {isPage === "친구삭제" && <i className="bi bi-x-lg unfriend_btn" onClick={() => onClickUnfriend(e.key)}></i>} 
-                        {/* checked: 체크표시 & 해제를 시키는 로직. 배열에 e.key가 있으면 true, 없으면 false                       onChange: onChange이벤트가 발생하면 check여부와 e.key값을 전달하여 배열에 friendList의 객체를 넣어준다. */}
+                        {/* checked: 체크표시 & 해제를 시키는 로직. 배열에 e 데이터가 있으면 true, 없으면 false                       onChange: onChange이벤트가 발생하면 check여부와 e 데이터를 전달하여 배열에 friendList의 객체를 넣어준다. */}
                         {isPage === "공유캘린더" && <StyledInput class="form-check-input scalFriend_check" id="checkboxNoLabel" onChange={check => { changeHandler(check.currentTarget.checked, e);}} 
                             checked={checkedButtons.includes(e) ? true : false}  type="checkbox" aria-label="..." />} 
 
@@ -178,9 +178,8 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
             :
             <p className='nothing'><b>등록된 친구가 아직 없습니다.</b><br/>상단 오른쪽의 버튼을 눌러 친구를 추가해보세요!</p>}
         </Friends>
-        {isPage === "공유캘린더" && <div className="scal_add">
-        <button onClick={onClickSCalAdd}>공유캘린더 생성하기</button>
-        </div>}
+        {isPage === "공유캘린더" && <div className="scal_add"><button onClick={onClickSCalAdd}>공유캘린더 생성하기</button></div>}
+        
         </>
         
     );

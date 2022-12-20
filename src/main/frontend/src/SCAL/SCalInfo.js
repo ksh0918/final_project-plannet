@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from "styled-components";
 import Api from "../api/plannetApi";
 import Nav from "../Utill/Nav";
@@ -135,9 +135,13 @@ const Section = styled.div`
     }
 `;
 
-    const SCalCreate = () => {
+const SCalSetting = () => {
     const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
+    let params = useParams(); // url에서 boardNo를 가져오기 위해 uesParams() 사용
+    let getNum = params.no; // params는 객체이기 때문에 풀어줘서 다시 getNum에 대입해줌
+    
+
     const [title, setTitle] = useState(''); // 공유캘린더 이름
     const [searchKeyword, setSearchKeyword] = useState('');
     const [friendList, setFriendList] = useState();
@@ -147,27 +151,21 @@ const Section = styled.div`
     const [modalHeader, setModalHeader] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
     const [option, setOption] = useState("");
-    const isPage = "공유캘린더";
+    const page = "설정";
+
 
     useEffect(() => {
-        const countCal = async() => { // 2개 이상의 scal에 참여 중이면 주소로도 공유 캘린더 생성 페이지에 접근 못하게 막음
-            const res = await Api.scalCheck(getId); //2개 이상의 scal에 참여중인지 확인 2개 이하면 true, 이상이면 false
-            if(res.data) { // 2개 이하이면 친구 목록 불러 오기
-                const myfriends = async() => {
-                    try{
-                        const response = await Api.friendPageLoad(getId); //친구 목록 불러오기
-                        setFriendList(response.data.friendList);
-                    } catch(e) {
-                        console.log(e);
-                    }
-            }
-             myfriends();
-            } else { // 3개 이상이면 알림창이 뜨고 home 페이지로 이동
-                alert('최대 공유 캘린더 개수(2개)를 넘어 공유 캘린더를 생성할 수 없습니다.');
-                navigate('/home');
+        const scalInfo = async() => {
+            try{
+                const response = await Api.scalInfo(getNum, getId);
+                console.log(response.data);
+                setTitle(response.data.calName);
+                setFriendList(response.data.calMember);
+            } catch(e) {
+                console.log(e)
             }
         }
-        countCal();
+        scalInfo();
     },[getId]);
 
     // 공유 캘린더 이름 입력
@@ -191,10 +189,16 @@ const Section = styled.div`
             return e.nickname.toLowerCase().includes(searchKeyword); // input 검색어가 포함되어 있는 friendList배열의 객체 반환
           });
      }
+
+     const onClickSCalSave = async() => {
+        await Api.scalSave(getNum, title);
+        navigate('/scal/home/' + getNum);
+     }
      
      const closeModal = () => {
         setModalOpen(false);
     };
+
 
     return (
         <Wrap>
@@ -214,9 +218,10 @@ const Section = styled.div`
                             <input title="검색" placeholder="친구 닉네임을 검색해보세요" onChange={onChangeSearchKeyword} value={searchKeyword}  />
                             </div>
                             <div className="friend_list">
-                                <FriendList setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} friendList={filterNames} isAdd={isAdd} setOption={setOption} isPage={isPage} title={title}/>
+                                <FriendList setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} friendList={filterNames} isAdd={isAdd} setOption={setOption} title={title}/>
                             </div>
                         </div>
+                        <div className="scal_add"><button onClick={onClickSCalSave}>SAVE</button></div>
                     </div>
                 </div>
             </Section>
@@ -224,4 +229,4 @@ const Section = styled.div`
         </Wrap>
     )
 }
-export default SCalCreate;
+export default SCalSetting;

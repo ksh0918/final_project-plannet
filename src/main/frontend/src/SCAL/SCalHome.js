@@ -178,11 +178,12 @@ const SCalHome = () => {
     const [memberList, setMemberList] = useState([{}]);
 
     const isExistsChecked = false;
-    // const isExists(element) {
-    //     if(element.id == getId) {
-    //         isExistsChecked = true;
-    //     }
-    // }
+
+    const isExists = (element) => {
+        if(element.id == getId) {
+            isExistsChecked = true;
+        }
+    }
 
     useEffect(() => {
         const scalHome = async() => {
@@ -212,7 +213,7 @@ const SCalHome = () => {
     console.log(scalData);
 
     const onClickSetting = () => {
-        //해당캘린더의 설정페이지로 옮겨가는 부분 구현 필요
+        navigate("/scal/info/" + getNum);
     }
 
     return (
