@@ -118,7 +118,6 @@ const Friend = () => {
                 const response = await Api.friendPageLoad(getId); //친구랑 알림 목록 불러오기
                 setFriendList(response.data.friendList);
                 setNotiList(response.data.notiList);
-                window.localStorage.setItem("friendNotiCount", Object.keys(response.data.notiList).length);
             } catch(e){
             console.log(e);
             }
