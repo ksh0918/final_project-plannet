@@ -11,13 +11,6 @@ const Wrap = styled.div`
     height: 100vh;
     background-color: white;
     margin: 0 auto;
-    .copy {
-        width: 830px;
-        text-align: center;
-        color: #dfdfdf;
-        line-height: 40px;
-        float: left;
-    }
 `;
 const Section = styled.div`
     width: 850px;
@@ -211,7 +204,7 @@ const PostView = () => {
                 {postViewData&&postViewData.map( e => (
                     <> 
                     <div className="board_list sub_box"> 
-                        <h2>자유게시판</h2>
+                        <h2>Free Board</h2>
                         <p><span>유저들이 작성한 글에 댓글과 좋아요를 남기며 소통해보세요! <br/>커뮤니티 규칙에 맞지 않는 글과 댓글은 무통보 삭제됩니다.</span></p>  
                         <table className='postInfo'>
                             <tr>

@@ -226,7 +226,7 @@ const Nav = ({sideBar, setSideBar}) => {
     const [userInfo, setUserInfo] = useState("");
     const [scalInfo, setScalInfo] = useState("");
     const [proHeight, setProHeight] = useState("");
-    
+    const [fNotiCount,setfNotiCount] = useState();
     useEffect(() => {
         const userInfoLoad = async() => {
             try{
@@ -235,6 +235,9 @@ const Nav = ({sideBar, setSideBar}) => {
                 setScalInfo(response.data.scalInfo);
                 setProHeight(response.data.scalInfo.length * 47 + 390);
                 console.log(response.data);
+                const result = await Api.friendPageLoad(userId);
+                setfNotiCount(Object.keys(result.data.notiList).length);
+
             } catch(e){
                 console.log(e);
             }
@@ -249,8 +252,6 @@ const Nav = ({sideBar, setSideBar}) => {
         navigate(link);
     };
 
-    // 친구 알림 띄우기
-    const fNotiCount = window.localStorage.getItem("friendNotiCount");
     // 쪽지 알림 띄우기
     const mNotiCount = window.localStorage.getItem("messageNotiCount");
 

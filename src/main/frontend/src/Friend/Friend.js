@@ -7,6 +7,7 @@ import Api from "../api/plannetApi";
 import Modal from '../Utill/Modal';
 import FriendNoti from './FriendNoti';
 import { useNavigate } from 'react-router-dom';
+import TopBar from '../Utill/TopBar';
 
 const Wrap = styled.div`
     width: 1130px;
@@ -118,7 +119,6 @@ const Friend = () => {
                 const response = await Api.friendPageLoad(getId); //친구랑 알림 목록 불러오기
                 setFriendList(response.data.friendList);
                 setNotiList(response.data.notiList);
-                window.localStorage.setItem("friendNotiCount", Object.keys(response.data.notiList).length);
             } catch(e){
             console.log(e);
             }
@@ -151,13 +151,16 @@ const Friend = () => {
     const closeModal = () => {
         setModalOpen(false);
     };
-    
+    //미디어쿼리시 nav 사이드바
+    const [sideBar, setSideBar] = useState(false);
 
     return (
         <Wrap>
+            <Nav sideBar={sideBar} setSideBar={setSideBar}/>
+            <div className={`back ${sideBar? 'back_side_open':''}`}/>
+            <TopBar sideBar={sideBar} setSideBar={setSideBar}/>
             <Modal open={modalOpen} close={closeModal} header={modalHeader} option={option}><p dangerouslySetInnerHTML={{__html: comment}}></p></Modal>
-            <Nav/>
-            <Section>
+            <Section id="friend" className="section">
                 <div className="friend">
                     <h2>Friend<i className={'bi bi-person-fill-add ' + (isAdd? 'add_active_logo' : '')} onClick={onClickaddFriend}></i></h2>
                     <FriendAdd setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} isAdd={isAdd} getId={getId}/>

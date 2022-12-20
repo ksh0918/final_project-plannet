@@ -155,7 +155,7 @@ public class ScalController {
         boolean result = scalService.inviteMember(calNo, userCode);
         return new ResponseEntity(result, HttpStatus.OK);
     }
-    // 멤버 강퇴
+    // 멤버 삭제
     @PostMapping("/drop_member")
     public ResponseEntity<Boolean> dropMember(@RequestBody Map<String, Object> data) {
         Long calNo = Long.parseLong((String)data.get("calNo"));
