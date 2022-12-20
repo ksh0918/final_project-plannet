@@ -13,6 +13,7 @@ import plannet.final_project.vo.MessageDTO;
 import javax.transaction.Transactional;
 import javax.xml.bind.SchemaOutputResolver;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,7 +55,7 @@ public class MessageService {
                 message.put("sendId",e.getUserId().getNickname()+"#"+e.getUserId().getUserCode());
                 message.put("isRead",e.getIsRead());
                 message.put("detail",e.getDetail());
-                message.put("sendDate",e.getDate());
+                message.put("sendDate",e.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
                 messageList.add(message);
             }
             messageDTO.setMessageList(messageList);
@@ -64,5 +65,17 @@ public class MessageService {
             messageDTO.setMessageList(null);
         }
         return messageDTO;
+    }
+    public boolean messageDelete(List<Long> messageNoArray){
+        List<MessageDTO> messageDTOList = new ArrayList<>();
+        try{
+            for(int i = 0; i<messageNoArray.size(); i++){
+                Long messageNo = messageNoArray.get(i);
+                messageRepository.deleteByMessageNo(messageNo);
+            }
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
 }

@@ -9,7 +9,8 @@ import plannet.final_project.entity.Message;
 import java.util.List;
 
 public interface MessageRepository extends JpaRepository<Message,Long> {
-    @Query(value = "select * from MESSAGE where receive_Id = (:receive_id)",nativeQuery = true)
+    @Query(value = "select * from MESSAGE where receive_Id = (:receive_id) order by date desc",nativeQuery = true)
     List<Message> findAllMatchingId(@Param("receive_id") String receive_id);
+    void deleteByMessageNo(Long messageNo);
     void deleteByUserId(Member member);
 }

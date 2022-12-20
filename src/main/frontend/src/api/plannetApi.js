@@ -251,6 +251,11 @@ const plannetApi = {
         };
         return await axios.post(PLANNET_DOMAIN+"message/send",object,HEADER);
     },
+    //쪽지 삭제
+    messageDelete: async function(obj){
+        
+        return await axios.post(PLANNET_DOMAIN+"message/delete",obj,HEADER);
+    },
     //친구 추가 요청
     notiAddFriend: async function(id, keyword) {
         const object = {

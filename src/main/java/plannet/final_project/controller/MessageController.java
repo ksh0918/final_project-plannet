@@ -9,6 +9,7 @@ import plannet.final_project.service.MessageService;
 import plannet.final_project.vo.MessageDTO;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -46,5 +47,21 @@ public class MessageController {
             return new ResponseEntity(messageList.getMessageList(),HttpStatus.OK);
         }
         else return new ResponseEntity(null,HttpStatus.BAD_REQUEST);
+    }
+    @PostMapping("/delete")
+    public ResponseEntity<Boolean> messageDelete(@RequestBody List<Long> messageData) {
+        System.out.println(messageData);
+        System.out.println("ddddddddddddddddddddddddddddddddddddddd");
+        try {
+            boolean messageDelete = messageService.messageDelete(messageData);
+            if(messageDelete){
+                return new ResponseEntity(true, HttpStatus.OK);
+            }
+            else{
+                return new ResponseEntity(false, HttpStatus.OK);
+            }
+        }catch (Exception e) {
+            return new ResponseEntity(false, HttpStatus.OK);
+        }
     }
 }
