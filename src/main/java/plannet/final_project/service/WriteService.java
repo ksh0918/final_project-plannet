@@ -79,7 +79,7 @@ public class WriteService {
                     }
                     plans.setPlan((String)p.get("text"));
                     Plan rst = planRepository.save(plans);
-//                    log.warn(rst.toString());
+
                 }
             }
             // diary 업데이트
@@ -88,7 +88,6 @@ public class WriteService {
             diaries.setUserId(member);
             diaries.setDiaryDate(date);
             Diary rst = diaryRepository.save(diaries);
-            log.warn(rst.toString());
         } catch (Exception e) {
             e.printStackTrace();
             return false;

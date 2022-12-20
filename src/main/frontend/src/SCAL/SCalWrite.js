@@ -175,24 +175,11 @@ const SCalWrite = () => {
     const [commentsList, setCommentsList] = useState([]);
  
 
-    // 작성 중 새로고침 및 페이지 이동 방지
+    // 변경사항이 있는데 사이트 이동하려고 할 시 경고 창 등장    
     window.addEventListener('beforeunload', (event) => {
         event.preventDefault(); // 표준에 따라 기본 동작 방지
         event.returnValue = ''; // Chrome에서는 returnValue 설정이 필요함
     });
-    // // 작성 중 뒤로가기 방지
-    // window.onpopstate = (event) => {
-    //     // event.preventDefault();
-    //     if(event) {
-    //         Swal({
-    //             title : "저장이 되지 않습니다!",
-    //             text : "저장을 누르지 않고 뒤로가기 시에 저장이 되지 않습니다.",
-    //             icon : "warning",
-    //             buttons : "확인",
-    //         })
-    //     };
-    //     console.log("뒤로가기");
-    // };
 
     const onClickAddList = () => {
         const nextPlanList = planList.concat({
@@ -205,7 +192,7 @@ const SCalWrite = () => {
     }
     const onClickSave = async() => {
         await Api.scalPlanSave(getId, getNum, getDate, planList);
-        navigate(-1);
+        navigate("/scal/home/" + getNum);
     }
 
     useEffect(() => {
