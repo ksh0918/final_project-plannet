@@ -1,0 +1,121 @@
+@media screen and (max-width : 767px) {
+    html{background: white;}
+    //main
+    #main{
+        flex-direction: column;
+        >div{
+            width: 100vw;
+            height: 50vh;
+            h1, h2{display: none;} 
+            div{color: #4555ae;}
+            .wrap{
+                position: static;
+                margin: 0 auto;
+                >div:first-of-type{font-size: 32px;}
+            }
+        }
+    }
+    
+    //home
+    #home{
+        .plan, .etc{
+            float: none;
+            width: 100vw;
+            height: 520px;
+        }
+        .etc{padding-left: 30px; height: 480px;}
+        .moti{display: none;}
+        .moti2{
+            display: block;
+            padding: 15px 15px;
+            margin-top: 5px;
+            border-radius: 5px;
+            height: auto;
+            position: relative;
+            overflow: hidden;
+            background-color: #fcfcfc;
+            h2{display: none;}
+            p{
+                float: left;
+                width: calc(100% - 56px);
+                padding: 5px 20px;
+                word-break: break-all;
+                text-align: center;
+                font-size: 15px;
+            }
+            i{
+                float: left;
+                width: 28px;
+                display: block;
+                font-size: 28px;
+                text-align: center;
+            }
+        }
+    }
+}
+@media screen and (max-width : 799px) {
+    #terms{
+        .check{
+            width: 100vw;
+            overflow: hidden;
+            background-color: red;
+        }
+    }
+}
+
+@media screen and (max-width : 1129px) {
+    #nav, .section{float: none !important; position: absolute;}
+    .section{z-index: 0; height: calc(100vh - 100px) !important;}
+    #topbar{
+        display: block;
+    }
+    #nav{
+        transition: right .7s ease-in;
+        right: -280px;
+        position: fixed;
+        z-index: 2;
+    }
+    .section{width: 100vw !important;}
+    .back_side_open{
+        display: block;
+        opacity: .7;
+        visibility: visible;
+        z-index: 1;
+    }
+    .copy{float: none;}
+
+    //home
+    .react-calendar{width:100% !important;}
+    #home{
+        .plan, .etc{padding-top: 5px;}
+        .list{
+            padding-top: 0;
+            h2{margin-top: 0px;}
+        }
+        h2{margin-top: 20px;}
+    }
+}
+@media screen and (max-height: 799px) {
+    //회원가입 약관/회원가입/로그인/아이디비밀번호찾기 공통
+    #terms, #join, #doLogin, #find{
+        justify-content:flex-start;
+        overflow-y: scroll;
+        >div:first-child{
+            margin: 30px auto 10px;
+        }
+    }
+    #terms {
+        >div:nth-child(2){
+            padding: 5px;
+        }
+        .check{
+            padding: 10px 10px;
+            &:nth-child(2){padding-top: 0;}
+            textarea{
+                height: 100px;
+            }
+        }
+        
+    }
+    
+}
