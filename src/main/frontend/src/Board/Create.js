@@ -111,14 +111,6 @@ const Section = styled.div`
         td:nth-child(2) {width: 400px; text-align: left; padding-left: 20px;}  
         tr:hover td, tr:hover a {color: #4555AE;}
     }
-    .copy {
-        width: 850px;
-        position: absolute;
-        bottom: 0;
-        text-align: center;
-        color: #dfdfdf;
-        line-height: 50px;
-    }
     .util_box {
         .page_list {
             width: 500px; float:left;
@@ -238,7 +230,7 @@ function Create() {
                             <th colSpan={2}>게시물 작성</th>
                         </tr>
                         <tr>
-                            <td><input className="title-input" type='text' placeholder='제목을 입력하세요.' value={title} onChange={onChangeTitle} name='title' /></td>
+                            <td><input className="title-input" type='text' placeholder='제목을 입력하세요.' value={title} onChange={onChangeTitle} name='title' maxLength={17}/></td>
                             <td><StyledInput type="checkbox" checked={isChecked} onChange={handleChecked}/>익명</td>
                         </tr>
                     </table>           

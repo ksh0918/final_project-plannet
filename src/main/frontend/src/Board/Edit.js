@@ -1,13 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Api from "../api/plannetApi";
 import Nav from "../Utill/Nav";
-import { useNavigate  } from "react-router-dom";
-
-
 
 const Wrap = styled.div`
     width: 1130px;
@@ -112,14 +109,6 @@ const Section = styled.div`
         td:first-child {border-left: none};
         td:nth-child(2) {width: 400px; text-align: left; padding-left: 20px;}  
         tr:hover td, tr:hover a {color: #4555AE;}
-    }
-    .copy {
-        width: 850px;
-        position: absolute;
-        bottom: 0;
-        text-align: center;
-        color: #dfdfdf;
-        line-height: 50px;
     }
     .util_box {
         .page_list {
@@ -272,7 +261,7 @@ function Edit() {
                                 <th colSpan={2}>게시물 수정</th>
                             </tr>
                             <tr>
-                                <td><input className="title-input" type='text' placeholder='제목을 입력하세요.' defaultValue={title} value={title} onChange={onChangeTitle} name='title' /></td>
+                                <td><input className="title-input" type='text' placeholder='제목을 입력하세요.' defaultValue={title} value={title} onChange={onChangeTitle} name='title' maxLength={17}/></td>
                                 <td><StyledInput type="checkbox" checked={e.isChecked} onChange={handleChecked}/>익명</td>
                             </tr>
                         </table>           

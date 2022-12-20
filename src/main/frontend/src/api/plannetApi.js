@@ -292,6 +292,18 @@ const plannetApi = {
         };
         return await axios.post(PLANNET_DOMAIN + "scal/create", object, HEADER);
     },
+    // 공유 캘린더 정보 조회
+    scalInfo: async function(calNo, id) {
+        return await axios.get(PLANNET_DOMAIN + `scal/info_load?calNo=${calNo}&id=${id}`, HEADER);
+    },
+    // 공유 캘린더 정보 저장
+    scalSave: async function(calNo, calName) {
+        const object = {
+            calNo: calNo,
+            calName: calName
+        };
+        return await axios.post(PLANNET_DOMAIN + "scal/info_save", object, HEADER);
+    },
     // 공유 캘린더 home/달력/주간일정/메모/명언 출력
     sharingHome: async function(calNo) {
         return await axios.get(PLANNET_DOMAIN + `scal/sharing?calNo=${calNo}`, HEADER);

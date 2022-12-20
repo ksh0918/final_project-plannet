@@ -5,6 +5,7 @@ import Api from "../api/plannetApi";
 import Nav from "../Utill/Nav";
 import PlanList from "./PlanList";
 import Swal from 'sweetalert';
+import TopBar from '../Utill/TopBar';
 
 const Wrap = styled.div`
     width: 1130px;
@@ -47,7 +48,7 @@ const Section = styled.div`
             vertical-align: middle;
             transition: all .1s ease-in;
         }
-        button.back {
+        button.backbtn {
             font-weight: 300;
             font-size: 16px; 
             vertical-align: middle;
@@ -159,12 +160,13 @@ const Section = styled.div`
             height: 280px;
             textarea {
                 line-height: 1.4;
-                width: 765px;
+                width: calc(100% + 15px);
                 height: 240px;
                 border: none;
                 resize: none;
                 background: none;
                 overflow-y: scroll;
+                word-break: break-all;
                 &:focus {outline: none;}
                 &::-webkit-scrollbar {
                     width: 20px;
@@ -254,12 +256,17 @@ const Write = () => {
         navigate("/home");
     }
     
+    //미디어쿼리시 nav 사이드바
+    const [sideBar, setSideBar] = useState(false);
+
     return (
         <Wrap>
-            <Nav/>
-            <Section>
+            <Nav sideBar={sideBar} setSideBar={setSideBar}/>
+            <div className={`back ${sideBar? 'back_side_open':''}`}/>
+            <TopBar sideBar={sideBar} setSideBar={setSideBar}/>
+            <Section id="write" className="section">
                 <div className="btnbox">
-                    <button className="back" onClick={onClickSave}>
+                    <button className="backbtn" onClick={onClickSave}>
                         <i className="bi bi-chevron-compact-left"/>{date}
                     </button>
                 </div>
