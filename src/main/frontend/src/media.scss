@@ -141,6 +141,25 @@
             }
         }
     }
+    //friend
+    #friend{
+        ul li{
+            padding: 10px 13px;
+            >div:first-child{
+                p{
+                    letter-spacing: -1px;
+                    &:first-child{
+                        word-break: break-all;
+                    }
+                }
+            }
+            >div:last-child{
+                font-size: 14px;
+                letter-spacing: -1px;
+            }
+
+        }
+    }
 }
 @media screen and (max-width : 799px) {
     #terms{
@@ -159,6 +178,11 @@
     .back_side_open{opacity: .7; visibility: visible;}
     .copy{width: 100vw; float: none;}
 
+    //setting, board, postView, edit, create, friend 공통
+    #setting, #board, #postView, #edit, #create, #friend {
+        .board_list, .setting, .friend, .noti{padding-top: 5px;}
+        h2{margin-top: 20px;}
+    }
     //home
     #home{
         .react-calendar{width:100% !important;}
@@ -169,25 +193,28 @@
         }
         h2{margin-top: 20px;}
     }
-    //setting
-    #setting {
-        .setting{padding-top: 5px;}
-        h2{margin-top: 20px;}
-    }
     //write
     #write {
         .sub_box{padding-top: 5px;}
         .btnbox{height: 60px; line-height: 40px; }
         h2{margin-top: 0px;}
     }
-    //board, postView 공통
-    #board, #postView {
-        .board_list{padding-top: 5px;}
-        h2{margin-top: 20px;}
-    }
     //postView
     #postView {
-
+        table{
+            table-layout: fixed;
+            td:first-child {width: 100px;}
+            td:last-child {width: 140px;}
+        }
+    }
+    //comment
+    .comment_box{
+        table{
+            table-layout: fixed;
+            td:first-child {width: 100px !important;}
+            td:nth-child(2){width: calc(100% - 240px);}
+            td:last-child {width: 140px;}
+        }
     }
 }
 @media screen and (max-height: 799px) {

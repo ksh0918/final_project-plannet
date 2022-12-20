@@ -37,9 +37,11 @@ const Noti = styled.div`
                 margin: 0;
             }
             &:last-child{
+                width: 100%;
                 div{
+
                     float: left;
-                    width: calc(179px/2);
+                    width: calc(50% - 2px);
                     margin: 1px;
                     line-height: 25px;
                     border-radius: 5px;

@@ -64,7 +64,10 @@ const Friends = styled.div`
             position: absolute;
             left: 90px;
             top: 16px;
-            width: 350px;
+            width: calc(100% - 160px);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
             span:first-child{
                 font-size: 16px;
                 font-weight: 700;

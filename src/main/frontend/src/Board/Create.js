@@ -7,6 +7,7 @@ import Api from "../api/plannetApi";
 import Nav from "../Utill/Nav";
 import axios, { Axios } from 'axios';
 import Modal from '../Utill/Modal';
+import TopBar from '../Utill/TopBar';
 
 const Wrap = styled.div`
     width: 1130px;
@@ -108,7 +109,7 @@ const Section = styled.div`
         th {padding: 10px; color: white;}
         td {padding: 10px; background-color: white; border-left: solid 1px #bbb; border-top: solid 1px #ddd;}
         td:first-child {border-left: none};
-        td:nth-child(2) {width: 400px; text-align: left; padding-left: 20px;}  
+        td:nth-child(2) {width: 100px; text-align: left; padding-left: 20px;}  
         tr:hover td, tr:hover a {color: #4555AE;}
     }
     .util_box {
@@ -139,8 +140,8 @@ const Section = styled.div`
     }
     .title-input {
         font-size: 20px;
-        width: 650px;
-        height: 40px;
+        width: 100%;
+        height: 30px;
         outline: none;
         display: block;
         margin-bottom: 30px;
@@ -214,14 +215,18 @@ function Create() {
     const closeModal = () => {
         setModalOpen(false);
     };
+//미디어쿼리시 nav 사이드바
+    const [sideBar, setSideBar] = useState(false);
 
     return (
         <Wrap>
+            <Nav sideBar={sideBar} setSideBar={setSideBar}/>
+            <div className={`back ${sideBar? 'back_side_open':''}`}/>
+            <TopBar sideBar={sideBar} setSideBar={setSideBar}/>
             <Modal open={modalOpen} close={closeModal} header="글쓰기 안내">{comment}</Modal>
-            <Nav></Nav>
-            <Section>
+            <Section id="create" className="section">
                 <div className="board_list sub_box">
-                    <h2>자유게시판</h2>
+                    <h2>Free Board</h2>
                     <p>
                         <span>작성 시 유의해 주세요! 비방, 광고, 불건전한 내용의 글은 사전 동의 없이 삭제될 수 있습니다.</span>
                     </p>    

@@ -19,13 +19,18 @@ const Comment = styled.div`
         tr td {
             padding: 8px 10px;
             word-break: break-all;
-            &:first-child {width: 130px;}
-            &:last-child {width: 140px; font-size: 12px;}
+            &:first-child {
+                width: 130px;
+                overflow: hidden; 
+                text-overflow: ellipsis; 
+                white-space: nowrap;
+            }
+            &:last-child {width: 145px; font-size: 12px;}
         }
         button {
             cursor: pointer;
             border: none;
-            padding-right: 20px;
+            padding-right: 0px;
             background: none;
             color: rgb(187, 187, 187);
             font-weight: 700;
@@ -49,7 +54,8 @@ const Comment = styled.div`
             &:hover {background-color: #666; color: #888;}
         }
         .comment_text {
-            position: relative;
+            width: calc(100% - 125px);
+            margin-right: 7px;
             font-weight: 600;
             font-size: 16px;
             right: 10px;
@@ -127,7 +133,7 @@ const Comments = ({getId, getNum, getDate, setCommentsList, commentsList}) => {
         return( 
             <Comment>
                 <div className="button-area2">
-                    <input type='text' className='comment_text' placeholder='댓글 달기...' value={comment} onChange={onChangeComment} name='comments' size='58.5'></input>
+                    <input type='text' className='comment_text' placeholder='댓글 달기...' value={comment} onChange={onChangeComment} name='comments'></input>
                     <button className='comment_btn' onClick={onClickSaveComment}>REPLY</button>
                 </div>
                 <div className='comment_box'>
