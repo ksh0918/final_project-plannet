@@ -37,7 +37,7 @@ const Section = styled.div`
     }
     .plan, .etc {
         height: 550px;
-        float: left;
+        float: left;  
         padding: 10px 30px 10px 0;
         h2{
           margin-top: 35px;
@@ -95,7 +95,7 @@ const Section = styled.div`
                         span{font-weight: 300;}
                     }
                 }
-
+                
             }
         }
         textarea {
@@ -163,7 +163,7 @@ const Section = styled.div`
     .add_active_addbox{
         height: 80px !important;
     }
-
+            
 `;
 
 const SCalHome = () => {
@@ -177,40 +177,32 @@ const SCalHome = () => {
     const [memberEndMark, setMemberEndMark] = useState([]);
     const [memberList, setMemberList] = useState([{}]);
 
-    const isExistsChecked = false;
-    const isExists(element) {
-        if(element.id == getId) {
-            isExistsChecked = true;
-        }
-    }
-
     useEffect(() => {
         const scalHome = async() => {
-            try{
+            try {
                 const response = await Api.sharingHome(getNum);
                 // 다른 사용자의 게시물 Edit 페이지에 아예 주소접근으로도 못 하게 방지
-                // EB에서 가져온 memberList 정보에서 사용자의 id가 존재하지 않으면 접근불가
+                // DB에서 가져온 memberList 정보에서 사용자의 id가 존재하지 않으면 접근불가
                 const memberListData = response.data.memberList;
-                memberListData.filter(isExists);
-                if (!isExistsChecked) {
+                let isExistsChecked = false;
+                memberListData.map(({id}) => {
+                    if (id == getId) isExistsChecked = true;});
+                if (isExistsChecked) {
+                    setScalData(response.data);
+                    setMemberDoMark(response.data.planMark[0]);
+                    setMemberEndMark(response.data.planMark[1]); 
+                    setMemberList(memberListData);
+                } else { 
                     alert("본인이 속한 캘린더만 접근할 수 있습니다.")
                     navigate("/home");
-                    return;
                 }
-                setScalData(response.data)
-                setMemberDoMark(response.data.planMark[0]);
-                setMemberEndMark(response.data.planMark[1]);
-                setMemberList(memberListData);
             } catch(e){
                 console.log(e);
             }
         }
         scalHome();
-    },[getId]);
-
-    console.log(memberList);
-    console.log(scalData);
-
+    },[getNum]);
+    
     const onClickSetting = () => {
         //해당캘린더의 설정페이지로 옮겨가는 부분 구현 필요
     }
@@ -231,7 +223,7 @@ const SCalHome = () => {
                     <div className='m-list'>
                         <h2>Member List</h2>
                         <div className='m-list-detail'>
-                            {memberList?
+                            {memberList? 
                                 <ul>
                                     {/* memberList */}
                                     {memberList.map((e) => {
