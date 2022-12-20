@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import styled from 'styled-components';import Api from '../api/plannetApi'
 import Modal from '../Utill/Modal';
 import Nav from '../Utill/Nav';
+import TopBar from '../Utill/TopBar';
 import Comments from './Comment';
 
 const Wrap = styled.div`
@@ -197,10 +198,15 @@ const PostView = () => {
         postViewLoad();
     }, [getId, getNum]);
 
-    return(
+    //미디어쿼리시 nav 사이드바
+    const [sideBar, setSideBar] = useState(false);
+
+    return (
         <Wrap>
-            <Nav/>
-            <Section>
+            <Nav sideBar={sideBar} setSideBar={setSideBar}/>
+            <div className={`back ${sideBar? 'back_side_open':''}`}/>
+            <TopBar sideBar={sideBar} setSideBar={setSideBar}/>
+            <Section id="postView" className="section">
             <Modal open={modalOpen} close={closeModal} header="글수정삭제" boardNo={getNum} option={modalOption}>{comment}</Modal>
                 {postViewData&&postViewData.map( e => (
                     <> 

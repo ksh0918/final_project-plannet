@@ -68,7 +68,6 @@
 
         }
     }
-    
     //home
     #home{
         .plan, .etc{
@@ -89,7 +88,7 @@
             span{height: 16px; overflow: hidden; text-overflow: ellipsis; white-space:nowrap}
         }
     }
-    
+    //board
     #board{
         table{
             border-top: 1px solid #4555AE;
@@ -181,9 +180,14 @@
         .btnbox{height: 60px; line-height: 40px; }
         h2{margin-top: 0px;}
     }
-    #board {
+    //board, postView 공통
+    #board, #postView {
         .board_list{padding-top: 5px;}
         h2{margin-top: 20px;}
+    }
+    //postView
+    #postView {
+
     }
 }
 @media screen and (max-height: 799px) {
