@@ -148,15 +148,10 @@ const Message = () => {
     const getId = window.localStorage.getItem("userId");
     const [mNotiCount,setmNotiCount] = useState();
     const [checkItems, setCheckItems] = useState([]);
-    const [mIsRead,setmIsRead] =useState(0);
     
     const onClickToCreate = () => {
         const link = "/send"
         navigate(link);
-    }
-
-    const onClickRead = async() =>{ 
-        setmIsRead(1);
     }
 
     const [messageList, setMessageList] = useState([]); // boardList 불러오기
@@ -254,7 +249,7 @@ const Message = () => {
                     <h2>Message</h2>
                     <p>
                         <span>Plannet 친구들과 소통해 보세요!</span>
-                        <button onClick={onClickRead} className="readBtn">읽음</button>
+                        {/* <button onClick={onClickRead} className="readBtn">읽음</button> */}
                         <button onClick={onClickToCreate} className="sendBtn">쪽지쓰기</button>
                         <button onClick={onClickDelete} className="deleteBtn">선택삭제</button>
                     </p>
@@ -277,7 +272,7 @@ const Message = () => {
                                     checked={checkItems.includes(message.messageNo) ? true : false}
                                 /></td> 
                                 <td>{
-                                    mIsRead===0?"안읽음":"읽음"
+                                    message.isRead===0?"안읽음":"읽음"
                                 }</td>
                                 <td>{message.sendId}</td>
                                 <td>{<div className='detail' dangerouslySetInnerHTML={{__html: message.detail}}></div>}</td>
