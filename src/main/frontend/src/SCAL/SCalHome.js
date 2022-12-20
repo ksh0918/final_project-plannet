@@ -200,7 +200,7 @@ const SCalHome = () => {
                     setMemberDoMark(response.data.planMark[0]);
                     setMemberEndMark(response.data.planMark[1]); 
                     setMemberList(memberListData);
-                } else {
+                } else { 
                     alert("본인이 속한 캘린더만 접근할 수 있습니다.")
                     navigate("/home");
                 }
