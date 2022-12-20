@@ -198,7 +198,7 @@ const SCalHome = () => {
                 if (isExistsChecked) {
                     setScalData(response.data);
                     setMemberDoMark(response.data.planMark[0]);
-                    setMemberEndMark(response.data.planMark[1]);
+                    setMemberEndMark(response.data.planMark[1]); 
                     setMemberList(memberListData);
                 } else {
                     alert("본인이 속한 캘린더만 접근할 수 있습니다.")
@@ -209,7 +209,8 @@ const SCalHome = () => {
             }
         }
         scalHome();
-    },[getId]);
+    },[getNum]);
+    
     
     console.log(memberList);
     console.log(scalData);
