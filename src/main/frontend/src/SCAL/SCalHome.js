@@ -177,13 +177,6 @@ const SCalHome = () => {
     const [memberEndMark, setMemberEndMark] = useState([]);
     const [memberList, setMemberList] = useState([{}]);
 
-    const isExistsChecked = false;
-    const isExists = (element) => {
-        if(element.id == getId) {
-            isExistsChecked = true;
-        }
-    }
-
     useEffect(() => {
         const scalHome = async() => {
             try {
@@ -191,7 +184,6 @@ const SCalHome = () => {
                 // 다른 사용자의 게시물 Edit 페이지에 아예 주소접근으로도 못 하게 방지
                 // DB에서 가져온 memberList 정보에서 사용자의 id가 존재하지 않으면 접근불가
                 const memberListData = response.data.memberList;
-
                 let isExistsChecked = false;
                 memberListData.map(({id}) => {
                     if (id == getId) isExistsChecked = true;});
@@ -211,12 +203,8 @@ const SCalHome = () => {
         scalHome();
     },[getNum]);
     
-    
-    console.log(memberList);
-    console.log(scalData);
-
     const onClickSetting = () => {
-        navigate("/scal/info/" + getNum);
+        //해당캘린더의 설정페이지로 옮겨가는 부분 구현 필요
     }
 
     return (

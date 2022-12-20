@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import plannet.final_project.service.MessageService;
 import plannet.final_project.vo.MessageDTO;
 
+import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +17,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/message")
 @RequiredArgsConstructor
+@Transactional
 public class MessageController {
     private final MessageService messageService;
 
@@ -37,11 +40,28 @@ public class MessageController {
         }
     }
     @GetMapping("/list")
-    public ResponseEntity<List<MessageDTO>> messageList(String id) {
-        MessageDTO messageList = messageService.getMessageList(id);
+    public ResponseEntity<List<Map<String, Object>>> messageList(@RequestParam String receiveId) {
+        MessageDTO messageList = messageService.getMessageList(receiveId);
+        System.out.println(messageList);
         if(messageList.isOk()){
             return new ResponseEntity(messageList.getMessageList(),HttpStatus.OK);
         }
         else return new ResponseEntity(null,HttpStatus.BAD_REQUEST);
+    }
+    @PostMapping("/delete")
+    public ResponseEntity<Boolean> messageDelete(@RequestBody List<Long> messageData) {
+        System.out.println(messageData);
+        System.out.println("ddddddddddddddddddddddddddddddddddddddd");
+        try {
+            boolean messageDelete = messageService.messageDelete(messageData);
+            if(messageDelete){
+                return new ResponseEntity(true, HttpStatus.OK);
+            }
+            else{
+                return new ResponseEntity(false, HttpStatus.OK);
+            }
+        }catch (Exception e) {
+            return new ResponseEntity(false, HttpStatus.OK);
+        }
     }
 }
