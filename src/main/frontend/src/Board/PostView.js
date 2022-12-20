@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Link, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import styled from 'styled-components';import Api from '../api/plannetApi'
 import Modal from '../Utill/Modal';
 import Nav from '../Utill/Nav';
@@ -133,9 +133,8 @@ const Section = styled.div`
 `;
 
 const PostView = () => {
-    const navigate = useNavigate();
-    // localStorage 저장 정보
-    const getId = window.localStorage.getItem("userId");
+    const getId = window.localStorage.getItem("userId"); // localStorage 저장 정보
+
     let params = useParams(); // url에서 boardNo를 가져오기 위해 uesParams() 사용
     let getNum = params.no; // params는 객체이기 때문에 풀어줘서 다시 getNum에 대입해줌
 

@@ -144,10 +144,8 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
         console.log(response.data);
         if(response.data) {
             const res = await Api.scalCreate(getId, title, checkedButtons); 
-            // const resultNo = await Api.scalNo(getId);
-            // const linkNo = resultNo.data;
-            // navigate('/scal/' + linkNo);
-            navigate('/scal/1');
+            const linkNo = res.data;
+            navigate('/scal/home/' + linkNo);
         } else {
             setCommnet('최대 공유 캘린더 개수(2개)를 넘어 공유 캘린더를 생성할 수 없습니다.');
             setModalOpen(true);

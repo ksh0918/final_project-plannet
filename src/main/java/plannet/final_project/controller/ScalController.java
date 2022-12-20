@@ -19,15 +19,15 @@ import java.util.Map;
 public class ScalController {
     // Service 로직 연결
     private final ScalService scalService;
-    @PostMapping("/scal/create")
-    public ResponseEntity<Boolean> scalWrite(@RequestBody Map<String, Object> write) {
-        String userId = (String)write.get("id");
-        String title = (String)write.get("title");
-        List<Map<String, Object>> smember = (List<Map<String, Object>>)write.get("checkedButtons");
+    @PostMapping("/create")
+    public ResponseEntity<Boolean> scalCreate(@RequestBody Map<String, Object> create) {
+        String userId = (String)create.get("id");
+        String title = (String)create.get("title");
+        List<Map<String, Object>> smember = (List<Map<String, Object>>)create.get("checkedButtons");
 
-        boolean result = scalService.scalWrite(userId, title, smember);
-        if(result) {
-            return new ResponseEntity(true, HttpStatus.OK);
+        Long result = scalService.scalCreate(userId, title, smember);
+        if(result != -1) {
+            return new ResponseEntity(result, HttpStatus.OK);
         } else {
             return new ResponseEntity(false, HttpStatus.OK);
         }
@@ -65,6 +65,7 @@ public class ScalController {
     // 공유캘린더 일정 불러오기
     @PostMapping("/plan_load")
     public ResponseEntity<List<ShareDTO>> planLoad(@RequestBody Map<String, String> planLoad) {
+        System.out.println("44444444444444444444444444444444444444444");
         Long calNo = Long.valueOf(planLoad.get("calNo"));
         LocalDate date = LocalDate.parse(planLoad.get("date"));
         ShareDTO shareDTO = scalService.planLoad(calNo, date);
@@ -75,25 +76,24 @@ public class ScalController {
         }
     }
 
-//    // 공유캘린더 일정 작성하기
-//    @PostMapping("/plan_save")
-//    public ResponseEntity<Boolean> writeSave(@RequestBody Map<String, Object> scalWrSave) {
-//        String userId = (String)scalWrSave.get("id");
-//        LocalDate date = LocalDate.parse((String)scalWrSave.get("date"));
-//        List<Map<String, Object>> plan = (List<Map<String, Object>>)scalWrSave.get("plan");
-//
-//        boolean result = writeService.writeSave(userId, date, plan, diary);
-//        if(result) {
-//            return new ResponseEntity(true, HttpStatus.OK);
-//        } else {
-//            return new ResponseEntity(false, HttpStatus.OK);
-//        }
-//    }
+    // 공유캘린더 일정 작성하기
+    @PostMapping("/plan_save")
+    public ResponseEntity<Boolean> writeSave(@RequestBody Map<String, Object> scalWrSave) {
+        Long calNo = Long.valueOf((String) scalWrSave.get("calNo"));
+        String userId = (String)scalWrSave.get("id");
+        LocalDate date = LocalDate.parse((String)scalWrSave.get("date"));
+        List<Map<String, Object>> plan = (List<Map<String, Object>>)scalWrSave.get("planList");
+        boolean result = scalService.writeSave(calNo, userId, date, plan);
+        if(result) {
+            return new ResponseEntity(true, HttpStatus.OK);
+        } else {
+            return new ResponseEntity(false, HttpStatus.OK);
+        }
+    }
 
     // 공유캘린더 댓글 불러오기
     @PostMapping("/comments_load")
     public ResponseEntity<List<Map<String, Object>>> commentsLoad(@RequestBody Map<String, String> commentsLoad) {
-        System.out.println("1111111111111111111111111111111111111111111111111111111");
         Long calNo = Long.valueOf(commentsLoad.get("calNo"));
         LocalDate planDate = LocalDate.parse(commentsLoad.get("date"));
         ShareDTO shareDTO = scalService.getCommentsLoad(calNo, planDate);

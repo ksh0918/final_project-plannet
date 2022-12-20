@@ -1,15 +1,13 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../App';
 import './Modal.css';
 import Api from "../api/plannetApi";
-import { useNavigate } from 'react-router-dom';
-
 
 const Modal = (props) => {
     const navigate = useNavigate();
-    const { open, close, header, boardNo, option} = props;
-    
     const getId = window.localStorage.getItem("userId");
+    const { open, close, header, boardNo, option } = props;
 
     const onClickLogout = () => {
         window.localStorage.setItem("userId", "");

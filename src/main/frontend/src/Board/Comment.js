@@ -23,7 +23,13 @@ const Comment = styled.div`
             &:last-child {width: 140px; font-size: 12px;}
         }
         button {
-            padding: 0px;
+            cursor: pointer;
+            border: none;
+            padding-right: 20px;
+            background: none;
+            color: rgb(187, 187, 187);
+            font-weight: 700;
+            transition: all 0.1s ease-in 0s;
             .bi {font-size:12px; padding-left: 8px;}
         }
     }
@@ -60,11 +66,11 @@ const Comment = styled.div`
 const Comments = ({getId, getNum, getDate, setCommentsList, commentsList}) => {
     const navigate = useNavigate();
 
-    // 링크에서 home인지 scal인지 구분  
+    // 링크에서 personal인지 scal인지 구분  
     const currenLink = useLocation(); // 현재 링크 얻기
     const currentPath = currenLink.pathname.substring(0, 6); // Object 타입의 currentLink에서 pathname 정보 취득 + 일부 자리만 잘라 비교하기
 
-    const [comments, setComment] = useState(''); 
+    const [comment, setComment] = useState(''); 
 
     // 댓글 입력
     const onChangeComment = (e) => {
@@ -74,11 +80,11 @@ const Comments = ({getId, getNum, getDate, setCommentsList, commentsList}) => {
     const onClickSaveComment = async() => {
         let commentsData = '';
         if (currentPath == "/board") {
-            await Api.commentWrite(getNum, getId, comments);
+            await Api.commentWrite(getNum, getId, comment);
             commentsData = await Api.commentsLoad(getNum);
         }
         else {
-            await Api.scalCommentWrite(getNum, getDate, getId, comments);
+            await Api.scalCommentWrite(getNum, getDate, getId, comment);
             commentsData = await Api.scalCommentsLoad(getNum, getDate);
         }
         setCommentsList(commentsData.data);
@@ -101,7 +107,7 @@ const Comments = ({getId, getNum, getDate, setCommentsList, commentsList}) => {
         return ( 
             <Comment>
                 <div className="button-area2">
-                    <input type='text' className='comment_text' placeholder='댓글 달기...' value={comments} onChange={onChangeComment} name='comments' size='58.5'></input>
+                    <input type='text' className='comment_text' placeholder='댓글 달기...' value={comment} onChange={onChangeComment} name='comments' size='58.5'></input>
                     <button className='comment_btn' onClick={onClickSaveComment}>REPLY</button>
                 </div>
                 <div className='comment_box'>
@@ -118,10 +124,10 @@ const Comments = ({getId, getNum, getDate, setCommentsList, commentsList}) => {
             </Comment>    
         )
     } else {
-        return ( 
+        return( 
             <Comment>
                 <div className="button-area2">
-                    <input type='text' className='comment_text' placeholder='댓글 달기...' value={comments} onChange={onChangeComment} name='comments' size='58.5'></input>
+                    <input type='text' className='comment_text' placeholder='댓글 달기...' value={comment} onChange={onChangeComment} name='comments' size='58.5'></input>
                     <button className='comment_btn' onClick={onClickSaveComment}>REPLY</button>
                 </div>
                 <div className='comment_box'>

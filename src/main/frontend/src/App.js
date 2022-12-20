@@ -42,7 +42,7 @@ function App() {
                 <Route path='/board/post_view/:no' element={<PrivateRoute><PostView /></PrivateRoute>}/>
                 <Route path="/scal/create" element={<PrivateRoute><SCalCreate /></PrivateRoute>}/>
                 <Route path="/scal/home/:no" element={<PrivateRoute><SCalHome /></PrivateRoute>}/>
-                <Route path="/scal/write/:no*/:date" element={<PrivateRoute><SCalWrite /></PrivateRoute>}/>
+                <Route path="/scal/write/:no*" element={<PrivateRoute><SCalWrite /></PrivateRoute>}/>
                 <Route path="/message" element={<PrivateRoute><Message /></PrivateRoute>}/>
                 <Route path="/send" element={<PrivateRoute><Send /></PrivateRoute>}/>
             </Routes>

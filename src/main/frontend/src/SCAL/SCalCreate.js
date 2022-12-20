@@ -1,6 +1,5 @@
-import { useState, useEffect, useMemo } from "react";
-import { Link } from "react-router-dom";
-// import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import styled from "styled-components";
 import Api from "../api/plannetApi";
 import Nav from "../Utill/Nav";
@@ -31,10 +30,20 @@ const Section = styled.div`
         border: 7px solid transparent;
         background-clip: padding-box;
     }
-    &::-webkit-scrollbar-track {background: none; /*스크롤바 뒷 배경 색상*/}
-    div {padding-top: 30px;}
-    h2 {font-size: 28px; font-weight: 900; margin-top: 20px; margin-bottom: 10px;}
-    .scalCreate {
+    &::-webkit-scrollbar-track {
+        background: none;
+        /*스크롤바 뒷 배경 색상*/
+    }
+    div {
+        padding-top: 30px;
+    }
+    h2 {
+      font-size: 28px;
+      font-weight: 900;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+     .scalCreate {
         padding: 28px;
         .scalForm {
             display:flex;
@@ -47,7 +56,7 @@ const Section = styled.div`
                 font-weight: 600;
                 line-height: 18px;
                 margin-bottom: 10px;
-            }
+           }
             .title {
                 padding: 10px 30px;
                 width: 500px;
@@ -62,11 +71,20 @@ const Section = styled.div`
                     border: none;
                     font-weight: 500;
                     outline: none;
-                    &:focus {background-color: #b8b9f1; color: #222;
+                    &:focus {
+                        background-color: #b8b9f1;
+                        color: #222;
                     }
-                    &:focus::placeholder {color: #888;}
-                    &::placeholder {color: #bbb;}
-                    &:read-only{background-color: #eee; color: #aaa;}
+                    &:focus::placeholder {
+                        color: #888;
+                    }
+                    &::placeholder {
+                        color: #bbb;
+                    }
+                    &:read-only{
+                        background-color: #eee;
+                        color: #aaa;
+                    }
                 }
             }
             .friend{
@@ -107,7 +125,9 @@ const Section = styled.div`
                     color: white;
                     border: none;
                     transition: all .1s ease-in;
-                    &:hover{ background-color: #666; color: #888;
+                    &:hover{
+                        background-color: #666;
+                        color: #888;
                     }
                 }
             }
@@ -116,9 +136,10 @@ const Section = styled.div`
 `;
 
     const SCalCreate = () => {
+    const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
     const [title, setTitle] = useState(''); // 공유캘린더 이름
-     const [searchKeyword, setSearchKeyword] = useState('');
+    const [searchKeyword, setSearchKeyword] = useState('');
     const [friendList, setFriendList] = useState();
     const [isAdd, setIsAdd] = useState(false);
 
@@ -126,26 +147,27 @@ const Section = styled.div`
     const [modalHeader, setModalHeader] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
     const [option, setOption] = useState("");
-
     const page = "공유캘린더";
 
-
-    const closeModal = () => {
-        setModalOpen(false);
-    };
-
     useEffect(() => {
-        const myfriends = async() => {
-            try{
-            console.log(getId);
-            const response = await Api.friendPageLoad(getId); //친구랑 알림 목록 불러오기
-            setFriendList(response.data.friendList);
-            } catch(e) {
-            console.log(e);
+        const countCal = async() => { // 2개 이상의 scal에 참여 중이면 주소로도 공유 캘린더 생성 페이지에 접근 못하게 막음
+            const res = await Api.scalCheck(getId); //2개 이상의 scal에 참여중인지 확인 2개 이하면 true, 이상이면 false
+            if(res.data) { // 2개 이함이면 친구 목록 불러 오기
+                const myfriends = async() => {
+                    try{
+                        const response = await Api.friendPageLoad(getId); //친구 목록 불러오기
+                        setFriendList(response.data.friendList);
+                    } catch(e) {
+                        console.log(e);
+                    }
+            }
+             myfriends();
+            } else { // 3개 이상이면 알림창이 뜨고 home 페이지로 이동
+                alert('최대 공유 캘린더 개수(2개)를 넘어 공유 캘린더를 생성할 수 없습니다.');
+                navigate('/home');
             }
         }
-         myfriends();
-
+        countCal();
     },[getId]);
 
     // 공유 캘린더 이름 입력
@@ -171,12 +193,9 @@ const Section = styled.div`
      }
      
 
-    // const onClickSCalAdd = async() => {
-    //     const response = await Api.scalCreate(getId, title); // 변수 미정
-    //     const link = "/scal/" // + response.data를 바로 변수에 대입! 그래야 순서가 안 꼬임
-    //     window.location.assign(link);
-    // }
-    // // 디비에 갖다와서 suser가 공유 캘린더가 2개 있으면 화면에도 접근 못하게 처리
+     const closeModal = () => {
+        setModalOpen(false);
+    };
 
     return (
         <Wrap>
@@ -193,17 +212,12 @@ const Section = styled.div`
                         <div className="friend">
                             <p>친구 추가</p>
                             <div className="friend_search">
-                            <input title="검색" placeholder="친구 닉네임을 검색해보세요" onChange={onChangeSearchKeyword} value={searchKeyword}  /> 
-                            {/* <span onClick={onClicks}><i className="bi bi-search"></i></span> */}
-                            {/* onKeyDown={onKeyPressSearch} */}
+                            <input title="검색" placeholder="친구 닉네임을 검색해보세요" onChange={onChangeSearchKeyword} value={searchKeyword}  />
                             </div>
                             <div className="friend_list">
                                 <FriendList setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} friendList={filterNames} isAdd={isAdd} setOption={setOption} isPage={page} title={title}/>
                             </div>
                         </div>
-                        {/* <div className="scal_add">
-                         <button onClick={() => onClickSCalAdd(e)}>공유캘린더 생성하기</button>
-                        </div> */}
                     </div>
                 </div>
             </Section>
