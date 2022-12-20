@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Calendar from './Calendar';
+import TopBar from '../Utill/TopBar';
 import Nav from '../Utill/Nav';
 import Memo from './Memo';
 import List from './List';
@@ -59,6 +60,32 @@ const Section = styled.div`
         .moti h2 {
             margin-top: 20px;
         }
+        .moti2{
+            display: none;
+            padding: 15px 15px;
+            margin-top: 5px;
+            border-radius: 5px;
+            height: auto;
+            position: relative;
+            overflow: hidden;
+            background-color: #fcfcfc;
+            h2{display: none;}
+            p{
+                float: left;
+                width: calc(100% - 56px);
+                padding: 5px 20px;
+                word-break: break-all;
+                text-align: center;
+                font-size: 15px;
+            }
+            i{
+                float: left;
+                width: 28px;
+                display: block;
+                font-size: 28px;
+                text-align: center;
+            }
+        }
         textarea {
             width: 100%;
             height: 320px;
@@ -106,6 +133,8 @@ const Home = () => {
     const [personalData, setPersonalData] = useState([]);
     const [doMark, setDoMark] = useState([]);
     const [endMark, setEndMark] = useState([]);
+    const [sideBar, setSideBar] = useState(false);
+
     useEffect(() => {
         const personalHome = async() => {
             try{
@@ -122,13 +151,21 @@ const Home = () => {
 
     return (
         <Wrap>
-            <Nav/>
-            <Section>
+            <Nav sideBar={sideBar} setSideBar={setSideBar}/>
+            <div className={`back ${sideBar? 'back_side_open':''}`}/>
+            <TopBar sideBar={sideBar} setSideBar={setSideBar}/>
+            <Section id="home" className="section">
                 <div className="plan">
                     <h2>Plan it</h2>
                     <Calendar doMark={doMark} endMark={endMark}/>
                 </div>
                 <div className='etc'>
+                    <div className='moti2'>
+                        <h2>Motivation</h2>
+                        <i className="fa-solid fa-quote-left"></i>
+                        <p>{personalData.quote}</p>
+                        <i className="fa-solid fa-quote-right"></i>
+                    </div>
                     <div className='memo'>
                         <h2>Memo</h2>
                         <Memo props={personalData.memo}/>

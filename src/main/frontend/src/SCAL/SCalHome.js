@@ -198,7 +198,7 @@ const SCalHome = () => {
                 if (isExistsChecked) {
                     setScalData(response.data);
                     setMemberDoMark(response.data.planMark[0]);
-                    setMemberEndMark(response.data.planMark[1]); 
+                    setMemberEndMark(response.data.planMark[1]);
                     setMemberList(memberListData);
                 } else {
                     alert("본인이 속한 캘린더만 접근할 수 있습니다.")
@@ -209,14 +209,13 @@ const SCalHome = () => {
             }
         }
         scalHome();
-    },[getNum]);
-    
+    },[getId]);
     
     console.log(memberList);
     console.log(scalData);
 
     const onClickSetting = () => {
-        //해당캘린더의 설정페이지로 옮겨가는 부분 구현 필요
+        navigate("/scal/info/" + getNum);
     }
 
     return (
