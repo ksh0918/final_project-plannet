@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
+import './media.scss';
 import Main from './Main/Main';
 import DoLogin from './DoLogin/DoLogin';
 import Social from './Join/Social';
@@ -44,7 +45,7 @@ function App() {
                 <Route path="/scal/create" element={<PrivateRoute><SCalCreate /></PrivateRoute>}/>
                 <Route path="/scal/info/:no" element={<PrivateRoute><SCalSetting /></PrivateRoute>}/>
                 <Route path="/scal/home/:no" element={<PrivateRoute><SCalHome /></PrivateRoute>}/>
-                <Route path="/scal/write/:no*" element={<PrivateRoute><SCalWrite /></PrivateRoute>}/>
+                <Route path="/scal/write/:no/*" element={<PrivateRoute><SCalWrite /></PrivateRoute>}/>
                 <Route path="/message" element={<PrivateRoute><Message /></PrivateRoute>}/>
                 <Route path="/send" element={<PrivateRoute><Send /></PrivateRoute>}/>
             </Routes>

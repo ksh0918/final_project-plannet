@@ -3,19 +3,13 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Api from '../api/plannetApi'
 import Nav from "../Utill/Nav";
+import TopBar from "../Utill/TopBar";
 
 const Wrap = styled.div`
     width: 1130px;
     height: 100vh;
     background-color: white;
     margin: 0 auto;
-    .copy {
-        width: 830px;
-        text-align: center;
-        color: #dfdfdf;
-        line-height: 40px;
-        float: left;
-    }
 `;
 const Section = styled.div`
     width: 850px;
@@ -57,16 +51,31 @@ const Section = styled.div`
         background-color: #4555AE;
         border-bottom: solid 1px #4555AE;
         text-align: center;
-        th { padding: 10px; color: white;}
-        tr:nth-child(2n) td {background-color: #fbfbfb;}
-        td { padding: 10px; background-color: white; border-left: solid 1px #bbb; border-top: solid 1px #ddd; font-weight: 400;}
-        td:first-child { border-left: none;}
-        td:nth-child(2) {
-            width: 400px; 
-            text-align: left; 
-            padding-left: 20px;
-        }  
-        tr:hover td, tr:hover a {
+        table-layout: fixed;
+        th{padding: 10px; color: white; background-color: #4555AE;}
+        tr{
+            background-color: white;
+            &:nth-child(2n) td, &:nth-child(2n){
+                background-color: #fbfbfb;
+            }
+        }
+        
+        td {
+            padding: 10px; 
+            background-color: white; 
+            border-left: solid 1px #bbb; 
+            border-top: solid 1px #ddd; 
+            font-weight: 400; 
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+            white-space: nowrap;
+        }
+        th:first-child, td:first-child {border-left: none; width: 80px;}
+        td:nth-child(2) {text-align: left;} 
+        th:nth-child(3), td:nth-child(3){width: 120px;}
+        th:nth-child(4), td:nth-child(4){width: 90px;}
+        th:last-child, td:last-child{width: 115px;}
+        tr:hover, tr:hover td, tr:hover a {
             color: #4555AE; 
             background-color: #efefef; 
             cursor: pointer;
@@ -75,9 +84,9 @@ const Section = styled.div`
             padding-right:5px; 
             color:#FC5C7D;
         }
-        .top3_List td {
+        .top3_List td ,.top3_List{
             background-color: #f2f2ff !important; 
-            font-weight: 700;
+            font-weight: 600;
         }
         .top3_List:last-child td {
             border-bottom: 1px solid #23338a;
@@ -111,9 +120,13 @@ const Section = styled.div`
         }
         .search {
             float: right;
-            width: 200px; height: 35px; padding: 0 10px; border: solid 2px #ddd; 
+            width: 200px; height: 29px; 
+            padding: 0 10px; 
+            border: solid 2px #ddd; 
             background-color: white;
-            input {width: 150px; height: 31px; border: 0px; outline: none; margin-right: 10px;}
+            margin-top: -2px;
+            border-radius: 5px;
+            input {width: 150px; height: 25px; border: 0px; outline: none; margin-right: 10px;}
         }
     }
 `;
@@ -193,11 +206,15 @@ const Board = () => {
         top3Data();
         boardData();
     }, []);
+    //미디어쿼리시 nav 사이드바
+    const [sideBar, setSideBar] = useState(false);
 
     return (
         <Wrap>
-            <Nav/>
-            <Section>
+            <Nav sideBar={sideBar} setSideBar={setSideBar}/>
+            <div className={`back ${sideBar? 'back_side_open':''}`}/>
+            <TopBar sideBar={sideBar} setSideBar={setSideBar}/>
+            <Section id="board" className="section">
                 <div className="board_list sub_box"> 
                     <h2>자유게시판</h2>
                     <p>

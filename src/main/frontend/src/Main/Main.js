@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { ReactComponent as LogoImg } from "../Images/planet-001.svg";
-import "./Main.css";
 import "../App";
 
 const Container = styled.div`
@@ -64,6 +63,25 @@ const RightMain = styled.div`
         margin-left: 70px;
     }
     div {margin-bottom: 20px}
+    .doLogin {
+        cursor: pointer;
+        margin: 5px;
+        margin-left: 70px;
+        padding-top: 8px;
+        display: block;
+        width: 350px;
+        height: 44px;
+        border: 3px solid white;
+        font-size: 16px;
+        background-color: rgba(47, 69, 192, .2) ;
+        color: white;
+        font-weight: 600;
+        text-decoration-line: none;
+        transition: color .1s ease-in, background-color .1s ease-in;
+        &:hover {
+        color: #4555AE;
+        background-color: white;}
+    }
 `;
 const Title = styled.h1`
     font-size: 28px;
@@ -91,30 +109,28 @@ const Explain = styled.div`
 
 const Main = () => {
     return(
-        <div className="ex">
-            <Container>
-                <LeftMain>
-                    <div className="wrap">
-                        <LogoImg width="200px" height="150px" />
-                        <Logo>Plannet</Logo>
-                        <SubLogo>let's plan it</SubLogo>
-                    </div>
-                </LeftMain>
-                <RightMain>
-                    <Title>Plannet</Title>
-                    <SemiTitle>Let's plan it!</SemiTitle>
-                        <Explain>오늘의 끝에서 내일을 계획하다.
-                            <br/> 하루의 끝에서 오늘을 되돌아보며 정리할 수 있는 플래너. 
-                            <br/> Plannet은 하루의 시작부터 마무리까지 
-                            <br/> 일정을 계획해 성취하도록 돕습니다.
-                            <br/> 오늘 느낀 감정을 소소하게 적어보세요.
-                            <br/> 내일의 일정 또한 완벽하게 작성 할 수 있을 것입니다.
-                        </Explain>
-                    <Link to="/doLogin" className="doLogin">로그인하기</Link>
-                    <Link to="/terms" className="doLogin">회원가입</Link>
-                </RightMain>
-            </Container>
-        </div>
+        <Container id="main">
+            <LeftMain>
+                <div className="wrap">
+                    <LogoImg width="200px" height="150px" />
+                    <Logo>Plannet</Logo>
+                    <SubLogo>let's plan it</SubLogo>
+                </div>
+            </LeftMain>
+            <RightMain>
+                <Title>Plannet</Title>
+                <SemiTitle>Let's plan it!</SemiTitle>
+                    <Explain>오늘의 끝에서 내일을 계획하다.
+                        <br/> 하루의 끝에서 오늘을 되돌아보며 정리할 수 있는 플래너. 
+                        <br/> Plannet은 하루의 시작부터 마무리까지 
+                        <br/> 일정을 계획해 성취하도록 돕습니다.
+                        <br/> 오늘 느낀 감정을 소소하게 적어보세요.
+                        <br/> 내일의 일정 또한 완벽하게 작성 할 수 있을 것입니다.
+                    </Explain>
+                <Link to="/doLogin" className="doLogin">로그인하기</Link>
+                <Link to="/terms" className="doLogin">회원가입</Link>
+            </RightMain>
+        </Container>
     );
 }
 
