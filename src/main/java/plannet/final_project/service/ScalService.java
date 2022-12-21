@@ -305,6 +305,7 @@ public class ScalService {
                     member.put("nickname", e.getUserId().getNickname());
                     member.put("userCode", e.getUserId().getUserCode());
                     member.put("profile", e.getUserId().getProfile());
+                    member.put("userId", e.getUserId().getId());
                     member.put("isOwner", e.getUserId().getId().equals(scal.getUserId().getId()));
                     memberList.add(member);
                 } // 멤버의 정보를 불러온다.
@@ -333,13 +334,13 @@ public class ScalService {
         }
     }
     // 공유 캘린더 멤버 초대
-    public boolean inviteMember(Long calNo, String userCode) {
+    public boolean inviteMember(Long calNo, String id) {
         try {
             Noti noti = new Noti();
             // 멤버초대
             SCAL scal = scalRepository.findById(calNo).orElseThrow(EntityNotFoundException::new);
             Member sendId = scal.getUserId();
-            Member receiveId = memberRepository.findByUserCode(userCode);
+            Member receiveId = memberRepository.findById(id).orElseThrow();
 
             noti.setUserId(sendId);
             noti.setReceiveId(receiveId);
@@ -355,11 +356,11 @@ public class ScalService {
         }
     }
     // 공유 캘린더 멤버 삭제
-    public boolean dropMember(Long calNo, String userCode) {
+    public boolean dropMember(Long calNo, String id) {
         try {
             SCAL scal = scalRepository.findById(calNo).orElseThrow(EntityNotFoundException::new);
-            Member dropUserCode = memberRepository.findByUserCode(userCode);
-            SMEM smem = smemRepository.findByCalNoAndUserId(scal, dropUserCode);
+            Member dropId = memberRepository.findById(id).orElseThrow();
+            SMEM smem = smemRepository.findByCalNoAndUserId(scal, dropId);
             smemRepository.deleteById(smem.getSmemNo());
 
             return true;
