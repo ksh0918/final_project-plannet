@@ -146,14 +146,13 @@ const Section = styled.div`
 const Message = () => {
     const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
-    const [mNotiCount,setmNotiCount] = useState();
     const [checkItems, setCheckItems] = useState([]);
     
     const onClickToCreate = () => {
         const link = "/send"
         navigate(link);
     }
-
+    
     const [messageList, setMessageList] = useState([]); // boardList 불러오기
 
     // 체크박스 전체 선택
@@ -229,12 +228,22 @@ const Message = () => {
         }
 
     }
+    const onClickRead = async() => {
+        const response = await Api.messageRead(checkItems);
+        if(response.data){
+            navigate(0);
+        }
+        else{
+            console.log("읽음"+response.data);
+        }
+    }
+
     useEffect(() => {
         const messageData = async () => {
             try{
                 const result = await Api.messageList(getId);
                 setMessageList(result.data);
-                window.localStorage.setItem("messageNotiCount", mNotiCount);
+                console.log(result.data);
             }catch(e){
                 console.log(e);
             }
@@ -249,7 +258,7 @@ const Message = () => {
                     <h2>Message</h2>
                     <p>
                         <span>Plannet 친구들과 소통해 보세요!</span>
-                        {/* <button onClick={onClickRead} className="readBtn">읽음</button> */}
+                        <button onClick={onClickRead} className="readBtn">읽음</button>
                         <button onClick={onClickToCreate} className="sendBtn">쪽지쓰기</button>
                         <button onClick={onClickDelete} className="deleteBtn">선택삭제</button>
                     </p>
