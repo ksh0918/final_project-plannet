@@ -92,10 +92,10 @@
         .etc textarea {height: 240px !important;}
     }
     //write
-    #write{
+    #write, #scalWrite{
         .plan_it{
-            input[type="text"], span {width: calc(100% - 50px);}
-            span{height: 16px; overflow: hidden; text-overflow: ellipsis; white-space:nowrap}
+            input[type="text"], span:first-of-type {width: calc(100% - 150px);}
+            span:first-of-type{height: 16px; overflow: hidden; text-overflow: ellipsis; white-space:nowrap}
         }
     }
     //board
@@ -209,7 +209,7 @@
         h2{margin-top: 20px;}
     }
     //write
-    #write {
+    #write, #scalWrite {
         .sub_box{padding-top: 5px;}
         .btnbox{height: 60px; line-height: 40px; }
         h2{margin-top: 0px;}
