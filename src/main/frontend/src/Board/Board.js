@@ -52,7 +52,7 @@ const Section = styled.div`
         border-bottom: solid 1px #4555AE;
         text-align: center;
         table-layout: fixed;
-        th{padding: 10px; color: white; background-color: #4555AE;}
+        th{padding: 10px 6px; color: white; background-color: #4555AE;}
         tr{
             background-color: white;
             &:nth-child(2n) td, &:nth-child(2n){
@@ -61,7 +61,7 @@ const Section = styled.div`
         }
         
         td {
-            padding: 10px; 
+            padding: 10px 6px; 
             background-color: white; 
             border-left: solid 1px #bbb; 
             border-top: solid 1px #ddd; 
@@ -70,11 +70,13 @@ const Section = styled.div`
             text-overflow: ellipsis; 
             white-space: nowrap;
         }
-        th:first-child, td:first-child {border-left: none; width: 80px;}
-        td:nth-child(2) {text-align: left;} 
-        th:nth-child(3), td:nth-child(3){width: 120px;}
-        th:nth-child(4), td:nth-child(4){width: 90px;}
-        th:last-child, td:last-child{width: 115px;}
+        th:first-child, td:first-child {border-left: none; width: 70px;}
+        td:first-child, td:nth-child(5), td:last-child {font-size: 13px; letter-spacing: -1px;}
+        th:nth-child(2), td:nth-child(2) {width: 78px; letter-spacing: -.4px;} 
+        td:nth-child(3) {text-align: left;} 
+        th:nth-child(4), td:nth-child(4){width: 110px;}
+        th:nth-child(5), td:nth-child(5){width: 80px;}
+        th:last-child, td:last-child{width: 85px;}
         tr:hover, tr:hover td, tr:hover a {
             color: #4555AE; 
             background-color: #efefef; 
@@ -91,6 +93,37 @@ const Section = styled.div`
         .top3_List:last-child td {
             border-bottom: 1px solid #23338a;
         }  
+    }
+    .top_sub_menu{
+        padding: 0%;
+        margin-bottom: 5px;
+        overflow: hidden;
+        p{
+            float: left;
+            margin: 5px 0;
+        }
+        ul{
+            width: calc(100% - 150px);
+            overflow: hidden;
+            margin: 16px 0 0;
+            float: left;
+            li{
+                float: left;
+                padding: 0 11px;
+                font-size: 14px;
+                border-right: 1px solid #ddd;
+                font-weight: 500;
+                color: #999;
+                letter-spacing: 1px;
+                cursor: pointer;
+                &:first-child{padding-left: 0; color: #4555ae; font-weight: 900; border-right: 2px solid #4555ae; cursor: default;}
+                &:last-child{border-right: none;}
+                &.active{
+                    color: #333;
+                    font-weight: 800;
+                }
+            }
+        }
     }
     .util_box {
         .page_list {
@@ -206,6 +239,25 @@ const Board = () => {
         top3Data();
         boardData();
     }, []);
+
+    //카테고리
+    const [category, setCategory] = useState('all');
+    const onClickCategoryAll = () => {
+        setCategory('all');
+    }
+    const onClickCategoryFree = () => {
+        setCategory('free');
+    }
+    const onClickCategoryFriend = () => {
+        setCategory('friend');
+    }
+    const onClickCategoryStudy = () => {
+        setCategory('study');
+    }
+    const onClickCategoryInfo = () => {
+        setCategory('info');
+    }
+
     //미디어쿼리시 nav 사이드바
     const [sideBar, setSideBar] = useState(false);
 
@@ -217,36 +269,85 @@ const Board = () => {
             <Section id="board" className="section">
                 <div className="board_list sub_box"> 
                     <h2>Free Board</h2>
-                    <p>
-                        <span>전 세계의 Plannet 이용자들과 한 곳에서 소통해 보세요!</span>
+                    <div className="top_sub_menu">
+                        <p>전 세계의 Plannet 이용자들과 한 곳에서 소통해 보세요!</p>
+                        <ul>
+                            <li>CATEGORY</li>
+                            <li className={category === 'all'? 'active' : ''} onClick={onClickCategoryAll}>전체</li>
+                            <li className={category === 'free'? 'active' : ''} onClick={onClickCategoryFree}>자유</li>
+                            <li className={category === 'friend'? 'active' : ''} onClick={onClickCategoryFriend}>친구</li>
+                            <li className={category === 'study'? 'active' : ''} onClick={onClickCategoryStudy}>스터디</li>
+                            <li className={category === 'info'? 'active' : ''} onClick={onClickCategoryInfo}>정보</li>
+                        </ul>
                         <button onClick={onClickToCreate}>글쓰기</button>
-                    </p>
+                    </div>
                     <table>
                         <tr>
                             <th>No.</th>
+                            <th>Category</th>
                             <th>Title</th>
                             <th>Writer</th>
                             <th>Views</th>
                             <th>Date</th>
                         </tr>
-                        {top3List.map(({boardNo, writerId, title, nickname, views, writeDate}) => (
+                        {top3List.map(({boardNo, writerId, category, title, nickname, views, writeDate}) => (
                             <tr className="top3_List" key={boardNo}>
                                 <td><i className="bi bi-heart-fill"/>{boardNo}</td>
+                                <td>{category}</td>
                                 <td onChange={setBoardNo} onClick={()=> viewsUp(boardNo, writerId)}>{title}</td>
                                 <td>{nickname}</td>
                                 <td>{views}</td>
                                 <td>{writeDate.substring(0, 10)}</td>
                             </tr>     
                         ))}
-                        {boardList.slice(offset, offset + limit).map(({boardNo, writerId, title, nickname, views, writeDate}) => (
-                            <tr key={boardNo}>
-                                <td>{boardNo}</td>
-                                <td onChange={setBoardNo} onClick={()=> viewsUp(boardNo, writerId)}>{title}</td>
-                                <td>{nickname}</td>
-                                <td>{views}</td>
-                                <td>{writeDate.substring(0, 10)}</td>
-                            </tr>     
-                        ))}
+                        {boardList.slice(offset, offset + limit).map((e) => {
+                            if(category === 'all') {return(
+                                <tr key={e.boardNo}>
+                                    <td>{e.boardNo}</td>
+                                    <td>{e.category}</td>
+                                    <td onChange={setBoardNo} onClick={()=> viewsUp(e.boardNo, e.writerId)}>{e.title}</td>
+                                    <td>{e.nickname}</td>
+                                    <td>{e.views}</td>
+                                    <td>{e.writeDate.substring(0, 10)}</td>
+                                </tr>   
+                            )} else if(category === 'free' && e.category === '자유') {return(
+                                <tr key={e.boardNo}>
+                                    <td>{e.boardNo}</td>
+                                    <td>{e.category}</td>
+                                    <td onChange={setBoardNo} onClick={()=> viewsUp(e.boardNo, e.writerId)}>{e.title}</td>
+                                    <td>{e.nickname}</td>
+                                    <td>{e.views}</td>
+                                    <td>{e.writeDate.substring(0, 10)}</td>
+                                </tr>   
+                            )} else if(category === 'friend' && e.category === '친구') {return(
+                                <tr key={e.boardNo}>
+                                    <td>{e.boardNo}</td>
+                                    <td>{e.category}</td>
+                                    <td onChange={setBoardNo} onClick={()=> viewsUp(e.boardNo, e.writerId)}>{e.title}</td>
+                                    <td>{e.nickname}</td>
+                                    <td>{e.views}</td>
+                                    <td>{e.writeDate.substring(0, 10)}</td>
+                                </tr>   
+                            )} else if(category === 'study' && e.category === '스터디') {return(
+                                <tr key={e.boardNo}>
+                                    <td>{e.boardNo}</td>
+                                    <td>{e.category}</td>
+                                    <td onChange={setBoardNo} onClick={()=> viewsUp(e.boardNo, e.writerId)}>{e.title}</td>
+                                    <td>{e.nickname}</td>
+                                    <td>{e.views}</td>
+                                    <td>{e.writeDate.substring(0, 10)}</td>
+                                </tr>   
+                            )} else if(category === 'info' && e.category === '정보') {return(
+                                <tr key={e.boardNo}>
+                                    <td>{e.boardNo}</td>
+                                    <td>{e.category}</td>
+                                    <td onChange={setBoardNo} onClick={()=> viewsUp(e.boardNo, e.writerId)}>{e.title}</td>
+                                    <td>{e.nickname}</td>
+                                    <td>{e.views}</td>
+                                    <td>{e.writeDate.substring(0, 10)}</td>
+                                </tr>   
+                            )}
+                        })}
                     </table>
 
                 </div>

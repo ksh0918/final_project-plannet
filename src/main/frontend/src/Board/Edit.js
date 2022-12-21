@@ -98,7 +98,7 @@ const Section = styled.div`
             transition: all .1s ease-in;
         }
     }
-    .postInfo {
+    table {
         border-collapse: collapse; 
         width: 100%;
         background-color: #4555AE;
@@ -107,8 +107,17 @@ const Section = styled.div`
         tr:nth-child(2n) td {background-color: #f9f9f9;}
         th {padding: 10px; color: white;}
         td {padding: 10px; background-color: white; border-left: solid 1px #bbb; border-top: solid 1px #ddd;}
-        td:first-child {border-left: none};
-        td:nth-child(2) {width: 100px; text-align: left; padding-left: 20px;}  
+        td:first-child {border-left: none; width: 115px;
+            select{
+                text-align:center;
+                background: none;
+                border: none;
+                outline: none;
+                font-size: 16px;
+                font-weight: 600;
+            }
+        }
+        td:nth-child(3) {width: 100px; text-align: left; padding-left: 20px;}  
         tr:hover td, tr:hover a {color: #4555AE;}
     }
     .util_box {
@@ -202,6 +211,7 @@ function Edit() {
     const [detail, setDetail] = useState();
     const [isChecked, setIsChecked] = useState(false);
     const [lengthCheck, setLengthCheck] = useState(false);
+    const [category, setCategory] = useState('');
 
     useEffect(() => {
         const boardData = async () => {
@@ -215,9 +225,11 @@ function Edit() {
                     navigate('/home');
                     return; // Edit 페이지로 이동하지 않도록 Home 페이지로 이동하고 useEffect에서 return
                 } 
+                console.log(response.data);
                 setBoardLoad(response.data);
                 setTitle(response.data[0].title);
                 setDetail(response.data[0].detail);
+                setCategory(response.data[0].category);
             } catch (e) {
                 console.log(e);
             }
@@ -227,7 +239,7 @@ function Edit() {
 
     // 해당 게시물 번호에 해당하는 Edit 페이지로 이동
     const onClickEdit = async() => {
-        await Api.boardEdit(getId, getNum, title, detail);
+        await Api.boardEdit(getNum, category, title, detail);
         const link = "/board/post_view/" + getNum;
         navigate(link);
     }
@@ -245,6 +257,11 @@ function Edit() {
     const handleChecked = (e) => {
         setIsChecked(e.target.checked);
     };
+
+    const onChangerCategory = (e) => {
+        setCategory(e.target.value)
+        console.log(e.target.value);
+    }
       
     //미디어쿼리시 nav 사이드바
     const [sideBar, setSideBar] = useState(false);
@@ -267,6 +284,15 @@ function Edit() {
                                 <th colSpan={2}>게시물 수정</th>
                             </tr>
                             <tr>
+                                <td>
+                                    <select name="category" onChange={onChangerCategory} value={category}>
+                                        <option value="" disabled>--글머리--</option>
+                                        <option value="자유" >자유</option>
+                                        <option value="친구">친구</option>
+                                        <option value="스터디">스터디</option>
+                                        <option value="정보">정보</option>
+                                    </select>
+                                </td>
                                 <td><input className="title-input" type='text' placeholder='제목을 입력하세요.' defaultValue={title} value={title} onChange={onChangeTitle} name='title' maxLength={17}/></td>
                                 <td><StyledInput type="checkbox" checked={e.isChecked} onChange={handleChecked}/>익명</td>
                             </tr>

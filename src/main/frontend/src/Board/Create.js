@@ -108,8 +108,17 @@ const Section = styled.div`
         tr:nth-child(2n) td {background-color: #f9f9f9;}
         th {padding: 10px; color: white;}
         td {padding: 10px; background-color: white; border-left: solid 1px #bbb; border-top: solid 1px #ddd;}
-        td:first-child {border-left: none};
-        td:nth-child(2) {width: 100px; text-align: left; padding-left: 20px;}  
+        td:first-child {border-left: none; width: 115px;
+            select{
+                text-align:center;
+                background: none;
+                border: none;
+                outline: none;
+                font-size: 16px;
+                font-weight: 600;
+            }
+        }
+        td:nth-child(3) {width: 100px; text-align: left; padding-left: 20px;}  
         tr:hover td, tr:hover a {color: #4555AE;}
     }
     .util_box {
@@ -189,13 +198,14 @@ function Create() {
     const [detail, setDetail] = useState("");
     const [isChecked, setIsChecked] = useState(false);
     const [lengthCheck, setLengthCheck] = useState(false);
+    const [category, setCategory] =useState("자유");
 
     const onClickSave = async() => {
         if (detail.length === 0 || title.length === 0) {
             setComment("제목과 내용을 입력해 주세요");
             setModalOpen(true); 
         } else {
-            const resultNo = await Api.boardWrite(getId, title, detail, isChecked);
+            const resultNo = await Api.boardWrite(getId, category, title, detail, isChecked);
             const linkNo = resultNo.data;
             navigate('/board/post_view/' + linkNo);
         }
@@ -215,7 +225,12 @@ function Create() {
     const closeModal = () => {
         setModalOpen(false);
     };
-//미디어쿼리시 nav 사이드바
+
+    const onChangerCategory = (e) => {
+        setCategory(e.target.value)
+    }
+
+    //미디어쿼리시 nav 사이드바
     const [sideBar, setSideBar] = useState(false);
 
     return (
@@ -235,6 +250,15 @@ function Create() {
                             <th colSpan={2}>게시물 작성</th>
                         </tr>
                         <tr>
+                            <td>
+                                <select name="category" onChange={onChangerCategory}>
+                                    <option value="" disabled>--글머리--</option>
+                                    <option value="자유" selected>자유</option>
+                                    <option value="친구">친구</option>
+                                    <option value="스터디">스터디</option>
+                                    <option value="정보">정보</option>
+                                </select>
+                            </td>
                             <td><input className="title-input" type='text' placeholder='제목을 입력하세요.' value={title} onChange={onChangeTitle} name='title' maxLength={17}/></td>
                             <td><StyledInput type="checkbox" checked={isChecked} onChange={handleChecked}/>익명</td>
                         </tr>

@@ -63,6 +63,7 @@ public class BoardController {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm");
         postViewData.put("boardNo", boardNo);
         postViewData.put("writerId", postView.getId());
+        postViewData.put("category", postView.getCategory());
         postViewData.put("title", postView.getTitle());
         postViewData.put("nickname", postView.getNickname());
         postViewData.put("views", postView.getViews());
@@ -144,25 +145,25 @@ public class BoardController {
     @PostMapping("/board_write")
     public ResponseEntity<Long> boardWrite(@RequestBody Map<String, String> boardWriteDate) {
         String id = boardWriteDate.get("id");
+        String category = boardWriteDate.get("category");
         String title = boardWriteDate.get("title");
         String detail = boardWriteDate.get("detail");
         int isChecked = 0;
         if (boardWriteDate.get("isChecked").equals("true")){
             isChecked = 1;
         }
-        Long resultNo = boardService.boardWrite(id, title, detail, isChecked);
+        Long resultNo = boardService.boardWrite(id, category, title, detail, isChecked);
         return new ResponseEntity(resultNo, HttpStatus.OK);
     }
 
     // 자유게시판 글 수정
     @PostMapping("/board_edit")
     public ResponseEntity<Boolean> boardEdit(@RequestBody Map<String, String> boardEdit) {
-        String userId = boardEdit.get("id");
         Long boardNo = Long.parseLong(boardEdit.get("num"));
+        String category = boardEdit.get("category");
         String title = boardEdit.get("title");
         String detail = boardEdit.get("detail");
-
-        boolean result = boardService.boardEdit(userId, boardNo, title, detail);
+        boolean result = boardService.boardEdit(boardNo, category, title, detail);
         if(result) {
             return new ResponseEntity(true, HttpStatus.OK);
         }
