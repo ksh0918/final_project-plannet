@@ -355,8 +355,8 @@ public class ScalService {
     public boolean dropMember(Long calNo, String userCode) {
         try {
             SCAL scal = scalRepository.findById(calNo).orElseThrow(EntityNotFoundException::new);
-            Member dropId = memberRepository.findByUserCode(userCode);
-            SMEM smem = smemRepository.findByCalNoAndUserId(scal, dropId);
+            Member dropUserCode = memberRepository.findByUserCode(userCode);
+            SMEM smem = smemRepository.findByCalNoAndUserId(scal, dropUserCode);
             smemRepository.deleteById(smem.getSmemNo());
 
             return true;

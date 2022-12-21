@@ -25,7 +25,7 @@ const Comment = styled.div`
                 text-overflow: ellipsis; 
                 white-space: nowrap;
             }
-            &:last-child {width: 145px; font-size: 12px;}
+            &:last-child {width: 140px; font-size: 12px;}
         }
         button {
             cursor: pointer;

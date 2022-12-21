@@ -79,7 +79,7 @@
         }
     }
     //home
-    #home{
+    #home, #scalHome{
         .plan, .etc{
             float: none;
             width: 100vw;
@@ -92,10 +92,10 @@
         .etc textarea {height: 240px !important;}
     }
     //write
-    #write{
+    #write, #scalWrite{
         .plan_it{
-            input[type="text"], span {width: calc(100% - 50px);}
-            span{height: 16px; overflow: hidden; text-overflow: ellipsis; white-space:nowrap}
+            input[type="text"], span:first-of-type {width: calc(100% - 150px);}
+            span:first-of-type{height: 16px; overflow: hidden; text-overflow: ellipsis; white-space:nowrap}
         }
     }
     //board
@@ -194,12 +194,12 @@
     .copy{width: 100vw; float: none;}
 
     //setting, board, postView, edit, create, friend 공통
-    #setting, #board, #postView, #edit, #create, #friend {
-        .board_list, .setting, .friend, .noti{padding-top: 5px;}
+    #setting, #board, #postView, #edit, #create, #friend, #scalCreate {
+        .board_list, .setting, .friend, .noti, .scalCreate{padding-top: 5px;}
         h2{margin-top: 20px;}
     }
     //home
-    #home{
+    #home, #scalHome{
         .react-calendar{width:100% !important;}
         .plan, .etc{padding-top: 5px;}
         .list{
@@ -209,7 +209,7 @@
         h2{margin-top: 20px;}
     }
     //write
-    #write {
+    #write, #scalWrite {
         .sub_box{padding-top: 5px;}
         .btnbox{height: 60px; line-height: 40px; }
         h2{margin-top: 0px;}

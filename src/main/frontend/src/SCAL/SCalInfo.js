@@ -149,12 +149,13 @@ const SCalSetting = () => {
     const [friendList, setFriendList] = useState();
     const [isAdd, setIsAdd] = useState(false);
     const [owner, setOwner] = useState(''); // 공유캘린더 오너
-    
+
     const [comment, setComment] = useState("");
     const [modalHeader, setModalHeader] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
     const [modalOption, setModalOption] = useState('');
     const [option, setOption] = useState("");
+    const [calNo, setCalNo] = useState("");
     const isPage = "설정";
 
 
@@ -205,7 +206,7 @@ const SCalSetting = () => {
         setModalOption('삭제');
         setComment("삭제하시겠습니까?");
     }
-     
+
      const closeModal = () => {
         setModalOpen(false);
     };
@@ -229,6 +230,7 @@ const SCalSetting = () => {
                             <input title="검색" placeholder="친구 닉네임을 검색해보세요" onChange={onChangeSearchKeyword} value={searchKeyword}  />
                             </div>
                             <div className="friend_list">
+                                <FriendList setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} friendList={filterNames} isAdd={isAdd} setOption={setOption} title={title} setCalNo={setCalNo}/>
                                 <FriendList setComment={setComment} setModalHeader={setModalHeader} setModalOpen={setModalOpen} friendList={filterNames} isAdd={isAdd} setOption={setOption} title={title}/>
                             </div>
                         </div>

@@ -227,6 +227,7 @@ const Nav = ({sideBar, setSideBar}) => {
     const [scalInfo, setScalInfo] = useState("");
     const [proHeight, setProHeight] = useState("");
     const [fNotiCount,setfNotiCount] = useState();
+    const [mNotiCount,setmNotiCount] = useState();
     useEffect(() => {
         const userInfoLoad = async() => {
             try{
@@ -235,9 +236,12 @@ const Nav = ({sideBar, setSideBar}) => {
                 setScalInfo(response.data.scalInfo);
                 setProHeight(response.data.scalInfo.length * 47 + 390);
                 console.log(response.data);
+                const mResult = await Api.messageNoti(userId);
+                console.log(mResult.data);
+                setmNotiCount(mResult.data);
                 const result = await Api.friendPageLoad(userId);
-                setfNotiCount(Object.keys(result.data.notiList).length);
-
+                if(result.data != null){setfNotiCount(Object.keys(result.data.notiList).length);}
+                else{console.log("null 값")}
             } catch(e){
                 console.log(e);
             }
@@ -251,9 +255,6 @@ const Nav = ({sideBar, setSideBar}) => {
         const link = "/scal/home/" + calNo;
         navigate(link);
     };
-
-    // 쪽지 알림 띄우기
-    const mNotiCount = window.localStorage.getItem("messageNotiCount");
 
     // 로그아웃 팝업
     const [comment, setCommnet] = useState("");

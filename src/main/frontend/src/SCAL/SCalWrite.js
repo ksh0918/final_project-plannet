@@ -5,6 +5,7 @@ import Api from "../api/plannetApi";
 import Nav from "../Utill/Nav";
 import PlanList from "../Write/PlanList";
 import Comments from '../Board/Comment';
+import TopBar from '../Utill/TopBar';
 
 const Wrap = styled.div`
     width: 1130px;
@@ -113,6 +114,10 @@ const Section = styled.div`
             .plan_writer{
                 display: inline;
                 width: auto;
+                max-height: 100px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
                 font-size: 12px;
                 color: #777;
                 line-height: 19px;
@@ -214,10 +219,15 @@ const SCalWrite = () => {
 
     console.log(planList)
 
+    //미디어쿼리시 nav 사이드바
+    const [sideBar, setSideBar] = useState(false);
+
     return (
         <Wrap>
-            <Nav/>
-            <Section>
+            <Nav sideBar={sideBar} setSideBar={setSideBar}/>
+            <div className={`back ${sideBar? 'back_side_open':''}`}/>
+            <TopBar sideBar={sideBar} setSideBar={setSideBar}/>
+            <Section id="scalWrite" className="section">
                 <div className="btnbox">
                     <Link to='/home'>
                         <button className="backbtn">
