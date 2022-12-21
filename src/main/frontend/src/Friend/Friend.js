@@ -73,6 +73,14 @@ const Section = styled.div`
                 color: #888;
             }
         }
+        h2{
+            span{
+                font-size: 28px;
+                &:last-child{
+                    display: none;
+                }
+            }
+        }
     }
     h2 {
         font-size: 28px;
@@ -167,7 +175,7 @@ const Friend = () => {
                     <FriendList setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} friendList={friendList} isAdd={isAdd} setOption={setOption} isPage={isPage}/>
                 </div>
                 <div className='noti'>
-                    <h2>Notification</h2>
+                    <h2><span>Notification</span><span>Noti</span></h2>
                     <FriendNoti setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} notiList={notiList} setOption={setOption}/>
                     <div onClick={onClickAddSCal}>공유캘린더 생성하기<i className="bi bi-chevron-compact-right"/></div>
                 </div>
