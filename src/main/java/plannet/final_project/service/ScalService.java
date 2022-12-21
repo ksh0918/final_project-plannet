@@ -28,7 +28,9 @@ public class ScalService {
     private final FriendRepository friendRepository;
     private final MemberRepository memberRepository;
     private final NotiRepository notiRepository;
+
     private final DiaryRepository diaryRepository;
+
     private final PlanRepository planRepository;
     private final SCOMRepository scomRepository;
 
@@ -372,7 +374,7 @@ public class ScalService {
             scomRepository.deleteByCalNo(scal);
             splanRepository.deleteByCalNo(scal);
             smemRepository.deleteByCalNo(scal);
-            notiRepository.deleteByEtc(scal);
+            notiRepository.deleteByCalNo(scal);
             scalRepository.deleteByCalNo(calNo);
             return true;
         } catch (Exception e) {
