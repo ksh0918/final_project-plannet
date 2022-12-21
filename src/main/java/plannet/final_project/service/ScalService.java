@@ -368,17 +368,17 @@ public class ScalService {
     }
 
     // 공유 캘린더 삭제
-//    public boolean scalDelete(Long calNo) {
-//        try {
-//            SCAL scal = scalRepository.findById(calNo).orElseThrow(EntityNotFoundException::new);
-//            scomRepository.deleteByCalNo(scal);
-//            splanRepository.deleteByCalNo(scal);
-//            smemRepository.deleteByCalNo(scal);
-//            notiRepository.deleteByEtc(scal);
-//            scalRepository.deleteByCalNo(calNo);
-//            return true;
-//        } catch (Exception e) {
-//            return false;
-//        }
-//    }
+    public boolean scalDelete(Long calNo) {
+        try {
+            SCAL scal = scalRepository.findById(calNo).orElseThrow(EntityNotFoundException::new);
+            scomRepository.deleteByCalNo(scal);
+            splanRepository.deleteByCalNo(scal);
+            smemRepository.deleteByCalNo(scal);
+            notiRepository.deleteByCalNo(scal);
+            scalRepository.deleteByCalNo(calNo);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
