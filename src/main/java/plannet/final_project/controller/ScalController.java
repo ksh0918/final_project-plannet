@@ -135,6 +135,7 @@ public class ScalController {
         if(shareDTO.isOk()) {
             scalInfo.put("calName", shareDTO.getCalName());
             scalInfo.put("calMember", shareDTO.getMemberList());
+            scalInfo.put("calOwner", shareDTO.getCalOwner());
             return new ResponseEntity(scalInfo, HttpStatus.OK);
         }
         return new ResponseEntity(null, HttpStatus.OK);
@@ -162,5 +163,17 @@ public class ScalController {
         String userCode = (String)data.get("userCode");
         boolean result = scalService.dropMember(calNo, userCode);
         return new ResponseEntity(result, HttpStatus.OK);
+    }
+
+    // 공유캘린더 삭제하기
+    @PostMapping("/delete")
+    public ResponseEntity<Boolean> scalDelete(@RequestBody Map<String, String> scalDelete) {
+        Long calNo = Long.valueOf((String) scalDelete.get("calNo"));
+        boolean result = scalService.scalDelete(calNo);
+        if(result) {
+            return new ResponseEntity(true, HttpStatus.OK);
+        } else {
+            return new ResponseEntity(false, HttpStatus.OK);
+        }
     }
 }

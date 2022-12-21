@@ -27,7 +27,7 @@ public class ShareDTO {
 
 
     //s_mem
-    private boolean calOwner; // 공유 캘린더 만든이 여부
+    private String calOwner; // 공유 캘린더 만든이
     private String calMember; // 공유 캘린더 멤버 아이디
     private String calNickname; // 공유 캘린더 멤버 닉네임
 
