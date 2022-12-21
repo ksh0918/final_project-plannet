@@ -1,10 +1,31 @@
-@media screen and (max-width : 640px) {
+@media screen and (max-width : 639px) {
     #friend{
         h2{
             span{
                 &:first-child{display: none;}
                 &:last-child{display: block;}
             }
+        }
+    }
+    #board{
+        .top_sub_menu{
+            ul{
+                li:first-child{display: none;}
+                li:nth-of-child(2){padding-left: 0;}
+            }
+        }
+    }
+    //postView
+    #postView {
+        table{
+            table-layout: fixed;
+            .bi-heart-fill{margin: 0;}
+            tr:last-child td{font-size: 13px;}
+            td:last-child{
+                letter-spacing: -1px;
+            }
+            span{display: none;}
+            br{display: block;}
         }
     }
 }
@@ -110,13 +131,16 @@
             }
 
             td:first-child, td:nth-child(2){
+                width: 70px;
                 border-bottom: none;
-                height: 74px;
-                line-height: 60px;
+                height: 68px;
+                line-height: 47px;
             }
+            td:nth-child(2){width: 50px;}
             td:nth-child(3){
-                width: calc(100% - 80px) !important;
-                border-left: none;
+                width: calc(100% - 120px) !important;
+                // border-left: none;
+                padding-left: 10px;
                 font-weight: 600; 
             }
             td:nth-child(4){
@@ -124,8 +148,9 @@
                 border-top: none;
                 width: auto;
                 padding-right: 0px;
+                padding-left: 10px;
                 padding-top: 5px;
-                border-left: none;
+                // border-left: none;
                 &:after{
                     content: '';
                     line-height: 16px;
@@ -213,14 +238,6 @@
         .sub_box{padding-top: 5px;}
         .btnbox{height: 60px; line-height: 40px; }
         h2{margin-top: 0px;}
-    }
-    //postView
-    #postView {
-        table{
-            table-layout: fixed;
-            td:first-child {width: 100px;}
-            td:last-child {width: 140px;}
-        }
     }
     //comment
     .comment_box{
