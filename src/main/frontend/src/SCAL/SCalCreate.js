@@ -118,7 +118,7 @@ const Section = styled.div`
                     button {
                         cursor: pointer;
                         font-weight: 600;
-                        float: right;
+                        margin: 0px 120px 0 120px;
                         font-size: 16px;
                         padding: 8px 35px;
                         border-radius: 25px;

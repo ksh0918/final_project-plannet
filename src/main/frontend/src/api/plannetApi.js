@@ -313,18 +313,18 @@ const plannetApi = {
         return await axios.post(PLANNET_DOMAIN + "scal/info_save", object, HEADER);
     },
     // 공유 캘린더 멤버 삭제
-    smemDrop: async function(calNo, userCode) {
+    smemDrop: async function(calNo, id) {
         const object = {
             calNo: calNo,
-            userCode: userCode
+            id: id
         };
         return await axios.post(PLANNET_DOMAIN + "scal/drop_member", object, HEADER);
     },
     // 공유 캘린더 멤버 초대
-    smemInvite: async function(calNo, userCode) {
+    smemInvite: async function(calNo, id) {
         const object = {
             calNo: calNo,
-            userCode: userCode
+            id: id
         };
         return await axios.post(PLANNET_DOMAIN + "scal/invite_member", object, HEADER);
     },
