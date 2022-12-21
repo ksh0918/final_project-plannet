@@ -72,8 +72,16 @@ const Friends = styled.div`
                 font-size: 16px;
                 font-weight: 700;
                 margin-right: 5px;
+                display: inline-block;
+                max-width: calc(100% - 50px);
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                vertical-align: middle;
             }
             span:last-child{
+                display: inline-block;
+                vertical-align: middle;
                 color: #bbb;
             }
             &:last-of-type{

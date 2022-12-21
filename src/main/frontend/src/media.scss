@@ -1,3 +1,13 @@
+@media screen and (max-width : 640px) {
+    #friend{
+        h2{
+            span{
+                &:first-child{display: none;}
+                &:last-child{display: block;}
+            }
+        }
+    }
+}
 @media screen and (max-width : 767px) {
     html{background: white;}
     //main
@@ -69,7 +79,7 @@
         }
     }
     //home
-    #home{
+    #home, #scalHome{
         .plan, .etc{
             float: none;
             width: 100vw;
@@ -159,6 +169,11 @@
             }
 
         }
+        .noti{
+            div:last-of-type, div:last-of-type i{
+                font-size: calc(0.6em + 1vw);
+            }
+        }
     }
 }
 @media screen and (max-width : 799px) {
@@ -179,12 +194,12 @@
     .copy{width: 100vw; float: none;}
 
     //setting, board, postView, edit, create, friend 공통
-    #setting, #board, #postView, #edit, #create, #friend {
-        .board_list, .setting, .friend, .noti{padding-top: 5px;}
+    #setting, #board, #postView, #edit, #create, #friend, #scalCreate {
+        .board_list, .setting, .friend, .noti, .scalCreate{padding-top: 5px;}
         h2{margin-top: 20px;}
     }
     //home
-    #home{
+    #home, #scalHome{
         .react-calendar{width:100% !important;}
         .plan, .etc{padding-top: 5px;}
         .list{

@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useLocation, useParams } from "react-router-dom";
+import { useNavigate, useLocation, useParams, Link } from "react-router-dom";
 import styled from "styled-components";
 import Api from "../api/plannetApi";
 import Nav from "../Utill/Nav";
-import Swal from 'sweetalert';
 import PlanList from "../Write/PlanList";
 import Comments from '../Board/Comment';
 
@@ -39,7 +38,7 @@ const Section = styled.div`
             vertical-align: middle;
             transition: all .1s ease-in;
         }
-        button.back {
+        button.backbtn {
             font-weight: 300;
             font-size: 16px; 
             vertical-align: middle;
@@ -200,8 +199,7 @@ const SCalWrite = () => {
             try{
                 // 플랜 불러오기
                 const plans = await Api.scalPlanLoad(getNum, getDate);
-                setPlanList(plans.data);
-                console.log(plans.data);    
+                setPlanList(plans.data);  
 
                 // 댓글 불러오기
                 const comments = await Api.scalCommentsLoad(getNum, getDate);
@@ -221,9 +219,11 @@ const SCalWrite = () => {
             <Nav/>
             <Section>
                 <div className="btnbox">
-                    <button className="back" onClick={onClickSave}>
-                        <i className="bi bi-chevron-compact-left"/>{getDate}
-                    </button>
+                    <Link to='/home'>
+                        <button className="backbtn">
+                            <i className="bi bi-chevron-compact-left"/>{getDate}
+                        </button>
+                    </Link>
                 </div>
                 <div className="plan_it sub_box">
                     <h2>Plan it</h2>
