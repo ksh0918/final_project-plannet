@@ -11,6 +11,7 @@ import java.util.Map;
 public class BoardDTO {
     private Long boardNo;
     private String id;
+    private String category;
     private String title;
     private String nickname;
     private int views;

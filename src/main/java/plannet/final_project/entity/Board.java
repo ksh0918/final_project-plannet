@@ -29,6 +29,9 @@ public class Board {
     @Column(length = 50, nullable = false)
     private String title;
 
+    @Column(length = 10, nullable = false)
+    private String category;
+
     @Column(nullable = false)
     @ColumnDefault("0")
     private int views;
