@@ -196,6 +196,9 @@ const PostView = () => {
         postViewLoad();
     }, [getId, getNum]);
 
+    //미디어쿼리시 nav 사이드바
+    const [sideBar, setSideBar] = useState(false);
+
     // 무한 스크롤
     const comments = async () => {
         try {
@@ -209,7 +212,7 @@ const PostView = () => {
           // 기존의 게시판 글 불러오는 api 호출
           const fetchData = async () => {
             console.log("게시판글 불러오는중");
-            // 게시판 페이지 게시글 목록 api
+            // PostView 페이지 댓글 목록 api
             const response = await Api.commentsLoad(getNum,String(offset),String(offset + 10)); // DB에서 데이터 가져오는 개수의 범위를 api 매개변수로 넘겨줌
             setCommentsList(old => ([...old, ...response.data]));
             console.log('//new Data :',response.data);
@@ -222,16 +225,12 @@ const PostView = () => {
           console.log(e);
         };
       }
-    // hook 선언 (인자값에는 데이터를 불러오는 함수 입력(writeItems))
+    // hook 선언 (인자값에는 데이터를 불러오는 함수 입력(Comments))
     const [isFetching,setIsFetching] = useInfiniteScroll(Comments)
 
       useEffect(() => {
         comments();
       }, []);
-
-    return(
-    //미디어쿼리시 nav 사이드바
-    const [sideBar, setSideBar] = useState(false);
 
     return (
         <Wrap>
