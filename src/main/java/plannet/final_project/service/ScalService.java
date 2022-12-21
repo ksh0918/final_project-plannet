@@ -372,7 +372,7 @@ public class ScalService {
             scomRepository.deleteByCalNo(scal);
             splanRepository.deleteByCalNo(scal);
             smemRepository.deleteByCalNo(scal);
-            notiRepository.deleteByEtc(scal);
+//            notiRepository.deleteByEtc(scal);
             scalRepository.deleteByCalNo(calNo);
             return true;
         } catch (Exception e) {
