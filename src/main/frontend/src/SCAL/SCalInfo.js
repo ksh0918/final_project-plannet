@@ -153,6 +153,7 @@ const SCalSetting = () => {
     const [modalHeader, setModalHeader] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
     const [option, setOption] = useState("");
+    const [calNo, setCalNo] = useState("");
     const isPage = "설정";
 
 
@@ -220,7 +221,7 @@ const SCalSetting = () => {
                             <input title="검색" placeholder="친구 닉네임을 검색해보세요" onChange={onChangeSearchKeyword} value={searchKeyword}  />
                             </div>
                             <div className="friend_list">
-                                <FriendList setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} friendList={filterNames} isAdd={isAdd} setOption={setOption} title={title}/>
+                                <FriendList setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} friendList={filterNames} isAdd={isAdd} setOption={setOption} title={title} setCalNo={setCalNo}/>
                             </div>
                         </div>
                         <div className="scal_add"><button onClick={onClickSCalSave}>SAVE</button></div>
