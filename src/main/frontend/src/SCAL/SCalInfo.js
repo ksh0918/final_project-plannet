@@ -201,10 +201,10 @@ const SCalSetting = () => {
         navigate('/scal/home/' + getNum);
      }
      const onClickScalDelete = () => {
-        setModalOpen(true);
-        setModalHeader("공유캘린더 삭제")
-        setModalOption('삭제');
+        setCalNo(getNum);
         setCommnet("삭제하시겠습니까?");
+        setModalHeader("공유캘린더 삭제");
+        setModalOpen(true);
     }
 
      const closeModal = () => {
@@ -225,7 +225,7 @@ const SCalSetting = () => {
                             <input onChange={onChangeTitle} value={title} placeholder="공유 캘린더 이름" />
                         </div>
                         <div className="friend">
-                            <p>친구 추가</p>
+                            {getId === owner ? <p>친구 추가</p> : <p>친구 검색</p>}
                             <div className="friend_search">
                             <input title="검색" placeholder="친구 닉네임을 검색해보세요" onChange={onChangeSearchKeyword} value={searchKeyword}  />
                             </div>
@@ -235,7 +235,7 @@ const SCalSetting = () => {
                         </div>
                         <div className="button-area1">
                             <button lassName="btn scal_add" onClick={onClickSCalSave}>SAVE</button>
-                            {getId == owner ? <><button className='btn left-space scal_delete' onClick={onClickScalDelete}>DELETE</button></> : null}
+                            {getId === owner ? <><button className='btn left-space scal_delete' onClick={() => onClickScalDelete()}>DELETE</button></> : null}
                         </div>
                     </div>
                 </div>

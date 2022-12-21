@@ -47,7 +47,7 @@ const Modal = (props) => {
         navigate(0);
     }
 
-    const onClickDeleteSCAL = async() => {
+    const onClickScalDelete = async() => {
         await Api.scalDelete(calNo);
         navigate(-1);
     }
@@ -97,7 +97,7 @@ const Modal = (props) => {
                         {(header === '친구삭제') ? <button className='yes btn-m' onClick={onClickUnfriend}>yes</button>: ''}
                         {(header === '알림반응') ? <button className='yes btn-m' onClick={onClickNotiAnswer}>yes</button>: ''}
                         {(header === '공유캘린더 초대') ? <button className='yes btn-m' onClick={onClickInviteSCAL}>yes</button>: ''}
-                        {(header === '공유캘린더 삭제') ? <button className='yes btn-m' onClick={onClickDeleteSCAL}>yes</button>: ''}
+                        {(header === '공유캘린더 삭제') ? <button className='yes btn-m' onClick={onClickScalDelete}>yes</button>: ''}
 
                         {(header === '멤버삭제') ? <button className='yes btn-m' onClick={onClickDrop}>yes</button>: ''}
                         {(header === '멤버초대') ? <button className='yes btn-m' onClick={onClickInvite}>yes</button>: ''}

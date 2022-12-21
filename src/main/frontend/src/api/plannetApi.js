@@ -393,7 +393,7 @@ const plannetApi = {
         return await axios.post(PLANNET_DOMAIN + "scal/invite_member", object, HEADER);
     },
     // 공유 캘린더 삭제
-    scalAddMember: async function(calNo) {
+    scalDelete: async function(calNo) {
         const object = {
             calNo: calNo
         };

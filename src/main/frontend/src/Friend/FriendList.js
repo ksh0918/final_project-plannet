@@ -164,6 +164,7 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
    console.log("체크버튼 : ");
    console.log(checkedButtons);
    
+   // 공유 캘린더 생성
     const onClickSCalAdd = async() => {
         const response = await Api.scalCheck(getId); //2개이상의 scal에 참여중인지 확인 2개 이하면 true, 이상이면 false
         console.log(response.data);
@@ -176,6 +177,7 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
             setModalOpen(true);
         }
     }
+    // 공유 캘린더 설정 모달창
     const onClickDrop = async(userCode) => {
         setOption(userCode);
         setCalNo(getNum);
