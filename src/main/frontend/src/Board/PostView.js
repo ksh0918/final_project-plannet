@@ -13,6 +13,7 @@ const Wrap = styled.div`
     background-color: white;
     margin: 0 auto;
 `;
+
 const Section = styled.div`
     width: 850px;
     height: calc(100vh - 40px);
