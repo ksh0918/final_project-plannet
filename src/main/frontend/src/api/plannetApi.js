@@ -212,9 +212,10 @@ const plannetApi = {
         return await axios.get(PLANNET_DOMAIN + `board/comments_delete?commentNo=${commentNo}`, HEADER);
     },
     // 자유게시판 글 작성
-    boardWrite: async function(id, title, detail, isChecked){
+    boardWrite: async function(id, category, title, detail, isChecked){
         const object = {
             id : id,
+            category: category,
             title : title,
             detail : detail,
             isChecked : isChecked
@@ -222,10 +223,11 @@ const plannetApi = {
         return await axios.post(PLANNET_DOMAIN + "board/board_write", object, HEADER);
     },
     // 글 수정
-    boardEdit: async function(id, num, title, detail) {
+    boardEdit: async function(id, num, category, title, detail) {
         const object = {
             id: id,
             num: num,
+            category: category,
             title: title,
             detail: detail
         };
