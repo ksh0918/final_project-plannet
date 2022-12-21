@@ -11,5 +11,5 @@ public interface NotiRepository extends JpaRepository<Noti,Long> {
     List<Noti> findByReceiveIdAndIsChecked(Member member, int isChecked);
     Noti findByReceiveIdAndIsCheckedAndCalNo(Member userId, int i, SCAL scal);
     List<Noti> findByUserIdAndReceiveIdAndTypeAndIsChecked(Member send, Member recive, String f, int i);
-    void deleteByEtc(SCAL calNo);
+//    void deleteByEtc(SCAL calNo);
 }

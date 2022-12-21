@@ -166,14 +166,14 @@ public class ScalController {
     }
 
     // 공유캘린더 삭제하기
-    @PostMapping("/delete")
-    public ResponseEntity<Boolean> scalDelete(@RequestBody Map<String, String> scalDelete) {
-        Long calNo = Long.valueOf((String) scalDelete.get("calNo"));
-        boolean result = scalService.scalDelete(calNo);
-        if(result) {
-            return new ResponseEntity(true, HttpStatus.OK);
-        } else {
-            return new ResponseEntity(false, HttpStatus.OK);
-        }
-    }
+//    @PostMapping("/delete")
+//    public ResponseEntity<Boolean> scalDelete(@RequestBody Map<String, String> scalDelete) {
+//        Long calNo = Long.valueOf((String) scalDelete.get("calNo"));
+//        boolean result = scalService.scalDelete(calNo);
+//        if(result) {
+//            return new ResponseEntity(true, HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity(false, HttpStatus.OK);
+//        }
+//    }
 }

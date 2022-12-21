@@ -150,7 +150,7 @@ const SCalSetting = () => {
     const [isAdd, setIsAdd] = useState(false);
     const [owner, setOwner] = useState(''); // 공유캘린더 오너
 
-    const [comment, setComment] = useState("");
+    const [comment, setCommnet] = useState("");
     const [modalHeader, setModalHeader] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
     const [modalOption, setModalOption] = useState('');
@@ -204,7 +204,7 @@ const SCalSetting = () => {
         setModalOpen(true);
         setModalHeader("공유캘린더 삭제")
         setModalOption('삭제');
-        setComment("삭제하시겠습니까?");
+        setCommnet("삭제하시겠습니까?");
     }
 
      const closeModal = () => {
@@ -231,7 +231,6 @@ const SCalSetting = () => {
                             </div>
                             <div className="friend_list">
                                 <FriendList setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} friendList={filterNames} isAdd={isAdd} setOption={setOption} title={title} setCalNo={setCalNo}/>
-                                <FriendList setComment={setComment} setModalHeader={setModalHeader} setModalOpen={setModalOpen} friendList={filterNames} isAdd={isAdd} setOption={setOption} title={title}/>
                             </div>
                         </div>
                         <div className="button-area1">
