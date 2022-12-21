@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Api from "../api/plannetApi";
 import Nav from "../Utill/Nav";
-import axios, { Axios } from 'axios';
+import FriendList from '../Friend/FriendList';
 import Modal from '../Utill/Modal';
 
 const Wrap = styled.div`
@@ -102,6 +102,32 @@ const Section = styled.div`
         td:first-child {border-left: none};
         td:nth-child(2) {width: 400px; text-align: left; padding-left: 20px;}  
         tr:hover td, tr:hover a {color: #4555AE;}
+        .friend_search{
+            margin: 0;
+            width: 100%;
+            height: 31px;
+            border: 2px solid #ddd;
+            padding: 0 13px;
+            border-radius: 5px;
+            input {
+                width: 100%;
+                max-width: 410px;
+                height: 27px;
+                border: 0px;
+                outline: none;
+                margin: 0;
+            }
+        }
+    }
+    .friend{
+        .listfriend{
+            li {
+                width: 200px;
+            }
+            p{
+                width: 100px;
+            }
+        }
     }
     .copy {
         width: 850px;
@@ -179,14 +205,29 @@ const Section = styled.div`
         height: 500px; 
     }
     .ck-editor__main {padding: 0;}
+    .listfriend{
+        font-size: 16px;
+        font-weight: 600;
+        float: left;
+    }
 `;
 
-function Send() {
+const Send= () => {
     const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
     const [receiveId,setReceiveId] = useState("");
     const [detail, setDetail] = useState("");
     const [lengthCheck, setLengthCheck] = useState(false);
+    const [isBlur,setIsBlur] = useState(false);
+    const [comment, setComment] = useState("");
+    const [modalOpen, setModalOpen] = useState(false);
+    const [modalHeader, setModalHeader] = useState("");
+    const [option, setOption] = useState("");
+    const [friendList, setFriendList] = useState();
+    const [searchKeyword, setSearchKeyword] = useState('');
+    const closeModal = () => {
+        setModalOpen(false);
+    }
 
     const onClickSend = async() => {
         if (detail.length === 0 || receiveId.length === 0) {
@@ -209,14 +250,29 @@ function Send() {
     const onChangeReceiveId =(e) => {
         setReceiveId(e.target.value);
     }
-    
-    // 제목, 내용 null 방지
-    const [comment, setComment] = useState("");
-    const [modalOpen, setModalOpen] = useState(false);
-    const closeModal = () => {
-        setModalOpen(false);
-    };
 
+    const onBlurSend = () => {
+        setIsBlur(true)
+    }
+
+    const onClickFriend = (e) => {
+        setReceiveId(e.nickname+'#'+e.userCode);
+        console.log(receiveId);
+    }
+    
+
+    useEffect(()=>{
+        const friendPage = async() => {
+            try{
+                const response = await Api.friendPageLoad(getId); //친구랑 알림 목록 불러오기
+                setFriendList(response.data.friendList);
+            } catch(e){
+            console.log(e);
+            }
+        }
+        friendPage();
+    },[])
+;
     return (
         <Wrap>
             <Modal open={modalOpen} close={closeModal} header="글쓰기 안내">{comment}</Modal>
@@ -232,11 +288,21 @@ function Send() {
                             <th colSpan={2}>쪽지 작성</th>
                         </tr>
                         <tr>
-                            <td><p className='sender'>받는 사람 :</p></td>
-                            <td><input className='sender-input' type='text' placeholder='닉네임#OOOO.' onChange={onChangeReceiveId}></input></td>
+                            <td>
+                                <div className="friend_search">
+                                    <p className='sender'>받는 사람</p>
+                                    <input title="검색" placeholder="친구 닉네임을 검색해보세요" onChange={onChangeReceiveId} value={receiveId} onClick={onBlurSend} />
+                                </div>
+                            </td>
                         </tr>
-                    </table>           
+                    </table>       
                 </div>
+                {isBlur && 
+                    <div className='friend'>
+                        <p className='listfriend'>친구목록</p>
+                        <FriendList setCommnet={setComment} setModalHeader={setModalHeader} setModalOpen={setModalOpen} friendList={friendList} setOption={setOption} className='friendList'/>
+                    </div>
+                }
                 <div className='form-wrapper'>
                     <CKEditor editor={ClassicEditor} data={detail} onChange={(event, editor) => {
                         const data = editor.getData();
@@ -251,7 +317,7 @@ function Send() {
                             }
                         }
                         const length = getByteLengthOfUtf8String(data);
-                        if(length > 11000){
+                        if(length > 2000){
                             setLengthCheck(true);
                             alert("내용이 너무 깁니다.");
                         } else setLengthCheck(false);

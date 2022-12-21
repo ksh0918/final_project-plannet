@@ -188,15 +188,8 @@ const Message = () => {
     const offset = (page - 1) * limit; // 게시물 위치 계산, 시작점과 끝점을 구하는 offset
     const numPages = Math.ceil(messageList.length / limit); // 필요한 페이지 개수
     const [currPage, setCurrPage] = useState(page)
-    let firstNum = currPage - (currPage % 5) + 1;
-    let lastNum = currPage - (currPage % 5) + 5;
-    
-    const postsData = (posts) => {
-        if(posts){
-          let result = posts.slice(offset, offset + limit);
-          return result;
-        }
-      }
+    let firstNum = currPage - (currPage % 5) + 1
+    let lastNum = currPage - (currPage % 5) + 5
     
     // 검색
     const [searchKeyword, setSearchKeyword] = useState('');
@@ -229,6 +222,7 @@ const Message = () => {
         }
 
     }
+    // 읽음/ 안읽음
     const onClickRead = async() => {
         const response = await Api.messageRead(checkItems);
         if(response.data){
@@ -238,7 +232,6 @@ const Message = () => {
             console.log("읽음"+response.data);
         }
     }
-
     useEffect(() => {
         const messageData = async () => {
             try{
