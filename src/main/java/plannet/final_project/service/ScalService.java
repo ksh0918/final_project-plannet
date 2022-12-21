@@ -311,6 +311,7 @@ public class ScalService {
             }
             shareDTO.setOk(true);
             shareDTO.setCalName(scal.getCalName()); // 캘린더 이름
+            shareDTO.setCalOwner(scal.getUserId().getId());
             shareDTO.setMemberList(memberList);
         } catch (Exception e) {
             shareDTO.setOk(false);
