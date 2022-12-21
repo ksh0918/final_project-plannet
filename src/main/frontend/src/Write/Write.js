@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import styled from "styled-components";
 import Api from "../api/plannetApi";
 import Nav from "../Utill/Nav";
@@ -251,9 +251,11 @@ const Write = () => {
             <TopBar sideBar={sideBar} setSideBar={setSideBar}/>
             <Section id="write" className="section">
                 <div className="btnbox">
-                    <button className="backbtn" onClick={onClickSave}>
-                        <i className="bi bi-chevron-compact-left"/>{date}
-                    </button>
+                    <Link to='/home'>
+                        <button className="backbtn">
+                            <i className="bi bi-chevron-compact-left"/>{date}
+                        </button>
+                    </Link>
                 </div>
                 <div className="plan_it sub_box">
                     <h2>Plan it</h2>
