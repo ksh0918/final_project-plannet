@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { ReactComponent as LogoImg } from "../Images/planet-001.svg";
+import { ReactComponent as LogoImg } from "../Images/plannet-001.svg";
 import Api from "../api/plannetApi";
 import Modal from "../Utill/Modal";
 import "./Join.scss"
