@@ -5,6 +5,7 @@ import Nav from "../Utill/Nav";
 import Api from "../api/plannetApi";
 import Modal from "../Utill/Modal";
 import ProImg from "./ProImg";
+import TopBar from '../Utill/TopBar';
 
 
 const Wrap = styled.div`
@@ -256,10 +257,15 @@ const Setting = () => {
         } 
     }
 
+    //미디어쿼리시 nav 사이드바
+    const [sideBar, setSideBar] = useState(false);
+
     return (
         <Wrap>
-            <Nav/>
-            <Section>
+            <Nav sideBar={sideBar} setSideBar={setSideBar}/>
+            <div className={`back ${sideBar? 'back_side_open':''}`}/>
+            <TopBar sideBar={sideBar} setSideBar={setSideBar}/>
+            <Section id="setting" className="section">
                 <div className="setting">
                     <h2>Setting</h2>
                     <ProImg userId={userId} setUserImgName={setUserImgName} setUserImgUrl={setUserImgUrl} userImgUrl={userImgUrl}/>

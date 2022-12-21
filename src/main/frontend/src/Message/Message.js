@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from 'styled-components';
 import Nav from '../Utill/Nav';
 import Api from "../api/plannetApi";
+import Modal from '../Utill/Modal';
 
 const Wrap = styled.div`
     width: 1130px;
@@ -33,8 +34,23 @@ const Section = styled.div`
             margin-top: 10px;
             margin-bottom: 15px;
         }
+        .readBtn{
+            cursor: pointer;
+            font-weight: 600;
+            float: right;
+            font-size: 16px;
+            padding: 8px 35px;
+            border-radius: 25px;
+            background-color: #333;
+            color: white;
+            border: none;
+            transition: all .1s ease-in;
+            &:hover{background-color: #666;
+                color: #888;}
+        }
         .sendBtn{
             cursor: pointer;
+            margin-right: 10px;
             font-weight: 600;
             float: right;
             font-size: 16px;
@@ -83,7 +99,7 @@ const Section = styled.div`
         td:first-child {
             border-left: none
         };
-        td:nth-child(2) {
+        td:nth-child(4) {
             width: 400px; 
             text-align: left; 
             padding-left: 20px;
@@ -128,17 +144,44 @@ const Section = styled.div`
         }
     }
 `;
-
 const Message = () => {
     const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
-    const [mNotiCount,setmNotiCount] = useState("");
+    const [checkItems, setCheckItems] = useState([]);
+    
     const onClickToCreate = () => {
         const link = "/send"
         navigate(link);
     }
-    const [messageList, setMessageList] = useState([]); // boardList 불러오기
     
+    const [messageList, setMessageList] = useState([]); // boardList 불러오기
+
+    // 체크박스 전체 선택
+    const handleAllCheck = (checked) => {
+        if(checked) {
+        // 전체 선택 클릭 시 데이터의 모든 쪽지 번호를 담은 배열로 checkItems 상태 업데이트
+        const messageArray = [];
+        messageList.forEach((e) => messageArray.push(e.messageNo));
+        console.log("messageNo : " + messageArray);
+        setCheckItems(messageArray);
+        }
+        else {
+        // 전체 선택 해제 시 checkItems 를 빈 배열로 상태 업데이트
+        setCheckItems([]);
+        }
+    }
+     // 체크박스 단일 선택
+    const handleSingleCheck = (checked, messageNo) => {
+        if (checked) {
+            setCheckItems(prev => [...prev,messageNo]); // 체크된 쪽지 번호를 배열에 추가
+            console.log("checkItems : " + checkItems.toString());
+        } else {
+            // 단일 선택 해제 시 체크된 아이템을 제외한 배열 (필터)
+            setCheckItems(checkItems.filter((e) => e !== messageNo)); // 체크된 쪽지 번호를 배열에서 삭제
+            console.log("checkItems ddddd: " + checkItems.toString());
+        }
+    };
+
     // 페이지네이션
     const limit = 12; // 페이지당 게시물 수 (현재는 12개 고정)
     const [page, setPage] = useState(1); // 현재 페이지 번호
@@ -154,8 +197,7 @@ const Message = () => {
           return result;
         }
       }
-  
-
+    
     // 검색
     const [searchKeyword, setSearchKeyword] = useState('');
     const onClickSearch = async () => {
@@ -176,13 +218,33 @@ const Message = () => {
             setSearchKeyword(''); // 검색 후 검색창 빈칸으로 만들기
         }
     }
+    // 삭제하기
+    const onClickDelete = async() => {
+        const response = await Api.messageDelete(checkItems);
+        if(response.data){
+            navigate(0);
+        }
+        else{
+            console.log(response.data);
+        }
+
+    }
+    const onClickRead = async() => {
+        const response = await Api.messageRead(checkItems);
+        if(response.data){
+            navigate(0);
+        }
+        else{
+            console.log("읽음"+response.data);
+        }
+    }
+
     useEffect(() => {
         const messageData = async () => {
             try{
                 const result = await Api.messageList(getId);
                 setMessageList(result.data);
-                setmNotiCount(result.data.notiList.length);
-                window.localStorage.setItem("messageNotiCount", mNotiCount);
+                console.log(result.data);
             }catch(e){
                 console.log(e);
             }
@@ -197,25 +259,36 @@ const Message = () => {
                     <h2>Message</h2>
                     <p>
                         <span>Plannet 친구들과 소통해 보세요!</span>
+                        <button onClick={onClickRead} className="readBtn">읽음</button>
                         <button onClick={onClickToCreate} className="sendBtn">쪽지쓰기</button>
-                        <button className="deleteBtn">선택삭제</button>
+                        <button onClick={onClickDelete} className="deleteBtn">선택삭제</button>
                     </p>
                     <table>
                         <tr>
-                            <th><input type="checkbox" id="checkall"/></th>
+                            <th><input type='checkbox' name="select_all"
+                                onChange={(e)=> handleAllCheck(e.target.checked)}
+                                checked={messageList.length === checkItems.length  && messageList.length !== 0? true : false}
+                            /></th> 
                             <th>State</th>
                             <th>Sender</th>
                             <th>Detail</th>
-                            <th>Date</th>
+                            <th>SendDate</th>
                         </tr>
-                        {messageList.slice(offset,offset+limit).map(({isRead,sendId,detail,sendDate,receiveId})=>(
-                            <tr key={receiveId}>
-                                <td><input type="checkbox" id="checkone"/></td>
-                                <td>{isRead}</td>
-                                <td>{sendId}</td>
-                                <td>{detail}</td>
-                                <td>{sendDate.substring(0, 10)}</td>
+                        {messageList.slice(offset,offset+limit).map(message=>(
+                            <tr key={message.receiveId}>
+                                <td><input type="checkbox" name={`select-${message.messageNo}`}
+                                    onChange={(e) => handleSingleCheck(e.target.checked, message.messageNo)}
+                                    //  checkItems 에 해당 쪽지의 postNum 이 있으면 true, 아니면 false
+                                    checked={checkItems.includes(message.messageNo) ? true : false}
+                                /></td> 
+                                <td>{
+                                    message.isRead===0?"안읽음":"읽음"
+                                }</td>
+                                <td>{message.sendId}</td>
+                                <td>{<div className='detail' dangerouslySetInnerHTML={{__html: message.detail}}></div>}</td>
+                                <td>{message.sendDate}</td>
                             </tr>
+                            
                         ))}
                     </table>
                 </div>

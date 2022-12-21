@@ -1,0 +1,255 @@
+@media screen and (max-width : 640px) {
+    #friend{
+        h2{
+            span{
+                &:first-child{display: none;}
+                &:last-child{display: block;}
+            }
+        }
+    }
+}
+@media screen and (max-width : 767px) {
+    html{background: white;}
+    //main
+    #main{
+        flex-direction: column;
+        >div{
+            width: 100vw;
+            h1, h2{display: none;} 
+            &:first-of-type{
+                height: 45vh;
+                svg{width: 45vw; height: 30vh; max-width: 50vh; max-height: 30vw;}
+                .wrap{
+                    height: auto;
+                    bottom: 20px;
+                    top: auto;
+                    left:50%;
+                    transform: translateX(-50%);
+                    >div:first-of-type{
+                        font-size: 48px; 
+                        width: 22ch; 
+                        animation: typing 2s steps(100);
+                        white-space: nowrap;
+                        overflow: hidden;
+                    }
+                    >div:last-of-type{
+                        font-size: 24px;
+                        width: 22ch; 
+                        animation: typing2 2s steps(100);
+                        white-space: nowrap;
+                        overflow: hidden;
+                    }
+                }
+            }
+            @keyframes typing {from {width: 0}}
+            @keyframes typing2 {from {width: 0}30%{width: 0}}
+            &:nth-of-type(2){
+                height: 55vh;
+                margin: 0;
+                justify-content:flex-start;
+                >div{
+                    padding: 20px 0 40px;
+                    width: auto;
+                    line-height: 1.4;
+                    font-weight: 400;
+                    font-size: 13px;
+                    color: #555;
+                    text-align: center;
+                }
+                >div, a{
+                    margin: 0 auto;
+                }
+                .doLogin{
+                    width: 250px;
+                    line-height: 35px;
+                    height: 37px;
+                    padding: 0;
+                    margin-bottom: 8px;
+                    border-radius: 21.5px;
+                    border: 1px solid rgb(69, 85, 174);
+                    background-color: rgba(255,255,255);
+                    color: #4555ae;
+                    &:hover{
+                        background-color: rgb(69, 85, 174);
+                        color: white;
+                    }
+                }
+            }
+
+        }
+    }
+    //home
+    #home, #scalHome{
+        .plan, .etc{
+            float: none;
+            width: 100vw;
+            height: auto !important;
+        }
+        .list{display: none;}
+        .etc{padding-left: 30px; height: 480px;}
+        .moti{display: none;}
+        .moti2{display: block;}
+        .etc textarea {height: 240px !important;}
+    }
+    //write
+    #write, #scalWrite{
+        .plan_it{
+            input[type="text"], span:first-of-type {width: calc(100% - 150px);}
+            span:first-of-type{height: 16px; overflow: hidden; text-overflow: ellipsis; white-space:nowrap}
+        }
+    }
+    //board
+    #board{
+        table{
+            border-top: 1px solid #4555AE;
+            th, td:nth-child(4){display: none;}
+            td{display: block; float: left;}
+
+            tr:first-child td{
+                border-top: none;
+            }
+
+            td:first-child{
+                border-bottom: none;
+                height: 74px;
+                line-height: 60px;
+            }
+            td:nth-child(2){
+                width: calc(100% - 80px) !important;
+                border-left: none;
+                font-weight: 600; 
+            }
+            td:nth-child(3){
+                font-size: 13px;
+                border-top: none;
+                width: auto;
+                padding-right: 0px;
+                padding-top: 5px;
+                border-left: none;
+                &:after{
+                    content: '';
+                    line-height: 16px;
+                    border-right: 1px solid #bbb;
+                    margin-left: 10px;
+                }
+            }
+            td:nth-child(5){
+                padding-top: 5px;
+                font-size: 13px;
+                border-top: none;
+                border-left: none;
+                width: auto;
+                text-align: left;
+            }
+        }
+        .util_box {
+            ul{width: 250px;}
+            .search{
+                width: calc(100% - 250px);
+                max-width: 200px;
+                input{width: calc(100% - 24px)};
+            }
+        }
+    }
+    //friend
+    #friend{
+        ul li{
+            padding: 10px 13px;
+            >div:first-child{
+                p{
+                    letter-spacing: -1px;
+                    &:first-child{
+                        word-break: break-all;
+                    }
+                }
+            }
+            >div:last-child{
+                font-size: 14px;
+                letter-spacing: -1px;
+            }
+
+        }
+        .noti{
+            div:last-of-type, div:last-of-type i{
+                font-size: calc(0.6em + 1vw);
+            }
+        }
+    }
+}
+@media screen and (max-width : 799px) {
+    #terms{
+        >div:nth-of-type(2){
+            width: 90vw;
+        }
+    }
+}
+
+@media screen and (max-width : 1129px) {
+    //공통
+    #nav, .section{float: none !important; position: absolute;}
+    .section{z-index: 0; height: calc(100vh - 100px) !important; width: 100vw !important;}
+    #topbar{display: block;}
+    #nav{transition: right .7s ease-in; right: -280px; position: fixed; z-index: 2;}
+    .back_side_open{opacity: .7; visibility: visible;}
+    .copy{width: 100vw; float: none;}
+
+    //setting, board, postView, edit, create, friend 공통
+    #setting, #board, #postView, #edit, #create, #friend, #scalCreate {
+        .board_list, .setting, .friend, .noti, .scalCreate{padding-top: 5px;}
+        h2{margin-top: 20px;}
+    }
+    //home
+    #home, #scalHome{
+        .react-calendar{width:100% !important;}
+        .plan, .etc{padding-top: 5px;}
+        .list{
+            padding-top: 0;
+            h2{margin-top: 0px;}
+        }
+        h2{margin-top: 20px;}
+    }
+    //write
+    #write, #scalWrite {
+        .sub_box{padding-top: 5px;}
+        .btnbox{height: 60px; line-height: 40px; }
+        h2{margin-top: 0px;}
+    }
+    //postView
+    #postView {
+        table{
+            table-layout: fixed;
+            td:first-child {width: 100px;}
+            td:last-child {width: 140px;}
+        }
+    }
+    //comment
+    .comment_box{
+        table{
+            table-layout: fixed;
+            td:first-child {width: 100px !important;}
+            td:nth-child(2){width: calc(100% - 240px);}
+            td:last-child {width: 140px;}
+        }
+    }
+}
+@media screen and (max-height: 799px) {
+    //회원가입 약관/회원가입/로그인/아이디비밀번호찾기 공통
+    #terms, #join, #doLogin, #find{
+        justify-content:flex-start;
+        overflow-y: scroll;
+        >div:first-child{
+            margin: 30px auto 10px;
+        }
+    }
+    #terms {
+        .check{
+            padding: 5px 20px;
+            &:nth-child(2){padding-top: 0;}
+            textarea{
+                height: 80px;
+            }
+        }
+        
+    }
+    
+}

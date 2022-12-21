@@ -219,68 +219,66 @@ const Join = () => {
     }
 
     return(
-        <>
-            <ContainerJoin>
-                <Logo><LogoImg width="90px" viewBox="30 150 430 220"/><Link to="/" className="logo">Plannet</Link></Logo>
-                <div className="session">
-                    <p>
-                        아이디*
-                        {inputId.length > 0 && <span>{idMessage}</span>}
-                    </p>
-                    <input placeholder="아이디" value ={inputId} onChange={onChangId} type={'text'} onBlur={onBlurIdCheck}/>
+        <ContainerJoin id="join">
+            <Logo><LogoImg width="90px" viewBox="30 150 430 220"/><Link to="/" className="logo">Plannet</Link></Logo>
+            <div className="session">
+                <p>
+                    아이디*
+                    {inputId.length > 0 && <span>{idMessage}</span>}
+                </p>
+                <input placeholder="아이디" value ={inputId} onChange={onChangId} type={'text'} onBlur={onBlurIdCheck}/>
+            </div>
+            <div className="session">
+                <p>
+                    비밀번호*
+                    {inputPw.length > 0 && <span>{pwMessage}</span>}
+                </p>
+                <input type='password' placeholder="패스워드" value ={inputPw} onChange={onChangePw}/>
+            </div>
+            <div className="session">
+                <p>
+                    비밀번호 확인
+                    {inputPw.length > 0 && <span>{conPwMessage}</span>}
+                </p>
+                <input type='password' placeholder="패스워드 확인" value={inputConPw} onChange={onChangeConPw}/>
+            </div>
+            <div className="session">
+                <p>이름*</p>
+                <input type='text'placeholder="이름" value={inputName} onChange={onChangeName} maxLength={30}/>
+            </div>
+            <div className="session">
+                <p>
+                    닉네임*
+                    {inputNickname.length > 0 && <span>{nicknameMessage}</span>}
+                </p>
+                <input type='text' placeholder="닉네임" value={inputNickname} onChange={onChangeNickname} onBlur={onBlurNicknameCheck} maxLength={20}/>
+            </div>
+            <div className="session">
+                <p>
+                    이메일*
+                    {inputEmail.length > 0 && <span>{emailMessage}</span>}
+                </p>
+                <div className='email_auth'>
+                    <input type='email' placeholder="이메일" value={inputEmail}  onChange={onChangeEmail} onBlur={onBlurEmailCheck}/>
+                    <button type='button' onClick={onClickAuth} disabled={!clickAuth}>인증번호 받기</button>
                 </div>
-                <div className="session">
-                    <p>
-                        비밀번호*
-                        {inputPw.length > 0 && <span>{pwMessage}</span>}
-                    </p>
-                    <input type='password' placeholder="패스워드" value ={inputPw} onChange={onChangePw}/>
+                <div className='email_auth'>
+                    <input type='text'placeholder="인증번호 확인" value = {inputAuth} onChange={onChangeAuth} disabled={!clickAuth}></input>
+                    <button type='button' onClick={onCheckAuth} disabled={!clickAuth}>인증하기</button>
                 </div>
-                <div className="session">
-                    <p>
-                        비밀번호 확인
-                        {inputPw.length > 0 && <span>{conPwMessage}</span>}
-                    </p>
-                    <input type='password' placeholder="패스워드 확인" value={inputConPw} onChange={onChangeConPw}/>
-                </div>
-                <div className="session">
-                    <p>이름*</p>
-                    <input type='text'placeholder="이름" value={inputName} onChange={onChangeName} maxLength={30}/>
-                </div>
-                <div className="session">
-                    <p>
-                        닉네임*
-                        {inputNickname.length > 0 && <span>{nicknameMessage}</span>}
-                    </p>
-                    <input type='text' placeholder="닉네임" value={inputNickname} onChange={onChangeNickname} onBlur={onBlurNicknameCheck} maxLength={20}/>
-                </div>
-                <div className="session">
-                    <p>
-                        이메일*
-                        {inputEmail.length > 0 && <span>{emailMessage}</span>}
-                    </p>
-                    <div className='email_auth'>
-                        <input type='email' placeholder="이메일" value={inputEmail}  onChange={onChangeEmail} onBlur={onBlurEmailCheck}/>
-                        <button type='button' onClick={onClickAuth} disabled={!clickAuth}>인증번호 받기</button>
-                    </div>
-                    <div className='email_auth'>
-                        <input type='text'placeholder="인증번호 확인" value = {inputAuth} onChange={onChangeAuth} disabled={!clickAuth}></input>
-                        <button type='button' onClick={onCheckAuth} disabled={!clickAuth}>인증하기</button>
-                    </div>
-                    
-                </div>
-                <div className="session">
-                    <p>
-                        전화번호
-                        {inputTel.length > 0 && <span>{telMessage}</span>}
-                    </p>
-                    <input type='tel' placeholder="휴대폰번호('-' 제외)" value={inputTel} onChange={onChangeTel} onBlur={onBlurTelCheck} onKeyDown={onKeyDownJoin}/>
-                </div>
-                <div className="session">
-                    <button onClick={onClickJoin} disabled={!(isId && isPw && isConPw && isName && isNickname &&isEmail && isTel && isAuth)}>가입하기</button>
-                </div>
-            </ContainerJoin>
-        </> 
+                
+            </div>
+            <div className="session">
+                <p>
+                    전화번호
+                    {inputTel.length > 0 && <span>{telMessage}</span>}
+                </p>
+                <input type='tel' placeholder="휴대폰번호('-' 제외)" value={inputTel} onChange={onChangeTel} onBlur={onBlurTelCheck} onKeyDown={onKeyDownJoin}/>
+            </div>
+            <div className="session">
+                <button onClick={onClickJoin} disabled={!(isId && isPw && isConPw && isName && isNickname &&isEmail && isTel && isAuth)}>가입하기</button>
+            </div>
+        </ContainerJoin>
     );
 };
 

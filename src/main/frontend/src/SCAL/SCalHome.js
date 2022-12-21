@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useLocation, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from 'styled-components';
 import Calendar from '../Home/Calendar';
 import Nav from '../Utill/Nav';
 import Memo from '../Home/Memo';
 import List from '../Home/List';
 import Api from "../api/plannetApi";
+import TopBar from '../Utill/TopBar';
 
 const Wrap = styled.div`
     width: 1130px;
@@ -76,12 +77,41 @@ const Section = styled.div`
             border-radius: 5px;
             border: 2px solid #f9f9f9;
             transition: all .1s ease-in;
+            overflow-y: scroll;
+            &::-webkit-scrollbar {
+                width: 20px;
+                padding: 15px;
+            }
+            &::-webkit-scrollbar-thumb {
+                height: 30%; /* 스크롤바의 길이 */
+                background: #ddd; /* 스크롤바의 색상 */
+                border-radius: 10px;
+                border: 7px solid transparent;
+                background-clip: padding-box;
+            }
+            &::-webkit-scrollbar-track {
+                background: none;
+                /*스크롤바 뒷 배경 색상*/
+            }
             ul{
                 li{
                     list-style-type: disc;
                     margin-left: 24px;
                     line-height: 22px;
-                    span{color:#bbb; font-weight: 200;}
+                    span:first-child{
+                        display: inline-block;
+                        max-width: calc(100% - 50px);
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        vertical-align: middle;
+                    }
+                    span:last-child{
+                        color:#bbb; 
+                        font-weight: 200;
+                        display: inline-block;
+                        vertical-align: middle;
+                    }
                     &::marker{
                         color: #aed0f5;
                     }
@@ -177,48 +207,44 @@ const SCalHome = () => {
     const [memberEndMark, setMemberEndMark] = useState([]);
     const [memberList, setMemberList] = useState([{}]);
 
-    const isExistsChecked = false;
-    const isExists = (element) => {
-        if(element.id == getId) {
-            isExistsChecked = true;
-        }
-    }
-
     useEffect(() => {
         const scalHome = async() => {
-            try{
+            try {
                 const response = await Api.sharingHome(getNum);
                 // 다른 사용자의 게시물 Edit 페이지에 아예 주소접근으로도 못 하게 방지
-                // EB에서 가져온 memberList 정보에서 사용자의 id가 존재하지 않으면 접근불가
+                // DB에서 가져온 memberList 정보에서 사용자의 id가 존재하지 않으면 접근불가
                 const memberListData = response.data.memberList;
-                memberListData.filter(isExists);
-                if (!isExistsChecked) {
+                let isExistsChecked = false;
+                memberListData.map(({id}) => {
+                    if (id == getId) isExistsChecked = true;});
+                if (isExistsChecked) {
+                    setScalData(response.data);
+                    setMemberDoMark(response.data.planMark[0]);
+                    setMemberEndMark(response.data.planMark[1]);
+                    setMemberList(memberListData);
+                } else {
                     alert("본인이 속한 캘린더만 접근할 수 있습니다.")
                     navigate("/home");
-                    return; 
                 }
-                setScalData(response.data)
-                setMemberDoMark(response.data.planMark[0]);
-                setMemberEndMark(response.data.planMark[1]); 
-                setMemberList(memberListData);
             } catch(e){
                 console.log(e);
             }
         }
         scalHome();
-    },[getId]);
-    
-    console.log(memberList);
-    console.log(scalData);
+    },[getNum]);
 
     const onClickSetting = () => {
-        //해당캘린더의 설정페이지로 옮겨가는 부분 구현 필요
+        navigate("/scal/info/" + getNum);
     }
+    //미디어쿼리시 nav 사이드바
+    const [sideBar, setSideBar] = useState(false);
 
     return (
         <Wrap>
-            <Nav/>
-            <Section>
+            <Nav sideBar={sideBar} setSideBar={setSideBar}/>
+            <div className={`back ${sideBar? 'back_side_open':''}`}/>
+            <TopBar sideBar={sideBar} setSideBar={setSideBar}/>
+            <Section id="scalHome" className="section">
                 <div className="plan">
                     <h2>{scalData.calName}<i className="bi bi-gear-fill" onClick={onClickSetting}/></h2>
                     <Calendar doMark={memberDoMark} endMark={memberEndMark}/>
@@ -235,7 +261,7 @@ const SCalHome = () => {
                                 <ul>
                                     {/* memberList */}
                                     {memberList.map((e) => {
-                                        if(e.isOwner) return(<li style={{listStyleImage:'url(/crown.svg)'}} className="owner">{e.nickname} <span>#{e.userCode}</span></li>);
+                                        if(e.isOwner) return(<li style={{listStyleImage:'url(/crown.svg)'}} className="owner"><span>{e.nickname}</span> <span>#{e.userCode}</span></li>);
                                         else return(<li>{e.nickname} <span>#{e.userCode}</span></li>);
                                     })}
                                 </ul> :

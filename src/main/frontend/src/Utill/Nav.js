@@ -203,15 +203,31 @@ const Box = styled.div`
             }
         }
     }
+    >i{
+        position: absolute;
+        left: -70px;
+        font-size: 50px;
+        padding: 5px;
+        color: white;
+        opacity: 1;
+        cursor: pointer;
+        transition: all 0.7s ease-in;
+        visibility: visible;
+    }
+    .side_bar_open{
+        opacity: 0;
+        visibility: hidden;
+    }
 `;
 
-const Nav = () => {
+const Nav = ({sideBar, setSideBar}) => {
     const navigate = useNavigate();
     const userId = window.localStorage.getItem("userId");
     const [userInfo, setUserInfo] = useState("");
     const [scalInfo, setScalInfo] = useState("");
     const [proHeight, setProHeight] = useState("");
-    
+    const [fNotiCount,setfNotiCount] = useState();
+    const [mNotiCount,setmNotiCount] = useState();
     useEffect(() => {
         const userInfoLoad = async() => {
             try{
@@ -220,6 +236,12 @@ const Nav = () => {
                 setScalInfo(response.data.scalInfo);
                 setProHeight(response.data.scalInfo.length * 47 + 390);
                 console.log(response.data);
+                const mResult = await Api.messageNoti(userId);
+                console.log(mResult.data);
+                setmNotiCount(mResult.data);
+                const result = await Api.friendPageLoad(userId);
+                if(result.data != null){setfNotiCount(Object.keys(result.data.notiList).length);}
+                else{console.log("null 값")}
             } catch(e){
                 console.log(e);
             }
@@ -233,11 +255,6 @@ const Nav = () => {
         const link = "/scal/home/" + calNo;
         navigate(link);
     };
-
-    // 친구 알림 띄우기
-    const fNotiCount = window.localStorage.getItem("friendNotiCount");
-    // 쪽지 알림 띄우기
-    const mNotiCount = window.localStorage.getItem("messageNotiCount");
 
     // 로그아웃 팝업
     const [comment, setCommnet] = useState("");
@@ -255,13 +272,18 @@ const Nav = () => {
         navigate("/home");
     }
 
-    //유저정보가져오기
+    //로고 색상
     const logoStyle = {
     fill:
-  "linear-gradient(217deg, rgb(0, 82, 212, .8), rgba(255,0,0,0) 70.71%), linear-gradient(127deg, rgb(66, 99, 247, .8), rgba(0,255,0,0) 70.71%), linear-gradient(336deg, rgb(111, 177, 252, .8), rgba(0,0,255,0) 70.71%)"};
+    "linear-gradient(217deg, rgb(0, 82, 212, .8), rgba(255,0,0,0) 70.71%), linear-gradient(127deg, rgb(66, 99, 247, .8), rgba(0,255,0,0) 70.71%), linear-gradient(336deg, rgb(111, 177, 252, .8), rgba(0,0,255,0) 70.71%)"};
+
+    const onClickCloseNav = () => {
+        setSideBar(false);
+    }
 
     return (
-        <Box>
+        <Box id="nav" style={sideBar? {right: '0'} : {right: '-280px'}}>
+            <i className={`bi bi-x-lg ${!sideBar? 'side_bar_open' : ''}`} onClick={onClickCloseNav}/>
             <div className="logo" onClick={onClickLogo}>
                 <Logo style={logoStyle}/>
                 <h1>plannet</h1>

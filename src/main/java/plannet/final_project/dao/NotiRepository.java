@@ -8,8 +8,8 @@ import plannet.final_project.entity.SCAL;
 import java.util.List;
 
 public interface NotiRepository extends JpaRepository<Noti,Long> {
-    Noti findByUserIdAndReceiveId(Member send, Member receive);
     List<Noti> findByReceiveIdAndIsChecked(Member member, int isChecked);
-
     Noti findByReceiveIdAndIsCheckedAndCalNo(Member userId, int i, SCAL scal);
+    List<Noti> findByUserIdAndReceiveIdAndTypeAndIsChecked(Member send, Member recive, String f, int i);
+    void deleteByEtc(SCAL calNo);
 }

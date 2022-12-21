@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import styled from "styled-components";
 import Api from "../api/plannetApi";
 import Nav from "../Utill/Nav";
 import PlanList from "./PlanList";
 import Swal from 'sweetalert';
+import TopBar from '../Utill/TopBar';
 
 const Wrap = styled.div`
     width: 1130px;
@@ -47,7 +48,7 @@ const Section = styled.div`
             vertical-align: middle;
             transition: all .1s ease-in;
         }
-        button.back {
+        button.backbtn {
             font-weight: 300;
             font-size: 16px; 
             vertical-align: middle;
@@ -159,12 +160,13 @@ const Section = styled.div`
             height: 280px;
             textarea {
                 line-height: 1.4;
-                width: 765px;
+                width: calc(100% + 15px);
                 height: 240px;
                 border: none;
                 resize: none;
                 background: none;
                 overflow-y: scroll;
+                word-break: break-all;
                 &:focus {outline: none;}
                 &::-webkit-scrollbar {
                     width: 20px;
@@ -196,22 +198,7 @@ const Write = () => {
     const getId = window.localStorage.getItem("userId");
     const isPage = "개인";
 
-    // 뒤로가기 시 경고창 등장
-    window.onpopstate = (event) =>{
-        event.preventDefault();
-        if(event){
-            console.log('if문 안');
-            console.log(event);
-            Swal({
-                title : "저장이 되지 않습니다!",
-                text : "저장을 누르지 않고 뒤로가기 시에 저장이 되지 않습니다.",
-                icon : "warning",
-                buttons : "확인",
-            })
-        };
-        console.log("뒤로가기");
-    };
-    // 새로고침 시 경고 창 등장    
+    // 변경사항이 있는데 사이트 이동하려고 할 시 경고 창 등장    
     window.addEventListener('beforeunload', (event) => {
         event.preventDefault(); // 표준에 따라 기본 동작 방지
         event.returnValue = ''; // Chrome에서는 returnValue 설정이 필요함
@@ -254,14 +241,21 @@ const Write = () => {
         navigate("/home");
     }
     
+    //미디어쿼리시 nav 사이드바
+    const [sideBar, setSideBar] = useState(false);
+
     return (
         <Wrap>
-            <Nav/>
-            <Section>
+            <Nav sideBar={sideBar} setSideBar={setSideBar}/>
+            <div className={`back ${sideBar? 'back_side_open':''}`}/>
+            <TopBar sideBar={sideBar} setSideBar={setSideBar}/>
+            <Section id="write" className="section">
                 <div className="btnbox">
-                    <button className="back" onClick={onClickSave}>
-                        <i className="bi bi-chevron-compact-left"/>{date}
-                    </button>
+                    <Link to='/home'>
+                        <button className="backbtn">
+                            <i className="bi bi-chevron-compact-left"/>{date}
+                        </button>
+                    </Link>
                 </div>
                 <div className="plan_it sub_box">
                     <h2>Plan it</h2>

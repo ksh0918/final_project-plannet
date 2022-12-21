@@ -40,7 +40,6 @@ public class NotiService {
         //친구추가를 할 수 있는 유저라면 1
         //친구추가가 되어있다면 2
         int result = 0;
-        log.warn("서비스 들어옴");
         try {
             // 내 정보(친구요청을 보내는 사용자의 정보를 찾는다)
             Member send = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
@@ -52,21 +51,21 @@ public class NotiService {
                 return result;
             } else { //해당 유저가 있음
                 //자신에게 친구추가를 신청한 경우 5
-                System.out.println(recive.getId() + "aaaaaa" + id);
                 if(id.equals(recive.getId())) {
                     result = 5;
                 } else {
                     //타인에게 걸었을 경우 친구인지 확인
                     Friend isFriend = friendRepository.findByUserIdAndFriendId(send, recive);
+                    log.warn(String.valueOf(isFriend));
                     if(isFriend == null) { //친구가 아니라면
                         //내가 이미 보낸 요청 사항이 있는지 확인한다.
-                        Noti alreadySend = notiRepository.findByUserIdAndReceiveId(send, recive);
-                        Noti alreadyReceive = notiRepository.findByUserIdAndReceiveId(recive, send);
+                        List<Noti> alreadySend = notiRepository.findByUserIdAndReceiveIdAndTypeAndIsChecked(send, recive, "F", 0);
+                        List<Noti> alreadyReceive = notiRepository.findByUserIdAndReceiveIdAndTypeAndIsChecked(recive, send, "F", 0);
                         // 이미 내가 보낸 요청사항이 있음
-                        if(alreadySend != null && alreadySend.getType().equals("F") && alreadySend.getIsChecked() == 0) {
+                        if(alreadySend.size() != 0) {
                             result = 3;
                         // 상대가 보낸 요청사항이 있음
-                        } else if(alreadyReceive != null && alreadyReceive.getType().equals("F") && alreadyReceive.getIsChecked() == 0) {
+                        } else if(alreadyReceive.size() != 0) {
                             result = 4;
                         } else { //상호 요청사항이 없고, 친구도 아님
                             Noti noti = new Noti();

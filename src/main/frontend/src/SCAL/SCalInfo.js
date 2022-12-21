@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from "styled-components";
 import Api from "../api/plannetApi";
 import Nav from "../Utill/Nav";
+// import SCalFriendList from './SCalFriendList';
 import FriendList from '../Friend/FriendList';
+
 import Modal from '../Utill/Modal';
-import TopBar from "../Utill/TopBar";
 
 const Wrap = styled.div`
     width: 1130px;
@@ -35,43 +36,37 @@ const Section = styled.div`
         background: none;
         /*스크롤바 뒷 배경 색상*/
     }
+    div {
+        padding-top: 30px;
+    }
     h2 {
       font-size: 28px;
       font-weight: 900;
-      margin-top: 35px;
+      margin-top: 20px;
       margin-bottom: 10px;
-      span{
-        font-size: 20px;
-        font-weight: 400;
-      }
     }
      .scalCreate {
-        padding: 10px 30px;
+        padding: 28px;
         .scalForm {
-            padding-top: 10px;
             display:flex;
             justify-content:center;
             align-items: center;
             flex-direction: column;
-            >div>p {
+           p {
                 align-items: flex-start;
-                font-size: 18px;
+                font-size: 20px;
                 font-weight: 600;
                 line-height: 18px;
-                margin:8px 0 4px;
-            }
-            .friend, .title{
-                padding: 5px 30px;
-                width: 100%;
-                max-width: 500px;
-            }
+                margin-bottom: 10px;
+           }
             .title {
+                padding: 10px 30px;
+                width: 500px;
                 margin-top: 0;
                 input {
                     padding: 0 15px;
                     border-radius: 5px;
-                    width: 100%;
-                    max-width: 440px;
+                    width: 440px;
                     height: 30px;
                     color: #333;
                     background: #e8f0fe;
@@ -88,20 +83,24 @@ const Section = styled.div`
                     &::placeholder {
                         color: #bbb;
                     }
+                    &:read-only{
+                        background-color: #eee;
+                        color: #aaa;
+                    }
                 }
             }
             .friend{
+                width: 500px;
+                padding: 20px 30px;
                 .friend_search{
                     margin: 0;
-                    width: 100%;
+                    width: 444px;
                     height: 31px;
-                    border: 2px solid #ddd;
-                    padding: 0 13px;
-                    border-radius: 5px;
+                    border: solid 2px #ddd;
+                    padding: 0;
                     input {
-                        width: 100%;
-                        max-width: 410px;
-                        height: 27px;
+                        width: 410px;
+                        height: 25px;
                         border: 0px;
                         outline: none;
                         margin: 0;
@@ -109,67 +108,70 @@ const Section = styled.div`
                 }
             }
             .friend_list {
-                p {font-size: 15px}
-                .is_list{
-                    height: 500px;
+                height: 500px;
+                padding:0;
+                p {
+                    font-size: 15px;
                 }
-                .scal_add {
-                    margin-top: 10px;
-                    button {
-                        cursor: pointer;
-                        font-weight: 600;
-                        float: right;
-                        font-size: 16px;
-                        padding: 8px 35px;
-                        border-radius: 25px;
-                        background-color: #333;
-                        color: white;
-                        border: none;
-                        transition: all .1s ease-in;
-                        &:hover{
-                            background-color: #666;
-                            color: #888;
-                        }
+            }
+            .scal_add, .scal_delete {
+                padding : 0;
+                button {
+                    cursor: pointer;
+                    font-weight: 600;
+                    float: right;
+                    font-size: 16px;
+                    padding: 8px 35px;
+                    border-radius: 25px;
+                    background-color: #333;
+                    color: white;
+                    border: none;
+                    transition: all .1s ease-in;
+                    &:hover{
+                        background-color: #666;
+                        color: #888;
                     }
                 }
-            } 
+            }
         }
     }
 `;
 
-    const SCalCreate = () => {
+const SCalSetting = () => {
     const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
+    let params = useParams(); // url에서 boardNo를 가져오기 위해 uesParams() 사용
+    let getNum = params.no; // params는 객체이기 때문에 풀어줘서 다시 getNum에 대입해줌
+    
+
     const [title, setTitle] = useState(''); // 공유캘린더 이름
     const [searchKeyword, setSearchKeyword] = useState('');
     const [friendList, setFriendList] = useState();
     const [isAdd, setIsAdd] = useState(false);
+    const [owner, setOwner] = useState(''); // 공유캘린더 오너
 
-    const [comment, setCommnet] = useState("");
+    const [comment, setComment] = useState("");
     const [modalHeader, setModalHeader] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
+    const [modalOption, setModalOption] = useState('');
     const [option, setOption] = useState("");
-    const isPage = "공유캘린더";
+    const [calNo, setCalNo] = useState("");
+    const isPage = "설정";
+
 
     useEffect(() => {
-        const countCal = async() => { // 2개 이상의 scal에 참여 중이면 주소로도 공유 캘린더 생성 페이지에 접근 못하게 막음
-            const res = await Api.scalCheck(getId); //2개 이상의 scal에 참여중인지 확인 2개 이하면 true, 이상이면 false
-            if(res.data) { // 2개 이하이면 친구 목록 불러 오기
-                const myfriends = async() => {
-                    try{
-                        const response = await Api.friendPageLoad(getId); //친구 목록 불러오기
-                        setFriendList(response.data.friendList);
-                    } catch(e) {
-                        console.log(e);
-                    }
-            }
-             myfriends();
-            } else { // 3개 이상이면 알림창이 뜨고 home 페이지로 이동
-                alert('최대 공유 캘린더 개수(2개)를 넘어 공유 캘린더를 생성할 수 없습니다.');
-                navigate('/home');
+        const scalInfo = async() => {
+            try{
+                const response = await Api.scalInfo(getNum, getId);
+                console.log(response.data);
+                setTitle(response.data.calName);
+                setFriendList(response.data.calMember);
+                setOwner(response.data.calOwner);
+            } catch(e) {
+                console.log(e)
             }
         }
-        countCal();
+        scalInfo();
     },[getId]);
 
     // 공유 캘린더 이름 입력
@@ -193,36 +195,48 @@ const Section = styled.div`
             return e.nickname.toLowerCase().includes(searchKeyword); // input 검색어가 포함되어 있는 friendList배열의 객체 반환
           });
      }
-     
+
+     const onClickSCalSave = async() => {
+        await Api.scalSave(getNum, title);
+        navigate('/scal/home/' + getNum);
+     }
+     const onClickScalDelete = () => {
+        setModalOpen(true);
+        setModalHeader("공유캘린더 삭제")
+        setModalOption('삭제');
+        setComment("삭제하시겠습니까?");
+    }
+
      const closeModal = () => {
         setModalOpen(false);
     };
 
-    //미디어쿼리시 nav 사이드바
-    const [sideBar, setSideBar] = useState(false);
 
     return (
         <Wrap>
-            <Nav sideBar={sideBar} setSideBar={setSideBar}/>
-            <div className={`back ${sideBar? 'back_side_open':''}`}/>
-            <TopBar sideBar={sideBar} setSideBar={setSideBar}/>
-            <Modal open={modalOpen} close={closeModal} header={modalHeader} option={option}><p dangerouslySetInnerHTML={{__html: comment}}></p></Modal>
-            <Section id="scalCreate" className="section">
+            <Modal open={modalOpen} close={closeModal} header={modalHeader} option={option} calNo={getNum}><p dangerouslySetInnerHTML={{__html: comment}}></p></Modal>
+            <Nav></Nav>
+            <Section>
                 <div className="scalCreate">
-                    <h2>Create <span>| Share Calendar</span></h2>
+                    <h2>공유 캘린더</h2>
                     <div className="scalForm">
                         <div className="title">
-                            <p>Calendar Name</p>
+                            <p>공유 캘린더 이름</p>
                             <input onChange={onChangeTitle} value={title} placeholder="공유 캘린더 이름" />
                         </div>
                         <div className="friend">
-                            <p>Add Member</p>
+                            <p>친구 추가</p>
                             <div className="friend_search">
                             <input title="검색" placeholder="친구 닉네임을 검색해보세요" onChange={onChangeSearchKeyword} value={searchKeyword}  />
                             </div>
                             <div className="friend_list">
-                                <FriendList setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} friendList={filterNames} isAdd={isAdd} setOption={setOption} isPage={isPage} title={title}/>
+                                <FriendList setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} friendList={filterNames} isAdd={isAdd} setOption={setOption} title={title} setCalNo={setCalNo}/>
+                                <FriendList setComment={setComment} setModalHeader={setModalHeader} setModalOpen={setModalOpen} friendList={filterNames} isAdd={isAdd} setOption={setOption} title={title}/>
                             </div>
+                        </div>
+                        <div className="button-area1">
+                            <button lassName="btn scal_add" onClick={onClickSCalSave}>SAVE</button>
+                            {getId === owner ? <><button className='btn left-space scal_delete' onClick={onClickScalDelete}>DELETE</button></> : null}
                         </div>
                     </div>
                 </div>
@@ -231,4 +245,4 @@ const Section = styled.div`
         </Wrap>
     )
 }
-export default SCalCreate;
+export default SCalSetting;

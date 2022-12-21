@@ -32,12 +32,12 @@ public class ScalService {
     private final PlanRepository planRepository;
     private final SCOMRepository scomRepository;
 
-    // 공유 캘린더 생성
+    // 공유캘린더 생성
     public Long scalCreate(String userId, String title, List<Map<String, Object>> smember) {
         Long calNo;
         try {
             Member member = memberRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
-            // 공유 캘린더 설정
+            // 공유 캘린더 생성
             SCAL scal = new SCAL();
             scal.setUserId(member);
             scal.setCalName(title);
@@ -259,32 +259,33 @@ public class ScalService {
             return true;
         }
     }
-
+    // 공유캘린더 정보 조회
     public ShareDTO infoLoad(Long calNo, String id) {
         ShareDTO shareDTO = new ShareDTO();
         List<Map<String, Object>> memberList = new ArrayList<>();
         try {
-            SCAL scal = scalRepository.findById(calNo).orElseThrow(EntityNotFoundException::new);
-            List<SMEM> memberData = smemRepository.findByCalNo(scal);
+            SCAL scal = scalRepository.findById(calNo).orElseThrow(EntityNotFoundException::new); // 공유 캘린더 정보 객체
+            List<SMEM> memberData = smemRepository.findByCalNo(scal); // 공유 캘린더 멤버 정보 List
 
             if(scal.getUserId().getId().equals(id)) { // 오너인 경우
-                Member owner = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-                List<Friend> friendData = friendRepository.findByUserId(owner);
+                Member owner = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new); // 오너의 정보 객체
+                List<Friend> friendData = friendRepository.findByUserId(owner); // 오너의 친구들의 정보 List
                 List<String> memberId = new ArrayList<>();
                 for(SMEM e : memberData) {
-                    memberId.add(e.getUserId().getId());
+                    memberId.add(e.getUserId().getId()); // 공유캘린더 멤버 아이디를 List에 담아줌
                 }
-                for(Friend e : friendData) {
+                for(Friend e : friendData) { // 오너의 친구들의 정보를 Map에 담아줌
                     Map<String, Object> friend = new HashMap<>();
                     friend.put("key", e.getFriendNo());
-                    friend.put("id", e.getUserId().getId());
-                    friend.put("proImg", e.getUserId().getProImg());
-                    friend.put("nickname", e.getUserId().getNickname());
-                    friend.put("userCode", e.getUserId().getUserCode());
-                    friend.put("profile", e.getUserId().getProfile());
+                    friend.put("id", e.getFriendId().getId());
+                    friend.put("proImg", e.getFriendId().getProImg());
+                    friend.put("nickname", e.getFriendId().getNickname());
+                    friend.put("userCode", e.getFriendId().getUserCode());
+                    friend.put("profile", e.getFriendId().getProfile());
 
-                    Noti alreadyInvite = notiRepository.findByReceiveIdAndIsCheckedAndCalNo(e.getUserId(), 0, scal);
-                    if(memberId.contains(e.getUserId().getId())) { //멤버라면 1
+                    // 공유 캘린더 초대를 받은 오너의 친구의 noti 객체
+                   Noti alreadyInvite = notiRepository.findByReceiveIdAndIsCheckedAndCalNo(e.getFriendId(), 0, scal);
+                    if(memberId.contains(e.getFriendId().getId())) { //멤버라면 1
                         friend.put("status", 1);
                     } else if(alreadyInvite != null) { // 이미 초대한 기록이 있으면 2
                         friend.put("status", 2);
@@ -294,7 +295,7 @@ public class ScalService {
 
                     memberList.add(friend);
                 }
-            } else { // 오너가 아닌 경우
+            } else { // 오너가 아닌 경우 멤버 정보만 Map에 담아줌
                 for(SMEM e : memberData) {
                     Map<String, Object> member = new HashMap<>();
                     member.put("key", e.getSmemNo());
@@ -314,7 +315,7 @@ public class ScalService {
         }
         return shareDTO;
     }
-
+    // 공유 캘린더 정보 저장
     public boolean infoSave(Long calNo, String calName) {
         try {
             // 캘린더 이름 저장
@@ -328,13 +329,14 @@ public class ScalService {
             return false;
         }
     }
-    public boolean inviteMember(Long calNo, String id) {
+    // 공유 캘린더 멤버 초대
+    public boolean inviteMember(Long calNo, String userCode) {
         try {
             Noti noti = new Noti();
             // 멤버초대
             SCAL scal = scalRepository.findById(calNo).orElseThrow(EntityNotFoundException::new);
             Member sendId = scal.getUserId();
-            Member receiveId = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+            Member receiveId = memberRepository.findByUserCode(userCode);
 
             noti.setUserId(sendId);
             noti.setReceiveId(receiveId);
@@ -349,13 +351,29 @@ public class ScalService {
             return false;
         }
     }
-    public boolean dropMember(Long calNo, String id) {
+    // 공유 캘린더 멤버 삭제
+    public boolean dropMember(Long calNo, String userCode) {
         try {
             SCAL scal = scalRepository.findById(calNo).orElseThrow(EntityNotFoundException::new);
-            Member dropId = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-            SMEM smem = smemRepository.findByCalNoAndUserId(scal, dropId);
+            Member dropUserCode = memberRepository.findByUserCode(userCode);
+            SMEM smem = smemRepository.findByCalNoAndUserId(scal, dropUserCode);
             smemRepository.deleteById(smem.getSmemNo());
 
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    // 공유 캘린더 삭제
+    public boolean scalDelete(Long calNo) {
+        try {
+            SCAL scal = scalRepository.findById(calNo).orElseThrow(EntityNotFoundException::new);
+            scomRepository.deleteByCalNo(scal);
+            splanRepository.deleteByCalNo(scal);
+            smemRepository.deleteByCalNo(scal);
+            notiRepository.deleteByEtc(scal);
+            scalRepository.deleteByCalNo(calNo);
             return true;
         } catch (Exception e) {
             return false;

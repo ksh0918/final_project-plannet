@@ -12,5 +12,6 @@ public interface SCALRepository extends JpaRepository<SCAL, Long> {
     Long findLastCalNo(@Param("userId") String userId);
     @Query(value = "select MAX(cal_no) from s_cal where id = (:userId)", nativeQuery = true)
     Long findMaxCalNo(@Param("userId") String userId);
+    void deleteByCalNo(Long CalNo);
 
 }

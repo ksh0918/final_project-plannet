@@ -240,10 +240,7 @@ const plannetApi = {
     },
     //쪽지 불러오기
     messageList: async function(id){
-        const object = {
-            id : id
-        }
-        return await axios.get(PLANNET_DOMAIN + "message/list",object, HEADER);
+        return await axios.get(PLANNET_DOMAIN + `message/list?receiveId=${id}`, HEADER);
     },
     //쪽지 보내기
     messageSend : async function(id,receiveId,detail){
@@ -253,6 +250,18 @@ const plannetApi = {
             detail : detail,
         };
         return await axios.post(PLANNET_DOMAIN+"message/send",object,HEADER);
+    },
+    //쪽지 읽음
+    messageRead : async function(obj){
+        return await axios.post(PLANNET_DOMAIN+"message/read",obj,HEADER);
+    },
+    //쪽지 삭제
+    messageDelete: async function(obj){
+        
+        return await axios.post(PLANNET_DOMAIN+"message/delete",obj,HEADER);
+    },
+    messageNoti : async function(id){
+        return await axios.get(PLANNET_DOMAIN+`message/messageNoti?receiveId=${id}`,HEADER);
     },
     //친구 추가 요청
     notiAddFriend: async function(id, keyword) {
@@ -289,6 +298,34 @@ const plannetApi = {
             checkedButtons: checkedButtons
         };
         return await axios.post(PLANNET_DOMAIN + "scal/create", object, HEADER);
+    },
+    // 공유 캘린더 정보 조회
+    scalInfo: async function(calNo, id) {
+        return await axios.get(PLANNET_DOMAIN + `scal/info_load?calNo=${calNo}&id=${id}`, HEADER);
+    },
+    // 공유 캘린더 정보 저장
+    scalSave: async function(calNo, calName) {
+        const object = {
+            calNo: calNo,
+            calName: calName
+        };
+        return await axios.post(PLANNET_DOMAIN + "scal/info_save", object, HEADER);
+    },
+    // 공유 캘린더 멤버 삭제
+    smemDrop: async function(calNo, userCode) {
+        const object = {
+            calNo: calNo,
+            userCode: userCode
+        };
+        return await axios.post(PLANNET_DOMAIN + "scal/drop_member", object, HEADER);
+    },
+    // 공유 캘린더 멤버 초대
+    smemInvite: async function(calNo, userCode) {
+        const object = {
+            calNo: calNo,
+            userCode: userCode
+        };
+        return await axios.post(PLANNET_DOMAIN + "scal/invite_member", object, HEADER);
     },
     // 공유 캘린더 home/달력/주간일정/메모/명언 출력
     sharingHome: async function(calNo) {
@@ -354,6 +391,13 @@ const plannetApi = {
             keyword: keyword
         };
         return await axios.post(PLANNET_DOMAIN + "scal/invite_member", object, HEADER);
+    },
+    // 공유 캘린더 삭제
+    scalAddMember: async function(calNo) {
+        const object = {
+            calNo: calNo
+        };
+        return await axios.post(PLANNET_DOMAIN + "scal/delete", object, HEADER);
     },
 
 }

@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import styled from 'styled-components';import Api from '../api/plannetApi'
 import Modal from '../Utill/Modal';
 import Nav from '../Utill/Nav';
+import TopBar from '../Utill/TopBar';
 import Comments from './Comment';
 import useInfiniteScroll from './UseInfiniteScroll';
 
@@ -11,13 +12,6 @@ const Wrap = styled.div`
     height: 100vh;
     background-color: white;
     margin: 0 auto;
-    .copy {
-        width: 830px;
-        text-align: center;
-        color: #dfdfdf;
-        line-height: 40px;
-        float: left;
-    }
 `;
 const Section = styled.div`
     width: 850px;
@@ -206,7 +200,7 @@ const PostView = () => {
     const comments = async () => {
         try {
           // DB에 있는 전체 데이터를 다 가져오면 데이터 더 부르지 않음
-          if(isMax){ 
+          if(isMax){
             setIsFetching(false);
             console.log('//max Data');
             return;
@@ -217,7 +211,7 @@ const PostView = () => {
             console.log("게시판글 불러오는중");
             // 게시판 페이지 게시글 목록 api
             const response = await Api.commentsLoad(getNum,String(offset),String(offset + 10)); // DB에서 데이터 가져오는 개수의 범위를 api 매개변수로 넘겨줌
-            setCommentsList(old => ([...old, ...response.data])); 
+            setCommentsList(old => ([...old, ...response.data]));
             console.log('//new Data :',response.data);
             setOffset(old => old + 10) // offset을 계속 10씩 늘려주면 된다
             setIsFetching(false); // fetching이 false가 되어야 한번만 데이터를 불러줌 패칭 스테이트는 선언한 훅에서 나옴
@@ -230,20 +224,26 @@ const PostView = () => {
       }
     // hook 선언 (인자값에는 데이터를 불러오는 함수 입력(writeItems))
     const [isFetching,setIsFetching] = useInfiniteScroll(Comments)
-      
+
       useEffect(() => {
         comments();
       }, []);
 
     return(
+    //미디어쿼리시 nav 사이드바
+    const [sideBar, setSideBar] = useState(false);
+
+    return (
         <Wrap>
-            <Nav/>
-            <Section>
+            <Nav sideBar={sideBar} setSideBar={setSideBar}/>
+            <div className={`back ${sideBar? 'back_side_open':''}`}/>
+            <TopBar sideBar={sideBar} setSideBar={setSideBar}/>
+            <Section id="postView" className="section">
             <Modal open={modalOpen} close={closeModal} header="글수정삭제" boardNo={getNum} option={modalOption}>{comment}</Modal>
                 {postViewData&&postViewData.map( e => (
                     <> 
                     <div className="board_list sub_box"> 
-                        <h2>자유게시판</h2>
+                        <h2>Free Board</h2>
                         <p><span>유저들이 작성한 글에 댓글과 좋아요를 남기며 소통해보세요! <br/>커뮤니티 규칙에 맞지 않는 글과 댓글은 무통보 삭제됩니다.</span></p>  
                         <table className='postInfo'>
                             <tr>
