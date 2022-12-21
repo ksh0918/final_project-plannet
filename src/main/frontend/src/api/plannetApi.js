@@ -251,10 +251,17 @@ const plannetApi = {
         };
         return await axios.post(PLANNET_DOMAIN+"message/send",object,HEADER);
     },
+    //쪽지 읽음
+    messageRead : async function(obj){
+        return await axios.post(PLANNET_DOMAIN+"message/read",obj,HEADER);
+    },
     //쪽지 삭제
     messageDelete: async function(obj){
         
         return await axios.post(PLANNET_DOMAIN+"message/delete",obj,HEADER);
+    },
+    messageNoti : async function(id){
+        return await axios.get(PLANNET_DOMAIN+`message/messageNoti?receiveId=${id}`,HEADER);
     },
     //친구 추가 요청
     notiAddFriend: async function(id, keyword) {

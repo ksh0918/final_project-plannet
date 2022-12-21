@@ -1,3 +1,13 @@
+@media screen and (max-width : 640px) {
+    #friend{
+        h2{
+            span{
+                &:first-child{display: none;}
+                &:last-child{display: block;}
+            }
+        }
+    }
+}
 @media screen and (max-width : 767px) {
     html{background: white;}
     //main
@@ -69,7 +79,7 @@
         }
     }
     //home
-    #home{
+    #home, #scalHome{
         .plan, .etc{
             float: none;
             width: 100vw;
@@ -82,10 +92,10 @@
         .etc textarea {height: 240px !important;}
     }
     //write
-    #write{
+    #write, #scalWrite{
         .plan_it{
-            input[type="text"], span {width: calc(100% - 50px);}
-            span{height: 16px; overflow: hidden; text-overflow: ellipsis; white-space:nowrap}
+            input[type="text"], span:first-of-type {width: calc(100% - 150px);}
+            span:first-of-type{height: 16px; overflow: hidden; text-overflow: ellipsis; white-space:nowrap}
         }
     }
     //board
@@ -141,6 +151,30 @@
             }
         }
     }
+    //friend
+    #friend{
+        ul li{
+            padding: 10px 13px;
+            >div:first-child{
+                p{
+                    letter-spacing: -1px;
+                    &:first-child{
+                        word-break: break-all;
+                    }
+                }
+            }
+            >div:last-child{
+                font-size: 14px;
+                letter-spacing: -1px;
+            }
+
+        }
+        .noti{
+            div:last-of-type, div:last-of-type i{
+                font-size: calc(0.6em + 1vw);
+            }
+        }
+    }
 }
 @media screen and (max-width : 799px) {
     #terms{
@@ -159,8 +193,13 @@
     .back_side_open{opacity: .7; visibility: visible;}
     .copy{width: 100vw; float: none;}
 
+    //setting, board, postView, edit, create, friend 공통
+    #setting, #board, #postView, #edit, #create, #friend, #scalCreate {
+        .board_list, .setting, .friend, .noti, .scalCreate{padding-top: 5px;}
+        h2{margin-top: 20px;}
+    }
     //home
-    #home{
+    #home, #scalHome{
         .react-calendar{width:100% !important;}
         .plan, .etc{padding-top: 5px;}
         .list{
@@ -169,25 +208,28 @@
         }
         h2{margin-top: 20px;}
     }
-    //setting
-    #setting {
-        .setting{padding-top: 5px;}
-        h2{margin-top: 20px;}
-    }
     //write
-    #write {
+    #write, #scalWrite {
         .sub_box{padding-top: 5px;}
         .btnbox{height: 60px; line-height: 40px; }
         h2{margin-top: 0px;}
     }
-    //board, postView 공통
-    #board, #postView {
-        .board_list{padding-top: 5px;}
-        h2{margin-top: 20px;}
-    }
     //postView
     #postView {
-
+        table{
+            table-layout: fixed;
+            td:first-child {width: 100px;}
+            td:last-child {width: 140px;}
+        }
+    }
+    //comment
+    .comment_box{
+        table{
+            table-layout: fixed;
+            td:first-child {width: 100px !important;}
+            td:nth-child(2){width: calc(100% - 240px);}
+            td:last-child {width: 140px;}
+        }
     }
 }
 @media screen and (max-height: 799px) {

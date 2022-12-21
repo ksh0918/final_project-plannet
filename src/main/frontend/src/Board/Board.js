@@ -216,7 +216,7 @@ const Board = () => {
             <TopBar sideBar={sideBar} setSideBar={setSideBar}/>
             <Section id="board" className="section">
                 <div className="board_list sub_box"> 
-                    <h2>자유게시판</h2>
+                    <h2>Free Board</h2>
                     <p>
                         <span>전 세계의 Plannet 이용자들과 한 곳에서 소통해 보세요!</span>
                         <button onClick={onClickToCreate}>글쓰기</button>

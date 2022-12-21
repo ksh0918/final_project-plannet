@@ -7,6 +7,7 @@ import Api from "../api/plannetApi";
 import Modal from '../Utill/Modal';
 import FriendNoti from './FriendNoti';
 import { useNavigate } from 'react-router-dom';
+import TopBar from '../Utill/TopBar';
 
 const Wrap = styled.div`
     width: 1130px;
@@ -70,6 +71,14 @@ const Section = styled.div`
             }
             &:hover i{
                 color: #888;
+            }
+        }
+        h2{
+            span{
+                font-size: 28px;
+                &:last-child{
+                    display: none;
+                }
             }
         }
     }
@@ -150,20 +159,23 @@ const Friend = () => {
     const closeModal = () => {
         setModalOpen(false);
     };
-    
+    //미디어쿼리시 nav 사이드바
+    const [sideBar, setSideBar] = useState(false);
 
     return (
         <Wrap>
+            <Nav sideBar={sideBar} setSideBar={setSideBar}/>
+            <div className={`back ${sideBar? 'back_side_open':''}`}/>
+            <TopBar sideBar={sideBar} setSideBar={setSideBar}/>
             <Modal open={modalOpen} close={closeModal} header={modalHeader} option={option}><p dangerouslySetInnerHTML={{__html: comment}}></p></Modal>
-            <Nav/>
-            <Section>
+            <Section id="friend" className="section">
                 <div className="friend">
                     <h2>Friend<i className={'bi bi-person-fill-add ' + (isAdd? 'add_active_logo' : '')} onClick={onClickaddFriend}></i></h2>
                     <FriendAdd setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} isAdd={isAdd} getId={getId}/>
                     <FriendList setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} friendList={friendList} isAdd={isAdd} setOption={setOption} isPage={isPage}/>
                 </div>
                 <div className='noti'>
-                    <h2>Notification</h2>
+                    <h2><span>Notification</span><span>Noti</span></h2>
                     <FriendNoti setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} notiList={notiList} setOption={setOption}/>
                     <div onClick={onClickAddSCal}>공유캘린더 생성하기<i className="bi bi-chevron-compact-right"/></div>
                 </div>

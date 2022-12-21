@@ -14,8 +14,8 @@ const FriendFind = styled.div`
         border-radius: 5px;
         border: 2px solid #f9f9f9;
         transition: all .1s ease-in;
+        position: relative;
         input {
-            width: 345px;
             border: none;
             outline: none;
             background-color: #f9f9f9;
@@ -25,6 +25,8 @@ const FriendFind = styled.div`
             line-height: 16px;
             color: #888;
             font-weight: 400;
+            position: absolute;
+            right: 10px;
         }
         &:focus-within{
             border: 2px solid #f0f0f0;
@@ -101,7 +103,7 @@ const FriendAdd = ({setCommnet, setModalHeader, setModalOpen, isAdd, getId}) => 
         <FriendFind className={isAdd? 'add_active_addbox' : ''}>
             <label>
                 <p>
-                    <input type="text" maxLength={25} placeholder='Nickname#0000' value={addInput} onChange={onChangeAddInput} onKeyDown={onKeyPressEnter}/>
+                    <input type="text" maxLength={25} placeholder='Nickname#0000' value={addInput} onChange={onChangeAddInput} onKeyDown={onKeyPressEnter} style={inputMessage.length>0? {width: 'calc(100% - 160px)'} : {width: '100%'}}/>
                     <span>{inputMessage}</span>
                 </p>
             </label>

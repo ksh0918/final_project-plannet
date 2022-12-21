@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useLocation, useParams } from "react-router-dom";
+import { useNavigate, useLocation, useParams, Link } from "react-router-dom";
 import styled from "styled-components";
 import Api from "../api/plannetApi";
 import Nav from "../Utill/Nav";
-import Swal from 'sweetalert';
 import PlanList from "../Write/PlanList";
 import Comments from '../Board/Comment';
+import TopBar from '../Utill/TopBar';
 
 const Wrap = styled.div`
     width: 1130px;
@@ -39,7 +39,7 @@ const Section = styled.div`
             vertical-align: middle;
             transition: all .1s ease-in;
         }
-        button.back {
+        button.backbtn {
             font-weight: 300;
             font-size: 16px; 
             vertical-align: middle;
@@ -114,6 +114,10 @@ const Section = styled.div`
             .plan_writer{
                 display: inline;
                 width: auto;
+                max-height: 100px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
                 font-size: 12px;
                 color: #777;
                 line-height: 19px;
@@ -175,24 +179,11 @@ const SCalWrite = () => {
     const [commentsList, setCommentsList] = useState([]);
  
 
-    // 작성 중 새로고침 및 페이지 이동 방지
+    // 변경사항이 있는데 사이트 이동하려고 할 시 경고 창 등장    
     window.addEventListener('beforeunload', (event) => {
         event.preventDefault(); // 표준에 따라 기본 동작 방지
         event.returnValue = ''; // Chrome에서는 returnValue 설정이 필요함
     });
-    // // 작성 중 뒤로가기 방지
-    // window.onpopstate = (event) => {
-    //     // event.preventDefault();
-    //     if(event) {
-    //         Swal({
-    //             title : "저장이 되지 않습니다!",
-    //             text : "저장을 누르지 않고 뒤로가기 시에 저장이 되지 않습니다.",
-    //             icon : "warning",
-    //             buttons : "확인",
-    //         })
-    //     };
-    //     console.log("뒤로가기");
-    // };
 
     const onClickAddList = () => {
         const nextPlanList = planList.concat({
@@ -205,7 +196,7 @@ const SCalWrite = () => {
     }
     const onClickSave = async() => {
         await Api.scalPlanSave(getId, getNum, getDate, planList);
-        navigate(-1);
+        navigate("/scal/home/" + getNum);
     }
 
     useEffect(() => {
@@ -213,8 +204,7 @@ const SCalWrite = () => {
             try{
                 // 플랜 불러오기
                 const plans = await Api.scalPlanLoad(getNum, getDate);
-                setPlanList(plans.data);
-                console.log(plans.data);    
+                setPlanList(plans.data);  
 
                 // 댓글 불러오기
                 const comments = await Api.scalCommentsLoad(getNum, getDate);
@@ -229,14 +219,21 @@ const SCalWrite = () => {
 
     console.log(planList)
 
+    //미디어쿼리시 nav 사이드바
+    const [sideBar, setSideBar] = useState(false);
+
     return (
         <Wrap>
-            <Nav/>
-            <Section>
+            <Nav sideBar={sideBar} setSideBar={setSideBar}/>
+            <div className={`back ${sideBar? 'back_side_open':''}`}/>
+            <TopBar sideBar={sideBar} setSideBar={setSideBar}/>
+            <Section id="scalWrite" className="section">
                 <div className="btnbox">
-                    <button className="back" onClick={onClickSave}>
-                        <i className="bi bi-chevron-compact-left"/>{getDate}
-                    </button>
+                    <Link to='/home'>
+                        <button className="backbtn">
+                            <i className="bi bi-chevron-compact-left"/>{getDate}
+                        </button>
+                    </Link>
                 </div>
                 <div className="plan_it sub_box">
                     <h2>Plan it</h2>

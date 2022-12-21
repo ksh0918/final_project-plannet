@@ -5,6 +5,7 @@ import Api from "../api/plannetApi";
 import Nav from "../Utill/Nav";
 import FriendList from '../Friend/FriendList';
 import Modal from '../Utill/Modal';
+import TopBar from "../Utill/TopBar";
 
 const Wrap = styled.div`
     width: 1130px;
@@ -34,37 +35,43 @@ const Section = styled.div`
         background: none;
         /*스크롤바 뒷 배경 색상*/
     }
-    div {
-        padding-top: 30px;
-    }
     h2 {
       font-size: 28px;
       font-weight: 900;
-      margin-top: 20px;
+      margin-top: 35px;
       margin-bottom: 10px;
+      span{
+        font-size: 20px;
+        font-weight: 400;
+      }
     }
      .scalCreate {
-        padding: 28px;
+        padding: 10px 30px;
         .scalForm {
+            padding-top: 10px;
             display:flex;
             justify-content:center;
             align-items: center;
             flex-direction: column;
-           p {
+            >div>p {
                 align-items: flex-start;
-                font-size: 20px;
+                font-size: 18px;
                 font-weight: 600;
                 line-height: 18px;
-                margin-bottom: 10px;
-           }
+                margin:8px 0 4px;
+            }
+            .friend, .title{
+                padding: 5px 30px;
+                width: 100%;
+                max-width: 500px;
+            }
             .title {
-                padding: 10px 30px;
-                width: 500px;
                 margin-top: 0;
                 input {
                     padding: 0 15px;
                     border-radius: 5px;
-                    width: 440px;
+                    width: 100%;
+                    max-width: 440px;
                     height: 30px;
                     color: #333;
                     background: #e8f0fe;
@@ -81,24 +88,20 @@ const Section = styled.div`
                     &::placeholder {
                         color: #bbb;
                     }
-                    &:read-only{
-                        background-color: #eee;
-                        color: #aaa;
-                    }
                 }
             }
             .friend{
-                width: 500px;
-                padding: 20px 30px;
                 .friend_search{
                     margin: 0;
-                    width: 444px;
+                    width: 100%;
                     height: 31px;
-                    border: solid 2px #ddd;
-                    padding: 0;
+                    border: 2px solid #ddd;
+                    padding: 0 13px;
+                    border-radius: 5px;
                     input {
-                        width: 410px;
-                        height: 25px;
+                        width: 100%;
+                        max-width: 410px;
+                        height: 27px;
                         border: 0px;
                         outline: none;
                         margin: 0;
@@ -106,31 +109,30 @@ const Section = styled.div`
                 }
             }
             .friend_list {
-                height: 500px;
-                padding:0;
-                p {
-                    font-size: 15px;
+                p {font-size: 15px}
+                .is_list{
+                    height: 500px;
                 }
-            }
-            .scal_add {
-                padding : 0;
-                button {
-                    cursor: pointer;
-                    font-weight: 600;
-                    float: right;
-                    font-size: 16px;
-                    padding: 8px 35px;
-                    border-radius: 25px;
-                    background-color: #333;
-                    color: white;
-                    border: none;
-                    transition: all .1s ease-in;
-                    &:hover{
-                        background-color: #666;
-                        color: #888;
+                .scal_add {
+                    margin-top: 10px;
+                    button {
+                        cursor: pointer;
+                        font-weight: 600;
+                        float: right;
+                        font-size: 16px;
+                        padding: 8px 35px;
+                        border-radius: 25px;
+                        background-color: #333;
+                        color: white;
+                        border: none;
+                        transition: all .1s ease-in;
+                        &:hover{
+                            background-color: #666;
+                            color: #888;
+                        }
                     }
                 }
-            }
+            } 
         }
     }
 `;
@@ -196,20 +198,25 @@ const Section = styled.div`
         setModalOpen(false);
     };
 
+    //미디어쿼리시 nav 사이드바
+    const [sideBar, setSideBar] = useState(false);
+
     return (
         <Wrap>
+            <Nav sideBar={sideBar} setSideBar={setSideBar}/>
+            <div className={`back ${sideBar? 'back_side_open':''}`}/>
+            <TopBar sideBar={sideBar} setSideBar={setSideBar}/>
             <Modal open={modalOpen} close={closeModal} header={modalHeader} option={option}><p dangerouslySetInnerHTML={{__html: comment}}></p></Modal>
-            <Nav></Nav>
-            <Section>
+            <Section id="scalCreate" className="section">
                 <div className="scalCreate">
-                    <h2>공유 캘린더</h2>
+                    <h2>Create <span>| Share Calendar</span></h2>
                     <div className="scalForm">
                         <div className="title">
-                            <p>공유 캘린더 이름</p>
+                            <p>Calendar Name</p>
                             <input onChange={onChangeTitle} value={title} placeholder="공유 캘린더 이름" />
                         </div>
                         <div className="friend">
-                            <p>친구 추가</p>
+                            <p>Add Member</p>
                             <div className="friend_search">
                             <input title="검색" placeholder="친구 닉네임을 검색해보세요" onChange={onChangeSearchKeyword} value={searchKeyword}  />
                             </div>
