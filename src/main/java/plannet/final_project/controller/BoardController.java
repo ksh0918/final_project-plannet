@@ -159,13 +159,11 @@ public class BoardController {
     // 자유게시판 글 수정
     @PostMapping("/board_edit")
     public ResponseEntity<Boolean> boardEdit(@RequestBody Map<String, String> boardEdit) {
-        String userId = boardEdit.get("id");
         Long boardNo = Long.parseLong(boardEdit.get("num"));
         String category = boardEdit.get("category");
         String title = boardEdit.get("title");
         String detail = boardEdit.get("detail");
-
-        boolean result = boardService.boardEdit(userId, boardNo, category, title, detail);
+        boolean result = boardService.boardEdit(boardNo, category, title, detail);
         if(result) {
             return new ResponseEntity(true, HttpStatus.OK);
         }

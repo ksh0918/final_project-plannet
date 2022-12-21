@@ -223,9 +223,8 @@ const plannetApi = {
         return await axios.post(PLANNET_DOMAIN + "board/board_write", object, HEADER);
     },
     // 글 수정
-    boardEdit: async function(id, num, category, title, detail) {
+    boardEdit: async function(num, category, title, detail) {
         const object = {
-            id: id,
             num: num,
             category: category,
             title: title,

@@ -261,14 +261,13 @@ public class BoardService {
 
 
     // 자유게시판 글 수정하기
-    public boolean boardEdit(String userId, Long boardNo, String category, String title, String detail) {
+    public boolean boardEdit(Long boardNo, String category, String title, String detail) {
         try{
             Board board = boardRepository.findById(boardNo).orElseThrow(EmptyStackException::new);
             board.setCategory(category);
             board.setTitle(title);
             board.setDetail(detail);
-            Board rst = boardRepository.save(board);
-            log.warn(rst.toString());
+            boardRepository.save(board);
         } catch (Exception e) {
             return false;
         }

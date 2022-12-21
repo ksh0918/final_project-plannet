@@ -328,7 +328,7 @@ const Board = () => {
                                     <td>{e.views}</td>
                                     <td>{e.writeDate.substring(0, 10)}</td>
                                 </tr>   
-                            )} else if(category === '스터디' && e.category === 'study') {return(
+                            )} else if(category === 'study' && e.category === '스터디') {return(
                                 <tr key={e.boardNo}>
                                     <td>{e.boardNo}</td>
                                     <td>{e.category}</td>
