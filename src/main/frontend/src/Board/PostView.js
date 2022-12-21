@@ -210,9 +210,9 @@ const PostView = () => {
             return;
           }
           console.log('//new Data Fetching');
-          // 기존의 게시판 글 불러오는 api 호출
+          // 기존의 게시판 댓글 불러오는 api 호출
           const fetchData = async () => {
-            console.log("게시판글 불러오는중");
+            console.log("댓글 불러오는중");
             // PostView 페이지 댓글 목록 api
             const response = await Api.commentsLoad(getNum,String(offset),String(offset + 10)); // DB에서 데이터 가져오는 개수의 범위를 api 매개변수로 넘겨줌
             setCommentsList(old => ([...old, ...response.data]));
