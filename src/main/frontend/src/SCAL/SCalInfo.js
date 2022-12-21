@@ -114,7 +114,7 @@ const Section = styled.div`
                     font-size: 15px;
                 }
             }
-            .scal_add {
+            .scal_add, .scal_delete {
                 padding : 0;
                 button {
                     cursor: pointer;
@@ -148,11 +148,14 @@ const SCalSetting = () => {
     const [searchKeyword, setSearchKeyword] = useState('');
     const [friendList, setFriendList] = useState();
     const [isAdd, setIsAdd] = useState(false);
+    const [owner, setOwner] = useState(''); // 공유캘린더 오너
 
     const [comment, setCommnet] = useState("");
     const [modalHeader, setModalHeader] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
+    const [modalOption, setModalOption] = useState('');
     const [option, setOption] = useState("");
+    const [calNo, setCalNo] = useState("");
     const isPage = "설정";
 
 
@@ -163,6 +166,7 @@ const SCalSetting = () => {
                 console.log(response.data);
                 setTitle(response.data.calName);
                 setFriendList(response.data.calMember);
+                setOwner(response.data.calOwner);
             } catch(e) {
                 console.log(e)
             }
@@ -196,7 +200,13 @@ const SCalSetting = () => {
         await Api.scalSave(getNum, title);
         navigate('/scal/home/' + getNum);
      }
-     
+     const onClickScalDelete = () => {
+        setCalNo(getNum);
+        setCommnet("삭제하시겠습니까?");
+        setModalHeader("공유캘린더 삭제");
+        setModalOpen(true);
+    }
+
      const closeModal = () => {
         setModalOpen(false);
     };
@@ -215,15 +225,18 @@ const SCalSetting = () => {
                             <input onChange={onChangeTitle} value={title} placeholder="공유 캘린더 이름" />
                         </div>
                         <div className="friend">
-                            <p>친구 추가</p>
+                            {getId === owner ? <p>친구 추가</p> : <p>친구 검색</p>}
                             <div className="friend_search">
                             <input title="검색" placeholder="친구 닉네임을 검색해보세요" onChange={onChangeSearchKeyword} value={searchKeyword}  />
                             </div>
                             <div className="friend_list">
-                                <FriendList setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} friendList={filterNames} isAdd={isAdd} setOption={setOption} title={title}/>
+                                <FriendList setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} friendList={filterNames} isAdd={isAdd} setOption={setOption} title={title} setCalNo={setCalNo}/>
                             </div>
                         </div>
-                        <div className="scal_add"><button onClick={onClickSCalSave}>SAVE</button></div>
+                        <div className="button-area1">
+                            <button lassName="btn scal_add" onClick={onClickSCalSave}>SAVE</button>
+                            {getId === owner ? <><button className='btn left-space scal_delete' onClick={() => onClickScalDelete()}>DELETE</button></> : null}
+                        </div>
                     </div>
                 </div>
             </Section>

@@ -43,7 +43,6 @@ public class GoogleController {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-
         return ResponseEntity.badRequest().build();
     }
 
@@ -52,14 +51,13 @@ public class GoogleController {
         // HTTP 통신을 위해 RestTemplate 활용
         RestTemplate restTemplate = new RestTemplate();
         GoogleLoginRequest requestParams = GoogleLoginRequest.builder()
-                .clientId(configUtils.getGoogleClientId())
-                .clientSecret(configUtils.getGoogleSecret())
-                .code(authCode)
-                .redirectUri(configUtils.getGoogleRedirectUri())
-                .grantType("authorization_code")
-                .build();
+            .clientId(configUtils.getGoogleClientId())
+            .clientSecret(configUtils.getGoogleSecret())
+            .code(authCode)
+            .redirectUri(configUtils.getGoogleRedirectUri())
+            .grantType("authorization_code")
+            .build();
         log.info("Request Parameters = {}", requestParams.toString());
-
         try {
             // Http Header 설정 -클라이언트와 서버가 요청 또는 응답으로 부가적인 정보를 전송할 수 있도록 함
             HttpHeaders headers = new HttpHeaders();
@@ -72,7 +70,7 @@ public class GoogleController {
             // ObjectMapper를 통해 String to Object로 변환
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
-            objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL); // NULL이 아닌 값만 응답받기(NULL인 경우는 생략)
+            objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL); // NULL이 아닌 값만 응답받기 (NULL인 경우는 생략)
             GoogleLoginResponse googleLoginResponse = objectMapper.readValue(apiResponseJson.getBody(), new TypeReference<>() {});
 
             // 사용자의 정보는 JWT Token으로 저장되어 있고, Id_Token에 값을 저장한다.
@@ -81,10 +79,8 @@ public class GoogleController {
             log.info("AccessToken = {}", googleLoginResponse.getAccessToken());
             log.info("IdToken(AccessToken) = {}", googleLoginResponse.getIdToken());
 
-
             // JWT Token을 전달해 JWT 저장된 사용자 정보 확인
             String requestUrl = UriComponentsBuilder.fromHttpUrl(configUtils.getGoogleAuthUrl() + "/tokeninfo").queryParam("id_token", jwtToken).toUriString();
-
             String resultJson = restTemplate.getForObject(requestUrl, String.class);
 
             if(resultJson != null) {
@@ -94,26 +90,22 @@ public class GoogleController {
                 String name = userInfoDto.getName();
                 int regStatus = memberService.googleLoginReg(email);
 
-//                return "redirect:"+ UriComponentsBuilder.fromUriString("http://15.165.75.129:8111/social")
+                // return "redirect:"+ UriComponentsBuilder.fromUriString("http://15.165.75.129:8111/social")
                 return "redirect:"+ UriComponentsBuilder.fromUriString("http://localhost:8111/social")
-                        .queryParam("id", id)
-                        .queryParam("name", name)
-                        .queryParam("email", email)
-                        .queryParam("regStatus", regStatus) //구글로 가입된 회원은 0 , 일반 회원은 1, 첫 구글로그인 2
-                        .build()
-                        .encode(StandardCharsets.UTF_8);
+                    .queryParam("id", id)
+                    .queryParam("name", name)
+                    .queryParam("email", email)
+                    .queryParam("regStatus", regStatus) // 구글로 가입된 회원은 0 , 일반 회원은 1, 첫 구글로그인 2
+                    .build()
+                    .encode(StandardCharsets.UTF_8);
             }
-            else {
-                throw new Exception("Google OAuth failed!");
-            }
+            else {throw new Exception("Google OAuth failed!");}
         }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+        catch (Exception e) {e.printStackTrace();}
 
-//        return "redirect:"+ UriComponentsBuilder.fromUriString("http://15.165.75.129:8111/social")
+        // return "redirect:"+ UriComponentsBuilder.fromUriString("http://15.165.75.129:8111/social")
         return "redirect:"+ UriComponentsBuilder.fromUriString("http://localhost:8111/social")
-                .queryParam("regStatus", "3") //오류시 3을 보냄
-                .build();
+            .queryParam("regStatus", "3") //오류시 3을 보냄
+            .build();
     }
 }

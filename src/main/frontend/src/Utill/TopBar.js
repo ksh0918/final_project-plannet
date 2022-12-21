@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import {ReactComponent as Logo} from "../Images/planet-001.svg";
+import {ReactComponent as Logo} from "../Images/plannet-001.svg";
 
 const Bar = styled.div`
     display: none;

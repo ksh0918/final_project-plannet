@@ -46,6 +46,7 @@ public class BoardService {
                 if(e.getIsChecked() == 0) {
                     board.put("nickname", e.getUserId().getNickname());
                 } else board.put("nickname", "익명");
+                board.put("category", e.getCategory());
                 board.put("title", e.getTitle());
                 board.put("views", e.getViews());
                 board.put("writeDate", e.getWriteDate());
@@ -74,6 +75,7 @@ public class BoardService {
                 if(e.getIsChecked() == 0) {
                     board.put("nickname", e.getUserId().getNickname());
                 } else board.put("nickname", "익명");
+                board.put("category", e.getCategory());
                 board.put("title", e.getTitle());
                 board.put("views", e.getViews());
                 board.put("writeDate", e.getWriteDate());
@@ -121,6 +123,7 @@ public class BoardService {
         try {
             boardDTO.setBoardNo(boardNo);
             boardDTO.setId(boardRepository.findById(boardNo).orElseThrow().getUserId().getId());
+            boardDTO.setCategory(board.getCategory());
             boardDTO.setTitle(board.getTitle());
             int isChecked = board.getIsChecked();
             boardDTO.setIsChecked(isChecked);
@@ -238,11 +241,12 @@ public class BoardService {
     }
 
     // 자유게시판 글 작성하기
-    public Long boardWrite(String id, String title, String detail, int isChecked){
+    public Long boardWrite(String id, String category, String title, String detail, int isChecked){
         Long resultNo = Long.valueOf(0);
         try {
             Board board = new Board();
             board.setUserId(memberRepository.findById(id).orElseThrow());
+            board.setCategory(category);
             board.setTitle(title);
             board.setDetail(detail);
             board.setIsChecked(isChecked);
@@ -257,13 +261,13 @@ public class BoardService {
 
 
     // 자유게시판 글 수정하기
-    public boolean boardEdit(String userId, Long boardNo, String title, String detail) {
+    public boolean boardEdit(Long boardNo, String category, String title, String detail) {
         try{
             Board board = boardRepository.findById(boardNo).orElseThrow(EmptyStackException::new);
+            board.setCategory(category);
             board.setTitle(title);
             board.setDetail(detail);
-            Board rst = boardRepository.save(board);
-            log.warn(rst.toString());
+            boardRepository.save(board);
         } catch (Exception e) {
             return false;
         }

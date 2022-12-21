@@ -133,7 +133,7 @@ const StyledInput = styled.input`
     }
 `;
 
-const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,setOption, isPage, title, calNo}) => {
+const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,setOption, isPage, title, setCalNo}) => {
     const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
     let params = useParams(); // url에서 boardNo를 가져오기 위해 uesParams() 사용
@@ -164,6 +164,7 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
    console.log("체크버튼 : ");
    console.log(checkedButtons);
    
+   // 공유 캘린더 생성
     const onClickSCalAdd = async() => {
         const response = await Api.scalCheck(getId); //2개이상의 scal에 참여중인지 확인 2개 이하면 true, 이상이면 false
         console.log(response.data);
@@ -176,18 +177,25 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
             setModalOpen(true);
         }
     }
-
-    const onClickDrop = async(getNum, userCode) => {
+    // 공유 캘린더 설정 모달창
+    const onClickDrop = async(userCode) => {
         setOption(userCode);
-        setCommnet("멤버를 삭제하시겠습니까?");
+        setCalNo(getNum);
+        setCommnet("멤버로 삭제하시겠습니까?");
         setModalHeader("멤버삭제");
         setModalOpen(true);
     }
     const onClickWait = async() => {
-
+        setCommnet("이미 초대한 친구입니다.");
+        setModalHeader("멤버대기");
+        setModalOpen(true);
     }
-    const onClickInvite = async() => {
-
+    const onClickInvite = async(userCode) => {
+        setOption(userCode);
+        setCalNo(getNum);
+        setCommnet("멤버로 초대하시겠습니까?");
+        setModalHeader("멤버초대");
+        setModalOpen(true);
     }
    
     return (
@@ -207,9 +215,9 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
                         {/* checked: 체크표시 & 해제를 시키는 로직. 배열에 e 데이터가 있으면 true, 없으면 false                     onChange: onChange이벤트가 발생하면 check여부와 e 데이터를 전달하여 배열에 friendList의 객체를 넣어준다. */}
                         {isPage === "공유캘린더" && <StyledInput class="form-check-input scalFriend_check" id="checkboxNoLabel" onChange={check => { changeHandler(check.currentTarget.checked, e);}} 
                             checked={checkedButtons.includes(e) ? true : false}  type="checkbox" aria-label="..." />} 
-                        {e.status == 1 &&<button className='drop' onClick={() => onClickDrop(getNum, e.userCode)}>삭제</button>}
-                        {e.status == 2 &&<button className='wait'onClick={onClickWait}>대기</button>}
-                        {e.status == 0 &&<button className='invite' oncClick={onClickInvite}>초대</button>}
+                        {e.status == 1 &&<button className='drop' onClick={() => onClickDrop(e.userCode)}>삭제</button>}
+                        {e.status == 2 &&<button className='wait' onClick={() => onClickWait()}>대기</button>}
+                        {e.status == 0 &&<button className='invite' onClick={() => onClickInvite(e.userCode)}>초대</button>}
 
                     </li>
                 );})}

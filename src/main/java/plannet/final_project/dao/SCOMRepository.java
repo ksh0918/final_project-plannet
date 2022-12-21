@@ -11,4 +11,5 @@ import java.util.List;
 public interface SCOMRepository extends JpaRepository<SCOM, Long> {
     void deleteByUserId(Member member);
     List<SCOM> findByCalNoAndPlanDate(SCAL calNo, LocalDate planDate);
+    void deleteByCalNo(SCAL CalNo);
 }
