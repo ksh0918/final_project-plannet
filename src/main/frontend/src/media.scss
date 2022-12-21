@@ -102,24 +102,24 @@
     #board{
         table{
             border-top: 1px solid #4555AE;
-            th, td:nth-child(4){display: none;}
+            th, td:nth-child(5){display: none;}
             td{display: block; float: left;}
 
             tr:first-child td{
                 border-top: none;
             }
 
-            td:first-child{
+            td:first-child, td:nth-child(2){
                 border-bottom: none;
                 height: 74px;
                 line-height: 60px;
             }
-            td:nth-child(2){
+            td:nth-child(3){
                 width: calc(100% - 80px) !important;
                 border-left: none;
                 font-weight: 600; 
             }
-            td:nth-child(3){
+            td:nth-child(4){
                 font-size: 13px;
                 border-top: none;
                 width: auto;
@@ -133,7 +133,7 @@
                     margin-left: 10px;
                 }
             }
-            td:nth-child(5){
+            td:nth-child(6){
                 padding-top: 5px;
                 font-size: 13px;
                 border-top: none;
