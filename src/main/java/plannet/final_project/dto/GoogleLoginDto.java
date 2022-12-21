@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class GoogleLoginDto {
-
     private String iss;
     private String azp;
     private String aud;

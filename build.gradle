@@ -26,8 +26,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.projectlombok:lombok:1.18.22'
 	implementation 'org.projectlombok:lombok:1.18.22'
-	//	이메일 인증으로 인한 추가
-	//spring email
+	// 이메일 인증으로 인한 추가
+	// spring email
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.6.3'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -46,10 +46,7 @@ tasks.named('test') {
 def frontendDir = "$projectDir/src/main/frontend"
 
 sourceSets {
-	main {
-		resources { srcDirs = ["$projectDir/src/main/resources"]
-		}
-	}
+	main { resources {srcDirs = ["$projectDir/src/main/resources"]} }
 }
 
 processResources { dependsOn "copyReactBuildFiles" }

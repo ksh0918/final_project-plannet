@@ -43,13 +43,13 @@ public class ConfigUtils {
         params.put("scope", getScopeUrl());
 
         String paramStr = params.entrySet().stream()
-                .map(param -> param.getKey() + "=" + param.getValue())
-                .collect(Collectors.joining("&"));
+            .map(param -> param.getKey() + "=" + param.getValue())
+            .collect(Collectors.joining("&"));
 
         String googleFinalLoginUrl = getGoogleLoginUrl()
-                + "/o/oauth2/v2/auth"
-                + "?"
-                + paramStr;
+            + "/o/oauth2/v2/auth"
+            + "?"
+            + paramStr;
         log.warn("2번");
         log.info("Google Login URL = {}", googleFinalLoginUrl);
 
@@ -78,8 +78,6 @@ public class ConfigUtils {
 
     // scope의 값을 보내기 위해 띄어쓰기 값을 UTF-8로 변환하는 로직 포함
     public String getScopeUrl() {
-//        return scopes.stream().collect(Collectors.joining(","))
-//                .replaceAll(",", "%20");
         return scopes.replaceAll(",", "%20");
     }
 }

@@ -18,8 +18,8 @@ import java.util.List;
 public class UserInfoService {
     private final MemberRepository memberRepository;
     private final PlanRepository planRepository;
-    private final SMEMRepository smemRepository;
     private final SCALRepository scalRepository;
+    private final SMEMRepository smemRepository;
     private final SPLANRepository splanRepository;
 
     public MemberDTO userInfo (String userId) { // 사용자 정보 불러오기
