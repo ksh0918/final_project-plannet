@@ -13,4 +13,5 @@ public interface SMEMRepository extends JpaRepository<SMEM, Long> {
     List<SMEM> findByCalNo(SCAL calNo);
 
     SMEM findByCalNoAndUserId(SCAL scal, Member dropId);
+    void deleteByCalNo(SCAL CalNo);
 }

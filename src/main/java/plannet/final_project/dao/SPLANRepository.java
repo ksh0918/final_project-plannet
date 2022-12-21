@@ -22,4 +22,5 @@ public interface SPLANRepository extends JpaRepository<SPLAN, Long> {
     @Transactional
     @Query(value="delete from s_plan where cal_no = (:calNo) and plan_date = (:date)", nativeQuery = true)
     void deleteByPlanDateAndCalNo(@Param("date") LocalDate date, @Param("calNo") Long calNo);
+    void deleteByCalNo(SCAL CalNo);
 }
