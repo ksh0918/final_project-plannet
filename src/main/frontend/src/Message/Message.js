@@ -50,6 +50,7 @@ const Section = styled.div`
         }
         .sendBtn{
             cursor: pointer;
+            margin-right: 10px;
             font-weight: 600;
             float: right;
             font-size: 16px;
