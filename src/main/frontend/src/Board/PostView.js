@@ -5,6 +5,7 @@ import Modal from '../Utill/Modal';
 import Nav from '../Utill/Nav';
 import TopBar from '../Utill/TopBar';
 import Comments from './Comment';
+import useInfiniteScroll from './UseInfiniteScroll';
 
 const Wrap = styled.div`
     width: 1130px;
@@ -156,6 +157,10 @@ const PostView = () => {
         setComment("삭제하시겠습니까?");
     }
 
+    // 무한 스크롤
+    const [offset, setOffset] = useState(0); // DB에서 데이터 가져오는 개수
+    const [isMax, setIsMax] = useState(false); // DB에 있는 전체 데이터 개수
+
     // 좋아요를 누를 때마다 표면적으로 +1, -1 해주기 & 하트 모양 토글
     const onClickLike = async() => {
         const likeChecked = await Api.likeCheckedToggle(getId, getNum);
@@ -191,6 +196,40 @@ const PostView = () => {
         postViewLoad();
     }, [getId, getNum]);
 
+    // 무한 스크롤
+    const comments = async () => {
+        try {
+          // DB에 있는 전체 데이터를 다 가져오면 데이터 더 부르지 않음
+          if(isMax){
+            setIsFetching(false);
+            console.log('//max Data');
+            return;
+          }
+          console.log('//new Data Fetching');
+          // 기존의 게시판 글 불러오는 api 호출
+          const fetchData = async () => {
+            console.log("게시판글 불러오는중");
+            // 게시판 페이지 게시글 목록 api
+            const response = await Api.commentsLoad(getNum,String(offset),String(offset + 10)); // DB에서 데이터 가져오는 개수의 범위를 api 매개변수로 넘겨줌
+            setCommentsList(old => ([...old, ...response.data]));
+            console.log('//new Data :',response.data);
+            setOffset(old => old + 10) // offset을 계속 10씩 늘려주면 된다
+            setIsFetching(false); // fetching이 false가 되어야 한번만 데이터를 불러줌 패칭 스테이트는 선언한 훅에서 나옴
+            if(response.data.length < 10) setIsMax(true);
+          }
+          fetchData();
+        } catch(e) {
+          console.log(e);
+        };
+      }
+    // hook 선언 (인자값에는 데이터를 불러오는 함수 입력(writeItems))
+    const [isFetching,setIsFetching] = useInfiniteScroll(Comments)
+
+      useEffect(() => {
+        comments();
+      }, []);
+
+    return(
     //미디어쿼리시 nav 사이드바
     const [sideBar, setSideBar] = useState(false);
 
@@ -227,6 +266,8 @@ const PostView = () => {
                     </>))}
                     <h3>Comment</h3>
                     <Comments getId={getId} getNum={getNum} setCommentsList={setCommentsList} commentsList={commentsList}/>
+                    {isFetching && <h1>New Data Fetcing .......</h1>}
+                    {!isFetching && <h1>더이상 조회할 게시글이 없습니다</h1>}
             </Section>
             <div className="copy">&#169; Plannet.</div>
         </Wrap>
