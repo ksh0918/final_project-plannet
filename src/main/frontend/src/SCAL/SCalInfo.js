@@ -235,7 +235,7 @@ const SCalSetting = () => {
                         </div>
                         <div className="button-area1">
                             <button lassName="btn scal_add" onClick={onClickSCalSave}>SAVE</button>
-                            {getId === owner ? <><button className='btn left-space scal_delete' onClick={onClickScalDelete}>DELETE</button></> : null}
+                            {getId == owner ? <><button className='btn left-space scal_delete' onClick={onClickScalDelete}>DELETE</button></> : null}
                         </div>
                     </div>
                 </div>

@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react';
 
-// 콜백함수(Callback Function)란 파라미터로 함수를 전달받아, 함수의 내부에서 실행하는 함수 입니다.
-// 여기에선 Write.js에서 매개변수로 넣은 writeItems
+// 콜백함수(Callback Function)란 파라미터로 함수를 전달받아, 함수의 내부에서 실행하는 함수 입니다.
+// 여기에선 Comment.js에서 매개변수로 넣은 Comments
 const useInfiniteScroll = (callback) => {
     // 스크롤 완료 여부
     const [isFetching, setIsFetching] = useState(false);
