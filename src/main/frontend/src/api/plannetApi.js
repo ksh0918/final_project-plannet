@@ -361,12 +361,12 @@ const plannetApi = {
     },
     
     // 해당 캘린더에 작성된 댓글 불러오기
-    scalCommentsLoad: async function(calNo, date) {
+    scalCommentLoad: async function(calNo, date) {
         const object = {
             calNo: calNo,
             date: date
         }
-        return await axios.post(PLANNET_DOMAIN + "scal/comments_load", object, HEADER);
+        return await axios.post(PLANNET_DOMAIN + "scal/comment_load", object, HEADER);
     },
     // 해당 캘린더에 댓글 작성
     scalCommentWrite: async function(calNo, date, id, detail){
