@@ -23,7 +23,6 @@ public class BoardDTO {
 
     // 좋아요 관련
     private int likeCnt;
-    private int isLiked;
 
     // board comment 관련
     private List<Map<String, Object>> commentsList;
