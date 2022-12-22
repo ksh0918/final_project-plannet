@@ -9,7 +9,7 @@ import plannet.final_project.dao.LikeCntRepository;
 import plannet.final_project.dao.MemberRepository;
 import plannet.final_project.entity.Board;
 import plannet.final_project.entity.Comment;
-import plannet.final_project.entity.LikeCnt;
+import plannet.final_project.entity.LikeList;
 import plannet.final_project.entity.Member;
 import plannet.final_project.vo.BoardDTO;
 
@@ -177,10 +177,10 @@ public class BoardService {
             else {
                 System.out.println("false 들어옴");
                 CurrentLikeChecked = !CurrentLikeChecked;
-                LikeCnt likeCnt = new LikeCnt();
-                likeCnt.setUserId(member);
-                likeCnt.setBoardNo(boardNo);
-                likeCntRepository.save(likeCnt);
+                LikeList likeList = new LikeList();
+                likeList.setUserId(member);
+                likeList.setBoardNo(boardNo);
+                likeCntRepository.save(likeList);
                 System.out.println("false 정상수행" + CurrentLikeChecked);
             }
             return CurrentLikeChecked;

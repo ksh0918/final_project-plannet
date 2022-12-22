@@ -13,6 +13,10 @@ import java.time.LocalDateTime;
 @ToString
 @Entity
 @Table(name = "message")
+@SequenceGenerator(
+        name = "MESSAGE_GENERATOR",
+        sequenceName = "MESSAGE_SEQUENCES",
+        initialValue = 1, allocationSize = 1)
 public class Message {
     @Id
     @Column(name = "message_no")
@@ -33,7 +37,7 @@ public class Message {
     @Column(length = 2400, nullable = false)
     private String detail;
 
-    @Column(length = 1, name = "isRead",nullable = false)
+    @Column(length = 1, name = "isRead", nullable = false)
     @ColumnDefault("0")
     private int isRead;
 }

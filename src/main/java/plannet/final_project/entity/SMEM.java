@@ -11,14 +11,18 @@ import javax.persistence.*;
 @ToString
 @Entity
 @Table(name = "s_mem")
+@SequenceGenerator(
+        name = "SMEM_GENERATOR",
+        sequenceName = "SMEM_SEQUENCES",
+        initialValue = 1, allocationSize = 1)
 public class SMEM {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SMEM_GENERATOR")
     private Long smemNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cal_no")
-    private SCAL calNo;
+    private SCAL scalNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id")

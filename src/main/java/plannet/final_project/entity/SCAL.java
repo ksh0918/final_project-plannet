@@ -11,21 +11,25 @@ import java.util.List;
 @ToString
 @Entity
 @Table(name = "s_cal")
+@SequenceGenerator(
+        name = "SCAL_GENERATOR",
+        sequenceName = "SCAL_SEQUENCES",
+        initialValue = 1, allocationSize = 1)
 public class SCAL {
     @Id
     @Column(nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long calNo;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SCAL_GENERATOR")
+    private Long scalNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false, name = "id")
+    @JoinColumn(nullable = false, name = "owner_id")
     private Member userId;
 
     @Column(length = 40, nullable = false)
-    private String calName;
+    private String scalName;
 
     @Column(length = 2400)
-    private String calMemo;
+    private String scalMemo;
 
     @OneToMany(mappedBy = "calNo", cascade = {CascadeType.ALL}, orphanRemoval=true)
     private List<SPLAN> splans;

@@ -13,17 +13,21 @@ import java.time.LocalDate;
 @ToString
 @Entity
 @Table(name = "s_plan")
+@SequenceGenerator(
+        name = "SPLAN_GENERATOR",
+        sequenceName = "SMEM_SEQUENCES",
+        initialValue = 1, allocationSize = 1)
 public class SPLAN {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SPLAN_GENERATOR")
     private Long splanNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cal_no")
-    private SCAL calNo;
+    private SCAL scalNo;
 
     @CreatedDate
-    private LocalDate planDate;
+    private LocalDate splanDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id")

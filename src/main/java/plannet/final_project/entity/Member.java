@@ -17,11 +17,14 @@ public class Member {
     @Column(length = 50)
     private String id;
 
-    @Column(nullable = false, length = 5)
-    private String userCode;
-
     @Column(nullable = false, length = 20)
     private String pwd;
+
+    @Column(length = 1) // 소셜로 가입한 사람인지 기록하는 컬럼
+    private String social;
+
+    @Column(nullable = false, length = 5)
+    private String userCode;
 
     @Column(nullable = false, length = 30)
     private String name;
@@ -39,24 +42,24 @@ public class Member {
     @CreatedDate
     private LocalDateTime joinDate;
 
+    @Column(length = 200)
+    private String proImg;
+
     @Column(length = 300)
     private String profile;
 
     @Column(length = 2400)
     private String memo;
 
-    @Column(length = 200)
-    private String proImg;
+    @Column
+    private int reRegChecked;
 
-    @Column(length = 1) // 소셜로 가입한 사람인지 기록하는 컬럼
-    private String social;
-
-    @OneToMany(mappedBy = "userId", cascade = {CascadeType.ALL}, orphanRemoval=true)
-    private List<SPLAN> splans;
     @OneToMany(mappedBy = "userId", cascade = {CascadeType.ALL}, orphanRemoval=true)
     private List<SCAL> scals;
     @OneToMany(mappedBy = "userId", cascade = {CascadeType.ALL}, orphanRemoval=true)
-    private List<SCOM> scoms;
-    @OneToMany(mappedBy = "userId", cascade = {CascadeType.ALL}, orphanRemoval=true)
     private List<SMEM> smems;
+    @OneToMany(mappedBy = "userId", cascade = {CascadeType.ALL}, orphanRemoval=true)
+    private List<SPLAN> splans;
+    @OneToMany(mappedBy = "userId", cascade = {CascadeType.ALL}, orphanRemoval=true)
+    private List<SCOM> scoms;
 }
