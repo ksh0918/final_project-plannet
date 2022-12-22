@@ -39,7 +39,7 @@ const Modal = (props) => {
         
     }
     const onClickUnfriend = async() => {
-        await Api.notiUnfriend(option);
+        await Api.unfriend(option);
         navigate(0);
     }
     const onClickNotiAnswer = async() => {

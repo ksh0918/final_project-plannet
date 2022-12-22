@@ -151,11 +151,11 @@ const Section = styled.div`
 
     useEffect(() => {
         const countCal = async() => { // 2개 이상의 scal에 참여 중이면 주소로도 공유 캘린더 생성 페이지에 접근 못하게 막음
-            const res = await Api.scalCheck(getId); //2개 이상의 scal에 참여중인지 확인 2개 이하면 true, 이상이면 false
+            const res = await Api.scalCntCheck(getId); //2개 이상의 scal에 참여중인지 확인 2개 이하면 true, 이상이면 false
             if(res.data) { // 2개 이하이면 친구 목록 불러 오기
                 const myfriends = async() => {
                     try{
-                        const response = await Api.friendPageLoad(getId); //친구 목록 불러오기
+                        const response = await Api.friendLoad(getId); //친구 목록 불러오기
                         setFriendList(response.data.friendList);
                     } catch(e) {
                         console.log(e);

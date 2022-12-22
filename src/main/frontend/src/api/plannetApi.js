@@ -55,7 +55,7 @@ const plannetApi = {
         return await axios.get(PLANNET_DOMAIN + `member/find?keyword=${keyword}&email=${email}&type=${type}`, HEADER);
     },
     // 새 비밀번호 저장
-    newPwd: async function(id, pwd){
+    memberNewPwd: async function(id, pwd){
         const reg = {
             id : id,
             pwd : pwd
@@ -110,7 +110,7 @@ const plannetApi = {
         return await axios.post(PLANNET_DOMAIN + "user/img_save", object, HEADER);
     },
     // NavInfo 불러오기 - userinfoController-NavInfo
-    navInfo: async function(id){
+    userNavInfo: async function(id){
         return await axios.get(PLANNET_DOMAIN + `user/nav_info?id=${id}`, HEADER);
     },
 
@@ -134,7 +134,7 @@ const plannetApi = {
         };
         return await axios.post(PLANNET_DOMAIN + "noti/unfriend", object, HEADER);
     },
-    // 알림 승락거절
+    // 알림 승락거절? 알림 승락 응답이 아니라?
     // Post로 변경해야 함
     notiResponse: async function(option) {
         return await axios.get(PLANNET_DOMAIN + "noti/noti_response${option}", HEADER);

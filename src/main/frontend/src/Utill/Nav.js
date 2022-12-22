@@ -239,7 +239,7 @@ const Nav = ({sideBar, setSideBar}) => {
                 const mResult = await Api.messageNoti(userId);
                 console.log(mResult.data);
                 setmNotiCount(mResult.data);
-                const result = await Api.friendPageLoad(userId);
+                const result = await Api.friendLoad(userId);
                 if(result.data != null){setfNotiCount(Object.keys(result.data.notiList).length);}
                 else{console.log("null 값")}
             } catch(e){
