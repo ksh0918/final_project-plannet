@@ -10,5 +10,6 @@ import java.util.Map;
 public class WriteDTO {
     private List<Map<String, Object>> planList;
     private String diary;
+
     private boolean isOk;
 }

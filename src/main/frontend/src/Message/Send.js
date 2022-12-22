@@ -219,12 +219,13 @@ const Send= () => {
     const [detail, setDetail] = useState("");
     const [lengthCheck, setLengthCheck] = useState(false);
     const [isBlur,setIsBlur] = useState(false);
+    const [friendList, setFriendList] = useState();
+    const [searchKeyword, setSearchKeyword] = useState('');
+
     const [comment, setComment] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
     const [modalHeader, setModalHeader] = useState("");
     const [option, setOption] = useState("");
-    const [friendList, setFriendList] = useState();
-    const [searchKeyword, setSearchKeyword] = useState('');
     const closeModal = () => {
         setModalOpen(false);
     }

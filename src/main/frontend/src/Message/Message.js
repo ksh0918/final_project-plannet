@@ -293,15 +293,15 @@ const Message = () => {
                             <tr key={message.receiveId}>
                                 <td><input type="checkbox" name={`select-${message.messageNo}`}
                                     onChange={(e) => handleSingleCheck(e.target.checked, message.messageNo)}
-                                    //  checkItems 에 해당 쪽지의 postNum 이 있으면 true, 아니면 false
+                                    //  checkItems 에 해당 쪽지의 messageNo 이 있으면 true, 아니면 false
                                     checked={checkItems.includes(message.messageNo) ? true : false}
                                 /></td> 
-                                <td>{
+                                <td onClick={()=>onClickList(message)}>{
                                     message.isRead===0?"안읽음":"읽음"
                                 }</td>
-                                <td>{message.sendId}</td>
+                                <td onClick={()=>onClickList(message)}>{message.sendId}</td>
                                 <td>{<div className='detail'onClick={()=>onClickList(message)} dangerouslySetInnerHTML={{__html: message.detail}}></div>}</td>
-                                <td>{message.sendDate}</td>
+                                <td onClick={()=>onClickList(message)}>{message.sendDate}</td>
                             </tr>
                             
                         ))}
