@@ -142,7 +142,7 @@ const PostView = () => {
     // 게시물 삭제, 수정 팝업
     const [modalOpen, setModalOpen] = useState(false); // 모달에 띄워줄 메세지 문구
     const [modalOption, setModalOption] = useState('');
-    const [comment, setComment] = useState("");
+    const [comment, setComment] = useState(""); // 모달창 안내 문구
 
     const closeModal = () => {
         setModalOpen(false);
@@ -161,6 +161,7 @@ const PostView = () => {
     // 무한 스크롤
     const [offset, setOffset] = useState(0); // DB에서 데이터 가져오는 개수
     const [isMax, setIsMax] = useState(false); // DB에 있는 전체 데이터 개수
+    const [comments, setComments] = useState([]); // 댓글
 
     // 좋아요를 누를 때마다 표면적으로 +1, -1 해주기 & 하트 모양 토글
     const onClickLike = async() => {
@@ -201,7 +202,7 @@ const PostView = () => {
     const [sideBar, setSideBar] = useState(false);
 
     // 무한 스크롤
-    const comments = async () => {
+    const commentItem = async () => {
         try {
           // DB에 있는 전체 데이터를 다 가져오면 데이터 더 부르지 않음
           if(isMax){
@@ -215,7 +216,7 @@ const PostView = () => {
             console.log("댓글 불러오는중");
             // PostView 페이지 댓글 목록 api
             const response = await Api.commentLoad(getNum,String(offset),String(offset + 10)); // DB에서 데이터 가져오는 개수의 범위를 api 매개변수로 넘겨줌
-            setCommentList(old => ([...old, ...response.data]));
+            setComments(old => ([...old, ...response.data]));
             console.log('//new Data :',response.data);
             setOffset(old => old + 10) // offset을 계속 10씩 늘려주면 된다
             setIsFetching(false); // fetching이 false가 되어야 한번만 데이터를 불러줌 패칭 스테이트는 선언한 훅에서 나옴
@@ -227,10 +228,10 @@ const PostView = () => {
         };
       }
     // hook 선언 (인자값에는 데이터를 불러오는 함수 입력(Comment))
-    const [isFetching,setIsFetching] = useInfiniteScroll(Comment)
+    const [isFetching,setIsFetching] = useInfiniteScroll(commentItem)
 
       useEffect(() => {
-        comments();
+        commentItem();
       }, []);
 
     return (

@@ -69,7 +69,7 @@ const Comment = styled.div`
     }
 `;
 
-const Comments = ({getId, getNum, getDate, setCommentList, commentList}) => {
+const CommentItem = ({getId, getNum, getDate, setCommentList, commentList}) => {
     const navigate = useNavigate();
 
     // 링크에서 personal인지 scal인지 구분  
@@ -152,4 +152,4 @@ const Comments = ({getId, getNum, getDate, setCommentList, commentList}) => {
     }
 };
 
-export default Comments;
+export default CommentItem;
