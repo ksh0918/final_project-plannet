@@ -59,8 +59,8 @@ public class NotiService {
                     log.warn(String.valueOf(isFriend));
                     if(isFriend == null) { //친구가 아니라면
                         //내가 이미 보낸 요청 사항이 있는지 확인한다.
-                        List<Noti> alreadySend = notiRepository.findByUserIdAndReceiveIdAndTypeAndIsChecked(send, recive, "F", 0);
-                        List<Noti> alreadyReceive = notiRepository.findByUserIdAndReceiveIdAndTypeAndIsChecked(recive, send, "F", 0);
+                        List<Noti> alreadySend = notiRepository.findByUserIdAndReceiveIdAndTypeAndAcceptChecked(send, recive, "F", 0);
+                        List<Noti> alreadyReceive = notiRepository.findByUserIdAndReceiveIdAndTypeAndAcceptChecked(recive, send, "F", 0);
                         // 이미 내가 보낸 요청사항이 있음
                         if(alreadySend.size() != 0) {
                             result = 3;
@@ -72,7 +72,7 @@ public class NotiService {
                             noti.setUserId(send);
                             noti.setReceiveId(recive);
                             noti.setType("F");
-                            noti.setInviteDate(LocalDateTime.now());
+                            noti.setNotiDate(LocalDateTime.now());
                             noti.setAcceptChecked(0);
                             notiRepository.save(noti);
                             result = 1;
@@ -119,7 +119,7 @@ public class NotiService {
         notiDTO.setFriendList(friendList);
         //알림 리스트
         List<Map<String, Object>> notiList = new ArrayList<>();
-        List<Noti> notiData = notiRepository.findByReceiveIdAndIsChecked(member, 0);
+        List<Noti> notiData = notiRepository.findByReceiveIdAndAcceptChecked(member, 0);
         if(notiData != null) {
             for(Noti e : notiData) {
                 Map<String, Object> noti = new HashMap<>();
@@ -152,7 +152,7 @@ public class NotiService {
                     friendRepository.save(friend2);
                 } else {//캘린더에 멤버 등록
                     SMEM smem = new SMEM();
-                    smem.setScalNo(noti.getCalNo());
+                    smem.setScalNo(noti.getScalNo());
                     smem.setUserId(noti.getReceiveId());
                     smem.setIsOwner(0);
                     smemRepository.save(smem);

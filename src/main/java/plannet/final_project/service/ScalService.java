@@ -44,7 +44,7 @@ public class ScalService {
             scal.setUserId(member);
             scal.setScalName(title);
             scalRepository.save(scal);
-            calNo = scalRepository.findMaxCalNo(userId);
+            calNo = scalRepository.findMaxScalNo(userId);
             System.out.println("서비스 캘린더 번호 : " + calNo);
             // 공유 캘린더 친구 설정
             SMEM smem = new SMEM();
@@ -58,10 +58,10 @@ public class ScalService {
                 noti.setUserId(member); // 보내는 이
                 Member friend = memberRepository.findByUserCode((String)s.get("userCode"));
                 noti.setReceiveId(friend); // 초대할 친구들
-                noti.setCalNo(scal);
+                noti.setScalNo(scal);
                 noti.setType("S");
-                noti.setCalNo(scal);
-                noti.setInviteDate(LocalDateTime.now());
+                noti.setScalNo(scal);
+                noti.setNotiDate(LocalDateTime.now());
                 noti.setAcceptChecked(0); // 수락 여부, 0이면 미수락, 1이면 수락
                 notiRepository.save(noti);
             }
@@ -92,12 +92,12 @@ public class ScalService {
             List<List<Map<String, Object>>> weekPlan = new ArrayList<>();
             for(int i = 0; i < 7; i++) {
                 List<Map<String, Object>> dayPlan = new ArrayList<>();
-                List<SPLAN> dayPlanOrigin = splanRepository.findByScalNoAndPlanDateOrderBySplanNoAsc(scal, weekDay[i]);
+                List<SPLAN> dayPlanOrigin = splanRepository.findByScalNoAndSplanDateOrderBySplanNoAsc(scal, weekDay[i]);
                 for(SPLAN e : dayPlanOrigin) {
                     Map<String, Object> plan = new HashMap<>();
                     plan.put("no", e.getSplanNo());
-                    plan.put("plan", e.getPlan());
-                    plan.put("checked", e.getPlanChecked());
+                    plan.put("plan", e.getSplan());
+                    plan.put("checked", e.getSplanChecked());
                     dayPlan.add(plan);
                 }
                 weekPlan.add(dayPlan);
@@ -108,7 +108,7 @@ public class ScalService {
             List<Set<LocalDate>> planMark = new ArrayList<>();
             for(int i = 0; i < 2; i++) {
                 Set<LocalDate> planDot = new HashSet<>();
-                List<SPLAN> plan = splanRepository.findByScalNoAndPlanChecked(scal, i);
+                List<SPLAN> plan = splanRepository.findByScalNoAndSplanChecked(scal, i);
                 for(SPLAN e : plan) {
                     planDot.add(e.getSplanDate());
                 }
@@ -124,7 +124,7 @@ public class ScalService {
             // Member Load
             List<Map<String, Object>> memberList = new ArrayList<>();
             SCAL scalNo = scalRepository.findById(calNo).orElseThrow(EntityNotFoundException::new);
-            List<SMEM> memberListData = smemRepository.findByCalNo(scalNo);
+            List<SMEM> memberListData = smemRepository.findByScalNo(scalNo);
             for (SMEM e : memberListData) {
                 Map<String, Object> scalMember = new HashMap<>();
                 scalMember.put("id", e.getUserId().getId());
@@ -159,13 +159,13 @@ public class ScalService {
         ShareDTO shareDTO = new ShareDTO();
         try{
             SCAL scal = scalRepository.findById(calNo).orElseThrow();
-            List<SPLAN> plans = splanRepository.findByScalNoAndPlanDateOrderBySplanNoAsc(scal, date);
+            List<SPLAN> plans = splanRepository.findByScalNoAndSplanDateOrderBySplanNoAsc(scal, date);
             List<Map<String, Object>> planList = new ArrayList<>();
             for (SPLAN e : plans) {
                 Map<String, Object> plan = new HashMap<>();
                 plan.put("key", e.getSplanNo());
-                plan.put("checked", e.getPlanChecked());
-                plan.put("text", e.getPlan());
+                plan.put("checked", e.getSplanChecked());
+                plan.put("text", e.getSplan());
                 plan.put("deleted", false);
                 plan.put("writerId", e.getUserId().getNickname());
                 planList.add(plan);
@@ -192,16 +192,16 @@ public class ScalService {
                     splans.setSplanDate(date);
                     String checked = String.valueOf(p.get("checked"));
                     if(checked.equals("0")) { // 수정하지 않은 기본의 것들은 checked가 1 또는 0으로 로드되기 때문에 따로 확인해줘야 함
-                        splans.setPlanChecked(0);
+                        splans.setSplanChecked(0);
                     } else if (checked.equals("1")) {
-                        splans.setPlanChecked(1);
+                        splans.setSplanChecked(1);
                     } else if (checked.equals("false")) { // 새로 생성하거나 수정한 checked는 true/false로 request함
-                        splans.setPlanChecked(0);
+                        splans.setSplanChecked(0);
                     } else if (checked.equals("true")) {
-                        splans.setPlanChecked(1);
+                        splans.setSplanChecked(1);
                     }
                     splans.setScalNo(scal);
-                    splans.setPlan((String)p.get("text"));
+                    splans.setSplan((String)p.get("text"));
                     SPLAN rst = splanRepository.save(splans);
                 }
             }
@@ -218,7 +218,7 @@ public class ScalService {
         try {
             List<Map<String, Object>> commentList = new ArrayList<>();
             SCAL scal = scalRepository.findById(calNo).orElseThrow();
-            List<SCOM> data = scomRepository.findByScalNoAndPlanDate(scal, planDate);
+            List<SCOM> data = scomRepository.findByScalNoAndSplanDate(scal, planDate);
             for (SCOM e : data) {
                 Map<String, Object> comment = new HashMap<>();
                 comment.put("commentNo", e.getCommentNo());
@@ -267,7 +267,7 @@ public class ScalService {
         List<Map<String, Object>> memberList = new ArrayList<>();
         try {
             SCAL scal = scalRepository.findById(calNo).orElseThrow(EntityNotFoundException::new); // 공유 캘린더 정보 객체
-            List<SMEM> memberData = smemRepository.findByCalNo(scal); // 공유 캘린더 멤버 정보 List
+            List<SMEM> memberData = smemRepository.findByScalNo(scal); // 공유 캘린더 멤버 정보 List
 
             if(scal.getUserId().getId().equals(id)) { // 오너인 경우
                 Member owner = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new); // 오너의 정보 객체
@@ -286,7 +286,7 @@ public class ScalService {
                     friend.put("profile", e.getFriendId().getProfile());
 
                     // 공유 캘린더 초대를 받은 오너의 친구의 noti 객체
-                   Noti alreadyInvite = notiRepository.findByReceiveIdAndIsCheckedAndCalNo(e.getFriendId(), 0, scal);
+                   Noti alreadyInvite = notiRepository.findByReceiveIdAndAcceptCheckedAndScalNo(e.getFriendId(), 0, scal);
                     if(memberId.contains(e.getFriendId().getId())) { //멤버라면 1
                         friend.put("status", 1);
                     } else if(alreadyInvite != null) { // 이미 초대한 기록이 있으면 2
@@ -346,8 +346,8 @@ public class ScalService {
             noti.setReceiveId(receiveId);
             noti.setType("S");
             noti.setAcceptChecked(0);
-            noti.setCalNo(scal);
-            noti.setInviteDate(LocalDateTime.now());
+            noti.setScalNo(scal);
+            noti.setNotiDate(LocalDateTime.now());
             notiRepository.save(noti);
 
             return true;
@@ -360,7 +360,7 @@ public class ScalService {
         try {
             SCAL scal = scalRepository.findById(calNo).orElseThrow(EntityNotFoundException::new);
             Member dropId = memberRepository.findById(id).orElseThrow();
-            SMEM smem = smemRepository.findByCalNoAndUserId(scal, dropId);
+            SMEM smem = smemRepository.findByScalNoAndUserId(scal, dropId);
             smemRepository.deleteById(smem.getSmemNo());
 
             return true;
@@ -375,9 +375,9 @@ public class ScalService {
             SCAL scal = scalRepository.findById(calNo).orElseThrow(EntityNotFoundException::new);
             scomRepository.deleteByScalNo(scal);
             splanRepository.deleteByScalNo(scal);
-            smemRepository.deleteByCalNo(scal);
-            notiRepository.deleteByCalNo(scal);
-            scalRepository.deleteByCalNo(calNo);
+            smemRepository.deleteByScalNo(scal);
+            notiRepository.deleteByScalNo(scal);
+            scalRepository.deleteByScalNo(calNo);
             return true;
         } catch (Exception e) {
             return false;

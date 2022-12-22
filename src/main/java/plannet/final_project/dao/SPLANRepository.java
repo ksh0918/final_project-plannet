@@ -13,9 +13,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface SPLANRepository extends JpaRepository<SPLAN, Long> {
-    List<SPLAN> findByCalNo(SCAL scal);
+    List<SPLAN> findByScalNo(SCAL scal);
     List<SPLAN> findByScalNoAndSplanDateOrderBySplanNoAsc(SCAL calNo, LocalDate localDate);
-    List<SPLAN> findByScalNoAndPlanChecked(SCAL calNo, int planChecked);
+    List<SPLAN> findByScalNoAndSplanChecked(SCAL calNo, int planChecked);
     void deleteByUserId(Member member);
 
     @Modifying //데이터베이스에 변경을 주는 네이티브 쿼리는 이 어노테이션 필요 (INSERT, UPDATE, DELETE)

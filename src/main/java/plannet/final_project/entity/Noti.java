@@ -39,11 +39,11 @@ public class Noti {
     // 초대 타입이 scal인 경우 calNo, 친구인 경우 NULL
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "etc")
-    private SCAL calNo;
+    private SCAL scalNo;
 
     // 초대 날짜
     @CreatedDate
-    private LocalDateTime inviteDate;
+    private LocalDateTime notiDate;
 
     // 현재 상태 (수락 여부, 0이면 미수락, 1이면 수락)
     @Column(name = "ischecked")

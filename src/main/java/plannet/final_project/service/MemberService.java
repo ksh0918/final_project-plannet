@@ -25,10 +25,6 @@ public class MemberService {
     private final FriendRepository friendRepository;
     private final MessageRepository messageRepository;
     private final PlanRepository planRepository;
-    private final SCOMRepository scomRepository;
-    private final SMEMRepository smemRepository;
-    private final SPLANRepository splanRepository;
-    private final SCALRepository scalRepository;
 
     public String loginCheck (String id, String pwd){
         String result;
