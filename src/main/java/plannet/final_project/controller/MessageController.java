@@ -86,4 +86,20 @@ public class MessageController {
             return new ResponseEntity(false, HttpStatus.OK);
         }
     }
+    @PostMapping("/readModal")
+    public ResponseEntity<Boolean> messageRead(@RequestBody Map<String,Long> messageData){
+        Long messageNo= messageData.get("messageNo");
+        System.out.println(messageNo);
+        try{
+            boolean messageRead= messageService.messageReadModal(messageNo);
+            if(messageRead){
+                return new ResponseEntity(true, HttpStatus.OK);
+            }
+            else{
+                return new ResponseEntity(false, HttpStatus.OK);
+            }
+        }catch (Exception e) {
+            return new ResponseEntity(false, HttpStatus.OK);
+        }
+    }
 }

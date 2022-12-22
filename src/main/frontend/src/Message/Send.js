@@ -74,6 +74,12 @@ const Section = styled.div`
         }
         
     }
+    .is_list{
+        li{
+            width: 350px !important;
+            float: left !important;
+        }
+    }
     button {
         border: none;
         padding-right: 20px; 
