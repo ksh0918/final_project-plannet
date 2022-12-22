@@ -75,7 +75,7 @@ const Join = () => {
     // 중복 체크
     const onBlurIdCheck = async() => {
         // 가입 여부 우선 확인
-        const memberCheck = await Api.memberRegCheck(inputId, "TYPE_ID");
+        const memberCheck = await Api.overlapCheck(inputId, "TYPE_ID");
         if (memberCheck.data && isId) {
             setIdMessage("사용가능한 ID입니다.");
         } else if(memberCheck.data && !isId){
@@ -168,7 +168,7 @@ const Join = () => {
 
     const onBlurNicknameCheck = async() => {
         // 가입 여부 우선 확인
-        const memberCheck = await Api.memberRegCheck(inputNickname, "TYPE_NICKNAME");
+        const memberCheck = await Api.overlapCheck(inputNickname, "TYPE_NICKNAME");
         if (memberCheck.data && inputNickname.length > 0) {
             setNicknameMessage("사용가능한 닉네임입니다.");
             setIsNickname(true);
@@ -180,7 +180,7 @@ const Join = () => {
 
     const onBlurEmailCheck = async() => {
         // 가입 여부 우선 확인
-        const memberCheck = await Api.memberRegCheck(inputEmail, "TYPE_EMAIL");
+        const memberCheck = await Api.overlapCheck(inputEmail, "TYPE_EMAIL");
         if (memberCheck.data && isEmail) {
             setEmailMessage("사용가능한 Email입니다.");
             setClickAuth(true);
@@ -197,7 +197,7 @@ const Join = () => {
 
     const onBlurTelCheck = async() => {
          // 가입 여부 우선 확인
-        const memberCheck = await Api.memberRegCheck(inputTel, "TYPE_TEL");
+        const memberCheck = await Api.overlapCheck(inputTel, "TYPE_TEL");
         if (memberCheck.data) {
             setTelMessage("사용가능한 전화번호입니다.");
         } else {

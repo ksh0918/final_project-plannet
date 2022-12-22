@@ -66,7 +66,7 @@ public class MemberService {
     }
 
     // 처음 구글 로그인 한 사람 회원가입
-    public boolean newSocialSave(String id, String name, String nickname, String email, String tel) {
+    public boolean newSocialSave(String id, String name, String email, String nickname, String tel) {
         try{
             Member member = new Member();
             member.setId(id);
@@ -144,7 +144,7 @@ public class MemberService {
     }
 
     // 아이디 및 비밀번호 찾기
-    public MemberDTO memberFind(String keyword, String type, String email) {
+    public MemberDTO memberFind(String keyword, String email, String type) {
         MemberDTO memDTO = new MemberDTO();
         try {
             char t = type.charAt(5);

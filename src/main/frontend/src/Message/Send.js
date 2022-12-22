@@ -7,6 +7,7 @@ import Api from "../api/plannetApi";
 import Nav from "../Utill/Nav";
 import FriendList from '../Friend/FriendList';
 import Modal from '../Utill/Modal';
+import TopBar from '../Utill/TopBar';
 
 const Wrap = styled.div`
     width: 1130px;
@@ -269,14 +270,20 @@ const Send= () => {
         }
         friendPage();
     },[])
-;
+    ;
+
+    //미디어쿼리시 nav 사이드바
+    const [sideBar, setSideBar] = useState(false);
+    
     return (
         <Wrap>
             <Modal open={modalOpen} close={closeModal} header="글쓰기 안내">{comment}</Modal>
-            <Nav></Nav>
-            <Section>
+            <div className={`back ${sideBar? 'back_side_open':''}`}/>
+            <TopBar sideBar={sideBar} setSideBar={setSideBar}/>
+            <Nav sideBar={sideBar} setSideBar={setSideBar}/>
+            <Section id="send" className="section">
                 <div className="board_list sub_box">
-                    <h2>쪽지 보내기</h2>
+                    <h2>Send Message</h2>
                     <p>
                         <span>작성 시 유의해 주세요! 비방, 광고, 불건전한 내용의 쪽지는 사전 동의 없이 경고를 받을 수 있습니다.</span>
                     </p>    

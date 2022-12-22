@@ -50,7 +50,7 @@ const Section = styled.div`
                 color: #888;}
         }
     }
-    table {
+    .message>table {
         border-collapse: collapse; 
         width:100%;
         background-color: #4555AE;
@@ -75,6 +75,18 @@ const Section = styled.div`
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            table{
+                line-height: 0;
+                td, tr{display: none;}
+                &::after{
+                    content: "테이블이 존재합니다. 클릭해서 확인해주세요!";
+                }
+            }
+            p{
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
             &:first-child {
                 border-left: none;
                 input{
@@ -121,9 +133,13 @@ const Section = styled.div`
         }
         .search {
             float: right;
-            width: 200px; height: 35px; padding: 0 10px; border: solid 2px #ddd; 
+            width: 200px; height: 29px; 
+            padding: 0 10px; 
+            border: solid 2px #ddd; 
             background-color: white;
-            input {width: 150px; height: 31px; border: 0px; outline: none; margin-right: 10px;}
+            margin-top: -2px;
+            border-radius: 5px; 
+            input {width: 150px; height: 25px; border: 0px; outline: none; margin-right: 10px;}
         }
     }
 `;
