@@ -266,12 +266,16 @@ const plannetApi = {
 
     //NotiController
     //친구 추가 요청
+    //친구 페이지 불러오기
+    friendPageLoad: async function(id) {
+        return await axios.get(PLANNET_DOMAIN + `noti/friend_load?id=${id}`, HEADER);
+    },
     notiAddFriend: async function(id, keyword) {
         const object = {
             id: id,
             keyword: keyword
         };
-        return await axios.post(PLANNET_DOMAIN + "noti/add_friend", object, HEADER);
+        return await axios.post(PLANNET_DOMAIN + "noti/friend_add", object, HEADER);
     },
     //친구삭제
     notiUnfriend: async function(option) {
@@ -280,17 +284,14 @@ const plannetApi = {
         };
         return await axios.post(PLANNET_DOMAIN + "noti/unfriend", object, HEADER);
     },
-    //친구 페이지 불러오기
-    friendPageLoad: async function(id) {
-        return await axios.get(PLANNET_DOMAIN + `noti/friend_page_load?id=${id}`, HEADER);
-    },
-    //알림 승락거절
+    // 알림 승락거절
+    // Post로 변경해야 함
     notiAnswer: async function(option) {
-        return await axios.get(PLANNET_DOMAIN + `noti/noti_answer${option}`, HEADER);
+        return await axios.get(PLANNET_DOMAIN + `noti/noti_response${option}`, HEADER);
     },
     // 공유 캘린더 갯수 확인
     scalCheck: async function(id) {
-        return await axios.get(PLANNET_DOMAIN + `noti/check?id=${id}`, HEADER);
+        return await axios.get(PLANNET_DOMAIN + `noti/cnt_check?id=${id}`, HEADER);
     },
 
     // ScalController
