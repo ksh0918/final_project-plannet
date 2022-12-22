@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import plannet.final_project.service.NotiService;
 import plannet.final_project.vo.NotiDTO;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,50 +19,41 @@ import java.util.Map;
 public class NotiController {
     private final NotiService notiService;
 
-    @PostMapping("/add_friend")
-    public ResponseEntity<Integer> addFriend(@RequestBody Map<String, String> data) {
-        // 서비스를 다녀옴
+    @GetMapping("/friend_load")
+    public ResponseEntity<Map<String, List<Map<String, Object>>>> friendLoad(@RequestParam String id) {
+        Map<String, List<Map<String, Object>>> friendList = new HashMap<>();
+        NotiDTO notiDTO = notiService.friendLoad(id);
+        if(notiDTO.getFriendList().size() == 0) friendList.put("friendList", null);
+        else friendList.put("friendList", notiDTO.getFriendList());
+        if(notiDTO.getNotiList().size() == 0) friendList.put("notiList", null);
+        else friendList.put("notiList", notiDTO.getNotiList());
+        return new ResponseEntity(friendList, HttpStatus.OK);
+    }
+
+    @PostMapping("/friend_add")
+    public ResponseEntity<Integer> friendAdd(@RequestBody Map<String, String> data) {
         String id = data.get("id");
         String keyword = data.get("keyword");
-        int status = notiService.addFriend(id, keyword);
+        int status = notiService.friendAdd(id, keyword);
         return new ResponseEntity(status, HttpStatus.OK);
     }
+
     @PostMapping("/unfriend")
     public ResponseEntity<Integer> unfriend(@RequestBody Map<String, Long> data) {
-        System.out.println(data.get("key"));
-        // 서비스를 다녀옴
         long key = data.get("key");
         boolean status = notiService.unfriend(key);
         return new ResponseEntity(status, HttpStatus.OK);
     }
 
-    @GetMapping("/friend_page_load")
-    public ResponseEntity<Map<String, List<Map<String, Object>>>> friendPageLoad(@RequestParam String id) {
-        Map<String, List<Map<String, Object>>> friendPageList = new HashMap<>();
-        NotiDTO notiDTO = notiService.friendPageLoad(id);
-        if(notiDTO.getFriendList().size() == 0) {
-            friendPageList.put("friendList", null);
-        } else {
-            friendPageList.put("friendList", notiDTO.getFriendList());
-        }
-        if(notiDTO.getNotiList().size() == 0) {
-            friendPageList.put("notiList", null);
-        } else {
-            friendPageList.put("notiList", notiDTO.getNotiList());
-        }
-        return new ResponseEntity(friendPageList, HttpStatus.OK);
-    }
-    @GetMapping("/noti_answer")
-    public ResponseEntity<Boolean> notiAnswer(@RequestParam Long key, boolean status) {
-        boolean isOk = notiService.notiAnswer(key, status);
-        return new ResponseEntity(isOk, HttpStatus.OK);
-    }
-    @GetMapping("/check")
-    public ResponseEntity<Boolean> scalCheck(@RequestParam String id) {
-        boolean isOk = notiService.scalCheck(id);
+    @GetMapping("/noti_response")
+    public ResponseEntity<Boolean> notiResponse(@RequestParam Long key, boolean status) {
+        boolean isOk = notiService.notiResponse(key, status);
         return new ResponseEntity(isOk, HttpStatus.OK);
     }
 
-
-
+    @GetMapping("/cnt_check")
+    public ResponseEntity<Boolean> scalCntCheck(@RequestParam String id) {
+        boolean isOk = notiService.scalCntCheck(id);
+        return new ResponseEntity(isOk, HttpStatus.OK);
+    }
 }
