@@ -101,15 +101,29 @@ const Friends = styled.div`
         transform:translateY(-50%);
     }
     .drop, .wait, .invite {
+        position: absolute;
+        top: 50%;
+        right: 30px;
+        transform: translateY(-50%);
         transition: all .3s ease-in;
         cursor: pointer;
-        position: absolute;
-        font-size: 18px;
-        color: black;
-        background-color: #bebebf;
-        right: 30px;
-        top: 50%;
-        transform:translateY(-50%);
+        font-size: 15px;
+        border-radius: 5px;
+        padding: 3px 12px;
+        background: none;
+        font-weight: 600;
+        &.drop{
+            border: 1px solid rgb(252, 92, 125);
+            color: rgb(252, 92, 125);
+        }
+        &.wait{
+            border: 1px solid #bbb;
+            color: #bbb;
+        }
+        &.invite{
+            border: 1px solid #4555ae;
+            color: #4555ae;
+        }
     }
 `;
 const StyledInput = styled.input`
