@@ -56,11 +56,11 @@ public class WriteService {
     }
 
     // 일정 저장
-    public boolean writeSave(String userId, LocalDate date, List<Map<String, Object>> plan, String diary) {
+    public boolean writeSave(String id, LocalDate date, List<Map<String, Object>> plan, String diary) {
         try {
-            Member member = memberRepository.findById(userId).orElseThrow(EntityNotFoundException::new); // 회원 정보가 담긴 객체 가져옴
-            planRepository.deleteByUserIdAndPlanDate(userId, date); // 기존의 일정 삭제. 삭제 안 하면 기존의 것들이 DB에 계속 있음
-            diaryRepository.deleteByUserIdAndDiaryDate(userId, date); // 기존의 다이어리 삭제
+            Member member = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new); // 회원 정보가 담긴 객체 가져옴
+            planRepository.deleteByUserIdAndPlanDate(id, date); // 기존의 일정 삭제. 삭제 안 하면 기존의 것들이 DB에 계속 있음
+            diaryRepository.deleteByUserIdAndDiaryDate(id, date); // 기존의 다이어리 삭제
 
             // plan 저장
             for(Map<String, Object> p : plan) {

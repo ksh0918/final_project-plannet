@@ -19,7 +19,7 @@ public class MemberController {
     private final MemberService memberService;
 
     // 구글연동 계정인지, 일반계정인지 체크
-     @PostMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<Boolean> memberLogin(@RequestBody Map<String, String> loginData) {
         String id = loginData.get("id");
         String pwd = loginData.get("pwd");
@@ -45,10 +45,10 @@ public class MemberController {
     public ResponseEntity<Boolean> newSocialSave(@RequestBody Map<String,String> save) {
         String id = save.get("id");
         String name = save.get("name");
-        String nickname = save.get("nickname");
         String email = save.get("email");
+        String nickname = save.get("nickname");
         String tel = save.get("tel");
-        boolean result = memberService.newSocialSave(id, name, nickname, email, tel);
+        boolean result = memberService.newSocialSave(id, name, email, nickname, tel);
         if(result) return new ResponseEntity(true,HttpStatus.OK);
         else return new ResponseEntity(false,HttpStatus.OK);
     }
@@ -94,9 +94,9 @@ public class MemberController {
     @PostMapping("/find")
     public ResponseEntity<List<MemberDTO>> memberFind(@RequestBody Map<String, String> memFind) {
         String keyword = memFind.get("keyword");
-        String type = memFind.get("type");
         String email = memFind.get("email");
-        MemberDTO memDTO = memberService.memberFind(keyword, type, email);
+        String type = memFind.get("type");
+        MemberDTO memDTO = memberService.memberFind(keyword, email, type);
         if(memDTO.isOk()) return new ResponseEntity(memDTO, HttpStatus.OK);
         else return new ResponseEntity(false, HttpStatus.OK);
     }

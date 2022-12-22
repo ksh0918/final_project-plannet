@@ -24,8 +24,7 @@ public class EmailService {
     public void createCode() {
         Random random = new Random();
         StringBuffer key = new StringBuffer();
-
-        for(int i=0; i<8; i++) {
+        for(int i = 0; i < 8; i++) {
             int index = random.nextInt(3);
             switch (index) {
                 case 0 :

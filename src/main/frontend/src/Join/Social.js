@@ -80,7 +80,7 @@ const Social = () => {
     }
     const onBlurNicknameCheck = async() => {
         // 가입 여부 우선 확인
-        const memberCheck = await Api.memberRegCheck(inputNickname, "TYPE_NICKNAME");
+        const memberCheck = await Api.overlapCheck(inputNickname, "TYPE_NICKNAME");
         if (memberCheck.data && inputNickname.length > 0) {
             setNicknameMessage("사용가능한 닉네임입니다.");
             setIsNickname(true);
@@ -94,7 +94,7 @@ const Social = () => {
     }
     const onBlurTelCheck = async() => {
         // 가입 여부 우선 확인
-        const memberCheck = await Api.memberRegCheck(inputTel, "TYPE_TEL");
+        const memberCheck = await Api.overlapCheck(inputTel, "TYPE_TEL");
         if (memberCheck.data) {
             setTelMessage("사용가능한 전화번호입니다.");
         } else {

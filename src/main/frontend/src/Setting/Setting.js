@@ -227,7 +227,7 @@ const Setting = () => {
 
     // 전화번호/이메일 중복확인
     const onBlurTelCheck = async() => {
-        const memberCheck = await Api.memberRegCheck(changePhone, "TYPE_TEL");
+        const memberCheck = await Api.overlapCheck(changePhone, "TYPE_TEL");
         if (memberCheck.data && (changePhone.length === 12 || changePhone.length === 13) && changePhone.indexOf('-') === 3) { // 전화번호 길이 체크
             setTelMessage("사용가능한 전화번호입니다.");
             setIsTel(true);
@@ -244,7 +244,7 @@ const Setting = () => {
     }
     // 닉네임 중복확인
     const onBlurNicknameCheck = async() => {
-        const memberCheck = await Api.memberRegCheck(changeNickname, "TYPE_NICKNAME");
+        const memberCheck = await Api.overlapCheck(changeNickname, "TYPE_NICKNAME");
         if (userNickname === changeNickname) {
             setNicknameMessage("기존 닉네임입니다.");
             setIsNickname(true);
