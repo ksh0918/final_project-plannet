@@ -33,7 +33,7 @@ const Modal = (props) => {
         navigate('/board');
     }
     const onClickMessage = async() => {
-        await Api.messageReadModal(messageRead);
+        await Api.messageModalOpen(messageRead);
         setMessageRead("");
         navigate(0); 
         
@@ -43,7 +43,7 @@ const Modal = (props) => {
         navigate(0);
     }
     const onClickNotiAnswer = async() => {
-        await Api.notiAnswer(option);
+        await Api.notiResponse(option);
         navigate(0);
     }
 

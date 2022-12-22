@@ -67,7 +67,7 @@ const DoLogin = () => {
 
     const onClickLogin = async() => {
         try {
-            const res = await Api.userLogin(inputId, inputPw);
+            const res = await Api.memberLogin(inputId, inputPw);
             if(res.data === 'normal') {
                 window.localStorage.setItem("isLogin", "true");
                 window.localStorage.setItem("userId", inputId);

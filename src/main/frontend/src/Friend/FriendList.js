@@ -179,7 +179,7 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
    
    // 공유 캘린더 생성
     const onClickSCalAdd = async() => {
-        const response = await Api.scalCheck(getId); //2개이상의 scal에 참여중인지 확인 2개 이하면 true, 이상이면 false
+        const response = await Api.scalCntCheck(getId); //2개이상의 scal에 참여중인지 확인 2개 이하면 true, 이상이면 false
         console.log(response.data);
         if(response.data) {
             const res = await Api.scalCreate(getId, title, checkedButtons); 

@@ -265,7 +265,7 @@ const Send= () => {
     useEffect(()=>{
         const friendPage = async() => {
             try{
-                const response = await Api.friendPageLoad(getId); //친구랑 알림 목록 불러오기
+                const response = await Api.friendLoad(getId); //친구랑 알림 목록 불러오기
                 setFriendList(response.data.friendList);
             } catch(e){
             console.log(e);

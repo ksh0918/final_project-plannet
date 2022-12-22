@@ -185,7 +185,7 @@ const Board = () => {
     // 타이틀 클릭 시 작성자 id 와 다르면 조회수 +1
     const viewsUp = async (boardNo, writerId) => {
         if(writerId !== getId) {
-            await Api.boardViewsUp(boardNo);
+            await Api.boardViewUp(boardNo);
         }
         const link = "post_view/" + boardNo;
         navigate(link);
