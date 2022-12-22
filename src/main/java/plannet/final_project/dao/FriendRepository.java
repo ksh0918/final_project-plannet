@@ -7,7 +7,7 @@ import plannet.final_project.entity.Member;
 import java.util.List;
 
 public interface FriendRepository extends JpaRepository<Friend, Long> {
-    void deleteByUserId(Member member);
-    Friend findByUserIdAndFriendId(Member send, Member recive);
     List<Friend> findByUserId(Member member);
+    Friend findByUserIdAndFriendId(Member send, Member recive);
+    void deleteByUserId(Member member);
 }
