@@ -32,9 +32,8 @@ public class MemberController {
     }
 
     // 구글 연동 시 메일에서 아이디를 찾아옴
-    @PostMapping("/social_login_find_id")
-    public ResponseEntity<String> socialLoginFindId(@RequestBody Map<String,String> data) {
-        String email = data.get("email");
+    @GetMapping("/social_login_find_id")
+    public ResponseEntity<String> socialLoginFindId(@RequestParam String email) {
         String userId = "userID:" + memberService.socialLoginFindId(email);
         if(!userId.equals("NOK")) return new ResponseEntity(userId,HttpStatus.OK);
         else return new ResponseEntity("NOK",HttpStatus.OK);
@@ -92,10 +91,7 @@ public class MemberController {
 
     // 아이디 비밀번호 찾기
     @PostMapping("/find")
-    public ResponseEntity<List<MemberDTO>> memberFind(@RequestBody Map<String, String> data) {
-        String keyword = data.get("keyword");
-        String email = data.get("email");
-        String type = data.get("type");
+    public ResponseEntity<List<MemberDTO>> memberFind(@RequestParam String keyword, String email, String type) {
         MemberDTO memDTO = memberService.memberFind(keyword, email, type);
         if(memDTO.isOk()) return new ResponseEntity(memDTO, HttpStatus.OK);
         else return new ResponseEntity(false, HttpStatus.OK);

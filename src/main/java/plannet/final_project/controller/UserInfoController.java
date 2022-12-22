@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import plannet.final_project.service.UserInfoService;
 import plannet.final_project.vo.MemberDTO;
 
@@ -24,9 +21,8 @@ public class UserInfoController {
     private final UserInfoService userInfoService;
 
     //사용자 정보 불러오기
-    @PostMapping("/info_load")
-    public ResponseEntity<List<Object>> userInfoLoad(@RequestBody Map<String, String> userId) {
-        String id = userId.get("id");
+    @GetMapping("/info_load")
+    public ResponseEntity<List<Object>> userInfoLoad(@RequestParam String id) {
         MemberDTO memberDTO = userInfoService.userInfoLoad(id);
         if(memberDTO.isOk()) {
             List<Object> userInfo = new ArrayList<>();
@@ -43,11 +39,11 @@ public class UserInfoController {
 
     // 사용자 정보 수정
     @PostMapping("/info_save")
-    public ResponseEntity<Boolean> userInfoSave(@RequestBody Map<String, String> userInfo) {
-        String id = userInfo.get("id");
-        String nickname = userInfo.get("nickname");
-        String tel = userInfo.get("tel");
-        String profile = userInfo.get("profile");
+    public ResponseEntity<Boolean> userInfoSave(@RequestBody Map<String, String> data) {
+        String id = data.get("id");
+        String nickname = data.get("nickname");
+        String tel = data.get("tel");
+        String profile = data.get("profile");
         boolean result = userInfoService.userInfoSave(id, nickname, tel, profile);
         if(result) return new ResponseEntity(true, HttpStatus.OK);
         else return new ResponseEntity(false, HttpStatus.OK);
@@ -55,18 +51,17 @@ public class UserInfoController {
 
     // 사용자 프로필 이미지명 저장
     @PostMapping("/img_save")
-    public ResponseEntity<Boolean> userImgSave(@RequestBody Map<String, String> userImg) {
-        String id = userImg.get("id");
-        String imgName = userImg.get("imgName");
+    public ResponseEntity<Boolean> userImgSave(@RequestBody Map<String, String> data) {
+        String id = data.get("id");
+        String imgName = data.get("imgName");
         boolean result = userInfoService.saveUserImg(id, imgName);
         if(result) return new ResponseEntity(true, HttpStatus.OK);
         else return new ResponseEntity(false, HttpStatus.OK);
     }
 
     // nav바 정보 가져오기
-    @PostMapping("/nav_info")
-    public ResponseEntity<Map<String, Object>> NavInfo(@RequestBody Map<String, String> userId) {
-        String id = userId.get("id");
+    @GetMapping("/nav_info")
+    public ResponseEntity<Map<String, Object>> NavInfo(@RequestParam String id) {
         MemberDTO memberDTO1 = userInfoService.userInfoLoad(id);
         MemberDTO memberDTO2 = userInfoService.navInfoLoad(id);
         if(memberDTO1.isOk() && memberDTO2.isOk()) {

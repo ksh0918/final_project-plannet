@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import plannet.final_project.service.HomeService;
 import plannet.final_project.vo.HomeDTO;
 
@@ -21,9 +18,9 @@ import java.util.Map;
 public class HomeController {
     private final HomeService homeService;
 
-    @PostMapping("/personal")
-    public ResponseEntity<Map<String, Object>> personalHome(@RequestBody Map<String, String> data) {
-        String id = data.get("id");
+    // 개인 home/달력/주간일정/메모/명언 출력
+    @GetMapping("/personal")
+    public ResponseEntity<Map<String, Object>> personalHome(@RequestParam String id) {
         Map<String, Object> personalHome = new HashMap<>();
         HomeDTO homeDTO = homeService.homeList(id);
         if(homeDTO.isOk()) {
@@ -37,7 +34,7 @@ public class HomeController {
             return new ResponseEntity(null, HttpStatus.OK);
         }
     }
-
+    // 회원 메모 저장
     @PostMapping("/memo")
     public ResponseEntity<Boolean> memoWrite(@RequestBody Map<String, String> data) {
         String id = data.get("id");

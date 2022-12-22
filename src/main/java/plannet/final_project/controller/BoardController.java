@@ -108,15 +108,15 @@ public class BoardController {
     }
 
     // 자유게시판 댓글 불러오기
-    @PostMapping("/comment_load")
-    public ResponseEntity<List<Map<String, Object>>> commentLoad(@RequestBody Map<String, Long> data) {
-        System.out.println("컨트롤러 보드넘 : " + data.get("boardNo"));
-        System.out.println("컨트롤러 오프셋 : " + data.get("offsetNum"));
-        System.out.println("컨트롤러 리미트 : " + data.get("limitNum"));
-        Long num = data.get("boardNo");
-        Long offsetNum = data.get("offsetNum");
-        Long limitNum = data.get("limitNum");
-        BoardDTO boardDTO = boardService.getCommentLoad(num, offsetNum, limitNum);
+    @GetMapping("/comment_load")
+    public ResponseEntity<List<Map<String, Object>>> commentLoad(@RequestParam Long boardNo, Long offsetNum, Long limitNum) {
+//        System.out.println("컨트롤러 보드넘 : " + data.get("boardNo"));
+//        System.out.println("컨트롤러 오프셋 : " + data.get("offsetNum"));
+//        System.out.println("컨트롤러 리미트 : " + data.get("limitNum"));
+//        Long num = data.get("boardNo");
+//        Long offsetNum = data.get("offsetNum");
+//        Long limitNum = data.get("limitNum");
+        BoardDTO boardDTO = boardService.getCommentLoad(boardNo, offsetNum, limitNum);
         if(boardDTO.isOk()) {
             List<Map<String, Object>> commentList = boardDTO.getCommentsList();
             return new ResponseEntity(commentList, HttpStatus.OK);
@@ -124,8 +124,12 @@ public class BoardController {
     }
 
     // 자유게시판 댓글 작성하기
-    @GetMapping("/comment_write")
-    public ResponseEntity<Boolean> commentWrite(@RequestParam Long boardNo, String id, String detail) {
+    @PostMapping("/comment_write")
+    public ResponseEntity<Boolean> commentWrite(@RequestBody Map<String, Object> data) {
+        Long boardNo = Long.parseLong((String)data.get("boardNo"));
+        String id = (String)data.get("id");
+        String detail = (String)data.get("detail");
+
         boolean commentWrite = boardService.commentWrite(boardNo, id, detail);
         if (commentWrite) {
             return new ResponseEntity(commentWrite, HttpStatus.OK);
@@ -135,9 +139,9 @@ public class BoardController {
     }
 
     // 자유게시판 댓글 삭제하기
-    @GetMapping("/comment_delete")
-    public ResponseEntity<Boolean> commentDelete(@RequestParam Long commentNo) {
-        System.out.println("여긴들어오니");
+    @PostMapping("/comment_delete")
+    public ResponseEntity<Boolean> commentDelete(@RequestBody Map<String, Long> data) {
+        Long commentNo = data.get("commentNo");
         boolean commentDelete = boardService.commentDelete(commentNo);
         if (commentDelete) {
             return new ResponseEntity(commentDelete, HttpStatus.OK);
