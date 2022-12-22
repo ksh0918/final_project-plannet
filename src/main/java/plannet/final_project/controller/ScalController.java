@@ -20,6 +20,53 @@ public class ScalController {
     // Service 로직 연결
     private final ScalService scalService;
 
+    // 공유 캘린더 생성하기
+    @PostMapping("/create")
+    public ResponseEntity<Boolean> scalCreate(@RequestBody Map<String, Object> create) {
+        String id = (String)create.get("id");
+        String title = (String)create.get("title");
+        List<Map<String, Object>> smember = (List<Map<String, Object>>)create.get("checkedButton");
+        Long result = scalService.scalCreate(id, title, smember);
+        if(result != -1) return new ResponseEntity(result, HttpStatus.OK);
+        else return new ResponseEntity(null, HttpStatus.OK);
+    }
+
+    // 공유캘린더 삭제하기
+    @PostMapping("/delete")
+    public ResponseEntity<Boolean> scalDelete(@RequestBody Map<String, String> scalDelete) {
+        Long scalNo = Long.valueOf((String) scalDelete.get("scalNo"));
+        boolean result = scalService.scalDelete(scalNo);
+        if (result) return new ResponseEntity(true, HttpStatus.OK);
+        else return new ResponseEntity(null, HttpStatus.OK);
+    }
+
+    // 멤버 초대하기
+    @PostMapping("/member_invite")
+    public ResponseEntity<Boolean> memberInvite(@RequestBody Map<String, Object> memberInvite) {
+        Long scalNo = Long.parseLong((String)memberInvite.get("scalNo"));
+        String id = (String)memberInvite.get("id");
+        boolean result = scalService.memberInvite(scalNo, id);
+        return new ResponseEntity(result, HttpStatus.OK);
+    }
+
+    // 멤버 삭제
+    @PostMapping("/member_delete")
+    public ResponseEntity<Boolean> memberDelete(@RequestBody Map<String, Object> memberDelete) {
+        Long scalNo = Long.parseLong((String)memberDelete.get("scalNo"));
+        String id = (String)memberDelete.get("id");
+        boolean result = scalService.memberDelete(scalNo, id);
+        return new ResponseEntity(result, HttpStatus.OK);
+    }
+
+    // 공유 캘린더 정보 저장하기
+    @PostMapping("/info_save")
+    public ResponseEntity<Boolean> infoSave(@RequestBody Map<String, Object> infoSave) {
+        Long scalNo = Long.parseLong((String)infoSave.get("scalNo"));
+        String scalName = (String)infoSave.get("scalName");
+        boolean result = scalService.infoSave(scalNo, scalName);
+        return new ResponseEntity(result, HttpStatus.OK);
+    }
+
     // 해당 캘린더의 각 정보 불러오기
     @GetMapping("/sharing")
     public ResponseEntity<List<Map<String, Object>>> sharingHome(@RequestParam Long scalNo) {
@@ -41,17 +88,6 @@ public class ScalController {
         String detail = scalMemo.get("detail");
         boolean result = scalService.memoSave(scalNo, detail);
         if(result) return new ResponseEntity(result, HttpStatus.OK);
-        else return new ResponseEntity(null, HttpStatus.OK);
-    }
-
-    // 공유 캘린더 생성하기
-   @PostMapping("/create")
-    public ResponseEntity<Boolean> scalCreate(@RequestBody Map<String, Object> create) {
-        String id = (String)create.get("id");
-        String title = (String)create.get("title");
-        List<Map<String, Object>> smember = (List<Map<String, Object>>)create.get("checkedButton");
-        Long result = scalService.scalCreate(id, title, smember);
-        if(result != -1) return new ResponseEntity(result, HttpStatus.OK);
         else return new ResponseEntity(null, HttpStatus.OK);
     }
 
@@ -121,40 +157,5 @@ public class ScalController {
             return new ResponseEntity(scalInfo, HttpStatus.OK);
         }
         return new ResponseEntity(null, HttpStatus.OK);
-    }
-
-    // 공유 캘린더 정보 저장하기
-    @PostMapping("/info_save")
-    public ResponseEntity<Boolean> infoSave(@RequestBody Map<String, Object> infoSave) {
-        Long scalNo = Long.parseLong((String)infoSave.get("scalNo"));
-        String scalName = (String)infoSave.get("scalName");
-        boolean result = scalService.infoSave(scalNo, scalName);
-        return new ResponseEntity(result, HttpStatus.OK);
-    }
-
-    // 멤버 초대하기
-    @PostMapping("/member_invite")
-    public ResponseEntity<Boolean> memberInvite(@RequestBody Map<String, Object> memberInvite) {
-        Long scalNo = Long.parseLong((String)memberInvite.get("scalNo"));
-        String id = (String)memberInvite.get("id");
-        boolean result = scalService.memberInvite(scalNo, id);
-        return new ResponseEntity(result, HttpStatus.OK);
-    }
-    // 멤버 삭제
-    @PostMapping("/member_delete")
-    public ResponseEntity<Boolean> memberDelete(@RequestBody Map<String, Object> memberDelete) {
-        Long scalNo = Long.parseLong((String)memberDelete.get("scalNo"));
-        String id = (String)memberDelete.get("id");
-        boolean result = scalService.memberDelete(scalNo, id);
-        return new ResponseEntity(result, HttpStatus.OK);
-    }
-
-    // 공유캘린더 삭제하기
-    @PostMapping("/delete")
-    public ResponseEntity<Boolean> scalDelete(@RequestBody Map<String, String> scalDelete) {
-        Long scalNo = Long.valueOf((String) scalDelete.get("scalNo"));
-        boolean result = scalService.scalDelete(scalNo);
-        if (result) return new ResponseEntity(true, HttpStatus.OK);
-        else return new ResponseEntity(null, HttpStatus.OK);
     }
 }

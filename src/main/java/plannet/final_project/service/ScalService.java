@@ -30,6 +30,109 @@ public class ScalService {
     private final SPLANRepository splanRepository;
     private final SCOMRepository scomRepository;
 
+    // 공유캘린더 생성
+    public Long scalCreate(String id, String title, List<Map<String, Object>> smember) {
+        Long scalNo;
+        try {
+            Member member = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+            // 공유 캘린더 생성
+            SCAL scal = new SCAL();
+            scal.setUserId(member);
+            scal.setScalName(title);
+            scalRepository.save(scal);
+            scalNo = scalRepository.findMaxScalNo(id);
+            System.out.println("서비스 캘린더 번호 : " + scalNo);
+            // 공유 캘린더 친구 설정
+            SMEM smem = new SMEM();
+            smem.setScalNo(scal);
+            smem.setUserId(member);
+            smem.setIsOwner(1); // 공유 캘린더 주인이면 1 아니면 0
+            smemRepository.save(smem);
+            // 초대할 친구들에게 알림 보내기
+            for(Map<String, Object> s : smember) {
+                Noti noti = new Noti();
+                noti.setUserId(member); // 보내는 이
+                Member friend = memberRepository.findByUserCode((String)s.get("userCode"));
+                noti.setReceiveId(friend); // 초대할 친구들
+                noti.setScalNo(scal);
+                noti.setType("S");
+                noti.setScalNo(scal);
+                noti.setNotiDate(LocalDateTime.now());
+                noti.setAcceptChecked(0); // 수락 여부, 0이면 미수락, 1이면 수락
+                notiRepository.save(noti);
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+            return Long.valueOf(-1);
+        }
+        return scalNo;
+    }
+
+    // 공유 캘린더 삭제
+    public boolean scalDelete(Long scalNo) {
+        try {
+            SCAL scal = scalRepository.findById(scalNo).orElseThrow(EntityNotFoundException::new);
+            scomRepository.deleteByScalNo(scal);
+            splanRepository.deleteByScalNo(scal);
+            smemRepository.deleteByScalNo(scal);
+            notiRepository.deleteByScalNo(scal);
+            scalRepository.deleteByScalNo(scalNo);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    // 공유 캘린더 멤버 초대
+    public boolean memberInvite(Long scalNo, String id) {
+        try {
+            Noti noti = new Noti();
+
+            // 멤버초대
+            SCAL scal = scalRepository.findById(scalNo).orElseThrow(EntityNotFoundException::new);
+            Member sendId = scal.getUserId();
+            Member receiveId = memberRepository.findById(id).orElseThrow();
+            noti.setUserId(sendId);
+            noti.setReceiveId(receiveId);
+            noti.setType("S");
+            noti.setAcceptChecked(0);
+            noti.setScalNo(scal);
+            noti.setNotiDate(LocalDateTime.now());
+            notiRepository.save(noti);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    // 공유 캘린더 멤버 삭제
+    public boolean memberDelete (Long scalNo, String id) {
+        try {
+            SCAL scal = scalRepository.findById(scalNo).orElseThrow(EntityNotFoundException::new);
+            Member member = memberRepository.findById(id).orElseThrow();
+            SMEM smem = smemRepository.findByScalNoAndUserId(scal, member);
+            smemRepository.deleteById(smem.getSmemNo());
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    // 공유 캘린더 정보 저장
+    public boolean infoSave(Long scalNo, String scalName) {
+        try {
+            // 캘린더 이름 저장
+            SCAL scal = scalRepository.findById(scalNo).orElseThrow(EntityNotFoundException::new);
+            if(!scal.getScalName().equals(scalName)) { // 이름이 다르면 변경
+                scal.setScalName(scalName);
+                scalRepository.save(scal);
+            }
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     // 공유캘린더 home Load
     public ShareDTO homeList(Long calNo) {
         ShareDTO shareDTO = new ShareDTO();
@@ -112,44 +215,6 @@ public class ScalService {
         }
     }
 
-    // 공유캘린더 생성
-    public Long scalCreate(String id, String title, List<Map<String, Object>> smember) {
-        Long scalNo;
-        try {
-            Member member = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-            // 공유 캘린더 생성
-            SCAL scal = new SCAL();
-            scal.setUserId(member);
-            scal.setScalName(title);
-            scalRepository.save(scal);
-            scalNo = scalRepository.findMaxScalNo(id);
-            System.out.println("서비스 캘린더 번호 : " + scalNo);
-            // 공유 캘린더 친구 설정
-            SMEM smem = new SMEM();
-            smem.setScalNo(scal);
-            smem.setUserId(member);
-            smem.setIsOwner(1); // 공유 캘린더 주인이면 1 아니면 0
-            smemRepository.save(smem);
-            // 초대할 친구들에게 알림 보내기
-            for(Map<String, Object> s : smember) {
-                Noti noti = new Noti();
-                noti.setUserId(member); // 보내는 이
-                Member friend = memberRepository.findByUserCode((String)s.get("userCode"));
-                noti.setReceiveId(friend); // 초대할 친구들
-                noti.setScalNo(scal);
-                noti.setType("S");
-                noti.setScalNo(scal);
-                noti.setNotiDate(LocalDateTime.now());
-                noti.setAcceptChecked(0); // 수락 여부, 0이면 미수락, 1이면 수락
-                notiRepository.save(noti);
-            }
-        } catch(Exception e) {
-            e.printStackTrace();
-            return Long.valueOf(-1);
-        }
-        return scalNo;
-    }
-
     // 일정 불러오기
     public ShareDTO splanLoad(Long scalNo, LocalDate date) {
         ShareDTO shareDTO = new ShareDTO();
@@ -174,7 +239,7 @@ public class ScalService {
         return shareDTO;
     }
 
-    // 일정 저장
+    // 공유캘린더 일정 작성하기
     public boolean splanSave(Long scalNo, String id, LocalDate date, List<Map<String, Object>> plan) {
         try {
             Member member = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new); // 회원 정보가 담긴 객체 가져옴
@@ -310,70 +375,5 @@ public class ScalService {
             shareDTO.setOk(false);
         }
         return shareDTO;
-    }
-
-    // 공유 캘린더 정보 저장
-    public boolean infoSave(Long scalNo, String scalName) {
-        try {
-            // 캘린더 이름 저장
-            SCAL scal = scalRepository.findById(scalNo).orElseThrow(EntityNotFoundException::new);
-            if(!scal.getScalName().equals(scalName)) { // 이름이 다르면 변경
-                scal.setScalName(scalName);
-                scalRepository.save(scal);
-            }
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    // 공유 캘린더 멤버 초대
-    public boolean memberInvite(Long scalNo, String id) {
-        try {
-            Noti noti = new Noti();
-
-            // 멤버초대
-            SCAL scal = scalRepository.findById(scalNo).orElseThrow(EntityNotFoundException::new);
-            Member sendId = scal.getUserId();
-            Member receiveId = memberRepository.findById(id).orElseThrow();
-            noti.setUserId(sendId);
-            noti.setReceiveId(receiveId);
-            noti.setType("S");
-            noti.setAcceptChecked(0);
-            noti.setScalNo(scal);
-            noti.setNotiDate(LocalDateTime.now());
-            notiRepository.save(noti);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    // 공유 캘린더 멤버 삭제
-    public boolean memberDelete (Long scalNo, String id) {
-        try {
-            SCAL scal = scalRepository.findById(scalNo).orElseThrow(EntityNotFoundException::new);
-            Member member = memberRepository.findById(id).orElseThrow();
-            SMEM smem = smemRepository.findByScalNoAndUserId(scal, member);
-            smemRepository.deleteById(smem.getSmemNo());
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    // 공유 캘린더 삭제
-    public boolean scalDelete(Long scalNo) {
-        try {
-            SCAL scal = scalRepository.findById(scalNo).orElseThrow(EntityNotFoundException::new);
-            scomRepository.deleteByScalNo(scal);
-            splanRepository.deleteByScalNo(scal);
-            smemRepository.deleteByScalNo(scal);
-            notiRepository.deleteByScalNo(scal);
-            scalRepository.deleteByScalNo(scalNo);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
     }
 }
