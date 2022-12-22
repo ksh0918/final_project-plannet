@@ -31,11 +31,11 @@ public class Message {
     @JoinColumn(name = "receive_id", nullable = false)
     private Member receiveId;
 
-    @CreatedDate
-    private LocalDateTime date;
-
     @Column(length = 2400, nullable = false)
     private String detail;
+
+    @CreatedDate
+    private LocalDateTime date;
 
     @Column(length = 1, name = "isRead", nullable = false)
     @ColumnDefault("0")

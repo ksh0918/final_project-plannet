@@ -90,7 +90,7 @@ const CommentItem = ({getId, getNum, getDate, setCommentList, commentList}) => {
             commentData = await Api.commentLoad(getNum);
         }
         else {
-            await Api.scalCommentWrite(getNum, getDate, getId, comment);
+            await Api.scalCommentWrite(getNum, getId, getDate, comment);
             commentData = await Api.scalCommentLoad(getNum, getDate);
         }
         setCommentList(commentData.data);

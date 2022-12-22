@@ -9,8 +9,8 @@ import java.util.List;
 
 public interface SMEMRepository extends JpaRepository<SMEM, Long> {
     List<SMEM> findByUserId(Member userId);
-    void deleteByUserId(Member member);
     List<SMEM> findByScalNo(SCAL calNo);
     SMEM findByScalNoAndUserId(SCAL scal, Member dropId);
+    void deleteByUserId(Member member);
     void deleteByScalNo(SCAL CalNo);
 }

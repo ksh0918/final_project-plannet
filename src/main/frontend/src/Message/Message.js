@@ -133,7 +133,8 @@ const Section = styled.div`
         }
         .search {
             float: right;
-            width: calc(100% - 250px); 
+            width: calc(100% - 250px);
+            max-width: 200px;
             height: 29px; 
             padding: 0 10px; 
             border: solid 2px #ddd; 

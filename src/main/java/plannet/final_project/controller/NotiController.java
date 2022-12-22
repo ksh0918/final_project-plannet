@@ -45,8 +45,10 @@ public class NotiController {
         return new ResponseEntity(status, HttpStatus.OK);
     }
 
-    @GetMapping("/noti_response")
-    public ResponseEntity<Boolean> notiResponse(@RequestParam Long key, boolean status) {
+    @PostMapping("/noti_response")
+    public ResponseEntity<Boolean> notiResponse(@RequestBody Map<String, String> data) {
+        Long key = Long.valueOf(data.get("key"));
+        boolean status = Boolean.parseBoolean(data.get("status"));
         boolean isOk = notiService.notiResponse(key, status);
         return new ResponseEntity(isOk, HttpStatus.OK);
     }
