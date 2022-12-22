@@ -180,6 +180,8 @@ const PostView = () => {
         else (setLikeCnt(likeCntData + 1));
 
     }
+    console.log("오프셋");
+    console.log(offset);
     
     // 본문 불러오기
     useEffect(() => {
@@ -198,14 +200,14 @@ const PostView = () => {
                 setLikeChecked(likeChecked.data);
 
                 // 댓글 불러오기
-                const response = await Api.commentLoad(getNum);
-                setCommentList(response.data);
+                commentItem();
             } catch (e) {
                 console.log(e);
             } 
         };
         postViewLoad();
     }, [getId, getNum]);
+
 
     //미디어쿼리시 nav 사이드바
     const [sideBar, setSideBar] = useState(false);
@@ -224,7 +226,7 @@ const PostView = () => {
           const fetchData = async () => {
             console.log("댓글 불러오는중");
             // PostView 페이지 댓글 목록 api
-            const response = await Api.commentLoad(getNum,String(offset),String(offset + 10)); // DB에서 데이터 가져오는 개수의 범위를 api 매개변수로 넘겨줌
+            const response = await Api.commentLoad(getNum,offset,offset+10); // DB에서 데이터 가져오는 개수의 범위를 api 매개변수로 넘겨줌
             setComments(old => ([...old, ...response.data]));
             console.log('//new Data :',response.data);
             setOffset(old => old + 10) // offset을 계속 10씩 늘려주면 된다
@@ -235,13 +237,10 @@ const PostView = () => {
         } catch(e) {
           console.log(e);
         };
+        commentItem();
       }
     // hook 선언 (인자값에는 데이터를 불러오는 함수 입력(Comment))
     const [isFetching,setIsFetching] = useInfiniteScroll(commentItem)
-
-      useEffect(() => {
-        commentItem();
-      }, []);
 
     return (
         <Wrap>
