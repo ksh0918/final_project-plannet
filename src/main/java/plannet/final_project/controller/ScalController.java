@@ -42,7 +42,7 @@ public class ScalController {
 
     // 멤버 초대하기
     @PostMapping("/member_invite")
-    public ResponseEntity<Boolean> memberInvite(@RequestBody Map<String, Object> data) {
+    public ResponseEntity<Boolean> smemberInvite(@RequestBody Map<String, Object> data) {
         Long scalNo = Long.parseLong((String)data.get("scalNo"));
         String id = (String)data.get("id");
         boolean result = scalService.memberInvite(scalNo, id);
@@ -51,7 +51,7 @@ public class ScalController {
 
     // 멤버 삭제
     @PostMapping("/member_delete")
-    public ResponseEntity<Boolean> memberDelete(@RequestBody Map<String, Object> data) {
+    public ResponseEntity<Boolean> smemberDelete(@RequestBody Map<String, Object> data) {
         Long scalNo = Long.parseLong((String)data.get("scalNo"));
         String id = (String)data.get("id");
         boolean result = scalService.memberDelete(scalNo, id);
@@ -83,7 +83,7 @@ public class ScalController {
 
     // 메모 수정 및 저장
     @PostMapping("/memo")
-    public ResponseEntity<Boolean> memoSave(@RequestBody Map<String, String> data) {
+    public ResponseEntity<Boolean> scalmemoSave(@RequestBody Map<String, String> data) {
         Long scalNo = Long.parseLong(data.get("scalNo"));
         String detail = data.get("detail");
         boolean result = scalService.memoSave(scalNo, detail);
@@ -112,7 +112,7 @@ public class ScalController {
     }
 
     // 공유캘린더 댓글 불러오기
-    @GetMapping("/comment_load")
+    @GetMapping("/scomment_load")
     public ResponseEntity<List<Map<String, Object>>> commentLoad(@RequestParam Long scalNo, LocalDate planDate) {
         ShareDTO shareDTO = scalService.commentLoad(scalNo, planDate);
         if(shareDTO.isOk()) {
