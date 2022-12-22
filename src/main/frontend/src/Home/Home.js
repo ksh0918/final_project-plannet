@@ -57,8 +57,15 @@ const Section = styled.div`
     }
     .etc {
         width: 30%;
-        .moti h2 {
-            margin-top: 20px;
+        .moti{
+            h2{margin-top: 20px;}
+            p{
+                width: 100%;
+                height: 63px;
+                padding: 10px;
+                background-color: #f9f9f9;
+                border-radius: 5px;
+            }
         }
         .moti2{
             display: none;
