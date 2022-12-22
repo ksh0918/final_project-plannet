@@ -100,8 +100,8 @@ public class UserInfoService {
             List<List<Object>> sCalList = new ArrayList<>();
             for(SMEM e : smemList){
                 List<Object> sCal = new ArrayList<>();
-                Long calNo = e.getCalNo().getCalNo(); // 캘린더 넘버
-                String calName = e.getCalNo().getCalName(); // 캘린더 이름
+                Long calNo = e.getScalNo().getScalNo(); // 캘린더 넘버
+                String calName = e.getScalNo().getScalName(); // 캘린더 이름
 
                 // 공유캘린더 일정 달성률 구하기
                 SCAL scal = scalRepository.findById(calNo).orElseThrow(EntityNotFoundException::new);

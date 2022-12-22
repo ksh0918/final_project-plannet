@@ -26,11 +26,11 @@ public class Board {
     @JoinColumn(name = "id", nullable = false)
     private Member userId;
 
-    @Column(length = 50, nullable = false)
-    private String title;
-
     @Column(length = 10, nullable = false)
     private String category;
+
+    @Column(length = 50, nullable = false)
+    private String title;
 
     @Column(nullable = false)
     @ColumnDefault("0")

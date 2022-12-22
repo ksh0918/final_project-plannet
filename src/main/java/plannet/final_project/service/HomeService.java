@@ -10,9 +10,7 @@ import plannet.final_project.entity.Member;
 import plannet.final_project.entity.Plan;
 import plannet.final_project.vo.HomeDTO;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.temporal.TemporalAdjusters;
 import java.time.temporal.WeekFields;
 import java.util.*;
 
@@ -21,12 +19,12 @@ import java.util.*;
 @RequiredArgsConstructor
 public class HomeService {
     private final MemberRepository memberRepository;
-    private final QuoteRepository quoteRepository;
     private final PlanRepository planRepository;
+    private final QuoteRepository quoteRepository;
 
     public HomeDTO homeList(String id) {
         HomeDTO homeDTO = new HomeDTO();
-        try{
+        try {
             Member member = memberRepository.findById(id).orElseThrow();
             LocalDate[] weekDay = {
                     LocalDate.now().with(WeekFields.of(Locale.KOREA).dayOfWeek(), 1),
@@ -38,7 +36,7 @@ public class HomeService {
                     LocalDate.now().with(WeekFields.of(Locale.KOREA).dayOfWeek(), 7)
             };
             List<List<Map<String, Object>>> weekPlan = new ArrayList<>();
-            for(int i = 0; i < 7; i++) {
+            for (int i = 0; i < 7; i++) {
                 log.warn(String.valueOf(weekDay[i]));
                 List<Map<String, Object>> dayPlan = new ArrayList<>();
                 List<Plan> dayPlanOrigin = planRepository.findByUserIdAndPlanDateOrderByPlanNoAsc(member, weekDay[i]);
@@ -53,6 +51,7 @@ public class HomeService {
                 weekPlan.add(dayPlan);
             }
             homeDTO.setWeekPlan(weekPlan);
+
             // planMark
             List<Set<LocalDate>> planMark = new ArrayList<>();
             for(int i = 0; i < 2; i++) {

@@ -73,7 +73,7 @@ public class NotiService {
                             noti.setReceiveId(recive);
                             noti.setType("F");
                             noti.setInviteDate(LocalDateTime.now());
-                            noti.setIsChecked(0);
+                            noti.setAcceptChecked(0);
                             notiRepository.save(noti);
                             result = 1;
                         }
@@ -152,14 +152,14 @@ public class NotiService {
                     friendRepository.save(friend2);
                 } else {//캘린더에 멤버 등록
                     SMEM smem = new SMEM();
-                    smem.setCalNo(noti.getCalNo());
+                    smem.setScalNo(noti.getCalNo());
                     smem.setUserId(noti.getReceiveId());
                     smem.setIsOwner(0);
                     smemRepository.save(smem);
                 }
             }
             //알림 안뜨도록
-            noti.setIsChecked(1);
+            noti.setAcceptChecked(1);
             notiRepository.save(noti);
             return true;
         } catch (Exception e) {

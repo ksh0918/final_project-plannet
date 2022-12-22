@@ -3,6 +3,7 @@ package plannet.final_project.entity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -51,7 +52,8 @@ public class Member {
     @Column(length = 2400)
     private String memo;
 
-    @Column
+    @Column(length = 1, nullable = false)
+    @ColumnDefault("0")
     private int reRegChecked; // 탈퇴 회원 여부 (재가입 방지)
 
     @OneToMany(mappedBy = "userId", cascade = {CascadeType.ALL}, orphanRemoval=true)

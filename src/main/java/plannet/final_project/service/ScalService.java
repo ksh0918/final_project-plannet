@@ -42,13 +42,13 @@ public class ScalService {
             // 공유 캘린더 생성
             SCAL scal = new SCAL();
             scal.setUserId(member);
-            scal.setCalName(title);
+            scal.setScalName(title);
             scalRepository.save(scal);
             calNo = scalRepository.findMaxCalNo(userId);
             System.out.println("서비스 캘린더 번호 : " + calNo);
             // 공유 캘린더 친구 설정
             SMEM smem = new SMEM();
-            smem.setCalNo(scal);
+            smem.setScalNo(scal);
             smem.setUserId(member);
             smem.setIsOwner(1); // 공유 캘린더 주인이면 1 아니면 0
             smemRepository.save(smem);
@@ -62,7 +62,7 @@ public class ScalService {
                 noti.setType("S");
                 noti.setCalNo(scal);
                 noti.setInviteDate(LocalDateTime.now());
-                noti.setIsChecked(0); // 수락 여부, 0이면 미수락, 1이면 수락
+                noti.setAcceptChecked(0); // 수락 여부, 0이면 미수락, 1이면 수락
                 notiRepository.save(noti);
             }
         } catch(Exception e) {
@@ -77,7 +77,7 @@ public class ScalService {
         SCAL scal = scalRepository.findById(calNo).orElseThrow();
         try{
             // scal CalName Load
-            shareDTO.setCalName(scal.getCalName());
+            shareDTO.setCalName(scal.getScalName());
 
             // plan Load
             LocalDate[] weekDay = {
@@ -110,15 +110,15 @@ public class ScalService {
                 Set<LocalDate> planDot = new HashSet<>();
                 List<SPLAN> plan = splanRepository.findByCalNoAndPlanChecked(scal, i);
                 for(SPLAN e : plan) {
-                    planDot.add(e.getPlanDate());
+                    planDot.add(e.getSplanDate());
                 }
                 planMark.add(planDot);
             }
             shareDTO.setPlanMark(planMark);
 
             // Memo Load
-            if(scal.getCalMemo() != null) {
-                shareDTO.setMemo(scal.getCalMemo());
+            if(scal.getScalMemo() != null) {
+                shareDTO.setMemo(scal.getScalMemo());
             } else shareDTO.setMemo("");
 
             // Member Load
@@ -145,7 +145,7 @@ public class ScalService {
     public boolean memoWrite(Long calNo, String detail) {
         try {
             SCAL scal = scalRepository.findById(calNo).orElseThrow();
-            scal.setCalMemo(detail);
+            scal.setScalMemo(detail);
             scalRepository.save(scal);
             return true;
         }
@@ -189,7 +189,7 @@ public class ScalService {
                 if(!(Boolean)p.get("deleted")) { // p.get("deleted") == false 이면 일정 저장
                     SPLAN splans = new SPLAN();
                     splans.setUserId(member);
-                    splans.setPlanDate(date);
+                    splans.setSplanDate(date);
                     String checked = String.valueOf(p.get("checked"));
                     if(checked.equals("0")) { // 수정하지 않은 기본의 것들은 checked가 1 또는 0으로 로드되기 때문에 따로 확인해줘야 함
                         splans.setPlanChecked(0);
@@ -200,7 +200,7 @@ public class ScalService {
                     } else if (checked.equals("true")) {
                         splans.setPlanChecked(1);
                     }
-                    splans.setCalNo(scal);
+                    splans.setScalNo(scal);
                     splans.setPlan((String)p.get("text"));
                     SPLAN rst = splanRepository.save(splans);
                 }
@@ -241,8 +241,8 @@ public class ScalService {
         try {
             SCOM scomComment = new SCOM();
             scomComment.setUserId(memberRepository.findById(id).orElseThrow());
-            scomComment.setCalNo(scalRepository.findById(calNo).orElseThrow());
-            scomComment.setPlanDate(planDate);
+            scomComment.setScalNo(scalRepository.findById(calNo).orElseThrow());
+            scomComment.setSplanDate(planDate);
             scomComment.setWriteDate(LocalDateTime.now());
             scomComment.setDetail(detail);
             scomRepository.save(scomComment);
@@ -311,7 +311,7 @@ public class ScalService {
                 } // 멤버의 정보를 불러온다.
             }
             shareDTO.setOk(true);
-            shareDTO.setCalName(scal.getCalName()); // 캘린더 이름
+            shareDTO.setCalName(scal.getScalName()); // 캘린더 이름
             shareDTO.setCalOwner(scal.getUserId().getId());
             shareDTO.setMemberList(memberList);
         } catch (Exception e) {
@@ -324,8 +324,8 @@ public class ScalService {
         try {
             // 캘린더 이름 저장
             SCAL scal = scalRepository.findById(calNo).orElseThrow(EntityNotFoundException::new);
-            if(!scal.getCalName().equals(calName)) { // 이름이 다르면 변경
-                scal.setCalName(calName);
+            if(!scal.getScalName().equals(calName)) { // 이름이 다르면 변경
+                scal.setScalName(calName);
                 scalRepository.save(scal);
             }
             return true;
@@ -345,7 +345,7 @@ public class ScalService {
             noti.setUserId(sendId);
             noti.setReceiveId(receiveId);
             noti.setType("S");
-            noti.setIsChecked(0);
+            noti.setAcceptChecked(0);
             noti.setCalNo(scal);
             noti.setInviteDate(LocalDateTime.now());
             notiRepository.save(noti);
