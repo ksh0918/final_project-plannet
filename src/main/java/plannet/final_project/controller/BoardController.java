@@ -102,7 +102,7 @@ public class BoardController {
     public ResponseEntity<List<Map<String, Object>>> commentLoad(@RequestParam Long boardNo, Long offsetNum, Long limitNum) {
         BoardDTO boardDTO = boardService.commentListLoad(boardNo, offsetNum, limitNum);
         if(boardDTO.isOk()) {
-            List<Map<String, Object>> commentList = boardDTO.getCommentsList();
+            List<Map<String, Object>> commentList = boardDTO.getCommentList();
             return new ResponseEntity(commentList, HttpStatus.OK);
         } else return new ResponseEntity(null, HttpStatus.OK);
     }
