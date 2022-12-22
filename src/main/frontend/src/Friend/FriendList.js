@@ -101,15 +101,23 @@ const Friends = styled.div`
         transform:translateY(-50%);
     }
     .drop, .wait, .invite {
-        transition: all .3s ease-in;
         cursor: pointer;
-        position: absolute;
-        font-size: 18px;
-        color: black;
-        background-color: #bebebf;
-        right: 30px;
-        top: 50%;
-        transform:translateY(-50%);
+        float: right;
+        margin: 5 10px;
+        width: 70px;
+        font-weight: 600;
+        font-size: 16px;
+        padding: 8px 20px;
+        border-radius: 25px;
+        background-color: #333;
+        color: white;
+        border: none;
+        transition: all .1s ease-in;
+        margin: 7px 0;
+        &:hover{
+            background-color: #666;
+            color: #888;
+        }
     }
 `;
 const StyledInput = styled.input`
@@ -186,7 +194,6 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
     }
     const onClickWait = async() => {
         setCommnet("이미 초대한 친구입니다.");
-        setModalHeader("멤버대기");
         setModalOpen(true);
     }
     const onClickInvite = async(e) => {
@@ -222,8 +229,10 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
                 );})}
                 {isPage === "친구삭제" && <p>더 많은 친구를 추가해보세요!</p>}
             </ul>
-            :
-            <p className='nothing'><b>등록된 친구가 아직 없습니다.</b><br/>상단 오른쪽의 버튼을 눌러 친구를 추가해보세요!</p>}
+            : <>
+                {isPage === "친구삭제" && <p className='nothing'><b>등록된 친구가 아직 없습니다.</b><br/>상단 오른쪽의 버튼을 눌러 친구를 추가해보세요!</p>}
+                {isPage === "공유캘린더" && <p className='nothing'><b><br></br>등록된 친구가 아직 없습니다.</b><br/>친구목록에서 친구를 추가해보세요!</p>}
+              </>}
         </Friends>
         {isPage === "공유캘린더" && <div className="scal_add"><button onClick={onClickSCalAdd}>공유캘린더 생성하기</button></div>}
         </>
