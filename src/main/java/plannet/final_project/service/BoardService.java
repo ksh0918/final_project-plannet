@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import plannet.final_project.dao.BoardRepository;
 import plannet.final_project.dao.CommentRepository;
-import plannet.final_project.dao.LikeCntRepository;
+import plannet.final_project.dao.LikeRepository;
 import plannet.final_project.dao.MemberRepository;
 import plannet.final_project.entity.Board;
 import plannet.final_project.entity.Comment;
@@ -28,7 +28,7 @@ import java.util.*;
 public class BoardService {
     private final MemberRepository memberRepository;
     private final BoardRepository boardRepository; // 의존성 주입을 받음
-    private final LikeCntRepository likeCntRepository; // 의존성 주입을 받음
+    private final LikeRepository likeRepository; // 의존성 주입을 받음
     private final CommentRepository commentRepository;
 
     // 보드 목록 불러오기
@@ -61,7 +61,7 @@ public class BoardService {
 
     // 인기글 리스트 불러오기
     public BoardDTO getTop3List() {
-        List<Integer> top3BoardNo = likeCntRepository.findAllTop3GroupByBoardNoOrderByCountByBoardNoDescBoardNoDesc();
+        List<Integer> top3BoardNo = likeRepository.findAllTop3GroupByBoardNoOrderByCountByBoardNoDescBoardNoDesc();
         BoardDTO boardDTO = new BoardDTO();
         List<Map<String, Object>> boardList = new ArrayList<>();
         try {
@@ -131,7 +131,7 @@ public class BoardService {
             boardDTO.setViews(board.getViews());
             boardDTO.setWriteDate(board.getWriteDate());
             boardDTO.setDetail(board.getDetail());
-            boardDTO.setLikeCnt(likeCntRepository.countByBoardNo(board).intValue());
+            boardDTO.setLikeCnt(likeRepository.countByBoardNo(board).intValue());
             boardDTO.setOk(true);
         } catch (Exception e) {boardDTO.setOk(false);}
         return boardDTO;
@@ -154,24 +154,25 @@ public class BoardService {
 
     // 보드 넘버에 해당하는 글의 좋아요 수
     public int getLikeCnt(Board boardNo) {
-        int likeCnt = likeCntRepository.countByBoardNo(boardNo).intValue();
+        int likeCnt = likeRepository.countByBoardNo(boardNo).intValue();
         return likeCnt;
     }
 
     // 내가 해당 게시물을 좋아요 눌렀는지 여부
     public boolean getLikeChecked(String id, Board boardNo) {
         Member member = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        return likeCntRepository.existsByUserIdAndBoardNo(member, boardNo);
+        return likeRepository.existsByUserIdAndBoardNo(member, boardNo);
     }
 
     // 좋아요 버튼을 누를 때마다 데이터베이스 접근
     public boolean likeCheckedToggle(String id, Board boardNo) {
         Member member = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        boolean CurrentLikeChecked = likeCntRepository.existsByUserIdAndBoardNo(member, boardNo);
+        boolean CurrentLikeChecked = likeRepository.existsByUserIdAndBoardNo(member, boardNo);
         System.out.println("현재 좋아요" + CurrentLikeChecked);
         try {
             System.out.println("true 들어옴");
-            if (CurrentLikeChecked) {likeCntRepository.deleteByUserIdAndBoardNo(member, boardNo);
+            if (CurrentLikeChecked) {
+                likeRepository.deleteByUserIdAndBoardNo(member, boardNo);
                 CurrentLikeChecked = !CurrentLikeChecked;
                 System.out.println("true 정상수행" + CurrentLikeChecked);}
             else {
@@ -180,7 +181,7 @@ public class BoardService {
                 LikeList likeList = new LikeList();
                 likeList.setUserId(member);
                 likeList.setBoardNo(boardNo);
-                likeCntRepository.save(likeList);
+                likeRepository.save(likeList);
                 System.out.println("false 정상수행" + CurrentLikeChecked);
             }
             return CurrentLikeChecked;

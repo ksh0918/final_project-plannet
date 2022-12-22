@@ -28,17 +28,17 @@ const plannetApi = {
         return await axios.post(PLANNET_DOMAIN + "member/register", memberObj, HEADER);
     },
     // 회원 가입 여부 확인
-    memberRegCheck: async function(uni, type) {
+    memberRegCheck: async function(keyword, type) {
         const regCheck = {
-            uni: uni,
+            keyword: keyword,
             type: type
         };
         return await axios.post(PLANNET_DOMAIN + "member/overlap_check", regCheck, HEADER);
     },
     // 회원 아이디, 비밀번호 찾기
-    memberFind: async function(uni, email, type){
+    memberFind: async function(keyword, email, type){
         const reg = {
-            uni : uni,
+            keyword : keyword,
             email : email,
             type : type
         };
