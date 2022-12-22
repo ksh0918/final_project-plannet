@@ -190,12 +190,15 @@ public class BoardService {
     }
 
     // 자유게시판 댓글 불러오기
-    public BoardDTO getCommentLoad (Long boardNo) {
+    public BoardDTO getCommentLoad (Long boardNo, Long offsetNum, Long limitNum) {
+        System.out.println("서비스 보드넘 : " + boardNo);
+        System.out.println("서비스 오프셋 : " + offsetNum);
+        System.out.println("서비스 리미트 : " + limitNum);
         BoardDTO boardDTO = new BoardDTO();
         try {
             List<Map<String, Object>> commentList = new ArrayList<>();
-            Board board = boardRepository.findById(boardNo).orElseThrow(ExemptionMechanismException::new);
-            List<Comment> data = commentRepository.findByBoardNo(board);
+//            Board board = boardRepository.findById(boardNo).orElseThrow(ExemptionMechanismException::new);
+            List<Comment> data = commentRepository.findComment(boardNo, offsetNum, limitNum);
             for (Comment e : data) {
                 Map<String, Object> comment = new HashMap<>();
                 comment.put("commentNo", e.getCommentNo());
