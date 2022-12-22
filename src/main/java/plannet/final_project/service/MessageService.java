@@ -100,7 +100,7 @@ public class MessageService {
         }
     }
 
-    public boolean messageReadModal(Long messageNo) {
+    public boolean messageModalOpen(Long messageNo) {
         try {
             Message message = messageRepository.findById(messageNo).orElseThrow(EmptyStackException::new);
             message.setIsRead(1);

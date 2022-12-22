@@ -54,9 +54,9 @@ public class MessageController {
         try {
             boolean messageDelete = messageService.messageDelete(data);
             if(messageDelete) return new ResponseEntity(true, HttpStatus.OK);
-            else return new ResponseEntity(false, HttpStatus.OK);
+            else return new ResponseEntity(null, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity(false, HttpStatus.OK);
+            return new ResponseEntity(null, HttpStatus.OK);
         }
     }
 
@@ -65,21 +65,21 @@ public class MessageController {
         try {
             boolean messageRead = messageService.messageRead(data);
             if(messageRead) return new ResponseEntity(true, HttpStatus.OK);
-            else return new ResponseEntity(false, HttpStatus.OK);
+            else return new ResponseEntity(null, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity(false, HttpStatus.OK);
+            return new ResponseEntity(null, HttpStatus.OK);
         }
     }
 
-    @PostMapping("/readModal")
-    public ResponseEntity<Boolean> messageReadModal(@RequestBody Map<String,Long> data) {
+    @PostMapping("/messageModal")
+    public ResponseEntity<Boolean> messageModalOpen(@RequestBody Map<String,Long> data) {
         Long messageNo= data.get("messageNo");
         try {
-            boolean messageRead= messageService.messageReadModal(messageNo);
+            boolean messageRead= messageService.messageModalOpen(messageNo);
             if(messageRead) return new ResponseEntity(true, HttpStatus.OK);
-            else return new ResponseEntity(false, HttpStatus.OK);
+            else return new ResponseEntity(null, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity(false, HttpStatus.OK);
+            return new ResponseEntity(null, HttpStatus.OK);
         }
     }
 }
