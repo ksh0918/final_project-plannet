@@ -9,7 +9,6 @@ import org.springframework.web.servlet.ModelAndView;
 @CrossOrigin
 @RestController
 public class RefreshController implements ErrorController {
-
     private static final String PATH = "/error";
 
     @RequestMapping(value = PATH)

@@ -92,10 +92,8 @@ public class ScalController {
     }
 
     // 공유캘린더 일정 불러오기
-    @PostMapping("/splan_load")
-    public ResponseEntity<List<ShareDTO>> writeLoad(@RequestBody Map<String, String> data) {
-        Long scalNo = Long.valueOf(data.get("scalNo"));
-        LocalDate date = LocalDate.parse(data.get("date"));
+    @GetMapping("/splan_load")
+    public ResponseEntity<List<ShareDTO>> writeLoad(@RequestParam Long scalNo, LocalDate date) {
         ShareDTO shareDTO = scalService.splanLoad(scalNo, date);
         if (shareDTO.isOk()) return new ResponseEntity(shareDTO.getSplanList(), HttpStatus.OK);
         else return new ResponseEntity(null, HttpStatus.OK);
@@ -115,9 +113,7 @@ public class ScalController {
 
     // 공유캘린더 댓글 불러오기
     @PostMapping("/comment_load")
-    public ResponseEntity<List<Map<String, Object>>> commentLoad(@RequestBody Map<String, String> data) {
-        Long scalNo = Long.valueOf(data.get("scalNo"));
-        LocalDate planDate = LocalDate.parse(data.get("planDate"));
+    public ResponseEntity<List<Map<String, Object>>> commentLoad(@RequestParam Long scalNo, LocalDate planDate) {
         ShareDTO shareDTO = scalService.commentLoad(scalNo, planDate);
         if(shareDTO.isOk()) {
             List<Map<String, Object>> commentList = shareDTO.getScommentList();

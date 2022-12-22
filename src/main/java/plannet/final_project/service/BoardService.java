@@ -161,19 +161,20 @@ public class BoardService {
     }
 
     // 좋아요 버튼을 누를 때마다 데이터베이스 접근
-    public boolean likeCheckedToggle(Board boardNo, String id) {
+    public boolean likeCheckedToggle(Long boardNo, String id) {
         Member member = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        boolean CurrentLikeChecked = likeRepository.existsByUserIdAndBoardNo(member, boardNo);
+        Board board = boardRepository.findById(boardNo).orElseThrow();
+        boolean CurrentLikeChecked = likeRepository.existsByUserIdAndBoardNo(member, board);
         try {
             if (CurrentLikeChecked) {
-                likeRepository.deleteByUserIdAndBoardNo(member, boardNo);
+                likeRepository.deleteByUserIdAndBoardNo(member, board);
                 CurrentLikeChecked = !CurrentLikeChecked;
             }
             else {
                 CurrentLikeChecked = !CurrentLikeChecked;
                 LikeList likeList = new LikeList();
                 likeList.setUserId(member);
-                likeList.setBoardNo(boardNo);
+                likeList.setBoardNo(board);
                 likeRepository.save(likeList);
             }
             return CurrentLikeChecked;
