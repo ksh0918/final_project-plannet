@@ -213,22 +213,22 @@ public class ScalService {
     }
 
     // 공유캘린더 댓글 불러오기
-    public ShareDTO getCommentsLoad (Long calNo, LocalDate planDate) {
+    public ShareDTO getCommentLoad (Long calNo, LocalDate planDate) {
         ShareDTO shareDTO = new ShareDTO();
         try {
-            List<Map<String, Object>> commentsList = new ArrayList<>();
+            List<Map<String, Object>> commentList = new ArrayList<>();
             SCAL scal = scalRepository.findById(calNo).orElseThrow();
             List<SCOM> data = scomRepository.findByCalNoAndPlanDate(scal, planDate);
             for (SCOM e : data) {
-                Map<String, Object> comments = new HashMap<>();
-                comments.put("commentNo", e.getCommentNo());
-                comments.put("writerId", e.getUserId().getId());
-                comments.put("nickname", e.getUserId().getNickname());
-                comments.put("detail", e.getDetail());
-                comments.put("date", e.getWriteDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-                commentsList.add(comments);
+                Map<String, Object> comment = new HashMap<>();
+                comment.put("commentNo", e.getCommentNo());
+                comment.put("writerId", e.getUserId().getId());
+                comment.put("nickname", e.getUserId().getNickname());
+                comment.put("detail", e.getDetail());
+                comment.put("date", e.getWriteDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+                commentList.add(comment);
             }
-            shareDTO.setComentsList(commentsList);
+            shareDTO.setCommentList(commentList);
             shareDTO.setOk(true);
         } catch (Exception e) {
             shareDTO.setOk(false);
@@ -237,15 +237,15 @@ public class ScalService {
     }
 
     // 공유캘린더 댓글 작성하기
-    public boolean commentsWrite(Long calNo, LocalDate planDate, String id, String detail) {
+    public boolean commentWrite(Long calNo, LocalDate planDate, String id, String detail) {
         try {
-            SCOM scomComments = new SCOM();
-            scomComments.setUserId(memberRepository.findById(id).orElseThrow());
-            scomComments.setCalNo(scalRepository.findById(calNo).orElseThrow());
-            scomComments.setPlanDate(planDate);
-            scomComments.setWriteDate(LocalDateTime.now());
-            scomComments.setDetail(detail);
-            scomRepository.save(scomComments);
+            SCOM scomComment = new SCOM();
+            scomComment.setUserId(memberRepository.findById(id).orElseThrow());
+            scomComment.setCalNo(scalRepository.findById(calNo).orElseThrow());
+            scomComment.setPlanDate(planDate);
+            scomComment.setWriteDate(LocalDateTime.now());
+            scomComment.setDetail(detail);
+            scomRepository.save(scomComment);
             return true;
         } catch (Exception e) {
             return true;
@@ -253,7 +253,7 @@ public class ScalService {
     }
 
     // 공유캘린더 댓글 삭제하기
-    public boolean commentsDelete(Long commentNo) {
+    public boolean commentDelete(Long commentNo) {
         try {
             scomRepository.deleteById(commentNo);
             return true;
