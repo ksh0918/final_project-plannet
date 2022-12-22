@@ -21,7 +21,7 @@ public class Diary {
     private Long diaryNo ;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "id", nullable = false)
     private Member userId;
 
     @CreatedDate
