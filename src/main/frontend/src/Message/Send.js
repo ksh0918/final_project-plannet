@@ -119,16 +119,6 @@ const Section = styled.div`
             }
         }
     }
-    .friend{
-        .listfriend{
-            li {
-                width: 200px;
-            }
-            p{
-                width: 100px;
-            }
-        }
-    }
     .copy {
         width: 850px;
         position: absolute;
@@ -300,7 +290,7 @@ const Send= () => {
                 {isBlur && 
                     <div className='friend'>
                         <p className='listfriend'>친구목록</p>
-                        <FriendList setCommnet={setComment} setModalHeader={setModalHeader} setModalOpen={setModalOpen} friendList={friendList} setOption={setOption} className='friendList'/>
+                        <span><FriendList setCommnet={setComment} setModalHeader={setModalHeader} setModalOpen={setModalOpen} friendList={friendList} setOption={setOption} className='friendList'/></span>
                     </div>
                 }
                 <div className='form-wrapper'>

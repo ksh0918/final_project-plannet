@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Getter @Setter
 @ToString
 @Entity
-public class Comments {
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long commentNo;

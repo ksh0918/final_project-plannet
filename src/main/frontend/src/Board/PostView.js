@@ -4,7 +4,7 @@ import styled from 'styled-components';import Api from '../api/plannetApi'
 import Modal from '../Utill/Modal';
 import Nav from '../Utill/Nav';
 import TopBar from '../Utill/TopBar';
-import Comments from './Comment';
+import Comment from './Comment';
 import useInfiniteScroll from './UseInfiniteScroll';
 
 const Wrap = styled.div`
@@ -137,7 +137,7 @@ const PostView = () => {
     const [postViewData, setPostViewData] = useState(); // 해당 게시물 번호의 내용 로드 (좋아요 제외)
     const [likeCntData, setLikeCnt] = useState(); // 좋아요 수 로드
     const [likeCheckedData, setLikeChecked] = useState(false); // 내가 좋아요를 했는지 여부 로드
-    const [commentsList, setCommentsList] = useState([]);
+    const [commentList, setCommentList] = useState([]);
     
     // 게시물 삭제, 수정 팝업
     const [modalOpen, setModalOpen] = useState(false); // 모달에 띄워줄 메세지 문구
@@ -188,8 +188,8 @@ const PostView = () => {
                 setLikeChecked(likeChecked.data);
 
                 // 댓글 불러오기
-                const response = await Api.commentsLoad(getNum);
-                setCommentsList(response.data);
+                const response = await Api.commentLoad(getNum);
+                setCommentList(response.data);
             } catch (e) {
                 console.log(e);
             } 
@@ -214,8 +214,8 @@ const PostView = () => {
           const fetchData = async () => {
             console.log("댓글 불러오는중");
             // PostView 페이지 댓글 목록 api
-            const response = await Api.commentsLoad(getNum,String(offset),String(offset + 10)); // DB에서 데이터 가져오는 개수의 범위를 api 매개변수로 넘겨줌
-            setCommentsList(old => ([...old, ...response.data]));
+            const response = await Api.commentLoad(getNum,String(offset),String(offset + 10)); // DB에서 데이터 가져오는 개수의 범위를 api 매개변수로 넘겨줌
+            setCommentList(old => ([...old, ...response.data]));
             console.log('//new Data :',response.data);
             setOffset(old => old + 10) // offset을 계속 10씩 늘려주면 된다
             setIsFetching(false); // fetching이 false가 되어야 한번만 데이터를 불러줌 패칭 스테이트는 선언한 훅에서 나옴
@@ -226,8 +226,8 @@ const PostView = () => {
           console.log(e);
         };
       }
-    // hook 선언 (인자값에는 데이터를 불러오는 함수 입력(Comments))
-    const [isFetching,setIsFetching] = useInfiniteScroll(Comments)
+    // hook 선언 (인자값에는 데이터를 불러오는 함수 입력(Comment))
+    const [isFetching,setIsFetching] = useInfiniteScroll(Comment)
 
       useEffect(() => {
         comments();
@@ -265,7 +265,7 @@ const PostView = () => {
                     </div>
                     </>))}
                     <h3>Comment</h3>
-                    <Comments getId={getId} getNum={getNum} setCommentsList={setCommentsList} commentsList={commentsList}/>
+                    <Comment getId={getId} getNum={getNum} setCommentList={setCommentList} commentList={commentList}/>
                     {isFetching && <h1>New Data Fetcing .......</h1>}
                     {!isFetching && <h1>더이상 조회할 게시글이 없습니다</h1>}
             </Section>
