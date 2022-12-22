@@ -57,10 +57,10 @@ public class MemberController {
     @PostMapping("/overlap_check")
     public ResponseEntity<Boolean> overlapCheck(@RequestBody Map<String, String> checkData){
         try {
-            String uni = checkData.get("uni");
+            String keyword = checkData.get("keyword");
             String type = checkData.get("type");
 
-            boolean result = memberService.overlapCheck(uni, type);
+            boolean result = memberService.overlapCheck(keyword, type);
             if(result){
                 return new ResponseEntity(true, HttpStatus.OK);
             }
@@ -138,6 +138,8 @@ public class MemberController {
             return new ResponseEntity("NOK",HttpStatus.OK);
         }
     }
+
+    // 구글 연동 시 메일에서 아이디를 찾아옴
     @PostMapping("/social_login_find_id")
     public ResponseEntity<String> socialLoginFindId(@RequestBody Map<String,String> change){
         String email = change.get("email");
