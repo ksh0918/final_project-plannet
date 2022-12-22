@@ -22,8 +22,6 @@ const Section = styled.div`
     .message {
         width: 100%;
         padding-left: 30px;
-        height: 550px;
-        height: 100%;
         float: left;  
         padding: 10px 30px 10px 30px;
         h2{
@@ -95,6 +93,7 @@ const Section = styled.div`
         } 
     }
     .util_box {
+        padding: 10px 30px;
         .page_list {
             width: 500px; 
             float:left;
@@ -132,7 +131,8 @@ const Message = () => {
     const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
     const [checkItems, setCheckItems] = useState([]);
-    
+    const [messageRead,setMessageRead] = useState();
+
     const onClickToCreate = () => {
         const link = "/send"
         navigate(link);
@@ -216,6 +216,20 @@ const Message = () => {
             console.log("읽음"+response.data);
         }
     }
+    const [comment, setComment] = useState("");
+    const [modalHeader, setModalHeader] = useState("");
+    const [modalOpen, setModalOpen] = useState(false);
+    const closeModal = () => {
+        setModalOpen(false);
+    };
+
+    const onClickList = (e) => {
+        setModalOpen(true);
+        setModalHeader("쪽지");
+        setMessageRead(e.messageNo);
+        console.log(messageRead);
+        setComment(e.detail);
+    }
     useEffect(() => {
         const messageData = async () => {
             try{
@@ -234,6 +248,9 @@ const Message = () => {
 
     return (
         <Wrap>
+            <Nav/>
+            <Modal open={modalOpen} close={closeModal} messageRead={messageRead} setMessageRead={setMessageRead} header={modalHeader}><p dangerouslySetInnerHTML={{__html: comment}}></p></Modal>
+            <Section>
             <Nav sideBar={sideBar} setSideBar={setSideBar}/>
             <div className={`back ${sideBar? 'back_side_open':''}`}/>
             <TopBar sideBar={sideBar} setSideBar={setSideBar}/>
@@ -268,7 +285,7 @@ const Message = () => {
                                     message.isRead===0?"안읽음":"읽음"
                                 }</td>
                                 <td>{message.sendId}</td>
-                                <td>{<div className='detail' dangerouslySetInnerHTML={{__html: message.detail}}></div>}</td>
+                                <td>{<div className='detail'onClick={()=>onClickList(message)} dangerouslySetInnerHTML={{__html: message.detail}}></div>}</td>
                                 <td>{message.sendDate}</td>
                             </tr>
                             

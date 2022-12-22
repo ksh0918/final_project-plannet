@@ -88,7 +88,7 @@ public class MemberService {
     }
 
     // 회원가입
-    public boolean regMember(String id, String pwd, String name,
+    public boolean memberReg(String id, String pwd, String name,
                              String nickname, String email, String tel) {
         try {
             Member member = new Member();
@@ -114,7 +114,7 @@ public class MemberService {
     }
 
     // 아이디, 이메일, 전화번호, 닉네임 중복체크
-    public boolean overlapCheck (String keyword, String type){
+    public boolean overlapCheck(String keyword, String type){
         boolean isNotOverLap = true;
         try {
             Member member;
@@ -144,7 +144,7 @@ public class MemberService {
     }
 
     // 아이디 및 비밀번호 찾기
-    public MemberDTO memberFindCheck(String keyword, String email, String type) {
+    public MemberDTO memberFind(String keyword, String type, String email) {
         MemberDTO memDTO = new MemberDTO();
         try {
             char t = type.charAt(5);
@@ -172,7 +172,7 @@ public class MemberService {
     }
 
     // 비밀번호 찾기 시 새 비밀번호 설정
-    public boolean regNewPwd(String id, String pwd) {
+    public boolean newPwd(String id, String pwd) {
         try {
             Member mem = memberRepository.findById(id).orElseThrow(EmptyStackException::new);
             mem.setPwd(pwd);
@@ -185,7 +185,7 @@ public class MemberService {
     }
 
     // 회원 탈퇴
-    public boolean deleteMember(String id){
+    public boolean memberDelete(String id) {
         try {
             Member member = memberRepository.findById(id).orElseThrow();
             likeRepository.deleteByUserId(member);

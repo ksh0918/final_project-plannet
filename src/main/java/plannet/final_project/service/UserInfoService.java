@@ -22,9 +22,10 @@ public class UserInfoService {
     private final SMEMRepository smemRepository;
     private final SPLANRepository splanRepository;
 
-    public MemberDTO userInfo (String userId) { // 사용자 정보 불러오기
+    // 사용자 정보 불러오기
+    public MemberDTO userInfoLoad (String userId) {
         MemberDTO memberDTO = new MemberDTO();
-        try{
+        try {
             Member member = memberRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
 
             // 멤버 인포
@@ -42,14 +43,14 @@ public class UserInfoService {
     }
 
     // 사용자 정보 수정
-    public boolean saveUserInfo(String id, String nickname, String phone, String profile) {
+    public boolean userInfoSave(String id, String nickname, String tel, String profile) {
         try{
             Member mem = memberRepository.findById(id).orElseThrow(EmptyStackException::new);
             mem.setNickname(nickname);
-            mem.setTel(phone);
+            mem.setTel(tel);
             mem.setProfile(profile);
-            Member rst = memberRepository.save(mem);
-            log.warn(rst.toString());
+            Member result = memberRepository.save(mem);
+            log.warn(result.toString());
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -62,8 +63,8 @@ public class UserInfoService {
         try {
             Member mem = memberRepository.findById(id).orElseThrow(EmptyStackException::new);
             mem.setProImg(imgName);
-            Member rst = memberRepository.save(mem);
-            log.warn(rst.toString());
+            Member result = memberRepository.save(mem);
+            log.warn(result.toString());
         } catch(Exception e) {
             return false;
         }
@@ -71,68 +72,63 @@ public class UserInfoService {
     }
 
     // 개인 일정 달성률/공유캘린더정보 불러오기
-    public MemberDTO navInfo (String userId) {
+    public MemberDTO navInfoLoad (String userId) {
         MemberDTO memberDTO = new MemberDTO();
-        try{
+        try {
             Member member = memberRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
 
-            //멤버달성률
+            // 개인 일정 달성률 불러오기
             List<Plan> personalTotal = planRepository.findByUserId(member);
-            List<Plan> personalEnd = planRepository.findByUserIdAndPlanChecked(member, 1);
+            List<Plan> personalComplete = planRepository.findByUserIdAndPlanChecked(member, 1);
             int personalTotalCnt = planRepository.countByUserId(member).intValue(); // 총 일정 갯수
-            int personalEndCnt = planRepository.countByUserIdAndPlanChecked(member, 1).intValue(); // 완료된 일정 갯수
+            int personalCompleteCnt = planRepository.countByUserIdAndPlanChecked(member, 1).intValue(); // 완료된 일정 갯수
             for(Plan e : personalTotal) {
                 personalTotalCnt++;
             }
-            for(Plan e : personalEnd) {
-                personalEndCnt++;
+            for(Plan e : personalComplete) {
+                personalCompleteCnt++;
             }
             int personalPes = 0;
             try {
-                personalPes = personalEndCnt * 100 / personalTotalCnt;
+                personalPes = personalCompleteCnt * 100 / personalTotalCnt;
             } catch (ArithmeticException ignored) {}
             log.warn(String.valueOf(personalPes));
             memberDTO.setPes(personalPes);
 
-
-            // 공유캘린더정보 불러오기
+            // 공유 캘린더 정보 불러오기
             List<SMEM> smemList = smemRepository.findByUserId(member);
-            List<List<Object>> sCalList = new ArrayList<>();
-            for(SMEM e : smemList){
-                List<Object> sCal = new ArrayList<>();
-                Long calNo = e.getScalNo().getScalNo(); // 캘린더 넘버
-                String calName = e.getScalNo().getScalName(); // 캘린더 이름
+            List<List<Object>> scalList = new ArrayList<>();
+            for(SMEM e : smemList) {
+                List<Object> scalData = new ArrayList<>();
+                Long scalNo = e.getScalNo().getScalNo(); // 캘린더 넘버
+                String scalName = e.getScalNo().getScalName(); // 캘린더 이름
 
                 // 공유캘린더 일정 달성률 구하기
-                SCAL scal = scalRepository.findById(calNo).orElseThrow(EntityNotFoundException::new);
-                List<SPLAN> sPlanTotal = splanRepository.findByScalNo(scal);
-                List<SPLAN> sPlanEnd = splanRepository.findByScalNoAndSplanChecked(scal, 1);
-                int sPlanTotalCnt = 0; // 총 일정 갯수
-                int sPlanEndCnt = 0; // 완료된 일정 갯수
-                for(SPLAN f : sPlanTotal) {
-                    sPlanTotalCnt++;
+                SCAL scal = scalRepository.findById(scalNo).orElseThrow(EntityNotFoundException::new);
+                List<SPLAN> splanTotal = splanRepository.findByScalNo(scal);
+                List<SPLAN> splanComplete = splanRepository.findByScalNoAndSplanChecked(scal, 1);
+                int splanTotalCnt = 0; // 총 일정 갯수
+                int splanCompleteCnt = 0; // 완료된 일정 갯수
+                for(SPLAN f : splanTotal) {
+                    splanTotalCnt++;
                 }
-                for(SPLAN f : sPlanEnd) {
-                    sPlanEndCnt++;
+                for(SPLAN f : splanComplete) {
+                    splanCompleteCnt++;
                 }
+                int scalPes = 0;
+                try { scalPes = splanCompleteCnt * 100 / splanTotalCnt; }
+                catch (ArithmeticException ignored) {}
 
-                int calPes = 0;
-                try {
-                    calPes = sPlanEndCnt * 100 / sPlanTotalCnt;
-                } catch (ArithmeticException ignored) {}
-
-                sCal.add(calNo);
-                sCal.add(calName);
-                sCal.add(calPes);
-                sCalList.add(sCal);
+                scalData.add(scalNo);
+                scalData.add(scalName);
+                scalData.add(scalPes);
+                scalList.add(scalData);
             }
-
-            memberDTO.setSCalList(sCalList);
+            memberDTO.setSCalList(scalList);
             memberDTO.setOk(true);
         } catch (Exception e) {
             memberDTO.setOk(false);
         }
-
         return memberDTO;
     }
 }

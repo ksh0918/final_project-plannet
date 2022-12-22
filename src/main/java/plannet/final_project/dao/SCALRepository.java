@@ -8,9 +8,7 @@ import plannet.final_project.entity.SCAL;
 
 public interface SCALRepository extends JpaRepository<SCAL, Long> {
     void deleteByUserId(Member member);
-    @Query(value = "select scal_no from s_cal where write_date in (select MAX(write_date) from BOARD group by id having id = (:userId))", nativeQuery = true)
-    Long findLastScalNo(@Param("userId") String userId);
-    @Query(value = "select MAX(scal_no) from s_cal where id = (:userId)", nativeQuery = true)
+    @Query(value = "select MAX(scal_no) from s_cal where owner_id = (:userId)", nativeQuery = true)
     Long findMaxScalNo(@Param("userId") String userId);
     void deleteByScalNo(Long CalNo);
 

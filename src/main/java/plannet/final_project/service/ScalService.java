@@ -22,60 +22,19 @@ import java.util.*;
 @Transactional
 @RequiredArgsConstructor
 public class ScalService {
-    private final SMEMRepository smemRepository;
-    private final SPLANRepository splanRepository;
-    private final SCALRepository scalRepository;
-    private final FriendRepository friendRepository;
     private final MemberRepository memberRepository;
     private final NotiRepository notiRepository;
-
-    private final DiaryRepository diaryRepository;
-
-    private final PlanRepository planRepository;
+    private final FriendRepository friendRepository;
+    private final SCALRepository scalRepository;
+    private final SMEMRepository smemRepository;
+    private final SPLANRepository splanRepository;
     private final SCOMRepository scomRepository;
 
-    // 공유캘린더 생성
-    public Long scalCreate(String userId, String title, List<Map<String, Object>> smember) {
-        Long calNo;
-        try {
-            Member member = memberRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
-            // 공유 캘린더 생성
-            SCAL scal = new SCAL();
-            scal.setUserId(member);
-            scal.setScalName(title);
-            scalRepository.save(scal);
-            calNo = scalRepository.findMaxScalNo(userId);
-            System.out.println("서비스 캘린더 번호 : " + calNo);
-            // 공유 캘린더 친구 설정
-            SMEM smem = new SMEM();
-            smem.setScalNo(scal);
-            smem.setUserId(member);
-            smem.setIsOwner(1); // 공유 캘린더 주인이면 1 아니면 0
-            smemRepository.save(smem);
-            // 초대할 친구들에게 알림 보내기
-            for (Map<String, Object> s : smember) {
-                Noti noti = new Noti();
-                noti.setUserId(member); // 보내는 이
-                Member friend = memberRepository.findByUserCode((String)s.get("userCode"));
-                noti.setReceiveId(friend); // 초대할 친구들
-                noti.setScalNo(scal);
-                noti.setType("S");
-                noti.setScalNo(scal);
-                noti.setNotiDate(LocalDateTime.now());
-                noti.setAcceptChecked(0); // 수락 여부, 0이면 미수락, 1이면 수락
-                notiRepository.save(noti);
-            }
-        } catch(Exception e) {
-            e.printStackTrace();
-            return Long.valueOf(-1);
-        }
-        return calNo;
-    }
-    // 내용 로드
+    // 공유캘린더 home Load
     public ShareDTO homeList(Long calNo) {
         ShareDTO shareDTO = new ShareDTO();
         SCAL scal = scalRepository.findById(calNo).orElseThrow();
-        try{
+        try {
             // scal CalName Load
             shareDTO.setCalName(scal.getScalName());
 
@@ -152,6 +111,44 @@ public class ScalService {
         catch (Exception e) {
             return false;
         }
+    }
+
+    // 공유캘린더 생성
+    public Long scalCreate(String userId, String title, List<Map<String, Object>> smember) {
+        Long scalNo;
+        try {
+            Member member = memberRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
+            // 공유 캘린더 생성
+            SCAL scal = new SCAL();
+            scal.setUserId(member);
+            scal.setScalName(title);
+            scalRepository.save(scal);
+            scalNo = scalRepository.findMaxScalNo(userId);
+            System.out.println("서비스 캘린더 번호 : " + scalNo);
+            // 공유 캘린더 친구 설정
+            SMEM smem = new SMEM();
+            smem.setScalNo(scal);
+            smem.setUserId(member);
+            smem.setIsOwner(1); // 공유 캘린더 주인이면 1 아니면 0
+            smemRepository.save(smem);
+            // 초대할 친구들에게 알림 보내기
+            for (Map<String, Object> s : smember) {
+                Noti noti = new Noti();
+                noti.setUserId(member); // 보내는 이
+                Member friend = memberRepository.findByUserCode((String)s.get("userCode"));
+                noti.setReceiveId(friend); // 초대할 친구들
+                noti.setScalNo(scal);
+                noti.setType("S");
+                noti.setScalNo(scal);
+                noti.setNotiDate(LocalDateTime.now());
+                noti.setAcceptChecked(0); // 수락 여부, 0이면 미수락, 1이면 수락
+                notiRepository.save(noti);
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+            return Long.valueOf(-1);
+        }
+        return scalNo;
     }
 
     // 일정 불러오기
