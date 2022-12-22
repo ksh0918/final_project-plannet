@@ -25,7 +25,7 @@ public class Comment {
     private Board boardNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "id", nullable = false)
     private Member userId;
 
     @CreatedDate
