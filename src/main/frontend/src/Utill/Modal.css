@@ -10,6 +10,10 @@
     z-index: 99;
     background-color: rgba(0, 0, 0, 0.6);
   }
+  .modal table,.modal table th,.modal table td{
+    border-collapse: collapse;
+    border: 1px solid #888;
+  }
   .modal button {
     outline: none;
     cursor: pointer;

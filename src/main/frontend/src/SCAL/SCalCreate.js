@@ -109,10 +109,8 @@ const Section = styled.div`
                 }
             }
             .friend_list {
+                height: 500px;
                 p {font-size: 15px}
-                .is_list{
-                    height: 500px;
-                }
                 .scal_add {
                     margin-top: 10px;
                     button {

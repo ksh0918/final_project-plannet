@@ -103,4 +103,15 @@ public class MessageService {
             return false;
         }
     }
+    public boolean messageReadModal(Long messageNo){
+        log.warn("여기까지 들어옴");
+        try{
+            Message message = messageRepository.findById(messageNo).orElseThrow(EmptyStackException::new);
+            message.setIsRead(1);
+            messageRepository.save(message);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
 }

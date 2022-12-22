@@ -258,9 +258,15 @@ const plannetApi = {
     messageRead : async function(obj){
         return await axios.post(PLANNET_DOMAIN+"message/read",obj,HEADER);
     },
+    //쪽지 읽음2
+    messageReadModal : async function(messageNo){
+        const object = {
+            messageNo : messageNo    
+        }
+        return await axios.post(PLANNET_DOMAIN+"message/readModal",object,HEADER);
+    },
     //쪽지 삭제
     messageDelete: async function(obj){
-        
         return await axios.post(PLANNET_DOMAIN+"message/delete",obj,HEADER);
     },
     messageNoti : async function(id){
