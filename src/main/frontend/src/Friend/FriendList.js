@@ -101,18 +101,31 @@ const Friends = styled.div`
         transform:translateY(-50%);
     }
     .drop, .wait, .invite {
+        position: absolute;
+        top: 50%;
+        right: 30px;
+        transform: translateY(-50%);
         transition: all .3s ease-in;
         cursor: pointer;
-        position: absolute;
         font-size: 15px;
-        color: black;
-        background-color: red;
-        right: 30px;
-        top: 50%;
-        transform:translateY(-50%);
+        border-radius: 5px;
+        padding: 3px 12px;
+        background: none;
+        font-weight: 600;
+        &.drop{
+            border: 1px solid rgb(252, 92, 125);
+            color: rgb(252, 92, 125);
+        }
+        &.wait{
+            border: 1px solid #bbb;
+            color: #bbb;
+        }
+        &.invite{
+            border: 1px solid #4555ae;
+            color: #4555ae;
+        }
     }
 `;
-
 const StyledInput = styled.input`
         transition: all .3s ease-in;
         cursor: pointer;
@@ -178,10 +191,10 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
         }
     }
     // 공유 캘린더 설정 모달창
-    const onClickDrop = async(userCode) => {
-        setOption(userCode);
+    const onClickDrop = async(e) => {
+        setOption(e);
         setCalNo(getNum);
-        setCommnet("멤버로 삭제하시겠습니까?");
+        setCommnet("멤버를 삭제하시겠습니까?");
         setModalHeader("멤버삭제");
         setModalOpen(true);
     }
@@ -190,8 +203,8 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
         setModalHeader("멤버대기");
         setModalOpen(true);
     }
-    const onClickInvite = async(userCode) => {
-        setOption(userCode);
+    const onClickInvite = async(e) => {
+        setOption(e);
         setCalNo(getNum);
         setCommnet("멤버로 초대하시겠습니까?");
         setModalHeader("멤버초대");
@@ -215,9 +228,9 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
                         {/* checked: 체크표시 & 해제를 시키는 로직. 배열에 e 데이터가 있으면 true, 없으면 false                     onChange: onChange이벤트가 발생하면 check여부와 e 데이터를 전달하여 배열에 friendList의 객체를 넣어준다. */}
                         {isPage === "공유캘린더" && <StyledInput class="form-check-input scalFriend_check" id="checkboxNoLabel" onChange={check => { changeHandler(check.currentTarget.checked, e);}} 
                             checked={checkedButtons.includes(e) ? true : false}  type="checkbox" aria-label="..." />} 
-                        {e.status == 1 &&<button className='drop' onClick={() => onClickDrop(e.userCode)}>삭제</button>}
+                        {e.status == 1 &&<button className='drop' onClick={() => onClickDrop(e.id)}>삭제</button>}
                         {e.status == 2 &&<button className='wait' onClick={() => onClickWait()}>대기</button>}
-                        {e.status == 0 &&<button className='invite' onClick={() => onClickInvite(e.userCode)}>초대</button>}
+                        {e.status == 0 &&<button className='invite' onClick={() => onClickInvite(e.id)}>초대</button>}
 
                     </li>
                 );})}

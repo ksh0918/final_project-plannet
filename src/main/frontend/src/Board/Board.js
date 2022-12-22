@@ -30,7 +30,7 @@ const Section = styled.div`
     div {width: 100%; padding: 10px 30px;}
     .sub_box {
         h2 {font-size: 28px; margin-top: 35px; font-weight: 900;}
-        span {float: left; margin-top: 10px; margin-bottom: 15px;}
+        >p>span {float: left; margin-top: 10px; margin-bottom: 15px;}
         button {
             cursor: pointer;
             font-weight: 600;

@@ -152,16 +152,16 @@ public class ScalController {
     @PostMapping("/invite_member")
     public ResponseEntity<Boolean> inviteMember(@RequestBody Map<String, Object> data) {
         Long calNo = Long.parseLong((String)data.get("calNo"));
-        String userCode = (String)data.get("userCode");
-        boolean result = scalService.inviteMember(calNo, userCode);
+        String id = (String)data.get("id");
+        boolean result = scalService.inviteMember(calNo, id);
         return new ResponseEntity(result, HttpStatus.OK);
     }
     // 멤버 삭제
     @PostMapping("/drop_member")
     public ResponseEntity<Boolean> dropMember(@RequestBody Map<String, Object> data) {
         Long calNo = Long.parseLong((String)data.get("calNo"));
-        String userCode = (String)data.get("userCode");
-        boolean result = scalService.dropMember(calNo, userCode);
+        String id = (String)data.get("id");
+        boolean result = scalService.dropMember(calNo, id);
         return new ResponseEntity(result, HttpStatus.OK);
     }
 
