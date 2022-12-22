@@ -248,9 +248,7 @@ const Message = () => {
 
     return (
         <Wrap>
-            <Nav/>
             <Modal open={modalOpen} close={closeModal} messageRead={messageRead} setMessageRead={setMessageRead} header={modalHeader}><p dangerouslySetInnerHTML={{__html: comment}}></p></Modal>
-            <Section>
             <Nav sideBar={sideBar} setSideBar={setSideBar}/>
             <div className={`back ${sideBar? 'back_side_open':''}`}/>
             <TopBar sideBar={sideBar} setSideBar={setSideBar}/>
