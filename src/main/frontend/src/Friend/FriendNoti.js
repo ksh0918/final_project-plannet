@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Api from "../api/plannetApi";
 
 const Noti = styled.div`
     p.nothing{
@@ -66,11 +67,30 @@ const Noti = styled.div`
 `;
 
 const FriendNoti = ({setCommnet, setModalHeader, setModalOpen, setOption, notiList}) => {
+    const getId = window.localStorage.getItem("userId");
+
     const onClickNoti = (e, status) => {
-        setOption("?key=" + e.key + "&status=" + status);
-        setCommnet((e.type === 'F'? '친구 요청을 ' : '공유캘린더 초대를 ') + (status? '승락' : '거절') + '합니다.');
-        setModalHeader("알림반응");
-        setModalOpen(true);
+        const countSCal = async() => {
+            const response = await Api.scalCheck(getId); //2개이상의 scal에 참여중인지 확인 2개 이하면 true, 이상이면 false
+            console.log(response.data);
+            if(response.data) {
+                setOption("?key=" + e.key + "&status=" + status);
+                setCommnet((e.type === 'F'? '친구 요청을 ' : '공유캘린더 초대를 ') + (status? '승락' : '거절') + '합니다.');
+                setModalHeader("알림반응");
+                setModalOpen(true);
+            } else {
+                if(status === true) {
+                    setCommnet("최대 공유 캘린더 개수(2개)를 넘어 공유 캘린더를 생성할 수 없습니다.");
+                    setModalOpen(true);
+                } else {
+                    setOption("?key=" + e.key + "&status=" + status);
+                    setCommnet((e.type === 'F'? '친구 요청을 ' : '공유캘린더 초대를 ') + (status? '승락' : '거절') + '합니다.');
+                    setModalHeader("알림반응");
+                    setModalOpen(true);
+                }
+            }
+         }
+         countSCal();
     }
     return (
         <Noti>

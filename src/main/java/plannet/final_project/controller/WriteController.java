@@ -20,21 +20,6 @@ import java.util.Map;
 public class WriteController {
     private final WriteService writeService;
 
-    // 일정 저장
-    @PostMapping("/save")
-    public ResponseEntity<Boolean> writeSave(@RequestBody Map<String, Object> wrSave) {
-        System.out.println("11111111111111111111");
-        String userId = (String)wrSave.get("id");
-        LocalDate date = LocalDate.parse((String)wrSave.get("date"));
-        List<Map<String, Object>> plan = (List<Map<String, Object>>)wrSave.get("plan");
-        String diary= (String)wrSave.get("diary");
-        boolean result = writeService.writeSave(userId, date, plan, diary);
-        if(result) {
-            return new ResponseEntity(true, HttpStatus.OK);
-        } else {
-            return new ResponseEntity(false, HttpStatus.OK);
-        }
-    }
     //일정 불러오기
     @PostMapping("/load")
     public ResponseEntity<List<Object>> writeLoad(@RequestBody Map<String, Object> wrLoad) {
@@ -51,5 +36,17 @@ public class WriteController {
         else {
             return new ResponseEntity(null, HttpStatus.OK);
         }
+    }
+
+    // 일정 저장
+    @PostMapping("/save")
+    public ResponseEntity<Boolean> writeSave(@RequestBody Map<String, Object> wrSave) {
+        String userId = (String)wrSave.get("id");
+        LocalDate date = LocalDate.parse((String)wrSave.get("date"));
+        List<Map<String, Object>> plan = (List<Map<String, Object>>)wrSave.get("plan");
+        String diary= (String)wrSave.get("diary");
+        boolean result = writeService.writeSave(userId, date, plan, diary);
+        if(result) return new ResponseEntity(true, HttpStatus.OK);
+        else return new ResponseEntity(false, HttpStatus.OK);
     }
 }

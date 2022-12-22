@@ -4,7 +4,7 @@ import styled from 'styled-components';import Api from '../api/plannetApi'
 import Modal from '../Utill/Modal';
 import Nav from '../Utill/Nav';
 import TopBar from '../Utill/TopBar';
-import Comments from './Comment';
+import Comment from './Comment';
 import useInfiniteScroll from './UseInfiniteScroll';
 
 const Wrap = styled.div`
@@ -33,7 +33,7 @@ const Section = styled.div`
     div {width: 100%; padding: 10px 30px;}
     .sub_box {
         h2 {font-size: 28px; margin-top: 35px; font-weight: 900;}
-        span {float: left; margin-top: 10px; margin-bottom: 15px;}
+        >p>span {float: left; margin-top: 10px; margin-bottom: 15px;}
     }
     button {
         border: none;
@@ -52,9 +52,18 @@ const Section = styled.div`
         text-align: center;
         tr:first-child td {border-top: solid 1px #4555AE; background-color: #f9f9f9;}
         th {padding: 10px; color: white;}
-        td {padding: 10px; width: 150px; background-color: white; border-left: solid 1px #bbb; border-top: solid 1px #ddd;}
-        td:first-child {border-left: none;}
-        td:nth-child(2) {width: 400px; text-align: left; padding-left: 20px;}  
+        td {padding: 10px; background-color: white; border-left: solid 1px #bbb; border-top: solid 1px #ddd;}
+        td:first-child {border-left: none; width: 70px;}
+        td:nth-child(2) {width: 85px;}  
+        td:nth-child(3) {
+            width: 135px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }  
+        td:nth-child(4) {width: 100px;} 
+        td:last-child {width: 100px;}
+        br{display: none;}
         .title-input {font-size:20px; font-weight: 500;}
         .bi {padding-right:5px;}
         .bi-heart-fill {margin-left:13px;}
@@ -137,12 +146,12 @@ const PostView = () => {
     const [postViewData, setPostViewData] = useState(); // 해당 게시물 번호의 내용 로드 (좋아요 제외)
     const [likeCntData, setLikeCnt] = useState(); // 좋아요 수 로드
     const [likeCheckedData, setLikeChecked] = useState(false); // 내가 좋아요를 했는지 여부 로드
-    const [commentsList, setCommentsList] = useState([]);
+    const [commentList, setCommentList] = useState([]);
     
     // 게시물 삭제, 수정 팝업
     const [modalOpen, setModalOpen] = useState(false); // 모달에 띄워줄 메세지 문구
     const [modalOption, setModalOption] = useState('');
-    const [comment, setComment] = useState("");
+    const [comment, setComment] = useState(""); // 모달창 안내 문구
 
     const closeModal = () => {
         setModalOpen(false);
@@ -161,6 +170,7 @@ const PostView = () => {
     // 무한 스크롤
     const [offset, setOffset] = useState(0); // DB에서 데이터 가져오는 개수
     const [isMax, setIsMax] = useState(false); // DB에 있는 전체 데이터 개수
+    const [comments, setComments] = useState([]); // 댓글
 
     // 좋아요를 누를 때마다 표면적으로 +1, -1 해주기 & 하트 모양 토글
     const onClickLike = async() => {
@@ -170,6 +180,8 @@ const PostView = () => {
         else (setLikeCnt(likeCntData + 1));
 
     }
+    console.log("오프셋");
+    console.log(offset);
     
     // 본문 불러오기
     useEffect(() => {
@@ -188,8 +200,7 @@ const PostView = () => {
                 setLikeChecked(likeChecked.data);
 
                 // 댓글 불러오기
-                const response = await Api.commentsLoad(getNum);
-                setCommentsList(response.data);
+                commentItem();
             } catch (e) {
                 console.log(e);
             } 
@@ -197,11 +208,12 @@ const PostView = () => {
         postViewLoad();
     }, [getId, getNum]);
 
+
     //미디어쿼리시 nav 사이드바
     const [sideBar, setSideBar] = useState(false);
 
     // 무한 스크롤
-    const comments = async () => {
+    const commentItem = async () => {
         try {
           // DB에 있는 전체 데이터를 다 가져오면 데이터 더 부르지 않음
           if(isMax){
@@ -214,8 +226,8 @@ const PostView = () => {
           const fetchData = async () => {
             console.log("댓글 불러오는중");
             // PostView 페이지 댓글 목록 api
-            const response = await Api.commentsLoad(getNum,String(offset),String(offset + 10)); // DB에서 데이터 가져오는 개수의 범위를 api 매개변수로 넘겨줌
-            setCommentsList(old => ([...old, ...response.data]));
+            const response = await Api.commentLoad(getNum,offset,offset+10); // DB에서 데이터 가져오는 개수의 범위를 api 매개변수로 넘겨줌
+            setComments(old => ([...old, ...response.data]));
             console.log('//new Data :',response.data);
             setOffset(old => old + 10) // offset을 계속 10씩 늘려주면 된다
             setIsFetching(false); // fetching이 false가 되어야 한번만 데이터를 불러줌 패칭 스테이트는 선언한 훅에서 나옴
@@ -225,13 +237,10 @@ const PostView = () => {
         } catch(e) {
           console.log(e);
         };
+        commentItem();
       }
-    // hook 선언 (인자값에는 데이터를 불러오는 함수 입력(Comments))
-    const [isFetching,setIsFetching] = useInfiniteScroll(Comments)
-
-      useEffect(() => {
-        comments();
-      }, []);
+    // hook 선언 (인자값에는 데이터를 불러오는 함수 입력(Comment))
+    const [isFetching,setIsFetching] = useInfiniteScroll(commentItem)
 
     return (
         <Wrap>
@@ -247,12 +256,13 @@ const PostView = () => {
                         <p><span>유저들이 작성한 글에 댓글과 좋아요를 남기며 소통해보세요! <br/>커뮤니티 규칙에 맞지 않는 글과 댓글은 무통보 삭제됩니다.</span></p>  
                         <table className='postInfo'>
                             <tr>
-                                <td className="title-input" key={e.boardNo} colSpan={4}>{e.title}</td>
+                                <td className="title-input" key={e.boardNo} colSpan={5}>{e.title}</td>
                             </tr>
                             <tr>
-                                <td>No.{e.boardNo}</td>
-                                <td>Writer. {e.nickname}</td>
-                                <td><i class="bi bi-eye"></i>{e.views}<i class="bi bi-heart-fill"></i>{likeCntData}</td>
+                                <td>{e.category}</td>
+                                <td><span>No.</span>{e.boardNo}</td>
+                                <td><span>Writer. </span>{e.nickname}</td>
+                                <td><i class="bi bi-eye"></i>{e.views}<br/><i class="bi bi-heart-fill"></i>{likeCntData}</td>
                                 <td>{e.writeDate}</td>
                             </tr>
                         </table>
@@ -265,9 +275,9 @@ const PostView = () => {
                     </div>
                     </>))}
                     <h3>Comment</h3>
-                    <Comments getId={getId} getNum={getNum} setCommentsList={setCommentsList} commentsList={commentsList}/>
-                    {isFetching && <h1>New Data Fetcing .......</h1>}
-                    {!isFetching && <h1>더이상 조회할 게시글이 없습니다</h1>}
+                    <Comment getId={getId} getNum={getNum} setCommentList={setCommentList} commentList={commentList}
+                    {...isFetching && <h1>New Data Fetcing .......</h1>}
+                    {...!isFetching && <h1>더이상 조회할 게시글이 없습니다</h1>}/>
             </Section>
             <div className="copy">&#169; Plannet.</div>
         </Wrap>

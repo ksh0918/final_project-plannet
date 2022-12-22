@@ -13,20 +13,24 @@ import java.time.LocalDateTime;
 @ToString
 @Entity
 @Table(name = "s_com")
+@SequenceGenerator(
+        name = "SCOM_GENERATOR",
+        sequenceName = "SCOM_SEQUENCES",
+        initialValue = 1, allocationSize = 1)
 public class SCOM {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SCOM_GENERATOR")
     private Long commentNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cal_no")
-    private SCAL calNo;
+    @JoinColumn(name = "scal_no")
+    private SCAL scalNo;
 
     @CreatedDate
-    private LocalDate planDate;
+    private LocalDate splanDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "id", nullable = false)
     private Member userId;
 
     @CreatedDate

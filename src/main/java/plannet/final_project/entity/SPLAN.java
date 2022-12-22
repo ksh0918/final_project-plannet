@@ -13,26 +13,30 @@ import java.time.LocalDate;
 @ToString
 @Entity
 @Table(name = "s_plan")
+@SequenceGenerator(
+        name = "SPLAN_GENERATOR",
+        sequenceName = "SMEM_SEQUENCES",
+        initialValue = 1, allocationSize = 1)
 public class SPLAN {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SPLAN_GENERATOR")
     private Long splanNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cal_no")
-    private SCAL calNo;
+    @JoinColumn(name = "scal_no")
+    private SCAL scalNo;
 
     @CreatedDate
-    private LocalDate planDate;
+    private LocalDate splanDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "id", nullable = false)
     private Member userId;
 
-    @Column(nullable = false, name = "plan_check")
+    @Column(nullable = false, name = "splan_checked")
     @ColumnDefault("0")
-    private int planChecked;
+    private int splanChecked;
 
     @Column(nullable = false, length = 90)
-    private String plan;
+    private String splan;
 }

@@ -111,7 +111,7 @@ const Box = styled.div`
                     width: 20px;
                     height: 20px;
                     background-color: #4555AE;
-                    z-index: 1;
+                    z-index: 3;
                     padding: 2px 0;
                     position: absolute;
                     border: 1px solid balck;
@@ -188,7 +188,7 @@ const Box = styled.div`
                 border-radius: 6px;
                 padding: 2px 0;
                 position: absolute;
-                z-index: 1;
+                z-index: 3;
                 font-size: 13px;
             }
             &:hover .tooltiptext {

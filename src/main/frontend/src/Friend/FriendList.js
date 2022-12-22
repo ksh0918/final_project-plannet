@@ -236,8 +236,10 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
                 );})}
                 {isPage === "친구삭제" && <p>더 많은 친구를 추가해보세요!</p>}
             </ul>
-            :
-            <p className='nothing'><b>등록된 친구가 아직 없습니다.</b><br/>상단 오른쪽의 버튼을 눌러 친구를 추가해보세요!</p>}
+            : <>
+                {isPage === "친구삭제" && <p className='nothing'><b>등록된 친구가 아직 없습니다.</b><br/>상단 오른쪽의 버튼을 눌러 친구를 추가해보세요!</p>}
+                {isPage === "공유캘린더" && <p className='nothing'><b><br></br>등록된 친구가 아직 없습니다.</b><br/>친구목록에서 친구를 추가해보세요!</p>}
+              </>}
         </Friends>
         {isPage === "공유캘린더" && <div className="scal_add"><button onClick={onClickSCalAdd}>공유캘린더 생성하기</button></div>}
         </>
