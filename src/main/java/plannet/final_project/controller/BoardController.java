@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 @Slf4j
 @RestController
 @RequestMapping("/board")
@@ -29,9 +30,8 @@ public class BoardController {
     public ResponseEntity<List<BoardDTO>> boardList() {
         // 서비스를 다녀옴
         BoardDTO boardList = boardService.getBoardList();
-        if(boardList.isOk()) {
-            return new ResponseEntity(boardList.getBoardList(), HttpStatus.OK);
-        } else return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
+        if(boardList.isOk()) return new ResponseEntity(boardList.getBoardList(), HttpStatus.OK);
+        else return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
     }
 
     // 인기글 top3 목록 출력

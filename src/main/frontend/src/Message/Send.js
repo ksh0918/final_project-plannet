@@ -7,6 +7,7 @@ import Api from "../api/plannetApi";
 import Nav from "../Utill/Nav";
 import FriendList from '../Friend/FriendList';
 import Modal from '../Utill/Modal';
+import TopBar from '../Utill/TopBar';
 
 const Wrap = styled.div`
     width: 1130px;
@@ -104,24 +105,27 @@ const Section = styled.div`
         text-align: center;
         tr:nth-child(2n) td {background-color: #f9f9f9;}
         th {padding: 10px; color: white;}
-        td {padding: 0 10px 0 10px; background-color: white; border-left: solid 1px #bbb; border-top: solid 1px #ddd;}
+        td {padding: 0 10px; background-color: white; border-left: solid 1px #bbb; border-top: solid 1px #ddd;}
         td:first-child {border-left: none};
         td:nth-child(2) {width: 400px; text-align: left; padding-left: 20px;}  
         tr:hover td, tr:hover a {color: #4555AE;}
         .friend_search{
             margin: 0;
             width: 100%;
-            height: 31px;
-            border: 2px solid #ddd;
-            padding: 0 13px;
+            line-height: 31px;
+            padding: 0 5px;
             border-radius: 5px;
             input {
-                width: 100%;
+                width: calc(100% - 80px);
                 max-width: 410px;
                 height: 27px;
                 border: 0px;
                 outline: none;
-                margin: 0;
+                margin: 0 0 0 3px;
+                padding-left: 10px;
+                border-radius: 5px;
+                background-color: #f9f9f9;
+                &:focus{background-color: #f0f0f0;}
             }
         }
     }
@@ -215,12 +219,13 @@ const Send= () => {
     const [detail, setDetail] = useState("");
     const [lengthCheck, setLengthCheck] = useState(false);
     const [isBlur,setIsBlur] = useState(false);
+    const [friendList, setFriendList] = useState();
+    const [searchKeyword, setSearchKeyword] = useState('');
+
     const [comment, setComment] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
     const [modalHeader, setModalHeader] = useState("");
     const [option, setOption] = useState("");
-    const [friendList, setFriendList] = useState();
-    const [searchKeyword, setSearchKeyword] = useState('');
     const closeModal = () => {
         setModalOpen(false);
     }
@@ -268,14 +273,20 @@ const Send= () => {
         }
         friendPage();
     },[])
-;
+    ;
+
+    //미디어쿼리시 nav 사이드바
+    const [sideBar, setSideBar] = useState(false);
+    
     return (
         <Wrap>
             <Modal open={modalOpen} close={closeModal} header="글쓰기 안내">{comment}</Modal>
-            <Nav></Nav>
-            <Section>
+            <div className={`back ${sideBar? 'back_side_open':''}`}/>
+            <TopBar sideBar={sideBar} setSideBar={setSideBar}/>
+            <Nav sideBar={sideBar} setSideBar={setSideBar}/>
+            <Section id="send" className="section">
                 <div className="board_list sub_box">
-                    <h2>쪽지 보내기</h2>
+                    <h2>Send Message</h2>
                     <p>
                         <span>작성 시 유의해 주세요! 비방, 광고, 불건전한 내용의 쪽지는 사전 동의 없이 경고를 받을 수 있습니다.</span>
                     </p>    
@@ -295,7 +306,7 @@ const Send= () => {
                 </div>
                 {isBlur && 
                     <div className='friend'>
-                        <p className='listfriend'>친구목록</p>
+                        <p className='listfriend'>Find Friend</p>
                         <span><FriendList setCommnet={setComment} setModalHeader={setModalHeader} setModalOpen={setModalOpen} friendList={friendList} setOption={setOption} className='friendList'/></span>
                     </div>
                 }
