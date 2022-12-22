@@ -52,7 +52,7 @@ public class Member {
     private String memo;
 
     @Column
-    private int reRegChecked;
+    private int reRegChecked; // 탈퇴 회원 여부 (재가입 방지)
 
     @OneToMany(mappedBy = "userId", cascade = {CascadeType.ALL}, orphanRemoval=true)
     private List<SCAL> scals;
