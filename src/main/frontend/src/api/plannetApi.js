@@ -1,4 +1,3 @@
-import { S3Outposts } from "aws-sdk";
 import axios from "axios";
 const HEADER = 'application/json';
 //const PLANNET_DOMAIN = "http://plannet.shop/";
@@ -7,18 +6,18 @@ const PLANNET_DOMAIN = "http://localhost:8111/";
 const plannetApi = {
     // MemberController
     // 로그인 기능
-    userLogin: async function(id, pw) {
+    memberLogin: async function(id, pw) {
         const loginObj = {
             id: id,
             pwd: pw
         };
         return await axios.post(PLANNET_DOMAIN + "member/login", loginObj, HEADER);
     },
-    // 소셜로그인
+    // 구글 연동 시 메일에서 아이디를 찾아옴
     socialLoginFindId: async function(email){
         return await axios.get(PLANNET_DOMAIN + `member/social_login_find_id?email=${email}`, HEADER);
     },
-    // 첫 소셜로그인시 정보 저장하기
+    // 첫 소셜로그인시 정보 저장하기 (처음 구글 로그인 한 사람 회원가입)
     memberNewSocialSave: async function(id, name, email, nickname, tel){
         const reg = {
             id : id,
@@ -55,7 +54,7 @@ const plannetApi = {
         return await axios.get(PLANNET_DOMAIN + `member/find?keyword=${keyword}&email=${email}&type=${type}`, HEADER);
     },
     // 새 비밀번호 저장
-    memberNewPwd: async function(id, pwd){
+    newPwd: async function(id, pwd){
         const reg = {
             id : id,
             pwd : pwd
@@ -89,7 +88,7 @@ const plannetApi = {
     // UserInfoController
     // userInfo 불러오기 - userinfoController-userinfoload
     userInfoLoad: async function(id){
-        return await axios.post(PLANNET_DOMAIN + `user/info_load?id=${id}`, HEADER);
+        return await axios.get(PLANNET_DOMAIN + `user/info_load?id=${id}`, HEADER);
     },
     // userInfo 수정하기
     userInfoSave: async function(id, nickname, tel, profile) {
@@ -110,14 +109,14 @@ const plannetApi = {
         return await axios.post(PLANNET_DOMAIN + "user/img_save", object, HEADER);
     },
     // NavInfo 불러오기 - userinfoController-NavInfo
-    userNavInfo: async function(id){
-        return await axios.post(PLANNET_DOMAIN + `user/nav_info?id=${id}`, HEADER);
+    navInfo: async function(id){
+        return await axios.get(PLANNET_DOMAIN + `user/nav_info?id=${id}`, HEADER);
     },
 
     // HomeController
     // 개인 home/달력/주간일정/메모/명언 출력
     personalHome: async function(id) {
-        return await axios.post(PLANNET_DOMAIN + `home/personal?id=${id}`, HEADER);
+        return await axios.get(PLANNET_DOMAIN + `home/personal?id=${id}`, HEADER);
     },
     // 회원 메모 저장
     memoSave: async function(id, detail) {
@@ -132,7 +131,7 @@ const plannetApi = {
     // WriteController
     // 플랜리스트.다이어리 로드
     writeLoad: async function(id, date) {
-        return await axios.post(PLANNET_DOMAIN + `write/load?id=${id}&date=${date}`, HEADER);
+        return await axios.get(PLANNET_DOMAIN + `write/load?id=${id}&date=${date}`, HEADER);
     },
     // 플랜리스트.다이어리 저장
     writeSave: async function(id, date, planList, diary) {
@@ -164,8 +163,11 @@ const plannetApi = {
         return await axios.get(PLANNET_DOMAIN + `board/post_view?boardNo=${boardNo}`, HEADER);
     },
     // boardNo의 게시물을 내가 작성하지 않았으면 조회수 +1
-    boardViewsUp:async function(boardNo){
-        return await axios.get(PLANNET_DOMAIN+ `board/views_up?boardNo=${boardNo}`, HEADER);
+    boardViewUp:async function(boardNo){
+        const object = {
+            boardNo: boardNo
+        }
+        return await axios.post(PLANNET_DOMAIN+ "board/view_up", object, HEADER);
     },
     // 좋아요 수 불러오기
     likeCnt: async function(boardNo) {
@@ -176,12 +178,16 @@ const plannetApi = {
         return await axios.get(PLANNET_DOMAIN + `board/like_checked?id=${id}&boardNo=${boardNo}`, HEADER);
     },
     // 좋아요 버튼을 눌렀을 때 toggle 밑 데이터베이스 변경
-    likeCheckedToggle: async function(id, boardNo) {
-        return await axios.get(PLANNET_DOMAIN + `board/like_checked_toggle?id=${id}&boardNo=${boardNo}`,HEADER);
+    likeCheckedToggle: async function(boardNo, id) {
+        const object = {
+            boardNo : boardNo,
+            id : id,
+        }
+        return await axios.post(PLANNET_DOMAIN + "board/like_checked_toggle", object, HEADER);
     },
     // 해당 게시물에 작성된 댓글 불러오기
     commentLoad: async function(boardNo, offsetNum, limitNum){
-        return await axios.post(PLANNET_DOMAIN + `board/comment_load?boardNo=${boardNo}&offsetNum=${offsetNum}&limitNum=${limitNum}`, HEADER);
+        return await axios.get(PLANNET_DOMAIN + `board/comment_load?boardNo=${boardNo}&offsetNum=${offsetNum}&limitNum=${limitNum}`, HEADER);
     },
     // 해당 게시물에 댓글 작성
     commentWrite: async function(boardNo, id, detail){
@@ -190,14 +196,14 @@ const plannetApi = {
             id : id,
             detail : detail
         }
-        return await axios.post(PLANNET_DOMAIN + `board/comment_write`, object, HEADER);
+        return await axios.post(PLANNET_DOMAIN + "board/comment_write", object, HEADER);
     },
     // 해당 게시물에 댓글 삭제
     commentDelete: async function(commentNo){
         const object = {
             commentNo : commentNo
         }
-        return await axios.post(PLANNET_DOMAIN + `board//comment_delete`, object, HEADER);
+        return await axios.post(PLANNET_DOMAIN + "board/comment_delete", object, HEADER);
     },
     // 자유게시판 글 작성
     boardWrite: async function(id, category, title, detail, isChecked){
@@ -211,9 +217,9 @@ const plannetApi = {
         return await axios.post(PLANNET_DOMAIN + "board/board_write", object, HEADER);
     },
     // 글 수정
-    boardEdit: async function(num, category, title, detail) {
+    boardEdit: async function(boardNo, category, title, detail) {
         const object = {
-            num: num,
+            boardNo: boardNo,
             category: category,
             title: title,
             detail: detail
@@ -221,9 +227,9 @@ const plannetApi = {
         return await axios.post(PLANNET_DOMAIN + "board/board_edit", object, HEADER);
     },
     // 글 삭제
-    boardDelete: async function(num) {
+    boardDelete: async function(boardNo) {
         const object = {
-            num : num
+            boardNo : boardNo
         };
         return await axios.post(PLANNET_DOMAIN + "board/board_delete", object, HEADER);
     },
@@ -394,10 +400,6 @@ const plannetApi = {
     scalInfo: async function(scalNo, id) {
         return await axios.get(PLANNET_DOMAIN + `scal/info_load?calNo=${scalNo}&id=${id}`, HEADER);
     },
-
-
-
-    
     // 공유 캘린더 멤버 추가 요청
         scalAddMember: async function(id, keyword) {
         const object = {
@@ -406,8 +408,6 @@ const plannetApi = {
         };
         return await axios.post(PLANNET_DOMAIN + "scal/invite_member", object, HEADER);
     },
-
-
 }
 
 export default plannetApi;

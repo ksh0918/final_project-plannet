@@ -32,7 +32,6 @@ public class UserInfoController {
             userInfo.add(memberDTO.getEmail());
             userInfo.add(memberDTO.getTel());
             userInfo.add(memberDTO.getProImg());
-
             return new ResponseEntity(userInfo, HttpStatus.OK);
         } else return new ResponseEntity(null, HttpStatus.OK);
     }

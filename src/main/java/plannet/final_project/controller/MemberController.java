@@ -90,7 +90,7 @@ public class MemberController {
     }
 
     // 아이디 비밀번호 찾기
-    @PostMapping("/find")
+    @GetMapping("/find")
     public ResponseEntity<List<MemberDTO>> memberFind(@RequestParam String keyword, String email, String type) {
         MemberDTO memDTO = memberService.memberFind(keyword, email, type);
         if(memDTO.isOk()) return new ResponseEntity(memDTO, HttpStatus.OK);
