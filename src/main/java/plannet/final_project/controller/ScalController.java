@@ -112,7 +112,7 @@ public class ScalController {
     }
 
     // 공유캘린더 댓글 불러오기
-    @PostMapping("/comment_load")
+    @GetMapping("/comment_load")
     public ResponseEntity<List<Map<String, Object>>> commentLoad(@RequestParam Long scalNo, LocalDate planDate) {
         ShareDTO shareDTO = scalService.commentLoad(scalNo, planDate);
         if(shareDTO.isOk()) {

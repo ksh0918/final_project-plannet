@@ -348,11 +348,7 @@ const plannetApi = {
     }, 
     // 공유 캘린더 일정 불러오기
     scalPlanLoad: async function(scalNo, date) {
-        const object = {
-            scalNo: scalNo,
-            date: date
-        };
-        return await axios.post(PLANNET_DOMAIN + "scal/splan_load", object, HEADER);
+        return await axios.get(PLANNET_DOMAIN + `scal/splan_load?scalNo=&{scalNo}&date=${date}`, HEADER);
     },
     // 공유 캘린더 일정 작성하기
     scalPlanSave: async function(scalNo, id, date, planList) {
@@ -367,11 +363,7 @@ const plannetApi = {
     },
     // 해당 캘린더에 작성된 댓글 불러오기
     scalCommentLoad: async function(scalNo, planDate) {
-        const object = {
-            scalNo: scalNo,
-            planDate: planDate
-        }
-        return await axios.post(PLANNET_DOMAIN + "scal/comment_load", object, HEADER);
+        return await axios.post(PLANNET_DOMAIN + `scal/comment_load?scalNo=${scalNo}&planDate=${planDate}`, HEADER);
     },
     // 해당 캘린더에 댓글 작성
     scalCommentWrite: async function(scalNo, id, planDate, detail){
@@ -393,21 +385,7 @@ const plannetApi = {
     // 공유 캘린더 정보 조회
     scalInfo: async function(scalNo, id) {
         return await axios.get(PLANNET_DOMAIN + `scal/info_load?calNo=${scalNo}&id=${id}`, HEADER);
-    },
-
-
-
-    
-    // 공유 캘린더 멤버 추가 요청
-        scalAddMember: async function(id, keyword) {
-        const object = {
-            id: id,
-            keyword: keyword
-        };
-        return await axios.post(PLANNET_DOMAIN + "scal/invite_member", object, HEADER);
-    },
-
-
+    }
 }
 
 export default plannetApi;
