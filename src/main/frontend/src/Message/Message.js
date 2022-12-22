@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Nav from '../Utill/Nav';
 import Api from "../api/plannetApi";
 import Modal from '../Utill/Modal';
+import TopBar from "../Utill/TopBar";
 
 const Wrap = styled.div`
     width: 1130px;
@@ -28,53 +29,25 @@ const Section = styled.div`
         h2{
           margin-top: 35px;
           font-size: 28px;
+          font-weight: 900;
         }
         span {
             float: left;
             margin-top: 10px;
             margin-bottom: 15px;
         }
-        .readBtn{
+        .readBtn, .sendBtn, .deleteBtn{
             cursor: pointer;
             font-weight: 600;
             float: right;
             font-size: 16px;
-            padding: 8px 35px;
+            padding: 8px 25px;
             border-radius: 25px;
             background-color: #333;
             color: white;
             border: none;
             transition: all .1s ease-in;
-            &:hover{background-color: #666;
-                color: #888;}
-        }
-        .sendBtn{
-            cursor: pointer;
-            margin-right: 10px;
-            font-weight: 600;
-            float: right;
-            font-size: 16px;
-            padding: 8px 35px;
-            border-radius: 25px;
-            background-color: #333;
-            color: white;
-            border: none;
-            transition: all .1s ease-in;
-            &:hover{background-color: #666;
-                color: #888;}
-        }
-        .deleteBtn{
-            cursor: pointer;
-            margin-right: 10px;
-            font-weight: 600;
-            float: right;
-            font-size: 16px;
-            padding: 8px 15px;
-            border-radius: 25px;
-            background-color: #333;
-            color: white;
-            border: none;
-            transition: all .1s ease-in;
+            margin-left: 5px;
             &:hover{background-color: #666;
                 color: #888;}
         }
@@ -85,24 +58,35 @@ const Section = styled.div`
         background-color: #4555AE;
         border-bottom: solid 1px #4555AE;
         text-align: center;
+        table-layout: fixed;
         tr:nth-child(2n) td {background-color: #fbfbfb;}
         th { 
             padding: 10px; 
-            color: white;}
+            color: white;
+            &:first-child {width:35px;}
+            &:nth-child(2){width: 60px;}
+            &:nth-child(3){width: 130px;}
+            &:last-child {width: 135px;}
+        }
         td{
             padding: 10px; 
             background-color: white; 
             border-left: solid 1px #bbb; 
             border-top: solid 1px #ddd;
             font-weight: 400;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            &:first-child {
+                border-left: none;
+                input{
+                    vertical-align: middle;
+                    margin-top: -2px;
+                }
+            }
         }
-        td:first-child {
-            border-left: none
-        };
         td:nth-child(4) {
-            width: 400px; 
-            text-align: left; 
-            padding-left: 20px;
+            text-align: left;
         }  
         tr:hover td, tr:hover a{
             color: #4555AE; 
@@ -244,10 +228,16 @@ const Message = () => {
         }
         messageData();
     },[]);
+
+    //미디어쿼리시 nav 사이드바
+    const [sideBar, setSideBar] = useState(false);
+
     return (
         <Wrap>
-            <Nav/>
-            <Section>
+            <Nav sideBar={sideBar} setSideBar={setSideBar}/>
+            <div className={`back ${sideBar? 'back_side_open':''}`}/>
+            <TopBar sideBar={sideBar} setSideBar={setSideBar}/>
+            <Section id="message" className="section">
                 <div className="message">
                     <h2>Message</h2>
                     <p>
