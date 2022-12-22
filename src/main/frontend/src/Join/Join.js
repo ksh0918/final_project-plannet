@@ -6,6 +6,8 @@ import Api from '../api/plannetApi';
 import "./Join.scss"
 import "../App";
 import { useNavigate  } from "react-router-dom";
+import Modal from '../Utill/Modal';
+
 
 
 const ContainerJoin = styled.div`
@@ -142,6 +144,8 @@ const Join = () => {
 
     // 이메일 인증번호 받기
     const onClickAuth = async() => {
+        setModalOpen(true);
+        setComment("인증번호가 발행되었습니다.")
         const emailAuth = await Api.emailAuthCheck(inputEmail);
         setClickAuth(true);
         setAuthNum(emailAuth.data);
@@ -218,8 +222,15 @@ const Join = () => {
         }
     }
 
+    const [comment, setComment] = useState("");
+    const [modalOpen, setModalOpen] = useState(false);
+    const closeModal = () => {
+        setModalOpen(false);
+    }
+
     return(
         <ContainerJoin id="join">
+            <Modal open={modalOpen} close={closeModal} header="글쓰기 안내">{comment}</Modal>
             <Logo><LogoImg width="90px" viewBox="30 150 430 220"/><Link to="/" className="logo">Plannet</Link></Logo>
             <div className="session">
                 <p>

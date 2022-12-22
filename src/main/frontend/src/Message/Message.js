@@ -107,7 +107,7 @@ const Section = styled.div`
     .util_box {
         padding: 10px 30px;
         .page_list {
-            width: 500px; 
+            width: 250px; 
             float:left;
             li {
                 list-style-type: none;
@@ -133,13 +133,14 @@ const Section = styled.div`
         }
         .search {
             float: right;
-            width: 200px; height: 29px; 
+            width: calc(100% - 250px); 
+            height: 29px; 
             padding: 0 10px; 
             border: solid 2px #ddd; 
             background-color: white;
             margin-top: -2px;
             border-radius: 5px; 
-            input {width: 150px; height: 25px; border: 0px; outline: none; margin-right: 10px;}
+            input {width: calc(100% - 25px); height: 25px; border: 0px; outline: none; margin-right: 10px;}
         }
     }
 `;
@@ -292,15 +293,15 @@ const Message = () => {
                             <tr key={message.receiveId}>
                                 <td><input type="checkbox" name={`select-${message.messageNo}`}
                                     onChange={(e) => handleSingleCheck(e.target.checked, message.messageNo)}
-                                    //  checkItems 에 해당 쪽지의 postNum 이 있으면 true, 아니면 false
+                                    //  checkItems 에 해당 쪽지의 messageNo 이 있으면 true, 아니면 false
                                     checked={checkItems.includes(message.messageNo) ? true : false}
                                 /></td> 
-                                <td>{
+                                <td onClick={()=>onClickList(message)}>{
                                     message.isRead===0?"안읽음":"읽음"
                                 }</td>
-                                <td>{message.sendId}</td>
+                                <td onClick={()=>onClickList(message)}>{message.sendId}</td>
                                 <td>{<div className='detail'onClick={()=>onClickList(message)} dangerouslySetInnerHTML={{__html: message.detail}}></div>}</td>
-                                <td>{message.sendDate}</td>
+                                <td onClick={()=>onClickList(message)}>{message.sendDate}</td>
                             </tr>
                             
                         ))}
