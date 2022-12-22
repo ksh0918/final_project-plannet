@@ -11,12 +11,12 @@ import javax.persistence.*;
 @Entity
 @Table(name = "like_list")
 @SequenceGenerator(
-        name = "LIKELIST_GENERATOR",
-        sequenceName = "LIKELIST_SEQUENCES",
+        name = "LIKE_GENERATOR",
+        sequenceName = "LIKE_SEQUENCES",
         initialValue = 1, allocationSize = 1)
 public class LikeList {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "LIKELIST_GENERATOR")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "LIKE_GENERATOR")
     private Long likeNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
