@@ -236,7 +236,7 @@ const Nav = ({sideBar, setSideBar}) => {
                 setScalInfo(response.data.scalInfo);
                 setProHeight(response.data.scalInfo.length * 47 + 390);
                 console.log(response.data);
-                const mResult = await Api.messageNoti(userId);
+                const mResult = await Api.messageCntNoti(userId);
                 console.log(mResult.data);
                 setmNotiCount(mResult.data);
                 const result = await Api.friendLoad(userId);

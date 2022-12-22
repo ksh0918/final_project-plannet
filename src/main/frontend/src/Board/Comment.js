@@ -90,8 +90,8 @@ const CommentItem = ({getId, getNum, getDate, setCommentList, commentList}) => {
             commentData = await Api.commentLoad(getNum);
         }
         else {
-            await Api.scalCommentWrite(getNum, getId, getDate, comment);
-            commentData = await Api.scalCommentLoad(getNum, getDate);
+            await Api.scommentWrite(getNum, getId, getDate, comment);
+            commentData = await Api.scommentLoad(getNum, getDate);
         }
         setCommentList(commentData.data);
         setComment(''); // 등록 후 댓글창 빈칸으로 만들기
@@ -104,7 +104,7 @@ const CommentItem = ({getId, getNum, getDate, setCommentList, commentList}) => {
         }
         else {
             console.log("삭제의 false 들어옴");
-            await Api.scalCommentDelete(commentNo); 
+            await Api.scommnetDelete(commentNo); 
             navigate(0);   
         }
     } 

@@ -145,7 +145,7 @@ const plannetApi = {
     },
 
     // MessageController
-    //쪽지 불러오기
+    // 쪽지 갯수 불러오기 (말풍선)
     messageCntNoti : async function(id){
         return await axios.get(PLANNET_DOMAIN + "message/cntNoti?receiveId=${id}", HEADER);
     },
@@ -209,95 +209,6 @@ const plannetApi = {
         return await axios.post(PLANNET_DOMAIN + "write/save", object, HEADER);
         },
 
-
-    // BoardController
-    // 자유게시판 목록 출력
-    boardList: async function(){
-        return await axios.get(PLANNET_DOMAIN + "board/list", HEADER);
-    },
-    // 인기글 top3 목록 출력
-    top3List: async function(){
-        return await axios.get(PLANNET_DOMAIN + "board/top3_list", HEADER);
-    },
-    // 자유게시판 검색 목록 출력
-    searchList: async function(keyword){
-        return await axios.get(PLANNET_DOMAIN + `board/search_list?keyword=${keyword}`, HEADER);
-    },
-    // 특정 보드넘버의 게시물 내용 + 좋아요 수 불러오기
-    postView: async function(boardNo){
-        return await axios.get(PLANNET_DOMAIN + `board/post_view?boardNo=${boardNo}`, HEADER);
-    },
-    // boardNo의 게시물을 내가 작성하지 않았으면 조회수 +1
-    boardViewUp:async function(boardNo){
-        const object = {
-            boardNo: boardNo
-        }
-        return await axios.post(PLANNET_DOMAIN+ "board/view_up", object, HEADER);
-    },
-    // 좋아요 수 불러오기
-    likeCnt: async function(boardNo) {
-        return await axios.get(PLANNET_DOMAIN + `board/like_cnt?boardNo=${boardNo}`, HEADER);
-    },
-    // 좋아요 여부 불러오기
-    likeChecked: async function(id, boardNo) {
-        return await axios.get(PLANNET_DOMAIN + `board/like_checked?id=${id}&boardNo=${boardNo}`, HEADER);
-    },
-    // 좋아요 버튼을 눌렀을 때 toggle 밑 데이터베이스 변경
-    likeCheckedToggle: async function(boardNo, id) {
-        const object = {
-            boardNo : boardNo,
-            id : id,
-        }
-        return await axios.post(PLANNET_DOMAIN + "board/like_checked_toggle", object, HEADER);
-    },
-    // 해당 게시물에 작성된 댓글 불러오기
-    commentLoad: async function(boardNo, offsetNum, limitNum){
-        return await axios.get(PLANNET_DOMAIN + `board/comment_load?boardNo=${boardNo}&offsetNum=${offsetNum}&limitNum=${limitNum}`, HEADER);
-    },
-    // 해당 게시물에 댓글 작성
-    commentWrite: async function(boardNo, id, detail){
-        const object = {
-            boardNo : boardNo,
-            id : id,
-            detail : detail
-        }
-        return await axios.post(PLANNET_DOMAIN + "board/comment_write", object, HEADER);
-    },
-    // 해당 게시물에 댓글 삭제
-    commentDelete: async function(commentNo){
-        const object = {
-            commentNo : commentNo
-        }
-        return await axios.post(PLANNET_DOMAIN + "board/comment_delete", object, HEADER);
-    },
-    // 자유게시판 글 작성
-    boardWrite: async function(id, category, title, detail, isChecked){
-        const object = {
-            id : id,
-            category: category,
-            title : title,
-            detail : detail,
-            isChecked : isChecked
-        };
-        return await axios.post(PLANNET_DOMAIN + "board/board_write", object, HEADER);
-    },
-    // 글 수정
-    boardEdit: async function(boardNo, category, title, detail) {
-        const object = {
-            boardNo: boardNo,
-            category: category,
-            title: title,
-            detail: detail
-        };
-        return await axios.post(PLANNET_DOMAIN + "board/board_edit", object, HEADER);
-    },
-    // 글 삭제
-    boardDelete: async function(boardNo) {
-        const object = {
-            boardNo : boardNo
-        };
-        return await axios.post(PLANNET_DOMAIN + "board/board_delete", object, HEADER);
-    },
 
     // ScalController
     // 공유 캘린더 생성
@@ -378,7 +289,7 @@ const plannetApi = {
         return await axios.get(PLANNET_DOMAIN + `scal/comment_load?scalNo=${scalNo}&planDate=${planDate}`, object, HEADER);
     },
     // 해당 캘린더에 댓글 작성
-    scommentSave: async function(scalNo, id, planDate, detail){
+    scommentWrite: async function(scalNo, id, planDate, detail){
         const object = {
             scalNo: scalNo,
             id: id,
