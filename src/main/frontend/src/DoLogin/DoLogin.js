@@ -56,10 +56,10 @@ const DoLogin = () => {
         setInputPw(e.target.value)       
     }
 
-    const onClickLink = () => {
-        setModalOpen(true);
-        setCommnet("서비스 준비중 입니다 ...");
-    }
+    // const onClickLink = () => {
+    //     setModalOpen(true);
+    //     setCommnet("서비스 준비중 입니다 ...");
+    // }
 
     const onClickGoogle = () => {
         navigate("/google/login");
@@ -97,18 +97,18 @@ const DoLogin = () => {
             <ContainerLogin id="doLogin">
                 <Logo><LogoImg width="90px" viewBox="30 150 430 220"/><Link to="/" className="logo">Plannet</Link></Logo>
                 <div className="login">
-                    <button className="login-btn1" onClick={onClickLink}>
+                    {/* <button className="login-btn1" onClick={onClickLink}>
                         <img src={kakaoimg} alt="카카오로고" className="logImg"/>
                         카카오톡으로 로그인
-                    </button>
+                    </button> */}
                     <a href='../google/login'><button className="login-btn2"  onClick={onClickGoogle}>
                         <img src={googleimg1} alt="구글로고" className="logImg"/>
                         구글로 로그인
                     </button></a>
-                    <button className="login-btn3" onClick={onClickLink}>
+                    {/* <button className="login-btn3" onClick={onClickLink}>
                         <img src={naverimg} alt="네이버로고" className="logImg"/>
                         네이버로 로그인
-                    </button>
+                    </button> */}
                 </div>
                 <p className="space-or">또는</p>
                 <div className="login2">

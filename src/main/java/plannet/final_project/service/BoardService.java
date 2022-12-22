@@ -2,15 +2,14 @@ package plannet.final_project.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToFile;
 import org.springframework.stereotype.Service;
 import plannet.final_project.dao.BoardRepository;
-import plannet.final_project.dao.CommentsRepository;
-import plannet.final_project.dao.LikeCntRepository;
+import plannet.final_project.dao.CommentRepository;
+import plannet.final_project.dao.LikeRepository;
 import plannet.final_project.dao.MemberRepository;
 import plannet.final_project.entity.Board;
-import plannet.final_project.entity.Comments;
-import plannet.final_project.entity.LikeCnt;
+import plannet.final_project.entity.Comment;
+import plannet.final_project.entity.LikeList;
 import plannet.final_project.entity.Member;
 import plannet.final_project.vo.BoardDTO;
 
@@ -29,8 +28,8 @@ import java.util.*;
 public class BoardService {
     private final MemberRepository memberRepository;
     private final BoardRepository boardRepository; // 의존성 주입을 받음
-    private final LikeCntRepository likeCntRepository; // 의존성 주입을 받음
-    private final CommentsRepository commentsRepository;
+    private final LikeRepository likeRepository; // 의존성 주입을 받음
+    private final CommentRepository commentRepository;
 
     // 보드 목록 불러오기
     public BoardDTO getBoardList() {
@@ -62,7 +61,7 @@ public class BoardService {
 
     // 인기글 리스트 불러오기
     public BoardDTO getTop3List() {
-        List<Integer> top3BoardNo = likeCntRepository.findAllTop3GroupByBoardNoOrderByCountByBoardNoDescBoardNoDesc();
+        List<Integer> top3BoardNo = likeRepository.findAllTop3GroupByBoardNoOrderByCountByBoardNoDescBoardNoDesc();
         BoardDTO boardDTO = new BoardDTO();
         List<Map<String, Object>> boardList = new ArrayList<>();
         try {
@@ -132,7 +131,7 @@ public class BoardService {
             boardDTO.setViews(board.getViews());
             boardDTO.setWriteDate(board.getWriteDate());
             boardDTO.setDetail(board.getDetail());
-            boardDTO.setLikeCnt(likeCntRepository.countByBoardNo(board).intValue());
+            boardDTO.setLikeCnt(likeRepository.countByBoardNo(board).intValue());
             boardDTO.setOk(true);
         } catch (Exception e) {boardDTO.setOk(false);}
         return boardDTO;
@@ -155,33 +154,34 @@ public class BoardService {
 
     // 보드 넘버에 해당하는 글의 좋아요 수
     public int getLikeCnt(Board boardNo) {
-        int likeCnt = likeCntRepository.countByBoardNo(boardNo).intValue();
+        int likeCnt = likeRepository.countByBoardNo(boardNo).intValue();
         return likeCnt;
     }
 
     // 내가 해당 게시물을 좋아요 눌렀는지 여부
     public boolean getLikeChecked(String id, Board boardNo) {
         Member member = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        return likeCntRepository.existsByUserIdAndBoardNo(member, boardNo);
+        return likeRepository.existsByUserIdAndBoardNo(member, boardNo);
     }
 
     // 좋아요 버튼을 누를 때마다 데이터베이스 접근
     public boolean likeCheckedToggle(String id, Board boardNo) {
         Member member = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        boolean CurrentLikeChecked = likeCntRepository.existsByUserIdAndBoardNo(member, boardNo);
+        boolean CurrentLikeChecked = likeRepository.existsByUserIdAndBoardNo(member, boardNo);
         System.out.println("현재 좋아요" + CurrentLikeChecked);
         try {
             System.out.println("true 들어옴");
-            if (CurrentLikeChecked) {likeCntRepository.deleteByUserIdAndBoardNo(member, boardNo);
+            if (CurrentLikeChecked) {
+                likeRepository.deleteByUserIdAndBoardNo(member, boardNo);
                 CurrentLikeChecked = !CurrentLikeChecked;
                 System.out.println("true 정상수행" + CurrentLikeChecked);}
             else {
                 System.out.println("false 들어옴");
                 CurrentLikeChecked = !CurrentLikeChecked;
-                LikeCnt likeCnt = new LikeCnt();
-                likeCnt.setUserId(member);
-                likeCnt.setBoardNo(boardNo);
-                likeCntRepository.save(likeCnt);
+                LikeList likeList = new LikeList();
+                likeList.setUserId(member);
+                likeList.setBoardNo(boardNo);
+                likeRepository.save(likeList);
                 System.out.println("false 정상수행" + CurrentLikeChecked);
             }
             return CurrentLikeChecked;
@@ -191,22 +191,25 @@ public class BoardService {
     }
 
     // 자유게시판 댓글 불러오기
-    public BoardDTO getCommentsLoad (Long boardNo) {
+    public BoardDTO getCommentLoad (Long boardNo, Long offsetNum, Long limitNum) {
+        System.out.println("서비스 보드넘 : " + boardNo);
+        System.out.println("서비스 오프셋 : " + offsetNum);
+        System.out.println("서비스 리미트 : " + limitNum);
         BoardDTO boardDTO = new BoardDTO();
         try {
-            List<Map<String, Object>> commentsList = new ArrayList<>();
-            Board board = boardRepository.findById(boardNo).orElseThrow(ExemptionMechanismException::new);
-            List<Comments> data = commentsRepository.findByBoardNo(board);
-            for (Comments e : data) {
-                Map<String, Object> comments = new HashMap<>();
-                comments.put("commentNo", e.getCommentNo());
-                comments.put("writerId", e.getUserId().getId());
-                comments.put("nickname", e.getUserId().getNickname());
-                comments.put("detail", e.getDetail());
-                comments.put("date", e.getWriteDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-                commentsList.add(comments);
+            List<Map<String, Object>> commentList = new ArrayList<>();
+//            Board board = boardRepository.findById(boardNo).orElseThrow(ExemptionMechanismException::new);
+            List<Comment> data = commentRepository.findComment(boardNo, offsetNum, limitNum);
+            for (Comment e : data) {
+                Map<String, Object> comment = new HashMap<>();
+                comment.put("commentNo", e.getCommentNo());
+                comment.put("writerId", e.getUserId().getId());
+                comment.put("nickname", e.getUserId().getNickname());
+                comment.put("detail", e.getDetail());
+                comment.put("date", e.getWriteDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+                commentList.add(comment);
             }
-            boardDTO.setCommentsList(commentsList);
+            boardDTO.setCommentsList(commentList);
             boardDTO.setOk(true);
         } catch (Exception e) {
             boardDTO.setOk(false);
@@ -215,14 +218,14 @@ public class BoardService {
     }
 
     // 자유게시판 댓글 작성하기
-    public boolean commentsWrite(Long boardNo, String id, String detail) {
+    public boolean commentWrite(Long boardNo, String id, String detail) {
         try {
-            Comments comments = new Comments();
-            comments.setUserId(memberRepository.findById(id).orElseThrow());
-            comments.setBoardNo(boardRepository.findById(boardNo).orElseThrow());
-            comments.setDetail(detail);
-            comments.setWriteDate(LocalDateTime.now());
-            commentsRepository.save(comments);
+            Comment comment = new Comment();
+            comment.setUserId(memberRepository.findById(id).orElseThrow());
+            comment.setBoardNo(boardRepository.findById(boardNo).orElseThrow());
+            comment.setDetail(detail);
+            comment.setWriteDate(LocalDateTime.now());
+            commentRepository.save(comment);
             return true;
         } catch (Exception e) {
             return true;
@@ -231,9 +234,9 @@ public class BoardService {
 
 
     // 자유게시판 댓글 삭제하기
-    public boolean commentsDelete(Long commentNo) {
+    public boolean commentDelete(Long commentNo) {
         try {
-            commentsRepository.deleteById(commentNo);
+            commentRepository.deleteById(commentNo);
             return true;
         } catch (Exception e) {
             return true;
@@ -278,7 +281,7 @@ public class BoardService {
     public boolean boardDelete(Long boardNo) {
         Board board = boardRepository.findById(boardNo).orElseThrow();
         try {
-            commentsRepository.deleteByBoardNo(board); // 댓글 엔티티네서 게시판번호가 외래키이므로 게시글을 삭제하려면 댓글들도 삭제해야지만 게시글이 삭제됨
+            commentRepository.deleteByBoardNo(board); // 댓글 엔티티네서 게시판번호가 외래키이므로 게시글을 삭제하려면 댓글들도 삭제해야지만 게시글이 삭제됨
             boardRepository.deleteById(boardNo);
             return true;
         } catch (Exception e){

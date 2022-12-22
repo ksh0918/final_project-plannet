@@ -11,9 +11,13 @@ import java.time.LocalDateTime;
 @Getter @Setter
 @ToString
 @Entity
-public class Comments {
+@SequenceGenerator(
+        name = "COMMENT_GENERATOR",
+        sequenceName = "COMMENT_SEQUENCES",
+        initialValue = 1, allocationSize = 1)
+public class Comment {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "COMMENT_GENERATOR")
     private Long commentNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -21,7 +25,7 @@ public class Comments {
     private Board boardNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "id", nullable = false)
     private Member userId;
 
     @CreatedDate
@@ -30,6 +34,3 @@ public class Comments {
     @Column(nullable = false, length = 500)
     private String detail;
 }
-
-
-

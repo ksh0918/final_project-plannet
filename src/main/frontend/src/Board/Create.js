@@ -265,24 +265,7 @@ function Create() {
                     </table>           
                 </div>
                 <div className='form-wrapper'>
-                    <CKEditor editor={ClassicEditor} data={detail} onChange={(event, editor) => {
-                        const data = editor.getData();
-                        setDetail(data);
-                        const getByteLengthOfUtf8String = (s) => {
-                            if(s != undefined && s != "") {
-                                let b, i, c;
-                                for(b=i=0; c=s.charCodeAt(i++); b += c >> 11 ? 3 : c >> 7 ? 2 : 1); // Str Get BYTE 기능 (BYTE 체크)
-                                return b;
-                            } else {
-                                return 0;
-                            }
-                        }
-                        const length = getByteLengthOfUtf8String(data);
-                        if(length > 11000){
-                            setLengthCheck(true);
-                            alert("내용이 너무 깁니다.");
-                        } else setLengthCheck(false);
-                    }}/>
+                    <CKEditor editor={ClassicEditor} data={detail}/>
                 </div>
                 <div className="button-area">
                     <button onClick={onClickSave} disabled={lengthCheck}>SAVE</button>

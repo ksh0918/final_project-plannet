@@ -3,6 +3,7 @@ package plannet.final_project.entity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -17,11 +18,14 @@ public class Member {
     @Column(length = 50)
     private String id;
 
-    @Column(nullable = false, length = 5)
-    private String userCode;
-
     @Column(nullable = false, length = 20)
     private String pwd;
+
+    @Column(length = 1) // 소셜로 가입한 사람인지 기록하는 컬럼
+    private String social;
+
+    @Column(nullable = false, length = 5)
+    private String userCode;
 
     @Column(nullable = false, length = 30)
     private String name;
@@ -39,24 +43,25 @@ public class Member {
     @CreatedDate
     private LocalDateTime joinDate;
 
+    @Column(length = 200)
+    private String proImg;
+
     @Column(length = 300)
     private String profile;
 
     @Column(length = 2400)
     private String memo;
 
-    @Column(length = 200)
-    private String proImg;
+    @Column(length = 1, nullable = false)
+    @ColumnDefault("0")
+    private int reRegChecked; // 탈퇴 회원 여부 (재가입 방지)
 
-    @Column(length = 1) // 소셜로 가입한 사람인지 기록하는 컬럼
-    private String social;
-
-    @OneToMany(mappedBy = "userId", cascade = {CascadeType.ALL}, orphanRemoval=true)
-    private List<SPLAN> splans;
     @OneToMany(mappedBy = "userId", cascade = {CascadeType.ALL}, orphanRemoval=true)
     private List<SCAL> scals;
     @OneToMany(mappedBy = "userId", cascade = {CascadeType.ALL}, orphanRemoval=true)
-    private List<SCOM> scoms;
-    @OneToMany(mappedBy = "userId", cascade = {CascadeType.ALL}, orphanRemoval=true)
     private List<SMEM> smems;
+    @OneToMany(mappedBy = "userId", cascade = {CascadeType.ALL}, orphanRemoval=true)
+    private List<SPLAN> splans;
+    @OneToMany(mappedBy = "userId", cascade = {CascadeType.ALL}, orphanRemoval=true)
+    private List<SCOM> scoms;
 }

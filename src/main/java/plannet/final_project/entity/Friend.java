@@ -3,16 +3,19 @@ package plannet.final_project.entity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
 @Getter @Setter
 @ToString
 @Entity
+@SequenceGenerator(
+        name = "FRIEND_GENERATOR",
+        sequenceName = "FRIEND_SEQUENCES",
+        initialValue = 1, allocationSize = 1)
 public class Friend {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FRIEND_GENERATOR")
     private Long friendNo;
 
     @ManyToOne(fetch = FetchType.LAZY)

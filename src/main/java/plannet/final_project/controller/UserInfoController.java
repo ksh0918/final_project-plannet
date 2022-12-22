@@ -27,7 +27,7 @@ public class UserInfoController {
     @PostMapping("/info_load")
     public ResponseEntity<List<Object>> userInfoLoad(@RequestBody Map<String, String> userId) {
         String id = userId.get("id");
-        MemberDTO memberDTO = userInfoService.userInfo(id);
+        MemberDTO memberDTO = userInfoService.userInfoLoad(id);
         if(memberDTO.isOk()) {
             List<Object> userInfo = new ArrayList<>();
             userInfo.add(memberDTO.getNickname());
@@ -46,16 +46,11 @@ public class UserInfoController {
     public ResponseEntity<Boolean> userInfoSave(@RequestBody Map<String, String> userInfo) {
         String id = userInfo.get("id");
         String nickname = userInfo.get("nickname");
-        String phone = userInfo.get("phone");
+        String tel = userInfo.get("tel");
         String profile = userInfo.get("profile");
-
-        boolean result = userInfoService.saveUserInfo(id, nickname, phone, profile);
-        if(result) {
-            return new ResponseEntity(true, HttpStatus.OK);
-        }
-        else {
-            return new ResponseEntity(false, HttpStatus.OK);
-        }
+        boolean result = userInfoService.userInfoSave(id, nickname, tel, profile);
+        if(result) return new ResponseEntity(true, HttpStatus.OK);
+        else return new ResponseEntity(false, HttpStatus.OK);
     }
 
     // 사용자 프로필 이미지명 저장
@@ -63,22 +58,17 @@ public class UserInfoController {
     public ResponseEntity<Boolean> userImgSave(@RequestBody Map<String, String> userImg) {
         String id = userImg.get("id");
         String imgName = userImg.get("imgName");
-
         boolean result = userInfoService.saveUserImg(id, imgName);
-        if(result) {
-            return new ResponseEntity(true, HttpStatus.OK);
-        }
-        else {
-            return new ResponseEntity(false, HttpStatus.OK);
-        }
+        if(result) return new ResponseEntity(true, HttpStatus.OK);
+        else return new ResponseEntity(false, HttpStatus.OK);
     }
 
     // nav바 정보 가져오기
     @PostMapping("/nav_info")
     public ResponseEntity<Map<String, Object>> NavInfo(@RequestBody Map<String, String> userId) {
         String id = userId.get("id");
-        MemberDTO memberDTO1 = userInfoService.userInfo(id);
-        MemberDTO memberDTO2 = userInfoService.navInfo(id);
+        MemberDTO memberDTO1 = userInfoService.userInfoLoad(id);
+        MemberDTO memberDTO2 = userInfoService.navInfoLoad(id);
         if(memberDTO1.isOk() && memberDTO2.isOk()) {
             Map<String, Object> navList = new HashMap<>();
             List<Object> userInfo = new ArrayList<>();
@@ -90,7 +80,6 @@ public class UserInfoController {
 
             navList.put("userInfo", userInfo);
             navList.put("scalInfo", memberDTO2.getSCalList());
-
             return new ResponseEntity(navList, HttpStatus.OK);
         } else return new ResponseEntity(null, HttpStatus.OK);
     }

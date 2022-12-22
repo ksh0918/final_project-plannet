@@ -28,6 +28,11 @@
             br{display: block;}
         }
     }
+    //message
+    #message{
+        .readBtn, .sendBtn, .deleteBtn{padding: 8px 15px;}
+        table th:nth-child(3){width: 90px;}
+    }
 }
 @media screen and (max-width : 767px) {
     html{background: white;}
@@ -200,6 +205,17 @@
             }
         }
     }
+    //message
+    #message{
+        table{
+            td{font-size: 13px; padding: 10px 5px;}
+            th {
+                padding: 10px 5px;
+                &:nth-child(2){width: 50px;}
+                &:last-child {width: 120px;}
+            }
+        }
+    }
 }
 @media screen and (max-width : 799px) {
     #terms{
@@ -214,13 +230,13 @@
     #nav, .section{float: none !important; position: absolute;}
     .section{z-index: 0; height: calc(100vh - 100px) !important; width: 100vw !important;}
     #topbar{display: block;}
-    #nav{transition: right .7s ease-in; right: -280px; position: fixed; z-index: 2;}
+    #nav{transition: right .7s ease-in; right: -280px; position: fixed; z-index: 3;}
     .back_side_open{opacity: .7; visibility: visible;}
     .copy{width: 100vw; float: none;}
 
     //setting, board, postView, edit, create, friend 공통
-    #setting, #board, #postView, #edit, #create, #friend, #scalCreate, #scalInfo {
-        .board_list, .setting, .friend, .noti, .scalCreate{padding-top: 5px;}
+    #setting, #board, #postView, #edit, #create, #friend, #scalCreate, #scalInfo, #message {
+        .board_list, .setting, .friend, .noti, .scalCreate, .message{padding-top: 5px;}
         h2{margin-top: 20px;}
     }
     //home

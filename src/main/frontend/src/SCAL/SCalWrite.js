@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Api from "../api/plannetApi";
 import Nav from "../Utill/Nav";
 import PlanList from "../Write/PlanList";
-import Comments from '../Board/Comment';
+import Comment from '../Board/Comment';
 import TopBar from '../Utill/TopBar';
 
 const Wrap = styled.div`
@@ -176,7 +176,7 @@ const SCalWrite = () => {
     console.log(getDate);
 
     const [planList, setPlanList] = useState([]);
-    const [commentsList, setCommentsList] = useState([]);
+    const [commentList, setCommentList] = useState([]);
  
 
     // 변경사항이 있는데 사이트 이동하려고 할 시 경고 창 등장    
@@ -207,8 +207,8 @@ const SCalWrite = () => {
                 setPlanList(plans.data);  
 
                 // 댓글 불러오기
-                const comments = await Api.scalCommentsLoad(getNum, getDate);
-                setCommentsList(comments.data);
+                const comment = await Api.scalCommentLoad(getNum, getDate);
+                setCommentList(comment.data);
             } catch(e){
                 console.log(e);
             }
@@ -250,7 +250,7 @@ const SCalWrite = () => {
                 </div>
                 <div className="comment sub_box">
                     <h2>Comment</h2>
-                    <Comments getId={getId} getNum={getNum} getDate={getDate} setCommentsList={setCommentsList} commentsList={commentsList}/>
+                    <Comment getId={getId} getNum={getNum} getDate={getDate} setCommentList={setCommentList} commentList={commentList}/>
                 </div>
                 
             </Section>
