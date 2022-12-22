@@ -31,10 +31,10 @@ public class SCAL {
     @Column(length = 2400)
     private String scalMemo;
 
-    @OneToMany(mappedBy = "calNo", cascade = {CascadeType.ALL}, orphanRemoval=true)
+    @OneToMany(mappedBy = "scalNo", cascade = {CascadeType.ALL}, orphanRemoval=true)
     private List<SPLAN> splans;
-    @OneToMany(mappedBy = "calNo", cascade = {CascadeType.ALL}, orphanRemoval=true)
+    @OneToMany(mappedBy = "scalNo", cascade = {CascadeType.ALL}, orphanRemoval=true)
     private List<SMEM> smems;
-    @OneToMany(mappedBy = "calNo", cascade = {CascadeType.ALL}, orphanRemoval=true)
+    @OneToMany(mappedBy = "scalNo", cascade = {CascadeType.ALL}, orphanRemoval=true)
     private List<SCOM> scoms;
 }

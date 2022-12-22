@@ -35,8 +35,8 @@ public class SPLAN {
 
     @Column(nullable = false, name = "plan_check")
     @ColumnDefault("0")
-    private int planChecked;
+    private int splanChecked;
 
     @Column(nullable = false, length = 90)
-    private String plan;
+    private String splan;
 }

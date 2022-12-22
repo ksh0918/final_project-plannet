@@ -92,7 +92,7 @@ public class ScalService {
             List<List<Map<String, Object>>> weekPlan = new ArrayList<>();
             for(int i = 0; i < 7; i++) {
                 List<Map<String, Object>> dayPlan = new ArrayList<>();
-                List<SPLAN> dayPlanOrigin = splanRepository.findByCalNoAndPlanDateOrderBySplanNoAsc(scal, weekDay[i]);
+                List<SPLAN> dayPlanOrigin = splanRepository.findByScalNoAndPlanDateOrderBySplanNoAsc(scal, weekDay[i]);
                 for(SPLAN e : dayPlanOrigin) {
                     Map<String, Object> plan = new HashMap<>();
                     plan.put("no", e.getSplanNo());
@@ -108,7 +108,7 @@ public class ScalService {
             List<Set<LocalDate>> planMark = new ArrayList<>();
             for(int i = 0; i < 2; i++) {
                 Set<LocalDate> planDot = new HashSet<>();
-                List<SPLAN> plan = splanRepository.findByCalNoAndPlanChecked(scal, i);
+                List<SPLAN> plan = splanRepository.findByScalNoAndPlanChecked(scal, i);
                 for(SPLAN e : plan) {
                     planDot.add(e.getSplanDate());
                 }
@@ -159,7 +159,7 @@ public class ScalService {
         ShareDTO shareDTO = new ShareDTO();
         try{
             SCAL scal = scalRepository.findById(calNo).orElseThrow();
-            List<SPLAN> plans = splanRepository.findByCalNoAndPlanDateOrderBySplanNoAsc(scal, date);
+            List<SPLAN> plans = splanRepository.findByScalNoAndPlanDateOrderBySplanNoAsc(scal, date);
             List<Map<String, Object>> planList = new ArrayList<>();
             for (SPLAN e : plans) {
                 Map<String, Object> plan = new HashMap<>();
@@ -182,7 +182,7 @@ public class ScalService {
     public boolean writeSave(Long calNo, String userId, LocalDate date, List<Map<String, Object>> plan) {
         try {
             Member member = memberRepository.findById(userId).orElseThrow(EntityNotFoundException::new); // 회원 정보가 담긴 객체 가져옴
-            splanRepository.deleteByPlanDateAndCalNo(date, calNo); // 기존의 일정 삭제. 삭제 안 하면 기존의 것들이 DB에 계속 있음
+            splanRepository.deleteByPlanDateAndScalNo(date, calNo); // 기존의 일정 삭제. 삭제 안 하면 기존의 것들이 DB에 계속 있음
             SCAL scal = scalRepository.findById(calNo).orElseThrow();
             // plan 저장
             for(Map<String, Object> p : plan) {
@@ -218,7 +218,7 @@ public class ScalService {
         try {
             List<Map<String, Object>> commentList = new ArrayList<>();
             SCAL scal = scalRepository.findById(calNo).orElseThrow();
-            List<SCOM> data = scomRepository.findByCalNoAndPlanDate(scal, planDate);
+            List<SCOM> data = scomRepository.findByScalNoAndPlanDate(scal, planDate);
             for (SCOM e : data) {
                 Map<String, Object> comment = new HashMap<>();
                 comment.put("commentNo", e.getCommentNo());
@@ -373,8 +373,8 @@ public class ScalService {
     public boolean scalDelete(Long calNo) {
         try {
             SCAL scal = scalRepository.findById(calNo).orElseThrow(EntityNotFoundException::new);
-            scomRepository.deleteByCalNo(scal);
-            splanRepository.deleteByCalNo(scal);
+            scomRepository.deleteByScalNo(scal);
+            splanRepository.deleteByScalNo(scal);
             smemRepository.deleteByCalNo(scal);
             notiRepository.deleteByCalNo(scal);
             scalRepository.deleteByCalNo(calNo);

@@ -106,7 +106,7 @@ public class UserInfoService {
                 // 공유캘린더 일정 달성률 구하기
                 SCAL scal = scalRepository.findById(calNo).orElseThrow(EntityNotFoundException::new);
                 List<SPLAN> sPlanTotal = splanRepository.findByCalNo(scal);
-                List<SPLAN> sPlanEnd = splanRepository.findByCalNoAndPlanChecked(scal, 1);
+                List<SPLAN> sPlanEnd = splanRepository.findByScalNoAndPlanChecked(scal, 1);
                 int sPlanTotalCnt = 0; // 총 일정 갯수
                 int sPlanEndCnt = 0; // 완료된 일정 갯수
                 for(SPLAN f : sPlanTotal) {
