@@ -18,4 +18,5 @@ public interface LikeRepository extends JpaRepository<LikeList, Long> {
     List<Integer> findAllTop3GroupByBoardNoOrderByCountByBoardNoDescBoardNoDesc();
     void deleteByUserIdAndBoardNo(Member member, Board boardNo);
     void deleteByUserId(Member member);
+    void deleteByBoardNo(Board boardNo);
 }

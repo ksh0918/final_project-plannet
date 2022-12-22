@@ -12,9 +12,9 @@ public class BoardDTO {
     // board 기본 정보
     private Long boardNo;
     private String id;
+    private String nickname;
     private String category;
     private String title;
-    private String nickname;
     private int views;
     private LocalDateTime writeDate;
     private String detail;
@@ -25,7 +25,7 @@ public class BoardDTO {
     private int likeCnt;
 
     // board comment 관련
-    private List<Map<String, Object>> commentsList;
+    private List<Map<String, Object>> commentList;
 
     private boolean isOk;
 }
