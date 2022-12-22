@@ -68,7 +68,7 @@ const Section = styled.div`
             height: auto;
             position: relative;
             overflow: hidden;
-            background-color: #fcfcfc;
+            background-color: #f9f9f9;
             h2{display: none;}
             p{
                 float: left;
