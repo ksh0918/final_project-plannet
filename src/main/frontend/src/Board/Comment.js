@@ -69,7 +69,7 @@ const Comment = styled.div`
     }
 `;
 
-const Comments = ({getId, getNum, getDate, setCommentsList, commentsList}) => {
+const CommentItem = ({getId, getNum, getDate, setCommentList, commentList}) => {
     const navigate = useNavigate();
 
     // 링크에서 personal인지 scal인지 구분  
@@ -84,16 +84,16 @@ const Comments = ({getId, getNum, getDate, setCommentsList, commentsList}) => {
     }
     // 댓글 저장
     const onClickSaveComment = async() => {
-        let commentsData = '';
+        let commentData = '';
         if (currentPath == "/board") {
             await Api.commentWrite(getNum, getId, comment);
-            commentsData = await Api.commentsLoad(getNum);
+            commentData = await Api.commentLoad(getNum);
         }
         else {
             await Api.scalCommentWrite(getNum, getDate, getId, comment);
-            commentsData = await Api.scalCommentsLoad(getNum, getDate);
+            commentData = await Api.scalCommentLoad(getNum, getDate);
         }
-        setCommentsList(commentsData.data);
+        setCommentList(commentData.data);
         setComment(''); // 등록 후 댓글창 빈칸으로 만들기
     } 
     // 댓글 삭제
@@ -118,7 +118,7 @@ const Comments = ({getId, getNum, getDate, setCommentsList, commentsList}) => {
                 </div>
                 <div className='comment_box'>
                     <table>
-                        {commentsList.map(({no, commentNo, writerId, nickname, detail, date})=>(
+                        {commentList.map(({no, commentNo, writerId, nickname, detail, date})=>(
                             <tr key={no}>
                                 <td>{nickname}</td>
                                 <td>{detail}</td>
@@ -138,7 +138,7 @@ const Comments = ({getId, getNum, getDate, setCommentsList, commentsList}) => {
                 </div>
                 <div className='comment_box'>
                     <table>
-                        {commentsList.map(({no, commentNo, writerId, nickname, detail, date})=>(
+                        {commentList.map(({no, commentNo, writerId, nickname, detail, date})=>(
                             <tr key={no}>
                                 <td>{nickname}</td>
                                 <td>{detail}</td>
@@ -152,4 +152,4 @@ const Comments = ({getId, getNum, getDate, setCommentsList, commentsList}) => {
     }
 };
 
-export default Comments;
+export default CommentItem;

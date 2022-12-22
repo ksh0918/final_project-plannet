@@ -46,10 +46,9 @@ const Modal = (props) => {
         alert(option);
         navigate(0);
     }
-
     const onClickScalDelete = async() => {
         await Api.scalDelete(calNo);
-        navigate(-1);
+        navigate('/home');
     }
     const onClickDrop = async() => {
         await Api.smemDrop(calNo, option);
@@ -62,8 +61,6 @@ const Modal = (props) => {
         navigate(0);
     }
     const onClickScalQuit = async() => {
-        console.log(calNo);
-        console.log(option);
         await Api.smemDrop(calNo, option);
         navigate(-1);
     }

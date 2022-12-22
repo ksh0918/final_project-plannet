@@ -196,20 +196,20 @@ const plannetApi = {
         return await axios.get(PLANNET_DOMAIN + `board/like_checked_toggle?id=${id}&boardNo=${boardNo}`,HEADER);
     },
     // 해당 게시물에 작성된 댓글 불러오기
-    commentsLoad: async function(boardNo){
+    commentLoad: async function(boardNo){
         console.log(boardNo);
         const object = {
             boardNo : boardNo
         };
-        return await axios.post(PLANNET_DOMAIN + "board/comments_load", object, HEADER);
+        return await axios.post(PLANNET_DOMAIN + "board/comment_load", object, HEADER);
     },
     // 해당 게시물에 댓글 작성
     commentWrite: async function(boardNo, id, detail){
-        return await axios.get(PLANNET_DOMAIN + `board/comments_write?boardNo=${boardNo}&id=${id}&detail=${detail}`, HEADER);
+        return await axios.get(PLANNET_DOMAIN + `board/comment_write?boardNo=${boardNo}&id=${id}&detail=${detail}`, HEADER);
     },
     // 해당 게시물에 댓글 삭제
     commentDelete: async function(commentNo){
-        return await axios.get(PLANNET_DOMAIN + `board/comments_delete?commentNo=${commentNo}`, HEADER);
+        return await axios.get(PLANNET_DOMAIN + `board/comment_delete?commentNo=${commentNo}`, HEADER);
     },
     // 자유게시판 글 작성
     boardWrite: async function(id, category, title, detail, isChecked){
@@ -361,12 +361,12 @@ const plannetApi = {
     },
     
     // 해당 캘린더에 작성된 댓글 불러오기
-    scalCommentsLoad: async function(calNo, date) {
+    scalCommentLoad: async function(calNo, date) {
         const object = {
             calNo: calNo,
             date: date
         }
-        return await axios.post(PLANNET_DOMAIN + "scal/comments_load", object, HEADER);
+        return await axios.post(PLANNET_DOMAIN + "scal/comment_load", object, HEADER);
     },
     // 해당 캘린더에 댓글 작성
     scalCommentWrite: async function(calNo, date, id, detail){
