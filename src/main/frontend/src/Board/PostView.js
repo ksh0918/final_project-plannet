@@ -33,7 +33,7 @@ const Section = styled.div`
     div {width: 100%; padding: 10px 30px;}
     .sub_box {
         h2 {font-size: 28px; margin-top: 35px; font-weight: 900;}
-        span {float: left; margin-top: 10px; margin-bottom: 15px;}
+        >p>span {float: left; margin-top: 10px; margin-bottom: 15px;}
     }
     button {
         border: none;
@@ -52,9 +52,18 @@ const Section = styled.div`
         text-align: center;
         tr:first-child td {border-top: solid 1px #4555AE; background-color: #f9f9f9;}
         th {padding: 10px; color: white;}
-        td {padding: 10px; width: 150px; background-color: white; border-left: solid 1px #bbb; border-top: solid 1px #ddd;}
-        td:first-child {border-left: none;}
-        td:nth-child(2) {width: 400px; text-align: left; padding-left: 20px;}  
+        td {padding: 10px; background-color: white; border-left: solid 1px #bbb; border-top: solid 1px #ddd;}
+        td:first-child {border-left: none; width: 70px;}
+        td:nth-child(2) {width: 85px;}  
+        td:nth-child(3) {
+            width: 135px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }  
+        td:nth-child(4) {width: 100px;} 
+        td:last-child {width: 100px;}
+        br{display: none;}
         .title-input {font-size:20px; font-weight: 500;}
         .bi {padding-right:5px;}
         .bi-heart-fill {margin-left:13px;}
@@ -248,12 +257,13 @@ const PostView = () => {
                         <p><span>유저들이 작성한 글에 댓글과 좋아요를 남기며 소통해보세요! <br/>커뮤니티 규칙에 맞지 않는 글과 댓글은 무통보 삭제됩니다.</span></p>  
                         <table className='postInfo'>
                             <tr>
-                                <td className="title-input" key={e.boardNo} colSpan={4}>{e.title}</td>
+                                <td className="title-input" key={e.boardNo} colSpan={5}>{e.title}</td>
                             </tr>
                             <tr>
-                                <td>No.{e.boardNo}</td>
-                                <td>Writer. {e.nickname}</td>
-                                <td><i class="bi bi-eye"></i>{e.views}<i class="bi bi-heart-fill"></i>{likeCntData}</td>
+                                <td>{e.category}</td>
+                                <td><span>No.</span>{e.boardNo}</td>
+                                <td><span>Writer. </span>{e.nickname}</td>
+                                <td><i class="bi bi-eye"></i>{e.views}<br/><i class="bi bi-heart-fill"></i>{likeCntData}</td>
                                 <td>{e.writeDate}</td>
                             </tr>
                         </table>
@@ -266,9 +276,9 @@ const PostView = () => {
                     </div>
                     </>))}
                     <h3>Comment</h3>
-                    <Comment getId={getId} getNum={getNum} setCommentList={setCommentList} commentList={commentList}/>
-                    {isFetching && <h1>New Data Fetcing .......</h1>}
-                    {!isFetching && <h1>더이상 조회할 게시글이 없습니다</h1>}
+                    <Comment getId={getId} getNum={getNum} setCommentList={setCommentList} commentList={commentList}
+                    {...isFetching && <h1>New Data Fetcing .......</h1>}
+                    {...!isFetching && <h1>더이상 조회할 게시글이 없습니다</h1>}/>
             </Section>
             <div className="copy">&#169; Plannet.</div>
         </Wrap>
