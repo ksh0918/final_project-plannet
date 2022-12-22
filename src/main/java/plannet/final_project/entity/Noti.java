@@ -32,11 +32,11 @@ public class Noti {
     @JoinColumn(name = "receive_id")
     private Member receiveId;
 
-    // 초대 타입 (friend or scal)
-    @Column(nullable = false)
+    // 알림 타입 (friend or scal)
+    @Column(length = 1, nullable = false)
     private String type;
 
-    // 초대 타입이 scal인 경우 calNo, 친구인 경우 NULL
+    // 알림 타입이 scal인 경우 calNo, 친구인 경우 NULL
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "etc")
     private SCAL scalNo;

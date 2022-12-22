@@ -24,11 +24,11 @@ public class Message {
     private Long messageNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "id", nullable = false)
     private Member userId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "receive_id")
+    @JoinColumn(name = "receive_id", nullable = false)
     private Member receiveId;
 
     @CreatedDate

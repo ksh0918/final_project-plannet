@@ -25,7 +25,7 @@ public class Plan {
     private Long planNo; // 각 날짜, 아이디의 일정 고유 KEY값 (순서대로 불러 들어올 때 사용)
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "id", nullable = false)
     private Member userId; // 회원 아이디
 
     @CreatedDate
