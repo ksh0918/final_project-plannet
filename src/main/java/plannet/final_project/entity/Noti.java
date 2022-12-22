@@ -46,7 +46,7 @@ public class Noti {
     private LocalDateTime notiDate;
 
     // 현재 상태 (수락 여부, 0이면 미수락, 1이면 수락)
-    @Column(name = "ischecked")
+    @Column(name = "accept_checked")
     @ColumnDefault("0")
     private int acceptChecked;
 }

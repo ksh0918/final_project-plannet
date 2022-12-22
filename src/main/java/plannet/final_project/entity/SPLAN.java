@@ -23,17 +23,17 @@ public class SPLAN {
     private Long splanNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cal_no")
+    @JoinColumn(name = "scal_no")
     private SCAL scalNo;
 
     @CreatedDate
     private LocalDate splanDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "id", nullable = false)
     private Member userId;
 
-    @Column(nullable = false, name = "plan_check")
+    @Column(nullable = false, name = "splan_checked")
     @ColumnDefault("0")
     private int splanChecked;
 

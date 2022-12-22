@@ -23,14 +23,14 @@ public class SCOM {
     private Long commentNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cal_no")
+    @JoinColumn(name = "scal_no")
     private SCAL scalNo;
 
     @CreatedDate
     private LocalDate splanDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "id", nullable = false)
     private Member userId;
 
     @CreatedDate

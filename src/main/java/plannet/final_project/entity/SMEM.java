@@ -21,11 +21,11 @@ public class SMEM {
     private Long smemNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cal_no")
+    @JoinColumn(name = "scal_no")
     private SCAL scalNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "id", nullable = false)
     private Member userId; // 참가자 아이디
 
     @Column(name = "isOwner", nullable = false)
