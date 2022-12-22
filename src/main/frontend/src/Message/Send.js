@@ -105,24 +105,27 @@ const Section = styled.div`
         text-align: center;
         tr:nth-child(2n) td {background-color: #f9f9f9;}
         th {padding: 10px; color: white;}
-        td {padding: 0 10px 0 10px; background-color: white; border-left: solid 1px #bbb; border-top: solid 1px #ddd;}
+        td {padding: 0 10px; background-color: white; border-left: solid 1px #bbb; border-top: solid 1px #ddd;}
         td:first-child {border-left: none};
         td:nth-child(2) {width: 400px; text-align: left; padding-left: 20px;}  
         tr:hover td, tr:hover a {color: #4555AE;}
         .friend_search{
             margin: 0;
             width: 100%;
-            height: 31px;
-            border: 2px solid #ddd;
-            padding: 0 13px;
+            line-height: 31px;
+            padding: 0 5px;
             border-radius: 5px;
             input {
-                width: 100%;
+                width: calc(100% - 80px);
                 max-width: 410px;
                 height: 27px;
                 border: 0px;
                 outline: none;
-                margin: 0;
+                margin: 0 0 0 3px;
+                padding-left: 10px;
+                border-radius: 5px;
+                background-color: #f9f9f9;
+                &:focus{background-color: #f0f0f0;}
             }
         }
     }
@@ -302,7 +305,7 @@ const Send= () => {
                 </div>
                 {isBlur && 
                     <div className='friend'>
-                        <p className='listfriend'>친구목록</p>
+                        <p className='listfriend'>Find Friend</p>
                         <span><FriendList setCommnet={setComment} setModalHeader={setModalHeader} setModalOpen={setModalOpen} friendList={friendList} setOption={setOption} className='friendList'/></span>
                     </div>
                 }
