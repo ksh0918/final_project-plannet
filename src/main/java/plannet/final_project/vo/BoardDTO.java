@@ -9,6 +9,7 @@ import java.util.Map;
 
 @Getter @Setter
 public class BoardDTO {
+    // board 기본 정보
     private Long boardNo;
     private String id;
     private String category;
@@ -18,18 +19,14 @@ public class BoardDTO {
     private LocalDateTime writeDate;
     private String detail;
     private int isChecked;
+    private List<Map<String, Object>> boardList;
 
+    // 좋아요 관련
     private int likeCnt;
     private int isLiked;
 
-    private String commentWriter;
-    private LocalDateTime commentDate;
-    private String commentDetail;
+    // board comment 관련
+    private List<Map<String, Object>> commentsList;
+
     private boolean isOk;
-
-   private List<Map<String, Object>> boardList;
-   private Map<String, Object> postView;
-   private List<Map<String, Object>> commentsList;
 }
-
-
