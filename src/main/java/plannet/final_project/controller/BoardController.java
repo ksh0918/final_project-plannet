@@ -70,8 +70,9 @@ public class BoardController {
     }
 
     // boardNo의 게시물을 내가 작성하지 않았으면 조회수 +1
-    @GetMapping("/view_up")
-    public ResponseEntity<Integer> viewUp(@RequestParam Long boardNo) {
+    @PostMapping("/view_up")
+    public ResponseEntity<Integer> viewUp(@RequestBody Map<String, String> data) {
+        Long boardNo = Long.parseLong((String)data.get("boardNo"));
         boolean viewsChecked = boardService.viewUp(boardNo);
         return new ResponseEntity(viewsChecked, HttpStatus.OK);
     }
@@ -157,7 +158,7 @@ public class BoardController {
     // 자유게시판 글 삭제하기
     @PostMapping("/board_delete")
     public ResponseEntity<Boolean> boardDelete(@RequestBody Map<String, String> data) {
-        Long boardNo = Long.parseLong(data.get("num"));
+        Long boardNo = Long.parseLong(data.get("boardNo"));
         boolean result = boardService.boardDelete(boardNo);
         if(result) return new ResponseEntity(true, HttpStatus.OK);
         else return new ResponseEntity(null, HttpStatus.OK);
