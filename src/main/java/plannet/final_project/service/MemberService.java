@@ -19,7 +19,7 @@ import java.util.EmptyStackException;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final BoardRepository boardRepository;
-    private final CommentsRepository commentsRepository;
+    private final CommentRepository commentsRepository;
     private final DiaryRepository diaryRepository;
     private final LikeCntRepository likeCntRepository;
     private final FriendRepository friendRepository;
