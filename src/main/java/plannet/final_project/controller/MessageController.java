@@ -22,11 +22,11 @@ public class MessageController {
     private final MessageService messageService;
 
     @PostMapping("/send")
-    public ResponseEntity<Map<String,String>> sendMessage(@RequestBody Map<String,String> regData){
+    public ResponseEntity<Map<String,String>> sendMessage(@RequestBody Map<String,String> data){
         try{
-            String id = regData.get("id");
-            String receiveId = regData.get("receiveId");
-            String detail = regData.get("detail");
+            String id = data.get("id");
+            String receiveId = data.get("receiveId");
+            String detail = data.get("detail");
             boolean result = messageService.sendMessage(id,receiveId,detail);
             if(result){
                 return new ResponseEntity(true, HttpStatus.OK);
@@ -73,9 +73,9 @@ public class MessageController {
         }
     }
     @PostMapping("/read")
-    public ResponseEntity<Boolean> messageRead(@RequestBody List<Long> messageData){
+    public ResponseEntity<Boolean> messageRead(@RequestBody List<Long> data){
         try{
-            boolean messageRead= messageService.messageRead(messageData);
+            boolean messageRead= messageService.messageRead(data);
             if(messageRead){
                 return new ResponseEntity(true, HttpStatus.OK);
             }
@@ -87,8 +87,8 @@ public class MessageController {
         }
     }
     @PostMapping("/readModal")
-    public ResponseEntity<Boolean> messageRead(@RequestBody Map<String,Long> messageData){
-        Long messageNo= messageData.get("messageNo");
+    public ResponseEntity<Boolean> messageRead(@RequestBody Map<String,Long> data){
+        Long messageNo= data.get("messageNo");
         System.out.println(messageNo);
         try{
             boolean messageRead= messageService.messageReadModal(messageNo);

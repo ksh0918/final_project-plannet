@@ -109,13 +109,13 @@ public class BoardController {
 
     // 자유게시판 댓글 불러오기
     @PostMapping("/comment_load")
-    public ResponseEntity<List<Map<String, Object>>> commentLoad(@RequestBody Map<String, Long> boardNo) {
-        System.out.println("컨트롤러 보드넘 : " + boardNo.get("boardNo"));
-        System.out.println("컨트롤러 오프셋 : " + boardNo.get("offsetNum"));
-        System.out.println("컨트롤러 리미트 : " + boardNo.get("limitNum"));
-        Long num = boardNo.get("boardNo");
-        Long offsetNum = boardNo.get("offsetNum");
-        Long limitNum = boardNo.get("limitNum");
+    public ResponseEntity<List<Map<String, Object>>> commentLoad(@RequestBody Map<String, Long> data) {
+        System.out.println("컨트롤러 보드넘 : " + data.get("boardNo"));
+        System.out.println("컨트롤러 오프셋 : " + data.get("offsetNum"));
+        System.out.println("컨트롤러 리미트 : " + data.get("limitNum"));
+        Long num = data.get("boardNo");
+        Long offsetNum = data.get("offsetNum");
+        Long limitNum = data.get("limitNum");
         BoardDTO boardDTO = boardService.getCommentLoad(num, offsetNum, limitNum);
         if(boardDTO.isOk()) {
             List<Map<String, Object>> commentList = boardDTO.getCommentsList();
@@ -148,13 +148,13 @@ public class BoardController {
 
     // 자유게시판 글 작성
     @PostMapping("/board_write")
-    public ResponseEntity<Long> boardWrite(@RequestBody Map<String, String> boardWriteDate) {
-        String id = boardWriteDate.get("id");
-        String category = boardWriteDate.get("category");
-        String title = boardWriteDate.get("title");
-        String detail = boardWriteDate.get("detail");
+    public ResponseEntity<Long> boardWrite(@RequestBody Map<String, String> data) {
+        String id = data.get("id");
+        String category = data.get("category");
+        String title = data.get("title");
+        String detail = data.get("detail");
         int isChecked = 0;
-        if (boardWriteDate.get("isChecked").equals("true")){
+        if (data.get("isChecked").equals("true")){
             isChecked = 1;
         }
         Long resultNo = boardService.boardWrite(id, category, title, detail, isChecked);
@@ -163,11 +163,11 @@ public class BoardController {
 
     // 자유게시판 글 수정
     @PostMapping("/board_edit")
-    public ResponseEntity<Boolean> boardEdit(@RequestBody Map<String, String> boardEdit) {
-        Long boardNo = Long.parseLong(boardEdit.get("num"));
-        String category = boardEdit.get("category");
-        String title = boardEdit.get("title");
-        String detail = boardEdit.get("detail");
+    public ResponseEntity<Boolean> boardEdit(@RequestBody Map<String, String> data) {
+        Long boardNo = Long.parseLong(data.get("num"));
+        String category = data.get("category");
+        String title = data.get("title");
+        String detail = data.get("detail");
         boolean result = boardService.boardEdit(boardNo, category, title, detail);
         if(result) {
             return new ResponseEntity(true, HttpStatus.OK);
@@ -179,8 +179,8 @@ public class BoardController {
 
     // 자유게시판 글 삭제하기
     @PostMapping("/board_delete")
-    public ResponseEntity<Boolean> boardDelete(@RequestBody Map<String, String> boardDelete) {
-        Long boardNo = Long.parseLong(boardDelete.get("num"));
+    public ResponseEntity<Boolean> boardDelete(@RequestBody Map<String, String> data) {
+        Long boardNo = Long.parseLong(data.get("num"));
         boolean result = boardService.boardDelete(boardNo);
         if(result) return new ResponseEntity(true, HttpStatus.OK);
         else return new ResponseEntity(false, HttpStatus.OK);

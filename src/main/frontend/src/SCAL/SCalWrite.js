@@ -195,7 +195,7 @@ const SCalWrite = () => {
         setPlanList(nextPlanList);
     }
     const onClickSave = async() => {
-        await Api.scalPlanSave(getId, getNum, getDate, planList);
+        await Api.scalPlanSave(getNum, getId, getDate, planList);
         navigate("/scal/home/" + getNum);
     }
 

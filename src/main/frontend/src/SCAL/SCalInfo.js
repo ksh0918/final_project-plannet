@@ -191,8 +191,8 @@ const SCalSetting = () => {
           });
      }
 
-     const onClickSCalSave = async() => {
-        await Api.scalSave(getNum, title);
+     const onClickSCalInfoSave = async() => {
+        await Api.scalInfoSave(getNum, title);
         navigate('/scal/home/' + getNum);
      }
      const onClickScalDelete = () => {
@@ -240,7 +240,7 @@ const SCalSetting = () => {
                             </div>
                         </div>
                         <div className="button-area1">
-                            <button className="btn scal_add" onClick={onClickSCalSave}>SAVE</button>
+                            <button className="btn scal_add" onClick={onClickSCalInfoSave}>SAVE</button>
                             {getId === owner ? <><button className='btn left-space scal_delete' onClick={() => onClickScalDelete()}>DELETE</button></> 
                             : <><button className='btn left-space smem_quit' onClick={() => onClickScalQuit()}>DELETE</button></> }
                         </div>

@@ -22,8 +22,8 @@ public class HomeController {
     private final HomeService homeService;
 
     @PostMapping("/personal")
-    public ResponseEntity<Map<String, Object>> personalHome(@RequestBody Map<String, String> userId) {
-        String id = userId.get("id");
+    public ResponseEntity<Map<String, Object>> personalHome(@RequestBody Map<String, String> data) {
+        String id = data.get("id");
         Map<String, Object> personalHome = new HashMap<>();
         HomeDTO homeDTO = homeService.homeList(id);
         if(homeDTO.isOk()) {
@@ -39,9 +39,9 @@ public class HomeController {
     }
 
     @PostMapping("/memo")
-    public ResponseEntity<Boolean> memoWrite(@RequestBody Map<String, String> personalMemo) {
-        String id = personalMemo.get("id");
-        String detail = personalMemo.get("detail");
+    public ResponseEntity<Boolean> memoWrite(@RequestBody Map<String, String> data) {
+        String id = data.get("id");
+        String detail = data.get("detail");
         System.out.println(id);
         System.out.println(detail);
         boolean memoWrite = homeService.memoWrite(id, detail);

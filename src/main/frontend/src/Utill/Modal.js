@@ -57,7 +57,7 @@ const Modal = (props) => {
         navigate('/home');
     }
     const onClickDrop = async() => {
-        await Api.smemDrop(calNo, option);
+        await Api.smemDelete(calNo, option);
         navigate(0);
     }
     const onClickInvite = async() => {
@@ -67,7 +67,7 @@ const Modal = (props) => {
         navigate(0);
     }
     const onClickScalQuit = async() => {
-        await Api.smemDrop(calNo, option);
+        await Api.smemDelete(calNo, option);
         navigate(-1);
     }
     const onClickGoogleLogin = async() => {
