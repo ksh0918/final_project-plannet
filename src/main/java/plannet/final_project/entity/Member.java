@@ -52,6 +52,10 @@ public class Member {
     @Column(length = 2400)
     private String memo;
 
+//    @Column
+//    @ColumnDefault("-")
+//    private String marketingOptIn; // 마케팅 수신 여부 (아무것도 체크하지 않을 때 -, 이메일만 체크 Email, SMS만 체크 SMS, 모두 체크 ALL)
+
     @Column(length = 1, nullable = false)
     @ColumnDefault("0")
     private int reRegChecked; // 탈퇴 회원 여부 (재가입 방지)
