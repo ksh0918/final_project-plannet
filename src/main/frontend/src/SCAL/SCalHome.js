@@ -7,6 +7,7 @@ import Nav from '../Utill/Nav';
 import Calendar from '../Home/Calendar';
 import Memo from '../Home/Memo';
 import List from '../Home/List';
+import { S3Outposts } from 'aws-sdk';
 
 const Wrap = styled.div`
     width: 1130px;
@@ -199,12 +200,11 @@ const SCalHome = () => {
     let params = useParams(); // url에서 calNo를 가져오기 위해 uesParams() 사용
     const getNum = params.no; // params는 객체이기 때문에 풀어줘서 다시 getNum에 대입해줌
 
-
     const [sideBar, setSideBar] = useState(false); // 미디어쿼리시 nav 사이드바
     const [scalData, setScalData] = useState([]);
     const [memberDoMark, setMemberDoMark] = useState([]);
     const [memberEndMark, setMemberEndMark] = useState([]);
-    const [memberList, setMemberList] = useState([{}]);
+    const [smemberList, setSmemberList] = useState([{}]);
 
     useEffect(() => {
         const scalHome = async() => {
@@ -212,17 +212,15 @@ const SCalHome = () => {
                 const response = await Api.sharingHome(getNum);
                 // 다른 사용자의 게시물 공유캘린더 페이지에 아예 주소접근으로도 못 하게 방지
                 // DB에서 가져온 memberList 정보에서 사용자의 id가 존재하지 않으면 접근불가
-                const memberListData = response.data.memberList;
-                console.log(response);
+                const memberListData = response.data.smemberList;
                 let isExistsChecked = false;
-                console.log(memberListData.id);
                 memberListData.map(({id}) => {
                     if (id == getId) isExistsChecked = true;});
                 if (isExistsChecked) {
                     setScalData(response.data);
-                    setMemberDoMark(response.data.planMark[0]);
-                    setMemberEndMark(response.data.planMark[1]);
-                    setMemberList(memberListData);
+                    setMemberDoMark(response.data.splanMark[0]);
+                    setMemberEndMark(response.data.splanMark[1]);
+                    setSmemberList(memberListData);
                 } else {
                     alert("본인이 속한 캘린더만 접근할 수 있습니다.")
                     navigate("/home");
@@ -233,8 +231,6 @@ const SCalHome = () => {
         }
         scalHome();
     }, [getNum]);
-    console.log(scalData);
-    console.log()
 
     const onClickSetting = () => {
         navigate("/scal/info/" + getNum);
@@ -247,22 +243,22 @@ const SCalHome = () => {
             <TopBar sideBar={sideBar} setSideBar={setSideBar}/>
             <Section id="scalHome" className="section">
                 <div className="plan">
-                    <h2>{scalData.calName}<i className="bi bi-gear-fill" onClick={onClickSetting}/></h2>
+                    <h2>{scalData.scalName}<i className="bi bi-gear-fill" onClick={onClickSetting}/></h2>
                     <Calendar doMark={memberDoMark} endMark={memberEndMark}/>
                 </div>
                 <div className='etc'>
                     <div className='memo'>
                         <h2>Memo</h2>
-                        <Memo props={scalData.memo}/>
+                        <Memo props={scalData.smemo}/>
                     </div>
                     <div className='m-list'>
                         <h2>Member List</h2>
                         <div className='m-list-detail'>
-                            {memberList? 
+                            {smemberList ? 
                                 <ul>
                                     {/* memberList */}
-                                    {memberList.map((e) => {
-                                        if(e.isOwner) return(<li style={{listStyleImage:'url(/crown.svg)'}} className="owner"><span>{e.nickname}</span> <span>#{e.userCode}</span></li>);
+                                    {smemberList.map((e) => {
+                                        if(e.scalOwner) return(<li style={{listStyleImage:'url(/crown.svg)'}} className="owner"><span>{e.nickname}</span> <span>#{e.userCode}</span></li>);
                                         else return(<li>{e.nickname} <span>#{e.userCode}</span></li>);
                                     })}
                                 </ul> :
@@ -274,7 +270,7 @@ const SCalHome = () => {
                 <div className="list">
                     <h2>List</h2>
                     <div className="history"></div>
-                    <List props={scalData.list}/>
+                    <List props={scalData.slist}/>
                 </div>
             </Section>
             <div className="copy">&#169; Plannet.</div>

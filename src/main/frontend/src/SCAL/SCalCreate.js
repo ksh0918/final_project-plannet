@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import styled from "styled-components";
 import Api from "../api/plannetApi";
-import Nav from "../Utill/Nav";
-import FriendList from '../Friend/FriendList';
 import Modal from '../Utill/Modal';
+import Nav from "../Utill/Nav";
 import TopBar from "../Utill/TopBar";
+import FriendList from '../Friend/FriendList';
 
 const Wrap = styled.div`
     width: 1130px;
@@ -40,10 +40,10 @@ const Section = styled.div`
       font-weight: 900;
       margin-top: 35px;
       margin-bottom: 10px;
-      span{
+      span {
         font-size: 20px;
         font-weight: 400;
-      }
+    }
     }
      .scalCreate {
         padding: 10px 30px;
@@ -60,7 +60,7 @@ const Section = styled.div`
                 line-height: 18px;
                 margin:8px 0 4px;
             }
-            .friend, .title{
+            .friend, .title {
                 padding: 5px 30px;
                 width: 100%;
                 max-width: 500px;
@@ -90,8 +90,8 @@ const Section = styled.div`
                     }
                 }
             }
-            .friend{
-                .friend_search{
+            .friend {
+                .friend_search {
                     margin: 0;
                     width: 100%;
                     height: 31px;
@@ -124,7 +124,7 @@ const Section = styled.div`
                         color: white;
                         border: none;
                         transition: all .1s ease-in;
-                        &:hover{
+                        &:hover {
                             background-color: #666;
                             color: #888;
                         }
@@ -138,6 +138,7 @@ const Section = styled.div`
     const SCalCreate = () => {
     const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
+    
     const [title, setTitle] = useState(''); // 공유캘린더 이름
     const [searchKeyword, setSearchKeyword] = useState('');
     const [friendList, setFriendList] = useState();
@@ -151,24 +152,24 @@ const Section = styled.div`
 
     useEffect(() => {
         const countCal = async() => { // 2개 이상의 scal에 참여 중이면 주소로도 공유 캘린더 생성 페이지에 접근 못하게 막음
-            const res = await Api.scalCntCheck(getId); //2개 이상의 scal에 참여중인지 확인 2개 이하면 true, 이상이면 false
-            if(res.data) { // 2개 이하이면 친구 목록 불러 오기
+            const scalCnt = await Api.scalCntCheck(getId); //2개 이상의 scal에 참여중인지 확인 2개 이하면 true, 이상이면 false
+            if(scalCnt.data) { // 2개 이하이면 친구 목록 불러 오기
                 const myfriends = async() => {
-                    try{
-                        const response = await Api.friendLoad(getId); //친구 목록 불러오기
-                        setFriendList(response.data.friendList);
+                    try {
+                        const friendListData = await Api.friendLoad(getId); //친구 목록 불러오기
+                        setFriendList(friendListData.data.friendList);
                     } catch(e) {
                         console.log(e);
                     }
             }
-             myfriends();
+            myfriends();
             } else { // 3개 이상이면 알림창이 뜨고 home 페이지로 이동
                 alert('최대 공유 캘린더 개수(2개)를 넘어 공유 캘린더를 생성할 수 없습니다.');
                 navigate('/home');
             }
         }
         countCal();
-    },[getId]);
+    }, [getId]);
 
     // 공유 캘린더 이름 입력
     const onChangeTitle = (e) => {
