@@ -227,7 +227,7 @@ const Message = () => {
             navigate(0);
         }
         else {
-            console.log(e);
+            console.log(response.data);
         }
     }
 
@@ -238,7 +238,7 @@ const Message = () => {
             navigate(0);
         }
         else {
-            console.log(e);
+            console.log(response.data);
         }
     }
 

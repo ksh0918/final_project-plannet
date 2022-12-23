@@ -207,7 +207,7 @@ const Join = () => {
 
     // ENTER 키를 눌렀을 때 회원가입 전송
     const onKeyPressEnter = (e) => {
-        if(e.key === 'Enter'){
+        if(e.key === 'Enter'& ((isId && isPw && isConPw && isName && isNickname &&isEmail && isAuth && isTel)===true)){
             onClickJoin();
         }
     }
