@@ -22,6 +22,7 @@ import java.util.Map;
 public class MessageController {
     private final MessageService messageService;
 
+    // 쪽지 갯수 불러오기(말풍선)
     @GetMapping("/cntNoti")
     public ResponseEntity<List<Map<String, Object>>> messageCntNoti(@RequestParam String receiveId) {
         int messageNoti = messageService.messageCntNoti(receiveId);
@@ -29,6 +30,7 @@ public class MessageController {
         else return new ResponseEntity(null, HttpStatus.OK);
     }
 
+    // 쪽지 리스트
     @GetMapping("/list")
     public ResponseEntity<List<Map<String, Object>>> messageList(@RequestParam String receiveId) {
         MessageDTO messageList = messageService.messageListLoad(receiveId);
@@ -36,6 +38,7 @@ public class MessageController {
         else return new ResponseEntity(null, HttpStatus.OK);
     }
 
+    // 쪽지 보내기
     @PostMapping("/send")
     public ResponseEntity<Map<String,String>> messageSend(@RequestBody Map<String,String> data){
         try{
@@ -51,6 +54,7 @@ public class MessageController {
         }
     }
 
+    // 쪽지 삭제
     @PostMapping("/delete")
     public ResponseEntity<Boolean> messageDelete(@RequestBody List<Long> data) {
         try {
@@ -62,6 +66,7 @@ public class MessageController {
         }
     }
 
+    // 쪽지 읽음 표시
     @PostMapping("/read")
     public ResponseEntity<Boolean> messageRead(@RequestBody List<Long> data) {
         try {
@@ -73,6 +78,7 @@ public class MessageController {
         }
     }
 
+    // 쪽지 읽을 때 모달을 띄어 줌
     @PostMapping("/readModal")
     public ResponseEntity<Boolean> messageModalOpen(@RequestBody Map<String,Long> data) {
         Long messageNo= data.get("messageNo");
@@ -85,6 +91,7 @@ public class MessageController {
         }
     }
 
+    // 쪽지 검색
 //    @GetMapping("/search_messageList")
 //    public ResponseEntity<List<MessageDTO>> searchListLoad(@RequestParam String keyword ,String id) {
 //        MessageDTO messageList = messageService.searchListLoad(id,"%%" + keyword + "%%");

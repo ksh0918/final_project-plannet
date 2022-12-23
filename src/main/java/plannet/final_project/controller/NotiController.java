@@ -19,6 +19,7 @@ import java.util.Map;
 public class NotiController {
     private final NotiService notiService;
 
+    // 친구 불러오기
     @GetMapping("/friend_load")
     public ResponseEntity<Map<String, List<Map<String, Object>>>> friendLoad(@RequestParam String id) {
         Map<String, List<Map<String, Object>>> friendList = new HashMap<>();
@@ -30,6 +31,7 @@ public class NotiController {
         return new ResponseEntity(friendList, HttpStatus.OK);
     }
 
+    // 친구 추가
     @PostMapping("/friend_add")
     public ResponseEntity<Integer> friendAdd(@RequestBody Map<String, String> data) {
         String id = data.get("id");
@@ -38,6 +40,7 @@ public class NotiController {
         return new ResponseEntity(status, HttpStatus.OK);
     }
 
+    // 친구 삭제
     @PostMapping("/unfriend")
     public ResponseEntity<Integer> unfriend(@RequestBody Map<String, Long> data) {
         long key = data.get("key");
@@ -45,6 +48,7 @@ public class NotiController {
         return new ResponseEntity(status, HttpStatus.OK);
     }
 
+    // 알림 승락/거절
     @PostMapping("/noti_response")
     public ResponseEntity<Boolean> notiResponse(@RequestBody Map<String, String> data) {
         Long key = Long.parseLong((String)data.get("key"));
@@ -53,6 +57,7 @@ public class NotiController {
         return new ResponseEntity(isOk, HttpStatus.OK);
     }
 
+    // 공유 캘린더 갯수 확인
     @GetMapping("/cnt_check")
     public ResponseEntity<Boolean> scalCntCheck(@RequestParam String id) {
         boolean isOk = notiService.scalCntCheck(id);
