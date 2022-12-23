@@ -20,6 +20,6 @@ public interface SPLANRepository extends JpaRepository<SPLAN, Long> {
     void deleteByScalNo(SCAL scalNo);
     @Modifying //데이터베이스에 변경을 주는 네이티브 쿼리는 이 어노테이션 필요 (INSERT, UPDATE, DELETE)
     @Transactional
-    @Query(value="delete from s_plan where scal_no = (:scalNo) and plan_date = (:date)", nativeQuery = true)
-    void deleteByPlanDateAndScalNo(@Param("date") LocalDate date, @Param("scalNo") Long calNo);
+    @Query(value="delete from s_plan where scal_no = (:scalNo) and splan_date = (:date)", nativeQuery = true)
+    void deleteBySPlanDateAndScalNo(@Param("date") LocalDate date, @Param("scalNo") Long calNo);
 }

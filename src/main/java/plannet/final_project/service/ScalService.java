@@ -247,7 +247,7 @@ public class ScalService {
     public boolean splanSave(Long scalNo, String id, LocalDate date, List<Map<String, Object>> plan) {
         try {
             Member member = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new); // 회원 정보가 담긴 객체 가져옴
-            splanRepository.deleteByPlanDateAndScalNo(date, scalNo); // 기존의 일정 삭제. 삭제 안 하면 기존의 것들이 DB에 계속 있음
+            splanRepository.deleteBySPlanDateAndScalNo(date, scalNo); // 기존의 일정 삭제. 삭제 안 하면 기존의 것들이 DB에 계속 있음
             SCAL scal = scalRepository.findById(scalNo).orElseThrow();
 
             // plan 저장
