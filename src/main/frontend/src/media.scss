@@ -33,6 +33,9 @@
         .readBtn, .sendBtn, .deleteBtn{padding: 8px 15px;}
         table th:nth-child(3){width: 90px;}
     }
+    #send{
+        .is_list li {width: calc(100% / 2) !important;}
+    }
 }
 @media screen and (max-width : 767px) {
     html{background: white;}

@@ -146,7 +146,7 @@ const StyledInput = styled.input`
     }
 `;
 
-const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,setOption, isPage, title, setCalNo}) => {
+const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,setOption, isPage, title, setCalNo, setReceiveId}) => {
     const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
     let params = useParams(); // url에서 boardNo를 가져오기 위해 uesParams() 사용
@@ -218,13 +218,17 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
         setModalOpen(true);
     }
    
+    const onClickFriend = (e) => {
+        setReceiveId(e.nickname + '#' + e.userCode)
+    }
+
     return (
         <>
         <Friends className={(friendList? 'is_list' : '') + ' ' + (isAdd? 'add_active_box' : '')}>
             {friendList?
             <ul>
                 {friendList.map(e =>{return(
-                    <li>
+                    <li onClick={isPage === "message" ? () => onClickFriend(e) : ''}>
                         <div><img src={"https://plannetmanager5.s3.ap-northeast-2.amazonaws.com/" + e.proImg} alt="profileImg" /></div>
                         <p>
                             <span>{e.nickname}</span>
