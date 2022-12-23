@@ -53,7 +53,7 @@ const Join = () => {
     const [isName, setIsName] = useState(false);
     const [isNickname, setIsNickname] = useState(false);
     const [isEmail, setIsEmail] = useState(false);
-    const [isTel, setIsTel] = useState(false);
+    const [isTel, setIsTel] = useState(true);
     const [isAuth,setIsAuth] = useState(false);
     const [clickAuth, setClickAuth] = useState(false);
  
@@ -197,7 +197,6 @@ const Join = () => {
         } else {
             setTelMessage("이미 사용하고 있는 전화번호입니다.");
             setIsTel(false)
-            
         } 
     }
 
@@ -275,7 +274,7 @@ const Join = () => {
             </div>
             <div className="session">
                 <p>
-                    전화번호*
+                    전화번호
                     {inputTel.length > 0 && <span>{telMessage}</span>}
                 </p>
                 <input type='tel' placeholder="휴대폰번호('-' 제외)" value={inputTel} onChange={onChangeTel} onBlur={onBlurTelCheck} onKeyDown={onKeyPressEnter}/>
