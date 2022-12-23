@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import { useNavigate, Link } from "react-router-dom";
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import styled from "styled-components";
 import Api from "../api/plannetApi";
 import Nav from "../Utill/Nav";
-import FriendList from '../Friend/FriendList';
 import Modal from '../Utill/Modal';
 import TopBar from '../Utill/TopBar';
+import FriendList from '../Friend/FriendList';
 
 const Wrap = styled.div`
     width: 1130px;
@@ -62,21 +62,20 @@ const Section = styled.div`
             background-color: #4555AE;
             color: white;
             border: none;
-            &:hover{background-color: #666;}
+            &:hover {background-color: #666;}
         }
-        .sender{
+        .sender {
             font-size: 16px;
             font-weight: 600;
             float: left;
-            .sender-input{
+            .sender-input {
                 width:100px;
                 &:focus {border: none; background:none;}    
             }
-        }
-        
+        } 
     }
-    .is_list{
-        li{
+    .is_list {
+        li {
             width: 350px !important;
             float: left !important;
         }
@@ -109,7 +108,7 @@ const Section = styled.div`
         td:first-child {border-left: none};
         td:nth-child(2) {width: 400px; text-align: left; padding-left: 20px;}  
         tr:hover td, tr:hover a {color: #4555AE;}
-        .friend_search{
+        .friend_search {
             margin: 0;
             width: 100%;
             line-height: 31px;
@@ -194,18 +193,13 @@ const Section = styled.div`
             transition: all .1s ease-in;
             font-weight: 600;
             font-size: 16px;
-            &:hover {background-color: #666;
-                color: #888;}
+            &:hover {background-color: #666; color: #888;}
         }
-        button:nth-child(1) {
-            margin-right: 10px;
-        }
+        button:nth-child(1) {margin-right: 10px;}
     }
-    .ck.ck-editor__editable:not(.ck-editor__nested-editable) {
-        height: 500px; 
-    }
+    .ck.ck-editor__editable:not(.ck-editor__nested-editable) {height: 500px; }
     .ck-editor__main {padding: 0;}
-    .listfriend{
+    .listfriend {
         font-size: 16px;
         font-weight: 600;
         float: left;
@@ -215,12 +209,13 @@ const Section = styled.div`
 const Send= () => {
     const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
+
+    const [sideBar, setSideBar] = useState(false); //미디어쿼리시 nav 사이드바
+    const [friendList, setFriendList] = useState();
     const [receiveId,setReceiveId] = useState("");
     const [detail, setDetail] = useState("");
     const [lengthCheck, setLengthCheck] = useState(false);
     const [isBlur,setIsBlur] = useState(false);
-    const [friendList, setFriendList] = useState();
-    const [searchKeyword, setSearchKeyword] = useState('');
 
     const [comment, setComment] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
@@ -236,7 +231,7 @@ const Send= () => {
             setModalOpen(true); 
         } else {
             const result = await Api.messageSend(getId , receiveId, detail);
-            if(result.data){
+            if(result.data) {
                 setModalOpen(true);
                 setComment("쪽지 전송이 성공했습니다.");
             }
@@ -248,7 +243,7 @@ const Send= () => {
         }
     }
 
-    const onChangeReceiveId =(e) => {
+    const onChangeReceiveId = (e) => {
         setReceiveId(e.target.value);
     }
 
@@ -256,27 +251,17 @@ const Send= () => {
         setIsBlur(true)
     }
 
-    const onClickFriend = (e) => {
-        setReceiveId(e.nickname+'#'+e.userCode);
-        console.log(receiveId);
-    }
-    
-
-    useEffect(()=>{
+    useEffect(() => {
         const friendPage = async() => {
-            try{
+            try {
                 const response = await Api.friendLoad(getId); //친구랑 알림 목록 불러오기
                 setFriendList(response.data.friendList);
-            } catch(e){
-            console.log(e);
+            } catch(e) {
+                console.log(e);
             }
         }
         friendPage();
-    },[])
-    ;
-
-    //미디어쿼리시 nav 사이드바
-    const [sideBar, setSideBar] = useState(false);
+    }, []);
     
     return (
         <Wrap>
@@ -298,7 +283,7 @@ const Send= () => {
                             <td>
                                 <div className="friend_search">
                                     <p className='sender'>받는 사람</p>
-                                    <input title="검색" placeholder="친구 닉네임을 검색해보세요" onChange={onChangeReceiveId} value={receiveId} onClick={onBlurSend} />
+                                    <input title="검색" placeholder="친구 닉네임을 검색해보세요" onChange={onChangeReceiveId} value={receiveId} onClick={onBlurSend}/>
                                 </div>
                             </td>
                         </tr>
@@ -311,24 +296,7 @@ const Send= () => {
                     </div>
                 }
                 <div className='form-wrapper'>
-                    <CKEditor editor={ClassicEditor} data={detail} onChange={(event, editor) => {
-                        const data = editor.getData();
-                        setDetail(data);
-                        const getByteLengthOfUtf8String = (s) => {
-                            if(s != undefined && s != "") {
-                                let b, i, c;
-                                for(b=i=0; c=s.charCodeAt(i++); b += c >> 11 ? 3 : c >> 7 ? 2 : 1); // Str Get BYTE 기능 (BYTE 체크)
-                                return b;
-                            } else {
-                                return 0;
-                            }
-                        }
-                        const length = getByteLengthOfUtf8String(data);
-                        if(length > 2000){
-                            setLengthCheck(true);
-                            alert("내용이 너무 깁니다.");
-                        } else setLengthCheck(false);
-                    }}/>
+                    <CKEditor editor={ClassicEditor} data={detail}/>
                 </div>
                 <div className="button-area">
                     <button onClick={onClickSend} disabled={lengthCheck}>SEND</button>
