@@ -111,24 +111,24 @@ public class MessageService {
         }
     }
 
-    public MessageDTO searchListLoad(String id ,String keyword) {
-        MessageDTO messageDTO = new MessageDTO();
-        List<Map<String, Object>> messageList = new ArrayList<>();
-        try {
-            List<Message> messageData2 = messageRepository.findByUserIdLikeOrDetailLikeOrderByMessageNoDesc(id,keyword);
-            for (Message e : messageData2) {
-                Map<String, Object> message = new HashMap<>();
-                message.put("messageNo", e.getMessageNo());
-                message.put("sendId", e.getUserId().getNickname()+"#"+e.getUserId().getUserCode());
-                message.put("detail", e.getDetail());
-                message.put("sendDate", e.getDate());
-                messageList.add(message);
-            }
-            messageDTO.setMessageList(messageList);
-            messageDTO.setOk(true);
-        } catch (Exception e) {
-            messageDTO.setOk(false);
-        }
-        return messageDTO;
-    }
+//    public MessageDTO searchListLoad(String id ,String keyword) {
+//        MessageDTO messageDTO = new MessageDTO();
+//        List<Map<String, Object>> messageList = new ArrayList<>();
+//        try {
+//            List<Message> messageData2 = messageRepository.findByUserIdLikeOrDetailLikeOrderByMessageNoDesc(id,keyword);
+//            for (Message e : messageData2) {
+//                Map<String, Object> message = new HashMap<>();
+//                message.put("messageNo", e.getMessageNo());
+//                message.put("sendId", e.getUserId().getNickname()+"#"+e.getUserId().getUserCode());
+//                message.put("detail", e.getDetail());
+//                message.put("sendDate", e.getDate());
+//                messageList.add(message);
+//            }
+//            messageDTO.setMessageList(messageList);
+//            messageDTO.setOk(true);
+//        } catch (Exception e) {
+//            messageDTO.setOk(false);
+//        }
+//        return messageDTO;
+//    }
 }

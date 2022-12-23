@@ -284,7 +284,7 @@ const Send= () => {
                             <td>
                                 <div className="friend_search">
                                     <p className='sender'>받는 사람</p>
-                                    <input title="검색" placeholder="친구 닉네임을 검색해보세요" onChange={onChangeReceiveId} value={receiveId} onClick={onBlurSend}/>
+                                    <input title="검색" placeholder="받는 사람의 닉네임을 작성하세요." onChange={onChangeReceiveId} value={receiveId} onClick={onBlurSend}/>
                                 </div>
                             </td>
                         </tr>
