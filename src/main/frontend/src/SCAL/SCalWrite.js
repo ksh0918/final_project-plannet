@@ -141,14 +141,15 @@ const Section = styled.div`
         }
         input, span {vertical-align: middle;}
         input[type="text"], span {
-            width: 400px;
+            width: 530px;
             border: none;
             background: none;
             padding: 0px;
-            overflow: hidden;
+            overflow-x: scroll;
             line-height: 16px;
             display: inline-block;
             outline: none;
+            &::-webkit-scrollbar{display: none;}
         }
     }
     .comment {height: 350px;
@@ -173,6 +174,8 @@ const SCalWrite = () => {
     const currentLink = useLocation(); // 현재 링크 얻기
     const getDate = currentLink.pathname.slice(-10); // currentLink.pathname에서 slice로 date 부분만 추출
 
+
+    const [sideBar, setSideBar] = useState(false); // 미디어쿼리시 nav 사이드바
     const [planList, setPlanList] = useState([]);
     const [commentList, setCommentList] = useState([]);
  
@@ -201,7 +204,10 @@ const SCalWrite = () => {
             try {
                 // 플랜 불러오기
                 const planData = await Api.splanLoad(getNum, getDate);
-                setPlanList(planData.data);  
+                console.log(planData);
+                console.log(planList);
+                setPlanList(planData.data[0]); 
+
 
                 // 댓글 불러오기
                 const commentData = await Api.scommentLoad(getNum, getDate);
@@ -212,9 +218,6 @@ const SCalWrite = () => {
         }
         writeLoad();
     }, [getId]);
-
-    //미디어쿼리시 nav 사이드바
-    const [sideBar, setSideBar] = useState(false);
 
     return (
         <Wrap>

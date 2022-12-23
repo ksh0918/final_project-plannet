@@ -37,6 +37,6 @@ public class SPLAN {
     @ColumnDefault("0")
     private int splanChecked;
 
-    @Column(nullable = false, length = 90)
+    @Column(nullable = false, length = 150)
     private String splan;
 }

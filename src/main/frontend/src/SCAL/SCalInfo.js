@@ -179,8 +179,15 @@ const SCalSetting = () => {
     }
 
     const onClickSCalInfoSave = async() => {
-        await Api.scalInfoSave(getNum, title);
-        navigate('/scal/home/' + getNum);
+        console.log("타이틀 길이");
+        console.log(title.length);
+        if (title.length === 0) {
+            setCommnet("공유캘린더 이름을 입력해 주세요");
+            setModalOpen(true); 
+        } else {
+            await Api.scalInfoSave(getNum, title);
+            navigate('/scal/home/' + getNum);
+        }
     }
     const onClickSCalDelete = () => {
         setScalNo(getNum);
