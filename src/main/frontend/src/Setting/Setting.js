@@ -157,6 +157,7 @@ const Setting = () => {
     const navigate = useNavigate();
     const userId = window.localStorage.getItem("userId");
 
+    const [sideBar, setSideBar] = useState(false); //미디어쿼리시 nav 사이드바
     const [userImgName, setUserImgName] = useState("");
     const [userImgUrl, setUserImgUrl] = useState({backgroundImage: "url(https://khprojectplannet.s3.ap-northeast-2.amazonaws.com/" + userImgName + ")"});
     const [userNickname, setUserNickname] = useState("");
