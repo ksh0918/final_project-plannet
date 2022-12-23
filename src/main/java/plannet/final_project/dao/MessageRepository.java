@@ -14,5 +14,4 @@ public interface MessageRepository extends JpaRepository<Message,Long> {
     List<Message> findAllMatchingId(@Param("receive_id") String receive_id);
     void deleteByUserId(Member member);
     void deleteByMessageNo(Long messageNo);
-    List<Message> findBySendIdLikeDetailLikeOrderByMessageNoDesc(String keyword1, String keyword2);
 }

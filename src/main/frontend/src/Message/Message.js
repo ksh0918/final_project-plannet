@@ -202,7 +202,8 @@ const Message = () => {
     const [searchKeyword, setSearchKeyword] = useState('');
     const onClickSearch = async () => {
         try {
-            const response = await Api.searchMessageList(searchKeyword);
+            const response = await Api.searchMessageList(searchKeyword,getId);
+            console.log(response.data);
             setMessageList(response.data);
         } catch (e) {
             console.log(e);

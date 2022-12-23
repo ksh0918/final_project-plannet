@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import plannet.final_project.entity.Message;
 import plannet.final_project.service.MessageService;
 import plannet.final_project.vo.BoardDTO;
 import plannet.final_project.vo.MessageDTO;
@@ -82,12 +83,5 @@ public class MessageController {
         } catch (Exception e) {
             return new ResponseEntity(null, HttpStatus.OK);
         }
-    }
-
-    @GetMapping("/search_list")
-    public ResponseEntity<List<MessageDTO>> searchListLoad(@RequestParam String keyword) {
-        MessageDTO messageList = messageService.searchListLoad("%%" + keyword + "%%");
-        if(messageList.isOk()) return new ResponseEntity(messageList.getMessageList(), HttpStatus.OK);
-        else return new ResponseEntity(null, HttpStatus.OK);
     }
 }
