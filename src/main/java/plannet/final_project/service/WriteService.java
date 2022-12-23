@@ -76,7 +76,7 @@ public class WriteService {
                     else if (checked.equals("false")) planData.setPlanChecked(0);
                     else if (checked.equals("true")) planData.setPlanChecked(1);
                     planData.setPlan((String)p.get("text"));
-                    Plan rst = planRepository.save(planData);
+                    planRepository.save(planData);
                 }
             }
 

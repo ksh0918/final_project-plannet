@@ -188,8 +188,7 @@ public class MemberService {
         try {
             Member mem = memberRepository.findById(id).orElseThrow(EmptyStackException::new);
             mem.setPwd(pwd);
-            Member rst = memberRepository.save(mem);
-            log.warn(rst.toString());
+            memberRepository.save(mem);
         } catch(Exception e) {
             return false;
         }

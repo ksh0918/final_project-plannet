@@ -196,7 +196,6 @@ function Create() {
     const [title, setTitle] = useState("");
     const [detail, setDetail] = useState("");
     const [isChecked, setIsChecked] = useState(false);
-    const [lengthCheck, setLengthCheck] = useState(false);
     const [category, setCategory] =useState("자유");
 
     const onClickSave = async() => {
@@ -264,10 +263,13 @@ function Create() {
                     </table>           
                 </div>
                 <div className='form-wrapper'>
-                    <CKEditor editor={ClassicEditor} data={detail}/>
+                    <CKEditor editor={ClassicEditor} data={detail} onChange={(event, editor) => {
+                        const data = editor.getData();
+                        setDetail(data);
+                    }}/>
                 </div>
                 <div className="button-area">
-                    <button onClick={onClickSave} disabled={lengthCheck}>SAVE</button>
+                    <button onClick={onClickSave}>SAVE</button>
                     <Link to='/board'><button>CANCLE</button></Link>
                 </div>
             </Section>
