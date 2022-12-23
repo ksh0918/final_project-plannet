@@ -85,7 +85,7 @@ const CommentItem = ({getId, getNum, getDate, setCommentList, commentList}) => {
     // 댓글 저장
     const onClickSaveComment = async() => {
         let commentData = '';
-        if (currentPath == "/board") {
+        if (currentPath === "/board") {
             await Api.commentWrite(getNum, getId, comment);
             commentData = await Api.commentLoad(getNum);
         }
@@ -98,7 +98,7 @@ const CommentItem = ({getId, getNum, getDate, setCommentList, commentList}) => {
     } 
     // 댓글 삭제
     const onClickDeleteComment = async(commentNo) => {
-        if (currentPath == "/board") {
+        if (currentPath === "/board") {
             await Api.commentDelete(commentNo); 
             navigate(0);    
         }
@@ -109,7 +109,7 @@ const CommentItem = ({getId, getNum, getDate, setCommentList, commentList}) => {
         }
     } 
 
-    if(currentPath == '/board') {
+    if(currentPath === '/board') {
         return ( 
             <Comment>
                 <div className="button-area2">
