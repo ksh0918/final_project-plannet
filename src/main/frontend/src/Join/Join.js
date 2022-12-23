@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
-import { Link } from "react-router-dom";
-import styled from "styled-components";
+import { useNavigate, Link } from "react-router-dom";
 import { ReactComponent as LogoImg } from "../Images/plannet-001.svg";
+import styled from "styled-components";
 import Api from '../api/plannetApi';
-import "./Join.scss"
-import "../App";
-import { useNavigate  } from "react-router-dom";
 import Modal from '../Utill/Modal';
-
-
+import "../App";
+import "./Join.scss"
 
 const ContainerJoin = styled.div`
     height: 100vh;
@@ -71,7 +68,6 @@ const Join = () => {
             setIsId(true);
         }
     }
-
     // 중복 체크
     const onBlurIdCheck = async() => {
         // 가입 여부 우선 확인
@@ -104,7 +100,6 @@ const Join = () => {
             setIsConPw(false)   
         }
     }
-
     // 비밀번호 확인 체크
     const onChangeConPw = (e) => {
         const passwordCurrent = e.target.value ;
@@ -123,7 +118,6 @@ const Join = () => {
         if(e.target.value.length > 0) setIsName(true);
     }
     
-    // 닉네임을 적었으면 해당 닉네임으로 저장
     const onChangeNickname = (e) => {
         setInputNickname(e.target.value);
     }
@@ -141,7 +135,6 @@ const Join = () => {
             setIsEmail(true);
         }
     }
-
     // 이메일 인증번호 받기
     const onClickAuth = async() => {
         setModalOpen(true);
@@ -196,7 +189,7 @@ const Join = () => {
     }
 
     const onBlurTelCheck = async() => {
-         // 가입 여부 우선 확인
+        // 가입 여부 우선 확인
         const memberCheck = await Api.overlapCheck(inputTel, "TYPE_TEL");
         if (memberCheck.data) {
             setTelMessage("사용가능한 전화번호입니다.");
@@ -213,7 +206,7 @@ const Join = () => {
     }
 
     // ENTER 키를 눌렀을 때 회원가입 전송
-    const onKeyDownJoin = (e) => {
+    const onKeyPressEnter = (e) => {
         if(e.key === 'Enter'){
             onClickJoin();
         }
@@ -234,7 +227,7 @@ const Join = () => {
         setModalOpen(false);
     }
 
-    return(
+    return (
         <ContainerJoin id="join">
             <Modal open={modalOpen} close={closeModal} header="글쓰기 안내">{comment}</Modal>
             <Logo><LogoImg width="90px" viewBox="30 150 430 220"/><Link to="/" className="logo">Plannet</Link></Logo>
@@ -283,14 +276,13 @@ const Join = () => {
                     <input type='text'placeholder="인증번호 확인" value = {inputAuth} onChange={onChangeAuth} disabled={!clickAuth}></input>
                     <button type='button' onClick={onCheckAuth} disabled={!clickAuth}>인증하기</button>
                 </div>
-                
             </div>
             <div className="session">
                 <p>
                     전화번호
                     {inputTel.length > 0 && <span>{telMessage}</span>}
                 </p>
-                <input type='tel' placeholder="휴대폰번호('-' 제외)" value={inputTel} onChange={onChangeTel} onBlur={onBlurTelCheck} onKeyDown={onKeyDownJoin}/>
+                <input type='tel' placeholder="휴대폰번호('-' 제외)" value={inputTel} onChange={onChangeTel} onBlur={onBlurTelCheck} onKeyDown={onKeyPressEnter}/>
             </div>
             <div className="session">
                 <button onClick={onClickJoin} disabled={!(isId && isPw && isConPw && isName && isNickname &&isEmail && isTel && isAuth)}>가입하기</button>

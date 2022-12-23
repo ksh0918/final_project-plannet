@@ -17,20 +17,10 @@
         border: none;
         font-weight: 500;
         outline: none;
-        &:focus {
-            background-color: #b8b9f1;
-            color: #222;
-        }
-        &:focus::placeholder {
-            color: #888;
-        }
-        &::placeholder {
-            color: #bbb;
-        }
-        &:read-only{
-            background-color: #eee;
-            color: #aaa;
-        }
+        &:focus {background-color: #b8b9f1; color: #222;}
+        &:focus::placeholder {color: #888;}
+        &::placeholder {color: #bbb;}
+        &:read-only{background-color: #eee; color: #aaa;}
     }
     button {
         border-radius: 5px;
@@ -43,15 +33,8 @@
         cursor: pointer;
         font-weight: 500;
         font-size: 18px;
-        &:hover {
-            background-color: rgb(55, 67, 134);
-            color: #eee;
-        }
-        &:disabled {
-            background-color: #aaa;
-            color: #eee;
-            cursor: default;
-        }
+        &:hover {background-color: rgb(55, 67, 134); color: #eee;}
+        &:disabled {background-color: #aaa; color: #eee; cursor: default;}
     }
     span {
         color: #666;
@@ -81,17 +64,12 @@
     font-weight: 800;
 }
 div.session {
-    p{margin-top: 8px;}
+    p {margin-top: 8px;}
 }
-.newPwd {
-    letter-spacing: -0.5px;
-}
+.newPwd {letter-spacing: -0.5px;}
 //email auth 인증
 .email_auth {
-    input{
-        width: 250px;
-        vertical-align: middle;
-    }
+    input {width: 250px; vertical-align: middle;}
     button{
         margin: 0 0 0 3px;
         width: 97px;
@@ -100,7 +78,5 @@ div.session {
         vertical-align: middle;
         font-size: 14px;
     }
-    &:first-of-type{
-        margin-bottom: 3px;
-    }
+    &:first-of-type {margin-bottom: 3px;}
 }

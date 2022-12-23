@@ -1,4 +1,7 @@
-.login-logo {display: flex; flex-direction:row ;}
+.login-logo {
+    display: flex;
+    flex-direction:row ;
+}
 .login {
 	button {
 		width: 350px;
@@ -59,9 +62,16 @@
 		font-size: 14px;
 		outline: none;
 		border-radius: 5px;
-		&:focus {background-color: #b8b9f1; color: #222;}
-		&:focus::placeholder {color: #888;}
-		&::placeholder {color: #bbb;}
+		&:focus{
+		background-color: #b8b9f1;
+		color: #222;
+		}
+		&:focus::placeholder{
+			color: #888;
+		}
+		&::placeholder{
+			color: #bbb;
+		}
 	}
 	.doLogin {
 		margin: 5px 0 5px 0;
@@ -80,7 +90,7 @@
 		}
 	}
 }
-.else {
+.else{
 	margin-top: 20px;
 	.join {
 		border: none;

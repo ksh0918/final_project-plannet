@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from "react-router-dom";
-import styled from "styled-components";
+import { useNavigate, Link } from "react-router-dom";
 import { ReactComponent as LogoImg } from "../Images/plannet-001.svg";
+import styled from "styled-components";
 import Api from '../api/plannetApi';
-import "./Join.scss"
-import "../App";
-import { useNavigate  } from "react-router-dom";
 import Modal from '../Utill/Modal';
-
+import "../App";
+import "./Join.scss"
 
 const ContainerJoin = styled.div`
     height: 100vh;
@@ -40,6 +38,7 @@ const Social = () => {
     const closeModal = () => {
         setModalOpen(false);
     };
+    
     const [option, setOption] = useState("");
     const [inputNickname, setInputNickname] = useState("");
     const [inputTel, setInputTel] = useState("");
@@ -72,7 +71,7 @@ const Social = () => {
             setHeader("구글 로그인 실패");
             setModalOpen(true);
         }
-    },[email, id, navigate, regStatus])
+    }, [email, id, navigate, regStatus])
  
     // 닉네임을 적었으면 해당 닉네임으로 저장
     const onChangeNickname = (e) => {
@@ -89,6 +88,7 @@ const Social = () => {
             setIsNickname(false);
         } 
     }
+
     const onChangeTel = (e) => {
     setInputTel(e.target.value.replace(/[^0-9]/g, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`));
     }
@@ -102,12 +102,7 @@ const Social = () => {
             setIsTel(false)
         } 
     }
-    // ENTER 키를 눌렀을 때 회원가입 전송
-    const onKeyDownJoin = (e) => {
-        if(e.key === 'Enter'){
-            onClickJoin();
-        }
-    }
+    
     const onClickJoin = async() => {
         const memberReg = await Api.memberNewSocialSave(id, name, email, inputNickname, inputTel);
         if(memberReg.data) {
@@ -116,7 +111,14 @@ const Social = () => {
             navigate('/home');
         }
     }
-    return(
+    // ENTER 키를 눌렀을 때 회원가입 전송
+    const onKeyPressEnter = (e) => {
+        if(e.key === 'Enter'){
+            onClickJoin();
+        }
+    }
+
+    return (
         <>
             <ContainerJoin>
                 <Modal open={modalOpen} close={closeModal} header={header} option={option}><p dangerouslySetInnerHTML={{__html: comment}}></p></Modal>
@@ -143,15 +145,13 @@ const Social = () => {
                                 전화번호
                                 {inputTel.length > 0 && <span>{telMessage}</span>}
                             </p>
-                            <input type='tel' placeholder="휴대폰번호('-' 제외)" value={inputTel} onChange={onChangeTel} onBlur={onBlurTelCheck} onKeyDown={onKeyDownJoin}/>
+                            <input type='tel' placeholder="휴대폰번호('-' 제외)" value={inputTel} onChange={onChangeTel} onBlur={onBlurTelCheck} onKeyDown={onKeyPressEnter}/>
                         </div>
                         <div className="session">
                             <button onClick={onClickJoin} disabled={!(isNickname && isTel)}>가입하기</button>
                         </div>
                     </>
                 : ''}
-                
-                
             </ContainerJoin>
         </> 
     );

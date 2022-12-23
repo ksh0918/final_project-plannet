@@ -72,7 +72,7 @@ const Modal = (props) => {
     }
     const onClickGoogleLogin = async() => {
         const response = await Api.changeSocialLogin(option);
-        window.localStorage.setItem("userId", response.data);
+        window.localStorage.setItem("userId", response.data.substring(7));
         window.localStorage.setItem("isLogin", "true");
         navigate('/home');
     }
