@@ -48,5 +48,5 @@ code {font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', mono
 	z-index: 2;
 	opacity: 0;
 	background-color: rgba(0, 0, 0);
-	transition: all .7s ease-in;
+	transition: all .5s ease-in;
 }
