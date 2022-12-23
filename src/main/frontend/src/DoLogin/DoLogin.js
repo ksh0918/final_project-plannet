@@ -78,7 +78,7 @@ const DoLogin = () => {
         }
     }
     // 로그인 할 때 아이디, 비밀번호 입력 후 엔터 키를 눌렀을 때 로그인 인식
-    const onKeyPressLogin = (e) => {
+    const onKeyPressEnter = (e) => {
         if(e.key === 'Enter'){
             onClickLogin();
         }
@@ -105,7 +105,7 @@ const DoLogin = () => {
                 <p className="space-or">또는</p>
                 <div className="login2">
                     <input type="text" id="id" name="uid" placeholder="아이디" required="" value ={inputId} onChange={onChangId}/>
-                    <input type="password" id="pwd" name="upw" placeholder="비밀번호" required="" value ={inputPw} onChange={onChangePw} onKeyPress={onKeyPressLogin}/>
+                    <input type="password" id="pwd" name="upw" placeholder="비밀번호" required="" value ={inputPw} onChange={onChangePw} onKeyPress={onKeyPressEnter}/>
                     <button className="doLogin" onClick={onClickLogin}>로그인하기</button>
                     <Modal open={modalOpen} close={closeModal} header="오류">아이디 및 패스워드를 재확인해 주세요.</Modal>
                 </div>
