@@ -83,6 +83,7 @@ public class MemberService {
             member.setName(name);
             member.setNickname(nickname);
             member.setEmail(email);
+            member.setMarketingOptIn("EMAIL");
             if(tel.length() != 0) member.setTel(tel);
             member.setJoinDate(LocalDateTime.now());
             member.setProImg("userdefault.png");
@@ -95,7 +96,7 @@ public class MemberService {
 
     // 회원가입
     public boolean memberReg(String id, String pwd, String name,
-                             String nickname, String email, String tel) {
+                             String nickname, String email, String tel, String optIn) {
         try {
             Member member = new Member();
             member.setId(id);
@@ -109,6 +110,7 @@ public class MemberService {
             member.setJoinDate(LocalDateTime.now());
             member.setProImg("userdefault.png");
             member.setSocial("-");
+            member.setMarketingOptIn(optIn);
             log.warn("정보입력 완료");
             memberRepository.save(member);
             log.warn("저장 완료");
