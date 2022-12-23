@@ -55,7 +55,7 @@ const FriendAdd = ({setCommnet, setModalHeader, setModalOpen, isAdd, getId}) => 
     const [isOk, setIsOk] = useState(true); 
 
     const onChangeAddInput = (e) => {
-        const regex = /^([^#@:]\s?){2,32}#[0-9]{4}$/
+        const regex = /^([^#]\s?){1,20}#[0-9]{4}$/
         const current = e.target.value;
         setAddInput(current);
         if (!regex.test(current)) {
