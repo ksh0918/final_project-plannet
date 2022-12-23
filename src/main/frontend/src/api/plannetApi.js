@@ -211,7 +211,6 @@ const plannetApi = {
         };
         return await axios.post(PLANNET_DOMAIN + "home/memo", object, HEADER);
     },
-    
 
     // WriteController
     // 플랜리스트.다이어리 로드
@@ -228,7 +227,6 @@ const plannetApi = {
         };
         return await axios.post(PLANNET_DOMAIN + "write/save", object, HEADER);
         },
-
 
     // ScalController
     // 공유 캘린더 생성
