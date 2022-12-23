@@ -44,9 +44,15 @@ const Modal = (props) => {
     }
     const onClickNotiAnswer = async() => {
         console.log("option:" + option);
-        const key = option.toString().charAt(0);
-        const status = option.slice(1);
-        await Api.notiResponse(key, status);
+        if(option.indexOf(true) !== -1){
+            const key = option.toString().slice(0, -4);
+            const status = option.slice(-4);
+            await Api.notiResponse(key, status);
+        } else {
+            const key = option.toString().slice(0, -5);
+            const status = option.slice(-5);
+            await Api.notiResponse(key, status);
+        }
         navigate(0);
     }
 
