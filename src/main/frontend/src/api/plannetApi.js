@@ -171,7 +171,7 @@ const plannetApi = {
         return await axios.get(PLANNET_DOMAIN + `message/list?receiveId=${id}`, HEADER);
     },
     // 쪽지 보내기
-    messageSend : async function(id,receiveId,detail){
+    messageSend : async function(id, receiveId, detail){
         const object = {
             id : id,
             receiveId : receiveId,
@@ -212,7 +212,6 @@ const plannetApi = {
         };
         return await axios.post(PLANNET_DOMAIN + "home/memo", object, HEADER);
     },
-    
 
     // WriteController
     // 플랜리스트.다이어리 로드
@@ -229,7 +228,6 @@ const plannetApi = {
         };
         return await axios.post(PLANNET_DOMAIN + "write/save", object, HEADER);
         },
-
 
     // ScalController
     // 공유 캘린더 생성
@@ -285,11 +283,7 @@ const plannetApi = {
     },
     // 공유 캘린더 일정 불러오기
     splanLoad: async function(scalNo, planDate) {
-        const object = {
-            scalNo: scalNo,
-            planDate: planDate
-        };
-        return await axios.get(PLANNET_DOMAIN + `scal/splan_load?scalNo=${scalNo}&planDate=${planDate}`, object, HEADER);
+        return await axios.get(PLANNET_DOMAIN + `scal/splan_load?scalNo=${scalNo}&planDate=${planDate}`, HEADER);
     },
     // 공유 캘린더 일정 작성하기
     splanSave: async function(scalNo, id, date, planList) {
@@ -303,11 +297,7 @@ const plannetApi = {
     },
     // 해당 캘린더에 작성된 댓글 불러오기
     scommentLoad: async function(scalNo, planDate) {
-        const object = {
-            scalNo: scalNo,
-            planDate: planDate
-        }
-        return await axios.get(PLANNET_DOMAIN + `scal/comment_load?scalNo=${scalNo}&planDate=${planDate}`, object, HEADER);
+        return await axios.get(PLANNET_DOMAIN + `scal/scomment_load?scalNo=${scalNo}&planDate=${planDate}`, HEADER);
     },
     // 해당 캘린더에 댓글 작성
     scommentWrite: async function(scalNo, id, planDate, detail){

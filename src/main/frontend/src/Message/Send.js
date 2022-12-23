@@ -37,7 +37,7 @@ const Section = styled.div`
         background: none;
         /*스크롤바 뒷 배경 색상*/
     }
-    div {
+    >div {
         width: 100%;
         padding: 10px 30px;
     }
@@ -75,9 +75,29 @@ const Section = styled.div`
         } 
     }
     .is_list {
+        margin-bottom: 5px;
+        ul{
+            overflow-y: scroll;
+            height: 90px;
+            &::-webkit-scrollbar{display: none;}
+        }
         li {
-            width: 350px !important;
+            width: calc(100% / 3) !important;
             float: left !important;
+            height: 45px;
+            margin: 0%;
+            padding: 5px 10px;
+            >div{
+                width: 35px; 
+                height: 35px; 
+                >img{width: 29px;}
+            }
+            >p{
+                width: calc(100% - 70px); 
+                left: 55px; 
+                top: 12px; 
+                span:first{width:calc(100% - 45px);}
+            }
         }
     }
     button {
@@ -102,25 +122,27 @@ const Section = styled.div`
         background-color: #4555AE;
         border-bottom: solid 1px #4555AE;
         text-align: center;
+        table-layout: fixed;
         tr:nth-child(2n) td {background-color: #f9f9f9;}
         th {padding: 10px; color: white;}
-        td {padding: 0 10px; background-color: white; border-left: solid 1px #bbb; border-top: solid 1px #ddd;}
-        td:first-child {border-left: none};
-        td:nth-child(2) {width: 400px; text-align: left; padding-left: 20px;}  
-        tr:hover td, tr:hover a {color: #4555AE;}
-        .friend_search {
-            margin: 0;
-            width: 100%;
-            line-height: 31px;
-            padding: 0 5px;
-            border-radius: 5px;
-            input {
-                width: calc(100% - 80px);
-                max-width: 410px;
+        td {
+            padding: 0 10px; 
+            background-color: white; 
+            border-left: none; 
+            border-top: solid 1px #ddd;
+            p {
+                width: 80px;
+                text-align: center;
+                line-height: 33px;
+                border-right: 1px solid #bbb;
+                padding-right: 10px;
+            }
+            input{
+                width: calc(100% - 100px);
                 height: 27px;
                 border: 0px;
                 outline: none;
-                margin: 0 0 0 3px;
+                margin: 3px 0 3px 3px;
                 padding-left: 10px;
                 border-radius: 5px;
                 background-color: #f9f9f9;
@@ -219,8 +241,6 @@ const Send= () => {
 
     const [comment, setComment] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
-    const [modalHeader, setModalHeader] = useState("");
-    const [option, setOption] = useState("");
     const closeModal = () => {
         setModalOpen(false);
     }
@@ -266,9 +286,9 @@ const Send= () => {
     return (
         <Wrap>
             <Modal open={modalOpen} close={closeModal} header="글쓰기 안내">{comment}</Modal>
+            <Nav sideBar={sideBar} setSideBar={setSideBar}/>
             <div className={`back ${sideBar? 'back_side_open':''}`}/>
             <TopBar sideBar={sideBar} setSideBar={setSideBar}/>
-            <Nav sideBar={sideBar} setSideBar={setSideBar}/>
             <Section id="send" className="section">
                 <div className="board_list sub_box">
                     <h2>Send Message</h2>
@@ -278,22 +298,20 @@ const Send= () => {
                     </p>    
                     <table>
                         <tr>
-                            <th colSpan={2}>쪽지 작성</th>
+                            <th>쪽지 작성</th>
                         </tr>
                         <tr>
                             <td>
-                                <div className="friend_search">
-                                    <p className='sender'>받는 사람</p>
-                                    <input title="검색" placeholder="받는 사람의 닉네임을 작성하세요." onChange={onChangeReceiveId} value={receiveId} onClick={onBlurSend}/>
-                                </div>
+                                <p className='sender'>받는 사람</p>
+                                <input title="검색" placeholder="받는 사람의 닉네임을 작성하세요. " onChange={onChangeReceiveId} value={receiveId} onClick={onBlurSend}/>
                             </td>
                         </tr>
                     </table>       
                 </div>
-                {isBlur && 
+                {isBlur && friendList &&
                     <div className='friend'>
                         <p className='listfriend'>Find Friend</p>
-                        <span><FriendList setCommnet={setComment} setModalHeader={setModalHeader} setModalOpen={setModalOpen} friendList={friendList} setOption={setOption} className='friendList'/></span>
+                        <span><FriendList friendList={friendList} setReceiveId={setReceiveId} isPage="message" className='friendList'/></span>
                     </div>
                 }
                 <div className='form-wrapper'>

@@ -187,7 +187,7 @@ const SCalWrite = () => {
 
     const onClickAddList = () => {
         const nextPlanList = planList.concat({
-            key: planList.length + 1,
+            key: planList.length+1,
             checked: false,
             text: "일정을 입력해주세요.",
             deleted: false
@@ -204,9 +204,7 @@ const SCalWrite = () => {
             try {
                 // 플랜 불러오기
                 const planData = await Api.splanLoad(getNum, getDate);
-                console.log(planData);
-                console.log(planList);
-                setPlanList(planData.data[0]); 
+                setPlanList(planData.data); 
 
 
                 // 댓글 불러오기
@@ -217,7 +215,7 @@ const SCalWrite = () => {
             }
         }
         writeLoad();
-    }, [getId]);
+    }, [getId, getDate]);
 
     return (
         <Wrap>

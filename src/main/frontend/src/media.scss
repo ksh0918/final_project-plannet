@@ -33,6 +33,9 @@
         .readBtn, .sendBtn, .deleteBtn{padding: 8px 15px;}
         table th:nth-child(3){width: 90px;}
     }
+    #send{
+        .is_list li {width: calc(100% / 2) !important;}
+    }
 }
 @media screen and (max-width : 767px) {
     html{background: white;}
@@ -236,7 +239,7 @@
     #nav, .section{float: none !important; position: absolute;}
     .section{z-index: 0; height: calc(100vh - 100px) !important; width: 100vw !important;}
     #topbar{display: block;}
-    #nav{transition: right .7s ease-in; right: -280px; position: fixed; z-index: 3;}
+    #nav{transition: right .5s ease-in; right: -280px; position: fixed; z-index: 3;}
     .back_side_open{opacity: .7; visibility: visible;}
     .copy{width: 100vw; float: none;}
 
