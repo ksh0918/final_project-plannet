@@ -118,7 +118,13 @@
         .etc textarea {height: 240px !important;}
     }
     //write
-    #write, #scalWrite{
+    #write{
+        .plan_it{
+            input[type="text"], span:first-of-type {width: calc(100% - 70px);}
+            span:first-of-type{height: 16px; overflow: hidden; text-overflow: ellipsis; white-space:nowrap}
+        }
+    }
+    #scalWrite{
         .plan_it{
             input[type="text"], span:first-of-type {width: calc(100% - 150px);}
             span:first-of-type{height: 16px; overflow: hidden; text-overflow: ellipsis; white-space:nowrap}

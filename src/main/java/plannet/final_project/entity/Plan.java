@@ -35,6 +35,6 @@ public class Plan {
     @ColumnDefault("0")
     private int planChecked; // 일정 완료여부
 
-    @Column(length = 90, nullable = false)
+    @Column(length = 150, nullable = false)
     private String plan; // 일정
 }
