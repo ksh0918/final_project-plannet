@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from 'styled-components';
-import Nav from '../Utill/Nav';
 import Api from "../api/plannetApi";
 import Modal from '../Utill/Modal';
+import Nav from '../Utill/Nav';
 import TopBar from "../Utill/TopBar";
 
 const Wrap = styled.div`
@@ -24,7 +24,7 @@ const Section = styled.div`
         padding-left: 30px;
         float: left;  
         padding: 10px 30px 10px 30px;
-        h2{
+        h2 {
           margin-top: 35px;
           font-size: 28px;
           font-weight: 900;
@@ -46,8 +46,7 @@ const Section = styled.div`
             border: none;
             transition: all .1s ease-in;
             margin-left: 5px;
-            &:hover{background-color: #666;
-                color: #888;}
+            &:hover{background-color: #666; color: #888;}
         }
     }
     .message>table {
@@ -66,7 +65,7 @@ const Section = styled.div`
             &:nth-child(3){width: 130px;}
             &:last-child {width: 135px;}
         }
-        td{
+        td {
             padding: 10px; 
             background-color: white; 
             border-left: solid 1px #bbb; 
@@ -75,30 +74,25 @@ const Section = styled.div`
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            table{
+            table {
                 line-height: 0;
-                td, tr{display: none;}
-                &::after{
-                    content: "테이블이 존재합니다. 클릭해서 확인해주세요!";
-                }
+                td, tr {display: none;}
+                &::after {content: "테이블이 존재합니다. 클릭해서 확인해주세요!";}
             }
-            p{
+            p {
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
             }
             &:first-child {
                 border-left: none;
-                input{
-                    vertical-align: middle;
-                    margin-top: -2px;
-                }
+                input {vertical-align: middle; margin-top: -2px;}
             }
         }
         td:nth-child(4) {
             text-align: left;
         }  
-        tr:hover td, tr:hover a{
+        tr:hover td, tr:hover a {
             color: #4555AE; 
             background-color: #efefef; 
             cursor: pointer;
@@ -148,15 +142,30 @@ const Section = styled.div`
 const Message = () => {
     const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
+
+    const [sideBar, setSideBar] = useState(false); // 미디어쿼리시 nav 사이드바
     const [checkItems, setCheckItems] = useState([]);
     const [messageRead,setMessageRead] = useState();
+    const [messageList, setMessageList] = useState([]); // messageList 불러오기
+
+    const [comment, setComment] = useState("");
+    const [modalHeader, setModalHeader] = useState("");
+    const [modalOpen, setModalOpen] = useState(false);
+    const closeModal = () => {
+        setModalOpen(false);
+    };
+    const onClickList = (e) => {
+        setModalOpen(true);
+        setModalHeader("쪽지");
+        setMessageRead(e.messageNo);
+        console.log(messageRead);
+        setComment(e.detail);
+    }
 
     const onClickToCreate = () => {
         const link = "/send"
         navigate(link);
     }
-    
-    const [messageList, setMessageList] = useState([]); // boardList 불러오기
 
     // 체크박스 전체 선택
     const handleAllCheck = (checked) => {
@@ -164,7 +173,6 @@ const Message = () => {
         // 전체 선택 클릭 시 데이터의 모든 쪽지 번호를 담은 배열로 checkItems 상태 업데이트
         const messageArray = [];
         messageList.forEach((e) => messageArray.push(e.messageNo));
-        console.log("messageNo : " + messageArray);
         setCheckItems(messageArray);
         }
         else {
@@ -176,11 +184,9 @@ const Message = () => {
     const handleSingleCheck = (checked, messageNo) => {
         if (checked) {
             setCheckItems(prev => [...prev,messageNo]); // 체크된 쪽지 번호를 배열에 추가
-            console.log("checkItems : " + checkItems.toString());
         } else {
             // 단일 선택 해제 시 체크된 아이템을 제외한 배열 (필터)
             setCheckItems(checkItems.filter((e) => e !== messageNo)); // 체크된 쪽지 번호를 배열에서 삭제
-            console.log("checkItems ddddd: " + checkItems.toString());
         }
     };
 
@@ -192,12 +198,12 @@ const Message = () => {
     const [currPage, setCurrPage] = useState(page)
     let firstNum = currPage - (currPage % 5) + 1
     let lastNum = currPage - (currPage % 5) + 5
-    
+
     // 검색
     const [searchKeyword, setSearchKeyword] = useState('');
     const onClickSearch = async () => {
         try {
-            const response = await Api.searchList(searchKeyword);
+            const response = await Api.searchMessageList(searchKeyword);
             setMessageList(response.data);
         } catch (e) {
             console.log(e);
@@ -207,68 +213,52 @@ const Message = () => {
         setSearchKeyword(e.target.value);
     }
     // 엔터를 눌렀을 때도 검색 되게
-    const onKeyPressSearch = async(e) => {
+    const onKeyPressEnter = async(e) => {
         if(e.key === 'Enter'){
             onClickSearch();
             setSearchKeyword(''); // 검색 후 검색창 빈칸으로 만들기
         }
     }
+    
     // 삭제하기
     const onClickDelete = async() => {
         const response = await Api.messageDelete(checkItems);
-        if(response.data){
+        if(response.data) {
             navigate(0);
         }
-        else{
-            console.log(response.data);
+        else {
+            console.log(e);
         }
-
     }
+
     // 읽음/ 안읽음
     const onClickRead = async() => {
         const response = await Api.messageRead(checkItems);
-        if(response.data){
+        if(response.data) {
             navigate(0);
         }
-        else{
-            console.log("읽음"+response.data);
+        else {
+            console.log(e);
         }
     }
-    const [comment, setComment] = useState("");
-    const [modalHeader, setModalHeader] = useState("");
-    const [modalOpen, setModalOpen] = useState(false);
-    const closeModal = () => {
-        setModalOpen(false);
-    };
 
-    const onClickList = (e) => {
-        setModalOpen(true);
-        setModalHeader("쪽지");
-        setMessageRead(e.messageNo);
-        console.log(messageRead);
-        setComment(e.detail);
-    }
     useEffect(() => {
         const messageData = async () => {
-            try{
+            try {
                 const result = await Api.messageList(getId);
                 setMessageList(result.data);
-                console.log(result.data);
-            }catch(e){
+            } catch(e) {
                 console.log(e);
             }
         }
         messageData();
     },[getId]);
 
-    //미디어쿼리시 nav 사이드바
-    const [sideBar, setSideBar] = useState(false);
-
     return (
         <Wrap>
             <Modal open={modalOpen} close={closeModal} messageRead={messageRead} setMessageRead={setMessageRead} header={modalHeader}><p dangerouslySetInnerHTML={{__html: comment}}></p></Modal>
             <Nav sideBar={sideBar} setSideBar={setSideBar}/>
-            <div className={`back ${sideBar? 'back_side_open':''}`}/>
+            <div className={`back ${sideBar ? 'back_side_open' : ''}`}/>
             <TopBar sideBar={sideBar} setSideBar={setSideBar}/>
             <Section id="message" className="section">
                 <div className="message">
@@ -283,8 +273,8 @@ const Message = () => {
                         <tr>
                             <th><input type='checkbox' name="select_all"
                                 onChange={(e)=> handleAllCheck(e.target.checked)}
-                                checked={messageList.length === checkItems.length  && messageList.length !== 0? true : false}
-                            /></th> 
+                                checked={messageList.length === checkItems.length  && messageList.length !== 0 ? true : false}/>
+                            </th> 
                             <th>State</th>
                             <th>Sender</th>
                             <th>Detail</th>
@@ -297,14 +287,11 @@ const Message = () => {
                                     //  checkItems 에 해당 쪽지의 messageNo 이 있으면 true, 아니면 false
                                     checked={checkItems.includes(message.messageNo) ? true : false}
                                 /></td> 
-                                <td onClick={()=>onClickList(message)}>{
-                                    message.isRead===0?"안읽음":"읽음"
-                                }</td>
+                                <td onClick={()=>onClickList(message)}>{message.isRead===0 ? "안읽음" : "읽음"}</td>
                                 <td onClick={()=>onClickList(message)}>{message.sendId}</td>
                                 <td>{<div className='detail'onClick={()=>onClickList(message)} dangerouslySetInnerHTML={{__html: message.detail}}></div>}</td>
                                 <td onClick={()=>onClickList(message)}>{message.sendDate}</td>
                             </tr>
-                            
                         ))}
                     </table>
                 </div>
@@ -326,7 +313,7 @@ const Message = () => {
                         <li><span onClick = {()=> {setPage(page + 1); setCurrPage(page);}} disabled = {page === numPages}>»</span></li>
                     </ul> 
                     <div className="search">
-                        <input name="product_search" title="검색" placeholder="검색어 입력" onChange={onChangeSearchKeyword} onKeyDown={onKeyPressSearch} value={searchKeyword}/>
+                        <input name="product_search" title="검색" placeholder="검색어 입력" onChange={onChangeSearchKeyword} onKeyDown={onKeyPressEnter} value={searchKeyword}/>
                         <span onClick={onClickSearch}><i className="bi bi-search"></i></span>
                     </div> 
                 </div>

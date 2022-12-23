@@ -1,6 +1,6 @@
-import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { ReactComponent as LogoImg } from "../Images/plannet-001.svg";
+import styled from "styled-components";
 import "../App";
 
 const Container = styled.div`
@@ -59,9 +59,7 @@ const RightMain = styled.div`
     flex-direction: column;
     color: white;
     font-weight: bold;
-    h1, h2, div, a {
-        margin-left: 70px;
-    }
+    h1, h2, div, a {margin-left: 70px;}
     div {margin-bottom: 20px}
     .doLogin {
         cursor: pointer;
@@ -108,11 +106,11 @@ const Explain = styled.div`
 `;
 
 const Main = () => {
-    return(
+    return (
         <Container id="main">
             <LeftMain>
                 <div className="wrap">
-                    <LogoImg width="200px" height="150px" />
+                    <LogoImg width="200px" height="150px"/>
                     <Logo>Plannet</Logo>
                     <SubLogo>let's plan it</SubLogo>
                 </div>
