@@ -43,7 +43,9 @@ const Modal = (props) => {
         navigate(0);
     }
     const onClickNotiAnswer = async() => {
-        await Api.notiResponse(option);
+        const key = option.slice(0, -2);
+        const status = option.slice(-2);
+        await Api.notiResponse(key, status);
         navigate(0);
     }
 
