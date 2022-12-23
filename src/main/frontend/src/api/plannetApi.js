@@ -140,7 +140,7 @@ const plannetApi = {
             key: key,
             status: status
         };
-        return await axios.get(PLANNET_DOMAIN + "noti/noti_response", object, HEADER);
+        return await axios.post(PLANNET_DOMAIN + "noti/noti_response", object, HEADER);
     },
     // 공유 캘린더 갯수 확인
     scalCntCheck: async function(id) {

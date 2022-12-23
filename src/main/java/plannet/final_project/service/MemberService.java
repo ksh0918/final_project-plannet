@@ -28,7 +28,7 @@ public class MemberService {
 
     // 구글연동 계정인지, 일반계정인지 체크
     public String loginCheck (String id, String pwd){
-        String result;
+        String result = "no data";;
         try {
             Member member = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
             if(member.getPwd().equals(pwd)) { // 아이디와 비밀번호가 일치
@@ -37,11 +37,17 @@ public class MemberService {
             } else result = "no data"; // 로그인값도 일치하지 않고 소셜로그인 대상도 아님 = 회원 정보 없음
             return result;
         } catch (Exception e) {
-            if(memberRepository.findByEmail(id).getSocial().equals("g")) { // 아이디로 적은 이메일이 소셜로그인 대상
-                result = "google";
-            } else { result = "no data"; }
-            return result;
+                try{
+                    if(memberRepository.findByEmail(id).getSocial().equals("g")) { // 아이디로 적은 이메일이 소셜로그인 대상
+                        result = "google";
+                        return result;
+                    }
+                } catch (NullPointerException n) {
+                        result = "no data";
+                        return result;
+                }
         }
+        return result;
     }
 
     // 구글 로그인 시 멤버 유형 구분

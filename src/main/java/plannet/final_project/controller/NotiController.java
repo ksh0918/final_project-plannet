@@ -47,6 +47,7 @@ public class NotiController {
 
     @PostMapping("/noti_response")
     public ResponseEntity<Boolean> notiResponse(@RequestBody Map<String, String> data) {
+        log.warn(String.valueOf(data));
         Long key = Long.valueOf(data.get("key"));
         boolean status = Boolean.parseBoolean(data.get("status"));
         boolean isOk = notiService.notiResponse(key, status);

@@ -74,7 +74,7 @@ const FriendNoti = ({setCommnet, setModalHeader, setModalOpen, setOption, notiLi
             const response = await Api.scalCntCheck(getId); //2개이상의 scal에 참여중인지 확인 2개 이하면 true, 이상이면 false
             console.log(response.data);
             if(response.data) {
-                setOption("?key=" + e.key + "&status=" + status);
+                setOption(e.key + status.toString());
                 setCommnet((e.type === 'F'? '친구 요청을 ' : '공유캘린더 초대를 ') + (status? '승락' : '거절') + '합니다.');
                 setModalHeader("알림반응");
                 setModalOpen(true);
