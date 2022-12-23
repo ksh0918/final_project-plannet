@@ -56,7 +56,7 @@ const Join = () => {
     const [isName, setIsName] = useState(false);
     const [isNickname, setIsNickname] = useState(false);
     const [isEmail, setIsEmail] = useState(false);
-    const [isTel, setIsTel] = useState(true);
+    const [isTel, setIsTel] = useState(false);
     const [isAuth,setIsAuth] = useState(false);
     const [clickAuth, setClickAuth] = useState(false);
  
@@ -200,9 +200,15 @@ const Join = () => {
         const memberCheck = await Api.overlapCheck(inputTel, "TYPE_TEL");
         if (memberCheck.data) {
             setTelMessage("사용가능한 전화번호입니다.");
+            setIsTel(true);
         } else {
+            if((isId && isPw && isConPw && isName && isNickname &&isEmail && isAuth)===true){
+                setTelMessage("이미 사용하고 있는 전화번호입니다.");
+                setIsTel(false)
+            }
             setTelMessage("이미 사용하고 있는 전화번호입니다.");
             setIsTel(false)
+            
         } 
     }
 

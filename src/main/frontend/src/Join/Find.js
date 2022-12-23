@@ -125,7 +125,7 @@ const Find = () =>{
 
     const onClickFindId = async() => {
         const res = await Api.memberFind(findInName, findInEmail, "Type_ID");
-        if(res.data === true){
+        if(res.data.reg === true){
             setModalOpen(true);
             setHeader("로그인");
             setComment("아이디는 ["+ res.data.id + "] 입니다.");
