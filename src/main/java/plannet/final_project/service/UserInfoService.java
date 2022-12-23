@@ -50,7 +50,6 @@ public class UserInfoService {
             mem.setTel(tel);
             mem.setProfile(profile);
             Member result = memberRepository.save(mem);
-            log.warn(result.toString());
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -64,7 +63,6 @@ public class UserInfoService {
             Member mem = memberRepository.findById(id).orElseThrow(EmptyStackException::new);
             mem.setProImg(imgName);
             Member result = memberRepository.save(mem);
-            log.warn(result.toString());
         } catch(Exception e) {
             return false;
         }
