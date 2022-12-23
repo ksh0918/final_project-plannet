@@ -39,15 +39,15 @@ const Find = () =>{
     // 아이디와 이메일이 맞으면 새로운 비밀번호를 지정할 수 있는 html을 불러옴
     const [isNewPwd, setIsNewPwd] = useState(false); 
 
-    //새로 설정한 비밀번호가 정규식이 맞는 지/비밀번호와 비밀번호 확인이 동일한지 검사
+    // 새로 설정한 비밀번호가 정규식이 맞는 지/비밀번호와 비밀번호 확인이 동일한지 검사
     const [isnewPwdCheck, setIsNewPwdCheck] = useState(false);
     const [isnewPwdConCheck, setIsNewPwdConCheck] = useState(false);
 
-    //새로운 비밀번호/비밀번호 확인 값
+    // 새로운 비밀번호/비밀번호 확인 값
     const [newPwd, setNewPwd] = useState("");
     const [newPwdCon, setNewPwdCon] = useState("");
 
-    //확인 문구
+    // 확인 문구
     const [pwMessage, setPwMessage] = useState("");
     const [conPwMessage, setConPwMessage] = useState("");
     
@@ -59,7 +59,7 @@ const Find = () =>{
         setFindInId(e.target.value);
     }
 
-    //이메일 정규식
+    // 이메일 정규식
     const onChangeEmail = (e) => {
         const emailRegex = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
         const emailCurrent = e.target.value ;
@@ -73,7 +73,7 @@ const Find = () =>{
         }
     }
 
-    //비밀번호 정규식
+    // 비밀번호 정규식
     const onChangePw = (e) => {
         const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,25}$/
         const passwordCurrent = e.target.value ;
@@ -118,59 +118,56 @@ const Find = () =>{
     const [comment, setComment] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
     const [header, setHeader] = useState("");
-
     const closeModal = () => {
         setModalOpen(false);
     };   
 
     const onClickFindId = async() => {
-        const res = await Api.memberFind(findInName, findInEmail, "Type_ID");
-        if(res.data.reg === true){
+        const response = await Api.memberFind(findInName, findInEmail, "Type_ID");
+        if(response.data.reg === true){
             setModalOpen(true);
             setHeader("로그인");
-            setComment("아이디는 ["+ res.data.id + "] 입니다.");
+            setComment("아이디는 ["+ response.data.id + "] 입니다.");
         }
         else {
             setModalOpen(true);
             setComment("가입되어 있는 정보가 없습니다.")
         }
     }
-    const onKeyDownFindId = (e) => {
+    const onKeyPressEnterId = (e) => {
         if(e.key === 'Enter'){
             onClickFindId();
         }
     }
 
     const onClickFindPwd = async() => {
-        const res = await Api.memberFind(findInId, findInEmail, "Type_PWD");
-        console.log(res.data);
-        if(res.data.reg === true){
+        const response = await Api.memberFind(findInId, findInEmail, "Type_PWD");
+        console.log(response.data);
+        if(response.data.reg === true){
             setModalOpen(true);
             setHeader("");
             setComment("새로운 비밀번호를 설정합니다.");
             setIsNewPwd(true);
-        }else {
+        } else {
             setModalOpen(true);
             setComment("가입되어 있는 정보가 없습니다.")
         }
     }
-
-    const onKeyDownFindPwd = (e) => {
+    const onKeyPressEnterPwd = (e) => {
         if(e.key === 'Enter'){
             onClickFindPwd();
         }
     }
-
     const onClickNewPwd = async() => {
-        const res = await Api.memberNewPwd(findInId, newPwdCon);
-        if(res.data){
+        const response = await Api.memberNewPwd(findInId, newPwdCon);
+        if(response.data){
             setIsNewPwd(false);
             setModalOpen(true);
             setHeader("로그인");
             setComment("비밀번호가 재설정되었습니다. 로그인해주세요.");
         }
     }
-    const onKeyDownNewPwd = (e) => {
+    const onKeyPressEnterNewPwd = (e) => {
         if(e.key === 'Enter'){
             onClickNewPwd();
         }
@@ -191,7 +188,7 @@ const Find = () =>{
                         </p>
                         <p>
                             이메일{findInEmail.length > 0 && <span>{emailMessage}</span>}<br/>
-                            <input placeholder="이메일" onChange={onChangeEmail} value={findInEmail} onKeyDown={onKeyDownFindId}></input>
+                            <input placeholder="이메일" onChange={onChangeEmail} value={findInEmail} onKeyDown={onKeyPressEnterId}></input>
                         </p>
                         <button disabled={!(findInName && isEmail)} onClick={onClickFindId}>찾기</button>
                     </div> :
@@ -205,7 +202,7 @@ const Find = () =>{
                                 </p>
                                 <p>
                                     이메일{findInEmail.length > 0 && <span>{emailMessage}</span>}<br/>   
-                                    <input placeholder="이메일" onChange={onChangeEmail} value={findInEmail} onKeyDown={onKeyDownFindPwd}></input>
+                                    <input placeholder="이메일" onChange={onChangeEmail} value={findInEmail} onKeyDown={onKeyPressEnterPwd}></input>
                                 </p>
                                 <button disabled={!(findInId && isEmail)} onClick={onClickFindPwd}>찾기</button>
                             </> : 
@@ -217,7 +214,7 @@ const Find = () =>{
                                 </p>
                                 <p className="newPwd">
                                     새 비밀번호 확인{newPwdCon.length > 0 && <span>{conPwMessage}</span>}<br/>   
-                                    <input type="password" placeholder="패스워드 확인" onChange={onChangeConPw} value={newPwdCon} onKeyDown={onKeyDownNewPwd}></input>
+                                    <input type="password" placeholder="패스워드 확인" onChange={onChangeConPw} value={newPwdCon} onKeyDown={onKeyPressEnterNewPwd}></input>
                                 </p>
                                 <button disabled={!(isnewPwdCheck && isnewPwdConCheck)} onClick={onClickNewPwd}>찾기</button>
                             </>
