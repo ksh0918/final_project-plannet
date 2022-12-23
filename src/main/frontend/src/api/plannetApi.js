@@ -180,6 +180,10 @@ const plannetApi = {
         }
         return await axios.post(PLANNET_DOMAIN + "message/readModal", object, HEADER);
     },
+    // 쪽지 검색
+    searchMessageList: async function(id,keyword){
+        return await axios.get(PLANNET_DOMAIN + `message/search_messageList?keyword=${keyword}&receiveId=${id}`, HEADER);
+    },
 
     // HomeController
     // 개인 home/달력/주간일정/메모/명언 출력
