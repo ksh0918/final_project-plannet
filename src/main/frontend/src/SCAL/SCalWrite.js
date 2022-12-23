@@ -226,7 +226,7 @@ const SCalWrite = () => {
             <TopBar sideBar={sideBar} setSideBar={setSideBar}/>
             <Section id="scalWrite" className="section">
                 <div className="btnbox">
-                    <Link to={'/home' + getNum}>
+                    <Link to={'/scal/home/' + getNum}>
                         <button className="backbtn">
                             <i className="bi bi-chevron-compact-left"/>{getDate}
                         </button>
