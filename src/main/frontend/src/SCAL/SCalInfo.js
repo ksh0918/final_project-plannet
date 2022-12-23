@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from "styled-components";
 import Api from "../api/plannetApi";
 import Nav from "../Utill/Nav";
-import FriendList from '../Friend/FriendList';
 import Modal from '../Utill/Modal';
 import TopBar from "../Utill/TopBar";
+import FriendList from '../Friend/FriendList';
 
 const Wrap = styled.div`
     width: 1130px;
@@ -40,7 +40,7 @@ const Section = styled.div`
       font-weight: 900;
       margin-top: 35px;
       margin-bottom: 10px;
-      span{
+      span {
         font-size: 20px;
         font-weight: 400;
       }
@@ -60,7 +60,7 @@ const Section = styled.div`
                 line-height: 18px;
                 margin:8px 0 4px;
             }
-            .friend, .title{
+            .friend, .title {
                 padding: 5px 30px;
                 width: 100%;
                 max-width: 500px;
@@ -82,17 +82,13 @@ const Section = styled.div`
                         background-color: #b8b9f1;
                         color: #222;
                     }
-                    &:focus::placeholder {
-                        color: #888;
-                    }
-                    &::placeholder {
-                        color: #bbb;
-                    }
+                    &:focus::placeholder {color: #888;}
+                    &::placeholder {color: #bbb;}
                 }
             }
-            .friend{
+            .friend {
                 padding-bottom: 0px;
-                .friend_search{
+                .friend_search {
                     margin: 0;
                     width: 100%;
                     height: 31px;
@@ -111,9 +107,9 @@ const Section = styled.div`
             }
             .friend_list {
                 p {font-size: 15px}
-                .is_list{height: 500px;}
+                .is_list {height: 500px;}
             }
-            .scal_add, .scal_delete, .smem_quit{
+            .scal_add, .scal_delete, .smem_quit {
                 cursor: pointer;
                 float: right;
                 margin: 10px 10px 0;
@@ -126,10 +122,7 @@ const Section = styled.div`
                 color: white;
                 border: none;
                 transition: all .1s ease-in;
-                &:hover{
-                    background-color: #666;
-                    color: #888;
-                }
+                &:hover {background-color: #666;color: #888;}
             }
         }
     }
@@ -138,10 +131,10 @@ const Section = styled.div`
 const SCalSetting = () => {
     const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
-    let params = useParams(); // url에서 boardNo를 가져오기 위해 uesParams() 사용
+    let params = useParams(); // url에서 scaldNo를 가져오기 위해 uesParams() 사용
     let getNum = params.no; // params는 객체이기 때문에 풀어줘서 다시 getNum에 대입해줌
     
-
+    const [sideBar, setSideBar] = useState(false); // 미디어쿼리시 nav 사이드바
     const [title, setTitle] = useState(''); // 공유캘린더 이름
     const [searchKeyword, setSearchKeyword] = useState('');
     const [friendList, setFriendList] = useState();
@@ -152,13 +145,12 @@ const SCalSetting = () => {
     const [modalHeader, setModalHeader] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
     const [option, setOption] = useState("");
-    const [calNo, setCalNo] = useState("");
+    const [scalNo, setScalNo] = useState("");
 
     useEffect(() => {
         const scalInfo = async() => {
             try{
                 const response = await Api.scalInfo(getNum, getId);
-                console.log(response.data);
                 setTitle(response.data.scalName);
                 setFriendList(response.data.scalMember);
                 setOwner(response.data.scalOwner);
@@ -172,54 +164,46 @@ const SCalSetting = () => {
     // 공유 캘린더 이름 입력
     const onChangeTitle = (e) => {
         setTitle(e.target.value);
-        console.log("타이틀 : " + title);
     }
-    //  친구 검색 입력
-     const onChangeSearchKeyword = (e) => {
-     setSearchKeyword(e.target.value);
-     console.log("서치키워드 : " + searchKeyword);
-     console.log(searchKeyword);
 
-     }
-     
-     let filterNames="";
-     // DB에서 친구 목록을 가져오기 전에 실행되지 않는 조건문
-     if(friendList != null) {
+    //  친구 검색 입력
+    const onChangeSearchKeyword = (e) => {
+    setSearchKeyword(e.target.value);
+    }
+    let filterNames = "";
+    // DB에서 친구 목록을 가져오기 전에 실행되지 않는 조건문
+    if(friendList != null) {
         // 친구 닉네임 검색
         filterNames = friendList.filter((e) => {
             return e.nickname.toLowerCase().includes(searchKeyword); // input 검색어가 포함되어 있는 friendList배열의 객체 반환
-          });
-     }
+        });
+    }
 
-     const onClickSCalInfoSave = async() => {
+    const onClickSCalInfoSave = async() => {
         await Api.scalInfoSave(getNum, title);
         navigate('/scal/home/' + getNum);
-     }
-     const onClickScalDelete = () => {
-        setCalNo(getNum);
+    }
+    const onClickScalDelete = () => {
+        setScalNo(getNum);
         setCommnet("삭제하시겠습니까?");
         setModalHeader("공유캘린더 삭제");
         setModalOpen(true);
     }
     const onClickScalQuit = async() => {
         setOption(getId);
-        setCalNo(getNum);
+        setScalNo(getNum);
         setCommnet("탈퇴하시겠습니까?");
         setModalHeader("공유캘린더 탈퇴");
         setModalOpen(true);
     }
-
-     const closeModal = () => {
+    const closeModal = () => {
         setModalOpen(false);
     };
-
-    //미디어쿼리시 nav 사이드바
-    const [sideBar, setSideBar] = useState(false);
 
     return (
         <Wrap>
             <Nav sideBar={sideBar} setSideBar={setSideBar}/>
-            <div className={`back ${sideBar? 'back_side_open':''}`}/>
+            <div className={`back ${sideBar? 'back_side_open' : ''}`}/>
             <TopBar sideBar={sideBar} setSideBar={setSideBar}/>
             <Modal open={modalOpen} close={closeModal} header={modalHeader} option={option} calNo={getNum}><p dangerouslySetInnerHTML={{__html: comment}}></p></Modal>
             <Section id="scalInfo" className="section">
@@ -236,7 +220,7 @@ const SCalSetting = () => {
                             <input title="검색" placeholder="친구 닉네임을 검색해보세요" onChange={onChangeSearchKeyword} value={searchKeyword}  />
                             </div>
                             <div className="friend_list">
-                                <FriendList setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} friendList={filterNames} isAdd={isAdd} setOption={setOption} title={title} setCalNo={setCalNo}/>
+                                <FriendList setCommnet={setCommnet} setModalHeader={setModalHeader} setModalOpen={setModalOpen} friendList={filterNames} isAdd={isAdd} setOption={setOption} title={title} setCalNo={setScalNo}/>
                             </div>
                         </div>
                         <div className="button-area1">
@@ -251,4 +235,5 @@ const SCalSetting = () => {
         </Wrap>
     )
 }
+
 export default SCalSetting;

@@ -40,7 +40,7 @@ function App() {
                 <Route path="/write/:date" element={<PrivateRoute><Write /></PrivateRoute>}/>
                 <Route path="/board" element={<PrivateRoute><Board /></PrivateRoute>}/>
                 <Route path="/board/write" element={<PrivateRoute><Create /></PrivateRoute>}/>
-                <Route path="/edit/:no" element={<PrivateRoute><Edit /></PrivateRoute>}/>
+                <Route path="/board/edit/:no" element={<PrivateRoute><Edit /></PrivateRoute>}/>
                 <Route path='/board/post_view/:no' element={<PrivateRoute><PostView /></PrivateRoute>}/>
                 <Route path="/scal/create" element={<PrivateRoute><SCalCreate /></PrivateRoute>}/>
                 <Route path="/scal/info/:no" element={<PrivateRoute><SCalSetting /></PrivateRoute>}/>

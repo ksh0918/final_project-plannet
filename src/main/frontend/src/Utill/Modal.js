@@ -24,7 +24,7 @@ const Modal = (props) => {
         navigate('/doLogin');
     }
     const onClickEdit = () => {
-        const link = "/edit/" + boardNo;
+        const link = "/board/edit/" + boardNo;
         console.log(link);
         navigate(link);
     }
@@ -44,8 +44,8 @@ const Modal = (props) => {
     }
     const onClickNotiAnswer = async() => {
         console.log("option:" + option);
-        const key = option.toString().slice(0, -4);
-        const status = option.slice(-4);
+        const key = option.toString().charAt(0);
+        const status = option.slice(1);
         await Api.notiResponse(key, status);
         navigate(0);
     }
