@@ -1,12 +1,11 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Nav from "../Utill/Nav";
 import Api from "../api/plannetApi";
 import Modal from "../Utill/Modal";
-import ProImg from "./ProImg";
+import Nav from "../Utill/Nav";
 import TopBar from '../Utill/TopBar';
-
+import ProImg from "./ProImg";
 
 const Wrap = styled.div`
     width: 1130px;
@@ -157,6 +156,8 @@ const Section = styled.div`
 const Setting = () => {
     const navigate = useNavigate();
     const userId = window.localStorage.getItem("userId");
+
+    const [sideBar, setSideBar] = useState(false); //미디어쿼리시 nav 사이드바
     const [userImgName, setUserImgName] = useState("");
     const [userImgUrl, setUserImgUrl] = useState({backgroundImage: "url(https://khprojectplannet.s3.ap-northeast-2.amazonaws.com/" + userImgName + ")"});
     const [userNickname, setUserNickname] = useState("");
@@ -175,24 +176,23 @@ const Setting = () => {
 
     useEffect(() => {
         const userInfoLoad = async() => {
-            try{
+            try {
                 const response = await Api.userInfoLoad(userId);
                 console.log(response.data);
                 setChangeNickname(response.data[0]);
                 setChangePhone(response.data[4]);
-
                 setUserNickname(response.data[0]);
                 setUserEmail(response.data[3]);
                 setUserPhone(response.data[4]);
                 setUserPro(response.data[2]);
                 setUserImgName(response.data[5]);
                 setUserImgUrl({backgroundImage: "url(https://khprojectplannet.s3.ap-northeast-2.amazonaws.com/" + response.data[5] + ")"});
-            } catch(e){
+            } catch(e) {
                 console.log(e);
             }
         }
         userInfoLoad();
-    },[userId]);
+    }, [userId]);
 
     // 설정 저장
     const onClickSave = async() => {
@@ -256,9 +256,6 @@ const Setting = () => {
             setIsNickname(false);
         } 
     }
-
-    //미디어쿼리시 nav 사이드바
-    const [sideBar, setSideBar] = useState(false);
 
     return (
         <Wrap>

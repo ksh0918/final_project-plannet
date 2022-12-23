@@ -134,24 +134,27 @@ const plannetApi = {
         };
         return await axios.post(PLANNET_DOMAIN + "noti/unfriend", object, HEADER);
     },
-    // 알림 승락거절? 알림 승락 응답이 아니라?
-    // Post로 변경해야 함
-    notiResponse: async function(option) {
-        return await axios.get(PLANNET_DOMAIN + "noti/noti_response${option}", HEADER);
+    // 알림 승락/거절
+    notiResponse: async function(key, status) {
+        const object = {
+            key: key,
+            status: status
+        };
+        return await axios.get(PLANNET_DOMAIN + "noti/noti_response", object, HEADER);
     },
     // 공유 캘린더 갯수 확인
     scalCntCheck: async function(id) {
-        return await axios.get(PLANNET_DOMAIN + "noti/cnt_check?id=${id}", HEADER);
+        return await axios.get(PLANNET_DOMAIN + `noti/cnt_check?id=${id}`, HEADER);
     },
 
     // MessageController
     // 쪽지 갯수 불러오기 (말풍선)
     messageCntNoti : async function(id){
-        return await axios.get(PLANNET_DOMAIN + "message/cntNoti?receiveId=${id}", HEADER);
+        return await axios.get(PLANNET_DOMAIN + `message/cntNoti?receiveId=${id}`, HEADER);
     },
     // 쪽지 리스트
     messageList: async function(id){
-        return await axios.get(PLANNET_DOMAIN + "message/list?receiveId=${id}", HEADER);
+        return await axios.get(PLANNET_DOMAIN + `message/list?receiveId=${id}`, HEADER);
     },
     // 쪽지 보내기
     messageSend : async function(id,receiveId,detail){

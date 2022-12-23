@@ -120,7 +120,7 @@ public class MemberController {
     @PostMapping("/change_social_login")
     public ResponseEntity<String> changeSocialLogin(@RequestBody Map<String,String> data) {
         String email = data.get("email");
-        String userId = memberService.changeSocialLogin(email);
+        String userId = "userID:" + memberService.changeSocialLogin(email);
         if(!userId.equals("NOK")) return new ResponseEntity(userId,HttpStatus.OK);
         else return new ResponseEntity("NOK",HttpStatus.OK);
     }

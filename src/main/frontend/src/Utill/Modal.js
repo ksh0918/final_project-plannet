@@ -43,7 +43,9 @@ const Modal = (props) => {
         navigate(0);
     }
     const onClickNotiAnswer = async() => {
-        await Api.notiResponse(option);
+        const key = option.slice(0, -2);
+        const status = option.slice(-2);
+        await Api.notiResponse(key, status);
         navigate(0);
     }
 
@@ -72,7 +74,7 @@ const Modal = (props) => {
     }
     const onClickGoogleLogin = async() => {
         const response = await Api.changeSocialLogin(option);
-        window.localStorage.setItem("userId", response.data);
+        window.localStorage.setItem("userId", response.data.substring(7));
         window.localStorage.setItem("isLogin", "true");
         navigate('/home');
     }

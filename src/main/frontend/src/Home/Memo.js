@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Api from "../api/plannetApi";
-
 
 const Memo = ({props}) => {
     const getId = window.localStorage.getItem("userId");
@@ -12,10 +11,9 @@ const Memo = ({props}) => {
 
     useEffect(() => {
         setMemoText(props);
-    },[props]);
+    }, [props]);
 
     const onBlurSave = async() => {
-        console.log("실행되니");
         await Api.memoSave(getId, memoText);
     }
 
