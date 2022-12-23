@@ -156,8 +156,7 @@ const Terms = () => {
         }
     }
 
-    return
-    (
+    return(
         <ContainerTerms id="terms">
             <Logo><LogoImg width="90px" viewBox="30 150 430 220"/><Link to="/" className="logo">Plannet</Link></Logo>
             <AgreeBox>

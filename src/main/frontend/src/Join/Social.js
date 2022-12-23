@@ -97,6 +97,7 @@ const Social = () => {
         const memberCheck = await Api.overlapCheck(inputTel, "TYPE_TEL");
         if (memberCheck.data) {
             setTelMessage("사용가능한 전화번호입니다.");
+            setIsTel(true)
         } else {
             setTelMessage("이미 사용하고 있는 전화번호입니다.");
             setIsTel(false)

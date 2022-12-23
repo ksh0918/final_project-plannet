@@ -71,7 +71,7 @@ public class MessageController {
         }
     }
 
-    @PostMapping("/messageModal")
+    @PostMapping("/readModal")
     public ResponseEntity<Boolean> messageModalOpen(@RequestBody Map<String,Long> data) {
         Long messageNo= data.get("messageNo");
         try {

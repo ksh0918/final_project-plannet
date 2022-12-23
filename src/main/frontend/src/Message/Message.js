@@ -158,7 +158,6 @@ const Message = () => {
         setModalOpen(true);
         setModalHeader("쪽지");
         setMessageRead(e.messageNo);
-        console.log(messageRead);
         setComment(e.detail);
     }
 

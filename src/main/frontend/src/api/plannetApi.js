@@ -140,7 +140,7 @@ const plannetApi = {
             key: key,
             status: status
         };
-        return await axios.get(PLANNET_DOMAIN + "noti/noti_response", object, HEADER);
+        return await axios.post(PLANNET_DOMAIN + "noti/noti_response", object, HEADER);
     },
     // 공유 캘린더 갯수 확인
     scalCntCheck: async function(id) {
@@ -324,7 +324,7 @@ const plannetApi = {
     // BoardController
     // 자유게시판 목록 출력
     boardList: async function(){
-        return await axios.get(PLANNET_DOMAIN + "board/list", HEADER);
+        return await axios.get(PLANNET_DOMAIN + "board/board_list", HEADER);
     },
     // 인기글 top3 목록 출력
     top3List: async function(){
