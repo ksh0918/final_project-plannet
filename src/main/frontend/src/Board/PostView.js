@@ -225,7 +225,7 @@ const PostView = () => {
           const fetchData = async () => {
             console.log("댓글 불러오는중");
             // PostView 페이지 댓글 목록 api
-            const response = await Api.commentLoad(getNum,offset,offset+10); // DB에서 데이터 가져오는 개수의 범위를 api 매개변수로 넘겨줌
+            const response = await Api.commentLoad(getNum,offset,offset + 10); // DB에서 데이터 가져오는 개수의 범위를 api 매개변수로 넘겨줌
             setCommentList(old => ([...old, ...response.data]));
             console.log('//new Data :',response.data);
             setOffset(old => old + 10) // offset을 계속 10씩 늘려주면 된다
