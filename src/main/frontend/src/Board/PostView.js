@@ -277,7 +277,7 @@ const PostView = () => {
                     </>))}
                     <h3>Comment</h3>
                     <Comment getId={getId} getNum={getNum} setCommentList={setCommentList} commentList={commentList}
-                     {...isFetching && <h1>New Data Fetcing .......</h1>}
+                     {...isFetching && <h1>Loading...</h1>}
                      {...!isFetching && <h1>더이상 조회할 게시글이 없습니다</h1>}/>
             </Section>
             <div className="copy">&#169; Plannet.</div>
