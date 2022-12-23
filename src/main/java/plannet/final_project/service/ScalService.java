@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
+import java.time.temporal.WeekFields;
 import java.util.*;
 
 // 의존성 주입을 받는다: 객체 생성 없이 사용할 수 있게 한다
@@ -143,13 +144,13 @@ public class ScalService {
 
             // plan Load
             LocalDate[] weekDay = {
-                    LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY)),
-                    LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)),
-                    LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.TUESDAY)),
-                    LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.WEDNESDAY)),
-                    LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.THURSDAY)),
-                    LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.FRIDAY)),
-                    LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.SATURDAY))
+                    LocalDate.now().with(WeekFields.of(Locale.KOREA).dayOfWeek(), 1),
+                    LocalDate.now().with(WeekFields.of(Locale.KOREA).dayOfWeek(), 2),
+                    LocalDate.now().with(WeekFields.of(Locale.KOREA).dayOfWeek(), 3),
+                    LocalDate.now().with(WeekFields.of(Locale.KOREA).dayOfWeek(), 4),
+                    LocalDate.now().with(WeekFields.of(Locale.KOREA).dayOfWeek(), 5),
+                    LocalDate.now().with(WeekFields.of(Locale.KOREA).dayOfWeek(), 6),
+                    LocalDate.now().with(WeekFields.of(Locale.KOREA).dayOfWeek(), 7)
             };
             List<List<Map<String, Object>>> weekPlan = new ArrayList<>();
             for(int i = 0; i < 7; i++) {
