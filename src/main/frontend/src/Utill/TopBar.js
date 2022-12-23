@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
+import { ReactComponent as Logo } from "../Images/plannet-001.svg";
 import styled from "styled-components";
-import {ReactComponent as Logo} from "../Images/plannet-001.svg";
 
 const Bar = styled.div`
     display: none;
@@ -8,7 +8,7 @@ const Bar = styled.div`
     height: 65px;
     background-color: #e8f0fe;
     position: relative;
-    i{
+    i {
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
@@ -18,14 +18,14 @@ const Bar = styled.div`
         border-radius: 5px;
         transition: background-color 0.2s ease-in;
         cursor: pointer;
-        &:hover{
+        &:hover {
             background-color: #d7e0f0;
         }
     }
-    p{
+    p {
         cursor: pointer;
         display: inline-block;
-        span{
+        span {
             position: absolute;
             top: 50%;
             transform: translateY(-48%);
@@ -33,7 +33,7 @@ const Bar = styled.div`
             font-weight: bold;
             font-family: 'Comfortaa';
         }
-        svg{
+        svg {
             margin: 3px 0 0 25px;
         }
     }
@@ -54,11 +54,12 @@ const TopBar = ({sideBar, setSideBar}) => {
         setSideBar(true);
         console.log(sideBar);
     }
-    return(
+    return (
         <Bar id="topbar">
             <p onClick={onClickLogo}><Logo style={logoStyle}/><span>Plannet</span></p>
             <i className="bi bi-list" onClick={onClickSideBar}/>
         </Bar>
     );
 }
+
 export default TopBar;
