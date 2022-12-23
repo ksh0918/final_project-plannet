@@ -207,7 +207,6 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
     }
     const onClickSMemWait = async() => {
         setCommnet("이미 초대한 친구입니다.");
-        setModalHeader("멤버대기");
         setModalOpen(true);
     }
     const onClickSMemInvite = async(e) => {
