@@ -213,10 +213,7 @@ const SCalHome = () => {
                 // 다른 사용자의 게시물 공유캘린더 페이지에 아예 주소접근으로도 못 하게 방지
                 // DB에서 가져온 memberList 정보에서 사용자의 id가 존재하지 않으면 접근불가
                 const memberListData = response.data.smemberList;
-                console.log(response);
                 let isExistsChecked = false;
-                console.log("dddddddddddddddddddddddd");
-                console.log(memberListData.id);
                 memberListData.map(({id}) => {
                     if (id == getId) isExistsChecked = true;});
                 if (isExistsChecked) {
@@ -234,8 +231,6 @@ const SCalHome = () => {
         }
         scalHome();
     }, [getNum]);
-    console.log(scalData);
-    console.log(smemberList);
 
     const onClickSetting = () => {
         navigate("/scal/info/" + getNum);
