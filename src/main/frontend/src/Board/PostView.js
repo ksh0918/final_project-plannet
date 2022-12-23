@@ -142,7 +142,8 @@ const PostView = () => {
 
     let params = useParams(); // url에서 boardNo를 가져오기 위해 uesParams() 사용
     let getNum = params.no; // params는 객체이기 때문에 풀어줘서 다시 getNum에 대입해줌
-
+    
+    const [sideBar, setSideBar] = useState(false); // 미디어쿼리시 nav 사이드바
     const [postViewData, setPostViewData] = useState(); // 해당 게시물 번호의 내용 로드 (좋아요 제외)
     const [likeCntData, setLikeCnt] = useState(); // 좋아요 수 로드
     const [likeCheckedData, setLikeChecked] = useState(false); // 내가 좋아요를 했는지 여부 로드
@@ -177,7 +178,6 @@ const PostView = () => {
         setLikeChecked(likeChecked.data);
         if (likeCheckedData) setLikeCnt(likeCntData - 1);
         else (setLikeCnt(likeCntData + 1));
-
     }
     console.log("오프셋");
     console.log(offset);
@@ -207,9 +207,6 @@ const PostView = () => {
         postViewLoad();
     }, [getId, getNum]);
 
-
-    //미디어쿼리시 nav 사이드바
-    const [sideBar, setSideBar] = useState(false);
 
     // 무한 스크롤
     const commentItem = async () => {
