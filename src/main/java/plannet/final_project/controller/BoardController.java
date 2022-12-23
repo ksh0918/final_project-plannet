@@ -94,8 +94,9 @@ public class BoardController {
     // 좋아요 버튼을 눌렀을 때 toggle 및 데이터베이스 변경
     @PostMapping("/like_checked_toggle")
     public ResponseEntity<Integer> likeCheckedToggle(@RequestBody Map<String, String> data) {
-        Long boardNo = Long.parseLong((String)data.get("boardNo"));
-        String id = (String)data.get("id");
+        System.out.println("ddddddddddddddddddddd");
+        Long boardNo = Long.parseLong(data.get("boardNo"));
+        String id = data.get("id");
         boolean likeCheckedToggle = boardService.likeCheckedToggle(boardNo, id);
         return new ResponseEntity(likeCheckedToggle, HttpStatus.OK);
     }
