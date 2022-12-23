@@ -77,6 +77,7 @@ public class ScalController {
             sharingHome.put("slist", shareDTO.getSweekPlan());
             sharingHome.put("splanMark", shareDTO.getSplanMark());
             sharingHome.put("smemo", shareDTO.getSmemo());
+            sharingHome.put("smemberList", shareDTO.getSmemberList());
             return new ResponseEntity(sharingHome, HttpStatus.OK);
         } else return new ResponseEntity(null, HttpStatus.OK);
     }
