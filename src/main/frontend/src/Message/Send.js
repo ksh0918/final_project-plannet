@@ -273,7 +273,8 @@ const Send= () => {
                 <div className="board_list sub_box">
                     <h2>Send Message</h2>
                     <p>
-                        <span>작성 시 유의해 주세요! 비방, 광고, 불건전한 내용의 쪽지는 사전 동의 없이 경고를 받을 수 있습니다.</span>
+                        <span>작성 시 유의해 주세요! 비방, 광고, 불건전한 내용의 쪽지는 사전 동의 없이 경고를 받을 수 있습니다.
+                        <br/>(친구 이외 Plannet 이용자와 소통이 가능합니다.) </span>
                     </p>    
                     <table>
                         <tr>
@@ -296,7 +297,9 @@ const Send= () => {
                     </div>
                 }
                 <div className='form-wrapper'>
-                    <CKEditor editor={ClassicEditor} data={detail}/>
+                    <CKEditor editor={ClassicEditor} data={detail} onChange={(event, editor) => {
+                        const data = editor.getData();
+                        setDetail(data);}}/>
                 </div>
                 <div className="button-area">
                     <button onClick={onClickSend} disabled={lengthCheck}>SEND</button>

@@ -151,7 +151,7 @@ const plannetApi = {
     },
     // 쪽지 리스트
     messageList: async function(id){
-        return await axios.get(PLANNET_DOMAIN + "message/list?receiveId=${id}", HEADER);
+        return await axios.get(PLANNET_DOMAIN + `message/list?receiveId=${id}`, HEADER);
     },
     // 쪽지 보내기
     messageSend : async function(id,receiveId,detail){
