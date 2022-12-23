@@ -210,8 +210,13 @@ function Edit() {
     const [title, setTitle] = useState();
     const [detail, setDetail] = useState();
     const [isChecked, setIsChecked] = useState(false);
-    const [lengthCheck, setLengthCheck] = useState(false);
     const [category, setCategory] = useState('');
+    // 제목, 내용 null 방지
+    const [comment, setComment] = useState("");
+    const [modalOpen, setModalOpen] = useState(false);
+    const closeModal = () => {
+        setModalOpen(false);
+    };
 
     useEffect(() => {
         const boardData = async () => {
@@ -239,9 +244,14 @@ function Edit() {
 
     // 해당 게시물 번호에 해당하는 Edit 페이지로 이동
     const onClickEdit = async() => {
-        await Api.boardEdit(getNum, category, title, detail);
-        const link = "/board/post_view/" + getNum;
-        navigate(link);
+        if (detail.length === 0 || title.length === 0) {
+            setComment("제목과 내용을 입력해 주세요");
+            setModalOpen(true); 
+        } else {
+            await Api.boardEdit(getNum, category, title, detail);
+            const link = "/board/post_view/" + getNum;
+            navigate(link);
+        }
     }
 
     // 취소 버튼 클릭 시 게시물 번호에 해당하는 postView 페이지로 이동
@@ -305,7 +315,7 @@ function Edit() {
                     }}/>
                     </div>
                     <div className="button-area">
-                        <button onClick={onClickEdit} disabled={lengthCheck}>SAVE</button>
+                        <button onClick={onClickEdit}>SAVE</button>
                         <button onClick={onClickCancle}>CANCLE</button>
                     </div>
                 </>))}
