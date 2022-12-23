@@ -141,14 +141,15 @@ const Section = styled.div`
         }
         input, span {vertical-align: middle;}
         input[type="text"], span {
-            width: 400px;
+            width: 530px;
             border: none;
             background: none;
             padding: 0px;
-            overflow: hidden;
+            overflow-x: scroll;
             line-height: 16px;
             display: inline-block;
             outline: none;
+            &::-webkit-scrollbar{display: none;}
         }
     }
     .comment {height: 350px;
