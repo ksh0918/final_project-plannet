@@ -170,7 +170,7 @@ const plannetApi = {
         return await axios.get(PLANNET_DOMAIN + `message/list?receiveId=${id}`, HEADER);
     },
     // 쪽지 보내기
-    messageSend : async function(id,receiveId,detail){
+    messageSend : async function(id, receiveId, detail){
         const object = {
             id : id,
             receiveId : receiveId,
@@ -211,7 +211,6 @@ const plannetApi = {
         };
         return await axios.post(PLANNET_DOMAIN + "home/memo", object, HEADER);
     },
-    
 
     // WriteController
     // 플랜리스트.다이어리 로드
@@ -228,7 +227,6 @@ const plannetApi = {
         };
         return await axios.post(PLANNET_DOMAIN + "write/save", object, HEADER);
         },
-
 
     // ScalController
     // 공유 캘린더 생성

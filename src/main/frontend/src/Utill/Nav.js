@@ -207,7 +207,7 @@ const Box = styled.div`
         color: white;
         opacity: 1;
         cursor: pointer;
-        transition: all 0.7s ease-in;
+        transition: all 0.5s ease-in;
         visibility: visible;
     }
     .side_bar_open {
