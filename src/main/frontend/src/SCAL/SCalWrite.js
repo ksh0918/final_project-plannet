@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useLocation, useParams, Link } from "react-router-dom";
+import { useNavigate, useLocation, Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Api from "../api/plannetApi";
 import Nav from "../Utill/Nav";
+import TopBar from '../Utill/TopBar';
 import PlanList from "../Write/PlanList";
 import Comment from '../Board/Comment';
-import TopBar from '../Utill/TopBar';
 
 const Wrap = styled.div`
     width: 1130px;
@@ -166,7 +166,7 @@ const SCalWrite = () => {
     const getId = window.localStorage.getItem("userId"); // localStorage 저장 정보
     const isPage = "공유";
 
-    let params = useParams(); // url에서 calNo를 가져오기 위해 uesParams() 사용
+    let params = useParams(); // url에서 scalNo를 가져오기 위해 uesParams() 사용
     const getNum = params.no; // params는 객체이기 때문에 풀어줘서 다시 getNum에 대입해줌
 
     // 링크에서 date 추출
@@ -187,7 +187,7 @@ const SCalWrite = () => {
 
     const onClickAddList = () => {
         const nextPlanList = planList.concat({
-            key: planList.length+1,
+            key: planList.length + 1,
             checked: false,
             text: "일정을 입력해주세요.",
             deleted: false
@@ -201,23 +201,20 @@ const SCalWrite = () => {
 
     useEffect(() => {
         const writeLoad = async() => {
-            try{
+            try {
                 // 플랜 불러오기
-                const plans = await Api.scalPlanLoad(getNum, getDate);
-                setPlanList(plans.data);  
+                const planData = await Api.splanLoad(getNum, getDate);
+                setPlanList(planData.data);  
 
                 // 댓글 불러오기
-                const comment = await Api.scommentLoad(getNum, getDate);
-                setCommentList(comment.data);
-            } catch(e){
+                const commentData = await Api.scommentLoad(getNum, getDate);
+                setCommentList(commentData.data);
+            } catch(e) {
                 console.log(e);
             }
         }
         writeLoad();
-        console.log(planList);
     }, [getId]);
-
-    console.log(planList)
 
     //미디어쿼리시 nav 사이드바
     const [sideBar, setSideBar] = useState(false);
@@ -225,11 +222,11 @@ const SCalWrite = () => {
     return (
         <Wrap>
             <Nav sideBar={sideBar} setSideBar={setSideBar}/>
-            <div className={`back ${sideBar? 'back_side_open':''}`}/>
+            <div className={`back ${sideBar ? 'back_side_open' : ''}`}/>
             <TopBar sideBar={sideBar} setSideBar={setSideBar}/>
             <Section id="scalWrite" className="section">
                 <div className="btnbox">
-                    <Link to='/home'>
+                    <Link to={'/home' + getNum}>
                         <button className="backbtn">
                             <i className="bi bi-chevron-compact-left"/>{getDate}
                         </button>
