@@ -162,7 +162,6 @@ public class BoardService {
 
     // 좋아요 버튼을 누를 때마다 데이터베이스 접근
     public boolean likeCheckedToggle(Long boardNo, String id) {
-        System.out.println("222222222222222222222222222");
         Member member = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         Board board = boardRepository.findById(boardNo).orElseThrow();
         boolean CurrentLikeChecked = likeRepository.existsByUserIdAndBoardNo(member, board);

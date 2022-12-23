@@ -179,15 +179,22 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
    
    // 공유 캘린더 생성
     const onClickSCalAdd = async() => {
-        const response = await Api.scalCntCheck(getId); //2개이상의 scal에 참여중인지 확인 2개 이하면 true, 이상이면 false
-        console.log(response.data);
-        if(response.data) {
-            const res = await Api.scalCreate(getId, title, checkedButtons); 
-            const linkNo = res.data;
-            navigate('/scal/home/' + linkNo);
+        console.log("타이틀 길이");
+        console.log(title.length);
+        if (title.length === 0) {
+            setCommnet("공유캘린더 이름을 입력해 주세요");
+            setModalOpen(true); 
         } else {
-            setCommnet('최대 공유 캘린더 개수(2개)를 넘어 공유 캘린더를 생성할 수 없습니다.');
-            setModalOpen(true);
+            const response = await Api.scalCntCheck(getId); //2개이상의 scal에 참여중인지 확인 2개 이하면 true, 이상이면 false
+            console.log(response.data);
+            if(response.data) {
+                const res = await Api.scalCreate(getId, title, checkedButtons); 
+                const linkNo = res.data;
+                navigate('/scal/home/' + linkNo);
+            } else {
+                setCommnet('최대 공유 캘린더 개수(2개)를 넘어 공유 캘린더를 생성할 수 없습니다.');
+                setModalOpen(true);
+            }
         }
     }
     // 공유 캘린더 설정 모달창
