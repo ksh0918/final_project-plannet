@@ -180,6 +180,10 @@ const plannetApi = {
         }
         return await axios.post(PLANNET_DOMAIN + "message/readModal", object, HEADER);
     },
+    // 쪽지 검색
+    searchMessageList: async function(id,keyword){
+        return await axios.get(PLANNET_DOMAIN + `message/search_messageList?keyword=${keyword}&receiveId=${id}`, HEADER);
+    },
 
     // HomeController
     // 개인 home/달력/주간일정/메모/명언 출력
@@ -266,12 +270,12 @@ const plannetApi = {
         return await axios.post(PLANNET_DOMAIN + "scal/memo", object, HEADER);
     },
     // 공유 캘린더 일정 불러오기
-    splanLoad: async function(scalNo, date) {
+    splanLoad: async function(scalNo, planDate) {
         const object = {
             scalNo: scalNo,
-            date: date
+            planDate: planDate
         };
-        return await axios.post(PLANNET_DOMAIN + "scal/splan_load", object, HEADER);
+        return await axios.get(PLANNET_DOMAIN + `scal/splan_load?scalNo=${scalNo}&planDate=${planDate}`, object, HEADER);
     },
     // 공유 캘린더 일정 작성하기
     splanSave: async function(scalNo, id, date, planList) {

@@ -94,8 +94,12 @@ public class ScalController {
 
     // 공유캘린더 일정 불러오기
     @GetMapping("/splan_load")
-    public ResponseEntity<List<ShareDTO>> writeLoad(@RequestParam Long scalNo, LocalDate date) {
+    public ResponseEntity<List<ShareDTO>> writeLoad(@RequestParam Long scalNo, String planDate) {
+        LocalDate date = LocalDate.parse(planDate);
         ShareDTO shareDTO = scalService.splanLoad(scalNo, date);
+        System.out.println(scalNo);
+        System.out.println(planDate);
+        System.out.println(shareDTO.getSplanList());
         if (shareDTO.isOk()) return new ResponseEntity(shareDTO.getSplanList(), HttpStatus.OK);
         else return new ResponseEntity(null, HttpStatus.OK);
     }

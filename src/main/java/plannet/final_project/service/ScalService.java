@@ -225,9 +225,13 @@ public class ScalService {
             for (SPLAN e : planData) {
                 Map<String, Object> plan = new HashMap<>();
                 plan.put("key", e.getSplanNo());
+                System.out.println("key입니다" + e.getSplanNo());
                 plan.put("checked", e.getSplanChecked());
+                System.out.println("checked입니다" + e.getSplanChecked());
                 plan.put("text", e.getSplan());
+                System.out.println("text입니다" + e.getSplan());
                 plan.put("writerId", e.getUserId().getNickname());
+                System.out.println("writerId" + e.getUserId().getNickname());
                 plan.put("deleted", false);
                 planList.add(plan);
             }
