@@ -265,7 +265,7 @@ const Nav = ({sideBar, setSideBar}) => {
                 setScalInfo(response.data.scalInfo);
                 setProHeight(response.data.scalInfo.length * 47 + 390);
                 const messageCnt = await Api.messageCntNoti(userId);
-                setmNotiCount(messageCnt.data);
+                if(messageCnt.data != null){setmNotiCount(messageCnt.data);}
                 const friendData = await Api.friendLoad(userId);
                 if(friendData.data != null){setfNotiCount(Object.keys(friendData.data.notiList).length);}
                 else{console.log("null 값")}
