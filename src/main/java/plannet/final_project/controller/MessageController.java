@@ -84,4 +84,11 @@ public class MessageController {
             return new ResponseEntity(null, HttpStatus.OK);
         }
     }
+
+    @GetMapping("/search_messageList")
+    public ResponseEntity<List<MessageDTO>> searchListLoad(@RequestParam String keyword ,String id) {
+        MessageDTO messageList = messageService.searchListLoad(id,"%%" + keyword + "%%");
+        if(messageList.isOk()) return new ResponseEntity(messageList.getMessageList(), HttpStatus.OK);
+        else return new ResponseEntity(null, HttpStatus.OK);
+    }
 }
