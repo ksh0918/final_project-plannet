@@ -271,11 +271,7 @@ const plannetApi = {
     },
     // 공유 캘린더 일정 불러오기
     splanLoad: async function(scalNo, planDate) {
-        const object = {
-            scalNo: scalNo,
-            planDate: planDate
-        };
-        return await axios.get(PLANNET_DOMAIN + `scal/splan_load?scalNo=${scalNo}&planDate=${planDate}`, object, HEADER);
+        return await axios.get(PLANNET_DOMAIN + `scal/splan_load?scalNo=${scalNo}&planDate=${planDate}`, HEADER);
     },
     // 공유 캘린더 일정 작성하기
     splanSave: async function(scalNo, id, date, planList) {
