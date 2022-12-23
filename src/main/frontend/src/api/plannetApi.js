@@ -314,7 +314,7 @@ const plannetApi = {
     },
     // 공유 캘린더 정보 조회
     scalInfo: async function(scalNo, id) {
-        return await axios.get(PLANNET_DOMAIN + `scal/info_load?calNo=${scalNo}&id=${id}`, HEADER);
+        return await axios.get(PLANNET_DOMAIN + `scal/info_load?scalNo=${scalNo}&id=${id}`, HEADER);
     },
     // 공유 캘린더 멤버 추가 요청
         scalAddMember: async function(id, keyword) {
