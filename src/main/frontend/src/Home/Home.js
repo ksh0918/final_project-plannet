@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import Api from "../api/plannetApi";
 import Calendar from './Calendar';
-import TopBar from '../Utill/TopBar';
 import Nav from '../Utill/Nav';
+import TopBar from '../Utill/TopBar';
 import Memo from './Memo';
 import List from './List';
-import Api from "../api/plannetApi";
 
 const Wrap = styled.div`
     width: 1130px;
@@ -52,14 +52,13 @@ const Section = styled.div`
             height: 450px;
             border-radius: 5px;
             overflow: hidden;
-
         }
     }
     .etc {
         width: 30%;
-        .moti{
-            h2{margin-top: 20px;}
-            p{
+        .moti {
+            h2 {margin-top: 20px;}
+            p {
                 width: 100%;
                 height: 63px;
                 padding: 10px;
@@ -67,7 +66,7 @@ const Section = styled.div`
                 border-radius: 5px;
             }
         }
-        .moti2{
+        .moti2 {
             display: none;
             padding: 15px 15px;
             margin-top: 5px;
@@ -76,8 +75,8 @@ const Section = styled.div`
             position: relative;
             overflow: hidden;
             background-color: #f9f9f9;
-            h2{display: none;}
-            p{
+            h2 {display: none;}
+            p {
                 float: left;
                 width: calc(100% - 56px);
                 padding: 5px 20px;
@@ -85,7 +84,7 @@ const Section = styled.div`
                 text-align: center;
                 font-size: 15px;
             }
-            i{
+            i {
                 float: left;
                 width: 28px;
                 display: block;
@@ -149,12 +148,12 @@ const Home = () => {
                 setPersonalData(response.data)
                 setDoMark(response.data.planMark[0]);
                 setEndMark(response.data.planMark[1]);
-            } catch(e){
+            } catch(e) {
             console.log(e);
             }
         }
         personalHome();
-    },[getId]);
+    }, [getId]);
 
     return (
         <Wrap>
@@ -194,5 +193,3 @@ const Home = () => {
 }
 
 export default Home;
-
-

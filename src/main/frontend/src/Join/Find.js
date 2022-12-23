@@ -216,7 +216,7 @@ const Find = () =>{
                                     새 비밀번호 확인{newPwdCon.length > 0 && <span>{conPwMessage}</span>}<br/>   
                                     <input type="password" placeholder="패스워드 확인" onChange={onChangeConPw} value={newPwdCon} onKeyDown={onKeyPressEnterNewPwd}></input>
                                 </p>
-                                <button disabled={!(isnewPwdCheck && isnewPwdConCheck)} onClick={onClickNewPwd}>찾기</button>
+                                <button disabled={!(isnewPwdCheck && isnewPwdConCheck)} onClick={onClickNewPwd}>설정</button>
                             </>
                         }
                     </div>

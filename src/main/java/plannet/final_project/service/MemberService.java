@@ -157,11 +157,17 @@ public class MemberService {
             Member mem;
             switch (t) {
                 case 'I' :
-                    mem = memberRepository.findByNameAndEmail(keyword, email);
-                    if(mem != null) {
-                        memDTO.setReg(true);
-                        memDTO.setId(mem.getId());
-                    } else memDTO.setReg(false);
+                    if(email.contains("@gmail.com")) {
+                        memDTO.setReg(false);
+                    } else {
+                        mem = memberRepository.findByNameAndEmail(keyword, email);
+                        if(mem != null) {
+                            memDTO.setReg(true);
+                            memDTO.setId(mem.getId());
+                        } else {
+                            memDTO.setReg(false);
+                        }
+                    }
                     memDTO.setOk(true);
                     break;
                 case 'P' :

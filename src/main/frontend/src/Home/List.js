@@ -51,14 +51,14 @@ const ListBox = styled.div`
                 text-overflow: ellipsis;
                 list-style-type: disc;
                 list-style-position: inside;
-                span{
+                span {
                     display: inline;
                     margin-left: -8px;
                 }
-                &.chkPlan{
+                &.chkPlan {
                     text-decoration: line-through;
                     color: #bbb;
-                    span{color: #bbb;}
+                    span {color: #bbb;}
                 }
             }
             p.noPlan {
@@ -76,10 +76,10 @@ const ListBox = styled.div`
 
 const List = ({props}) => {
     const weekDay = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']; 
-    return(
+    return (
         <ListBox>
             {props && props.map((day, index) => {
-                return(
+                return (
                     <div>
                         <p>{weekDay[index]}</p>
                         <ul>
