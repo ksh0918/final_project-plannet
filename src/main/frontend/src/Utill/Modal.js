@@ -36,7 +36,6 @@ const Modal = (props) => {
         await Api.messageModalOpen(messageRead);
         setMessageRead("");
         navigate(0); 
-        
     }
     const onClickUnfriend = async() => {
         await Api.unfriend(option);
@@ -55,27 +54,21 @@ const Modal = (props) => {
         }
         navigate(0);
     }
-
-    const onClickInviteSCAL = async() => { //수정해야함
-        // await Api.unfriend(option); // 백엔드 구현해야함
-        alert(option);
-        navigate(0);
-    }
-    const onClickScalDelete = async() => {
+    const onClickSCalDelete = async() => { // 공유캘린더 삭제
         await Api.scalDelete(calNo);
         navigate('/home');
     }
-    const onClickDrop = async() => {
+    const onClickSMemDelete = async() => { // 공유캘린더 오너가 멤버를 삭제
         await Api.smemDelete(calNo, option);
         navigate(0);
     }
-    const onClickInvite = async() => {
+    const onClickSMemInvite = async() => { // 공유캘린더 멤버 초대
         console.log(calNo);
         console.log(option);
         await Api.smemInvite(calNo, option);
         navigate(0);
     }
-    const onClickScalQuit = async() => {
+    const onClickSMemQuit = async() => { // 공유캘린더 멤버가 탈퇴
         await Api.smemDelete(calNo, option);
         navigate(-1);
     }
@@ -113,11 +106,11 @@ const Modal = (props) => {
                         
                         {(header === '친구삭제') ? <button className='yes btn-m' onClick={onClickUnfriend}>yes</button>: ''}
                         {(header === '알림반응') ? <button className='yes btn-m' onClick={onClickNotiAnswer}>yes</button>: ''}
-                        {(header === '공유캘린더 초대') ? <button className='yes btn-m' onClick={onClickInviteSCAL}>yes</button>: ''}
-                        {(header === '공유캘린더 삭제') ? <button className='yes btn-m' onClick={onClickScalDelete}>yes</button>: ''}
-                        {(header === '멤버삭제') ? <button className='yes btn-m' onClick={onClickDrop}>yes</button>: ''}
-                        {(header === '멤버초대') ? <button className='yes btn-m' onClick={onClickInvite}>yes</button>: ''}
-                        {(header === '공유캘린더 탈퇴') ? <button className='yes btn-m' onClick={onClickScalQuit}>yes</button>: ''}
+
+                        {(header === '공유캘린더 삭제') ? <button className='yes btn-m' onClick={onClickSCalDelete}>yes</button>: ''}
+                        {(header === '멤버삭제') ? <button className='yes btn-m' onClick={onClickSMemDelete}>yes</button>: ''}
+                        {(header === '멤버초대') ? <button className='yes btn-m' onClick={onClickSMemInvite}>yes</button>: ''}
+                        {(header === '공유캘린더 탈퇴') ? <button className='yes btn-m' onClick={onClickSMemQuit}>yes</button>: ''}
 
                         {(header === '구글 연동') ? <><button className='yes btn-m' onClick={onClickGoogleLogin}>yes</button><button className='close' onClick={onClickGoogleNo}>no</button></>: ''}
                         {(header === '구글 로그인 실패') ? <button className='close' onClick={onClickGoogleNo}>close</button>: ''}
