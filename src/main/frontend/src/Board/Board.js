@@ -193,7 +193,7 @@ const Board = () => {
 
     // 글쓰기 버튼 클릭시 글쓰기 페이지로 이동
     const onClickToCreate = () => {
-        const link = "create/"
+        const link = "write/"
         navigate(link);
     }
 

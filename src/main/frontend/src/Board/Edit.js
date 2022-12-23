@@ -299,7 +299,10 @@ function Edit() {
                         </table>           
                     </div>
                     <div className='form-wrapper'>
-                        <CKEditor editor={ClassicEditor} data={e.detail}/>
+                        <CKEditor editor={ClassicEditor} data={e.detail} onChange={(event, editor) => {
+                        const data = editor.getData();
+                        setDetail(data);
+                    }}/>
                     </div>
                     <div className="button-area">
                         <button onClick={onClickEdit} disabled={lengthCheck}>SAVE</button>
