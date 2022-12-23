@@ -26,14 +26,14 @@ public class MessageController {
     public ResponseEntity<List<Map<String, Object>>> messageCntNoti(@RequestParam String receiveId) {
         int messageNoti = messageService.messageCntNoti(receiveId);
         if(messageNoti!=0) return new ResponseEntity(messageNoti, HttpStatus.OK);
-        else return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
+        else return new ResponseEntity(null, HttpStatus.OK);
     }
 
     @GetMapping("/list")
     public ResponseEntity<List<Map<String, Object>>> messageList(@RequestParam String receiveId) {
         MessageDTO messageList = messageService.messageListLoad(receiveId);
         if(messageList.isOk()) return new ResponseEntity(messageList.getMessageList(), HttpStatus.OK);
-        else return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
+        else return new ResponseEntity(null, HttpStatus.OK);
     }
 
     @PostMapping("/send")
@@ -85,10 +85,10 @@ public class MessageController {
         }
     }
 
-    @GetMapping("/search_messageList")
-    public ResponseEntity<List<MessageDTO>> searchListLoad(@RequestParam String keyword ,String id) {
-        MessageDTO messageList = messageService.searchListLoad(id,"%%" + keyword + "%%");
-        if(messageList.isOk()) return new ResponseEntity(messageList.getMessageList(), HttpStatus.OK);
-        else return new ResponseEntity(null, HttpStatus.OK);
-    }
+//    @GetMapping("/search_messageList")
+//    public ResponseEntity<List<MessageDTO>> searchListLoad(@RequestParam String keyword ,String id) {
+//        MessageDTO messageList = messageService.searchListLoad(id,"%%" + keyword + "%%");
+//        if(messageList.isOk()) return new ResponseEntity(messageList.getMessageList(), HttpStatus.OK);
+//        else return new ResponseEntity(null, HttpStatus.OK);
+//    }
 }
