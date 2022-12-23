@@ -43,9 +43,15 @@ const Modal = (props) => {
     }
     const onClickNotiAnswer = async() => {
         console.log("option:" + option);
-        const key = option.toString().charAt(0);
-        const status = option.slice(1);
-        await Api.notiResponse(key, status);
+        if(option.indexOf(true) !== -1){
+            const key = option.toString().slice(0, -4);
+            const status = option.slice(-4);
+            await Api.notiResponse(key, status);
+        } else {
+            const key = option.toString().slice(0, -5);
+            const status = option.slice(-5);
+            await Api.notiResponse(key, status);
+        }
         navigate(0);
     }
     const onClickSCalDelete = async() => { // 공유캘린더 삭제
@@ -86,9 +92,8 @@ const Modal = (props) => {
                 <section>
                     <header>
                         &nbsp;
-                        <button className='close' onClick={close}>
-                            &times;
-                        </button>
+                        {(header === '쪽지') ? '' : <button className='close' onClick={close}>&times;</button>}
+                        
                     </header>
                     <main>{props.children}</main>
                     <footer>
@@ -112,7 +117,7 @@ const Modal = (props) => {
                         {(header === '뒤로가기') ? <button className='yes btn-m' onClick={onClickBackYes}>yes</button> : ''}
 
                         {/* 헤더가 구글연동과 구글로그인 실패가 아니라면 close버튼이 뜨도록 */}
-                        {(header === '구글 연동')||(header === '구글 로그인 실패') ? '' : <button className='close' onClick={close}>close</button>}
+                        {(header === '구글 연동')||(header === '구글 로그인 실패') || (header === '쪽지') ? '' : <button className='close' onClick={close}>close</button>}
                     </footer>
                 </section>
             }
