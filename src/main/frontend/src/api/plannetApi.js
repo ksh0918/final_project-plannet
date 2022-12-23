@@ -1,3 +1,4 @@
+import { S3Outposts } from "aws-sdk";
 import axios from "axios";
 const HEADER = 'application/json';
 //const PLANNET_DOMAIN = "http://plannet.shop/";

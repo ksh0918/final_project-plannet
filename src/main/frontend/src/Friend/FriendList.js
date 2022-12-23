@@ -228,9 +228,9 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
                         {/* checked: 체크표시 & 해제를 시키는 로직. 배열에 e 데이터가 있으면 true, 없으면 false                     onChange: onChange이벤트가 발생하면 check여부와 e 데이터를 전달하여 배열에 friendList의 객체를 넣어준다. */}
                         {isPage === "공유캘린더" && <StyledInput class="form-check-input scalFriend_check" id="checkboxNoLabel" onChange={check => { changeHandler(check.currentTarget.checked, e);}} 
                             checked={checkedButtons.includes(e) ? true : false}  type="checkbox" aria-label="..." />} 
-                        {e.status == 1 &&<button className='drop' onClick={() => onClickDrop(e.id)}>삭제</button>}
-                        {e.status == 2 &&<button className='wait' onClick={() => onClickWait()}>대기</button>}
-                        {e.status == 0 &&<button className='invite' onClick={() => onClickInvite(e.id)}>초대</button>}
+                        {e.status === 1 &&<button className='drop' onClick={() => onClickDrop(e.id)}>삭제</button>}
+                        {e.status === 2 &&<button className='wait' onClick={() => onClickWait()}>대기</button>}
+                        {e.status === 0 &&<button className='invite' onClick={() => onClickInvite(e.id)}>초대</button>}
 
                     </li>
                 );})}

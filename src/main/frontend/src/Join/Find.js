@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ReactComponent as LogoImg } from "../Images/plannet-001.svg";
 import styled from "styled-components";
+import { ReactComponent as LogoImg } from "../Images/plannet-001.svg";
 import Api from "../api/plannetApi";
 import Modal from "../Utill/Modal";
-import "../App";
 import "./Join.scss"
+import "../App";
 
 const ContainerFind = styled.div`
     height: 100vh;
@@ -26,12 +26,12 @@ const Logo = styled.div`
 `;
 
 const Find = () =>{
-    const [findInName, setFindInName] = useState("");
-    const [findInId, setFindInId] = useState("");
-    const [findInEmail, setFindInEmail] = useState("");
+    const [findInName,setFindInName] = useState("");
+    const [findInId,setFindInId] = useState("");
+    const [findInEmail,setFindInEmail] = useState("");
 
-    const [isFindId, setIsFindId] = useState(true);
-    const [isFindPwd, setIsFindPwd] = useState(false);
+    const [isFindId,setIsFindId] = useState(true);
+    const [isFindPwd,setIsFindPwd] = useState(false);
 
     const [emailMessage, setEmailMessage] = useState("");
     const [isEmail, setIsEmail] = useState(false);

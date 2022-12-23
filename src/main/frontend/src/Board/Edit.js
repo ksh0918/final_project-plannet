@@ -235,7 +235,7 @@ function Edit() {
             }
         };
         boardData();
-    }, []);
+    }, [getId, getNum, navigate]);
 
     // 해당 게시물 번호에 해당하는 Edit 페이지로 이동
     const onClickEdit = async() => {

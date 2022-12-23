@@ -5,7 +5,6 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Api from "../api/plannetApi";
 import Nav from "../Utill/Nav";
-import axios, { Axios } from 'axios';
 import Modal from '../Utill/Modal';
 import TopBar from '../Utill/TopBar';
 

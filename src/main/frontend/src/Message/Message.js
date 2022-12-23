@@ -259,7 +259,7 @@ const Message = () => {
             }
         }
         messageData();
-    },[]);
+    },[getId]);
 
     //미디어쿼리시 nav 사이드바
     const [sideBar, setSideBar] = useState(false);

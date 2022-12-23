@@ -1,6 +1,4 @@
-import { useState, useEffect } from "react";
 import styled from "styled-components";
-import Api from "../api/plannetApi";
 
 const ListBox = styled.div`
     width: 100%;

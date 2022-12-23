@@ -17,7 +17,7 @@ const useInfiniteScroll = (callback) => {
             callback(() => {
                 console.log('Call Back!');
             })
-    },[isFetching]) 
+    },[callback, isFetching]) 
 
     // 스크롤 이벤트에 대한 핸들러 함수. height 계산을 통해 스크롤이 끝나면 로직을 실행한다.
     const handleScroll = () => { 
