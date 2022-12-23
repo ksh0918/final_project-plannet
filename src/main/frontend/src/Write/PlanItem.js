@@ -80,7 +80,7 @@ const PlanItem = ({planItem, planList, setPlanList, isPage}) => {
         <li>
             <StyledInput type="checkbox" checked={planItem.checked} onChange={onChangeCheckbox}/>
             {edited ?
-                (<input type="text" value={newText} ref={editInputRef} onFocus={onFocusInput} onChange={onChangeEditInput} onBlur={onBlurSubmit} maxLength={30}/>)
+                (<input type="text" value={newText} ref={editInputRef} onFocus={onFocusInput} onChange={onChangeEditInput} onBlur={onBlurSubmit} maxLength={50}/>)
                 : (<span className={testStyle} onClick={onClickEdit}>{planItem.text}</span>)
             }
             <button onClick={onClickRemove}><i className="bi bi-trash3-fill" /></button>
