@@ -111,7 +111,6 @@ const Section = styled.div`
             }
             .scal_add, .scal_delete, .smem_quit {
                 cursor: pointer;
-                float: right;
                 margin: 10px 10px 0;
                 width: 130px;
                 font-weight: 600;
@@ -183,13 +182,13 @@ const SCalSetting = () => {
         await Api.scalInfoSave(getNum, title);
         navigate('/scal/home/' + getNum);
     }
-    const onClickScalDelete = () => {
+    const onClickSCalDelete = () => {
         setScalNo(getNum);
         setCommnet("삭제하시겠습니까?");
         setModalHeader("공유캘린더 삭제");
         setModalOpen(true);
     }
-    const onClickScalQuit = async() => {
+    const onClickSCalQuit = async() => {
         setOption(getId);
         setScalNo(getNum);
         setCommnet("탈퇴하시겠습니까?");
@@ -225,8 +224,8 @@ const SCalSetting = () => {
                         </div>
                         <div className="button-area1">
                             <button className="btn scal_add" onClick={onClickSCalInfoSave}>SAVE</button>
-                            {getId === owner ? <><button className='btn left-space scal_delete' onClick={() => onClickScalDelete()}>DELETE</button></> 
-                            : <><button className='btn left-space smem_quit' onClick={() => onClickScalQuit()}>DELETE</button></> }
+                            {getId === owner ? <><button className='btn left-space scal_delete' onClick={() => onClickSCalDelete()}>DELETE</button></> 
+                            : <><button className='btn left-space smem_quit' onClick={() => onClickSCalQuit()}>QUIT</button></> }
                         </div>
                     </div>
                 </div>
