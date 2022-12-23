@@ -45,7 +45,7 @@ const DoLogin = () => {
 
     // 모달
     const [modalOpen, setModalOpen] = useState(false);
-    const [comment, setCommnet] = useState(""); // 오류 메세지
+    const [comment, setComment] = useState(""); // 오류 메세지
     const closeModal = () => {
         setModalOpen(false);
     };
@@ -66,14 +66,14 @@ const DoLogin = () => {
                 window.localStorage.setItem("userId", inputId);
                 navigate('/home');
             } else if(response.data === 'google') {
-                setCommnet("구글 로그인을 이용해주세요.");
+                setComment("구글 로그인을 이용해주세요.");
                 setModalOpen(true);
             } else {
-                setCommnet("아이디 또는 비밀번호가 정확하지 않습니다.");
+                setComment("아이디 또는 비밀번호가 정확하지 않습니다.");
                 setModalOpen(true);
             }
         } catch (e) {
-            setCommnet(e);
+            setComment(e);
             setModalOpen(true);
         }
     }
