@@ -4,6 +4,19 @@ const HEADER = 'application/json';
 //const PLANNET_DOMAIN = "http://plannet.shop/";
 const PLANNET_DOMAIN = "http://localhost:8111/";
 
+// 이 주석은 다 하시면 지우고 커밋해주세요~!
+// 정리하면서 확인할 것
+// post, get 방식
+// post는 " " 같은 식으로 뒤에 적어야 하고
+// get은 ` ` 같은 식으로 뒤에 적어야 함 
+// 크게 컨트롤러 순서는 member >  email > userinfo > noti > message > home > scal > board 
+// 컨트롤러 마다는 한 줄씩 띄어주세요
+// refresh controller는 제외
+// 각 컨트롤러 안에 있는 api는 컨트롤러 안에 있는 순서대로 정리해서 적기
+// 띄어쓰기 & 단어 통일 및 순서가 잘 안 되어있는 경우가 많아서 컨트롤러랑 동일하게 맞춰주세요~!
+// 각 기능에 대한 주석도 꼭 한 줄 달아두기
+// 프론트랑 연결하는 부분의 api 명칭은 자유롭게 지정해도 되나 통일성있게 (바꾸는 게 낫지 않을까? 하는 거 있으시다면 말씀해주세요~! 컨트롤러도 비슷하게 같이 바꿀게요)
+
 const plannetApi = {
     // MemberController
     // 로그인 기능
