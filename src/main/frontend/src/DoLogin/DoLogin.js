@@ -1,15 +1,14 @@
-import React, {useState} from 'react';
-import { Link } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import { useNavigate, Link } from "react-router-dom";
 import { ReactComponent as LogoImg } from "../Images/plannet-001.svg";
-// import kakaoimg from "../Images/kakaotalk_logo2.png";
-// import naverimg from "../Images/btnG_아이콘사각.png";
-import googleimg1 from "../Images/google-logo.png";
+import styled from "styled-components";
 import Api from "../api/plannetApi";
 import Modal from '../Utill/Modal';
-import "./DoLogin.scss"
+import googleimg1 from "../Images/google-logo.png";
+// import kakaoimg from "../Images/kakaotalk_logo2.png";
+// import naverimg from "../Images/btnG_아이콘사각.png";
 import "../App";
-import { useNavigate  } from "react-router-dom";
+import "./DoLogin.scss"
 
 const ContainerLogin = styled.div`
     width: 100%;
@@ -24,7 +23,7 @@ const ContainerLogin = styled.div`
 `;
 const Logo = styled.div`
     margin-top: -30px;
-    a{
+    a {
         font-size: 67px;
         font-family: 'Comfortaa', cursive;
         font-weight: bold;
@@ -37,56 +36,49 @@ const DoLogin = () => {
     // 키보드 입력
     const [inputId, setInputId] = useState("");
     const [inputPw, setInputPw] = useState("");
-    
-    // 오류 메시지
-    const [comment, setCommnet] = useState("");
-
-     // 팝업
-    const [modalOpen, setModalOpen] = useState(false);
-
-    const closeModal = () => {
-        setModalOpen(false);
-    };
-
     const onChangId = (e) => {
         setInputId(e.target.value)
     }
-
     const onChangePw = (e) => {
         setInputPw(e.target.value)       
     }
 
+    // 모달
+    const [modalOpen, setModalOpen] = useState(false);
+    const [comment, setComment] = useState(""); // 오류 메세지
+    const closeModal = () => {
+        setModalOpen(false);
+    };
+
+    const onClickGoogle = () => {
+        navigate("/google/login");
+    }
     // const onClickLink = () => {
     //     setModalOpen(true);
     //     setCommnet("서비스 준비중 입니다 ...");
     // }
 
-    const onClickGoogle = () => {
-        navigate("/google/login");
-    }
-
     const onClickLogin = async() => {
         try {
-            const res = await Api.memberLogin(inputId, inputPw);
-            if(res.data === 'normal') {
+            const response = await Api.memberLogin(inputId, inputPw);
+            if(response.data === 'normal') {
                 window.localStorage.setItem("isLogin", "true");
                 window.localStorage.setItem("userId", inputId);
                 navigate('/home');
-            } else if(res.data === 'google') {
-                setCommnet("구글 로그인을 이용해주세요.");
+            } else if(response.data === 'google') {
+                setComment("구글 로그인을 이용해주세요.");
                 setModalOpen(true);
             } else {
-                setCommnet("아이디 또는 비밀번호가 정확하지 않습니다.");
+                setComment("아이디 또는 비밀번호가 정확하지 않습니다.");
                 setModalOpen(true);
             }
         } catch (e) {
-            setCommnet(e);
+            setComment(e);
             setModalOpen(true);
         }
     }
-
     // 로그인 할 때 아이디, 비밀번호 입력 후 엔터 키를 눌렀을 때 로그인 인식
-    const onKeyPressLogin = (e) => {
+    const onKeyPressEnter = (e) => {
         if(e.key === 'Enter'){
             onClickLogin();
         }
@@ -101,7 +93,7 @@ const DoLogin = () => {
                         <img src={kakaoimg} alt="카카오로고" className="logImg"/>
                         카카오톡으로 로그인
                     </button> */}
-                    <a href='../google/login'><button className="login-btn2"  onClick={onClickGoogle}>
+                    <a href='../google/login'><button className="login-btn2" onClick={onClickGoogle}>
                         <img src={googleimg1} alt="구글로고" className="logImg"/>
                         구글로 로그인
                     </button></a>
@@ -113,7 +105,7 @@ const DoLogin = () => {
                 <p className="space-or">또는</p>
                 <div className="login2">
                     <input type="text" id="id" name="uid" placeholder="아이디" required="" value ={inputId} onChange={onChangId}/>
-                    <input type="password" id="pwd" name="upw" placeholder="비밀번호" required="" value ={inputPw} onChange={onChangePw} onKeyPress={onKeyPressLogin}/>
+                    <input type="password" id="pwd" name="upw" placeholder="비밀번호" required="" value ={inputPw} onChange={onChangePw} onKeyPress={onKeyPressEnter}/>
                     <button className="doLogin" onClick={onClickLogin}>로그인하기</button>
                     <Modal open={modalOpen} close={closeModal} header="오류">아이디 및 패스워드를 재확인해 주세요.</Modal>
                 </div>
