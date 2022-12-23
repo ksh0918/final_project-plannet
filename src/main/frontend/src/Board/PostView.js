@@ -173,7 +173,7 @@ const PostView = () => {
 
     // 좋아요를 누를 때마다 표면적으로 +1, -1 해주기 & 하트 모양 토글
     const onClickLike = async() => {
-        const likeChecked = await Api.likeCheckedToggle(getId, getNum);
+        const likeChecked = await Api.likeCheckedToggle(getNum, getId);
         setLikeChecked(likeChecked.data);
         if (likeCheckedData) setLikeCnt(likeCntData - 1);
         else (setLikeCnt(likeCntData + 1));

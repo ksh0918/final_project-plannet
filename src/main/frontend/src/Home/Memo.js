@@ -21,15 +21,9 @@ const Memo = ({props}) => {
     }, [props]);
 
     const onBlurSave = async() => {
-        if(currentPath === "/home") {
-            await Api.memoSave(getId, memoText);
-        }
-        else {
-            console.log("여기 들어오긴 하니");
-            await Api.scalMemoSave(getNum, memoText);
-        }
+        if(currentPath === "/home") await Api.memoSave(getId, memoText);
+        else await Api.scalMemoSave(getNum, memoText);
     }
-    console.log(currentPath);
 
     return (
         <textarea 
