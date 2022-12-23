@@ -172,13 +172,10 @@ const SCalWrite = () => {
     // 링크에서 date 추출
     const currentLink = useLocation(); // 현재 링크 얻기
     const getDate = currentLink.pathname.slice(-10); // currentLink.pathname에서 slice로 date 부분만 추출
-    console.log(currentLink);
-    console.log(getDate);
 
     const [planList, setPlanList] = useState([]);
     const [commentList, setCommentList] = useState([]);
  
-
     // 변경사항이 있는데 사이트 이동하려고 할 시 경고 창 등장    
     window.addEventListener('beforeunload', (event) => {
         event.preventDefault(); // 표준에 따라 기본 동작 방지
