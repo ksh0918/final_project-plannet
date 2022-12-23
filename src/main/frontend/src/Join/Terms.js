@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from "react-router-dom";
 import { ReactComponent as LogoImg } from "../Images/plannet-001.svg";
 import styled from "styled-components";
+import Api from "../api/plannetApi";
 import Modal from '../Utill/Modal';
 import "../App";
 import "./Join.scss"
@@ -74,6 +75,7 @@ const Terms = () => {
     const [serviceCheck, setServiceCheck] = useState(false); // 서비스 이용약관 체크 // 필수
     const [userCheck, setUserCheck] = useState(false); // 개인정보 처리방침 체크// 필수
     const [marketingCheck, setMarketingCheck] = useState(false); // 마케팅 체크
+    const [optInCheckList, setOptInCheckList] = useState([]); // 수신 동의한 마케팅 방식 리스트
     const [marketingEmailCheck, setMarketingEmailCheck] = useState(false); // 이메일
     const [marketingSMSCheck, setMarketingSMSCheck] = useState(false); // SMS
 
@@ -104,8 +106,8 @@ const Terms = () => {
 
     // 마케팅 동의 체크
     const marketingBtnEvent = (e) => {
-        if(e.target.checked === false) setAllCheck(false);
         if(e.target.checked === false) {
+            setAllCheck(false);
             setMarketingEmailCheck(false);
             setMarketingSMSCheck(false);
         }
@@ -148,9 +150,14 @@ const Terms = () => {
     const closeModalSignUp = () => {
         setModalOpenSignUp(false);
     }
-    const istrue = () => {
+    const istrue = async () => {
         if(serviceCheck === true && userCheck === true ){
-            navigate("/join");
+            setOptInCheckList(optInCheckList.push(marketingEmailCheck, marketingSMSCheck));
+            console.log("출력됩니다!!");
+            console.log(marketingSMSCheck);
+            console.log(marketingEmailCheck);
+            console.log(optInCheckList);
+            navigate("/join", {state: {optIn:optInCheckList}});
         } else {
             setModalOpenSignUp(true);
         }
@@ -581,7 +588,7 @@ const Terms = () => {
                     <div className='check2'>
                         <div className='text'>
                                 <label>
-                                    <input type="checkbox" checked={marketingCheck} onClick={marketingBtnEvent}/> 마케팅 활용 약관에 동의합니다.(선택) (&nbsp;
+                                    <input type="checkbox" checked={marketingCheck} onClick={marketingBtnEvent} id="id1"/> 마케팅 활용 약관에 동의합니다.(선택) (&nbsp;
                                         <label><input type="checkbox" checked={marketingEmailCheck} onClick={marketingEmailBtnEvent}/> 이메일&nbsp;</label>
                                         <label><input type="checkbox" checked={marketingSMSCheck} onClick={marketingSMSBtnEvent}/> SMS )</label>
                                 </label>
@@ -589,7 +596,7 @@ const Terms = () => {
                     </div>
                 </div>
             </AgreeBox>
-            <div><label><input type="checkbox" checked={allCheck} onClick={allBtnEvent}/><b> 전체 약관에 동의합니다.</b></label></div>
+            <div><label><input type="checkbox" checked={allCheck} onClick={allBtnEvent} /><b> 전체 약관에 동의합니다.</b></label></div>
             <Button onClick={istrue} className="lastBtn">다음단계</Button>
             {/* 모달 */}
             {modalOpenSignUp && <Modal open={modalOpenSignUp} close={closeModalSignUp} header="확인">필수 항목을 모두 체크해주세요.</Modal>}

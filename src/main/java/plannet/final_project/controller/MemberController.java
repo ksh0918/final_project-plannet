@@ -41,7 +41,7 @@ public class MemberController {
 
     // 처음 구글 로그인 한 사람 회원가입
     @PostMapping("/new_social_save")
-    public ResponseEntity<Boolean> newSocialSave(@RequestBody Map<String,String> data) {
+    public ResponseEntity<Boolean> newSocialSave(@RequestBody Map<String, String> data) {
         String id = data.get("id");
         String name = data.get("name");
         String email = data.get("email");
@@ -61,8 +61,9 @@ public class MemberController {
             String name = data.get("name");
             String nickname = data.get("nickname");
             String email = data.get("email");
-            String tel =data.get("tel");
-            boolean result = memberService.memberReg(id, pwd, name, nickname, email, tel);
+            String tel = data.get("tel");
+            String optIn = data.get("optInResult");
+            boolean result = memberService.memberReg(id, pwd, name, nickname, email, tel, optIn);
             log.warn(String.valueOf(result));
             if(result) return new ResponseEntity(true, HttpStatus.OK);
             else {

@@ -12,6 +12,7 @@ public class MemberDTO {
     private String nickname;
     private String email;
     private String tel;
+    private String marketingOptIn;
     private String profile;
     private String proImg;
     private int pes; // 개인 일정의 달성률

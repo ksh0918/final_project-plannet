@@ -6,14 +6,15 @@ const PLANNET_DOMAIN = "http://localhost:8111/";
 
 // 이 주석은 다 하시면 지우고 커밋해주세요~!
 // 정리하면서 확인할 것
-// post, get 방식
+// post, get 방식 확인 및 수정 (db의 수정이 조금이라도 있으면 post (삽입, 삭제, 수정 등) 무조건 불러오기만 하면 get) (놓친 거 있을 수 있으니까 잘 확인해주세요~! )
+// 예외적으로 .. 혹시나의 보안상의 이유로 memberLogin은 db를 가져오기만 하지만 post로 적어두었습니다
 // post는 " " 같은 식으로 뒤에 적어야 하고
 // get은 ` ` 같은 식으로 뒤에 적어야 함 
 // 크게 컨트롤러 순서는 member >  email > userinfo > noti > message > home > scal > board 
 // 컨트롤러 마다는 한 줄씩 띄어주세요
 // refresh controller는 제외
 // 각 컨트롤러 안에 있는 api는 컨트롤러 안에 있는 순서대로 정리해서 적기
-// 띄어쓰기 & 단어 통일 및 순서가 잘 안 되어있는 경우가 많아서 컨트롤러랑 동일하게 맞춰주세요~!
+// 띄어쓰기 & 단어 통일 및 순서가 잘 안 되어있는 경우가 많아서 컨트롤러랑 느낌은 동일하게 맞춰주세요~! (delete는 drop 대신 delete로 통일하는 등)
 // 각 기능에 대한 주석도 꼭 한 줄 달아두기
 // 프론트랑 연결하는 부분의 api 명칭은 자유롭게 지정해도 되나 통일성있게 (바꾸는 게 낫지 않을까? 하는 거 있으시다면 말씀해주세요~! 컨트롤러도 비슷하게 같이 바꿀게요)
 
@@ -43,7 +44,7 @@ const plannetApi = {
         return await axios.post(PLANNET_DOMAIN + "member/new_social_save", reg, HEADER);
     },
     // 회원 가입
-    memberReg: async function(id, pwd, name, nickname, email, tel, join_date) {
+    memberReg: async function(id, pwd, name, nickname, email, tel, optInResult) {
         const memberObj = {
             id: id,
             pwd: pwd,
@@ -51,7 +52,7 @@ const plannetApi = {
             nickname: nickname,
             email: email,
             tel: tel,
-            join_date: join_date
+            optInResult: optInResult,
         };
         return await axios.post(PLANNET_DOMAIN + "member/register", memberObj, HEADER);
     },
@@ -296,11 +297,7 @@ const plannetApi = {
     },
     // 해당 캘린더에 작성된 댓글 불러오기
     scommentLoad: async function(scalNo, planDate) {
-        const object = {
-            scalNo: scalNo,
-            planDate: planDate
-        }
-        return await axios.get(PLANNET_DOMAIN + `scal/comment_load?scalNo=${scalNo}&planDate=${planDate}`, object, HEADER);
+        return await axios.get(PLANNET_DOMAIN + `scal/scomment_load?scalNo=${scalNo}&planDate=${planDate}`, HEADER);
     },
     // 해당 캘린더에 댓글 작성
     scommentWrite: async function(scalNo, id, planDate, detail){

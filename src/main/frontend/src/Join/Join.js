@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { ReactComponent as LogoImg } from "../Images/plannet-001.svg";
 import styled from "styled-components";
 import Api from '../api/plannetApi';
@@ -27,6 +27,7 @@ const Logo = styled.div`
 
 const Join = () => {
     const navigate = useNavigate();
+
     // 키보드 입력
     const [inputId, setInputId] = useState("");
     const [inputPw, setInputPw] = useState("");
@@ -37,7 +38,16 @@ const Join = () => {
     const [inputTel, setInputTel] = useState("");
     const [inputAuth,setInputAuth] = useState("");
     const [authNum,setAuthNum] = useState("");
- 
+
+    // Terms.js 에서 받아온 마케팅 수신여부 동의 값
+    const location = useLocation();
+    const optInCheckList = location.state.optIn;
+    const [optInResult, setOptInResult] = useState("");
+    if (optInCheckList[0] && optInCheckList[1]) setOptInResult("ALL");
+    else if (optInCheckList[0]) setOptInResult("EMAIL");
+    else if (optInCheckList[1]) setOptInResult("SMS");
+    else setOptInResult("NON");
+
     // 오류 메시지
     const [idMessage, setIdMessage] = useState("");
     const [pwMessage, setPwMessage] = useState("");
@@ -208,7 +218,7 @@ const Join = () => {
     }
 
     const onClickJoin = async() => {
-        const memberReg = await Api.memberReg(inputId, inputPw, inputName, inputNickname, inputEmail, inputTel);
+        const memberReg = await Api.memberReg(inputId, inputPw, inputName, inputNickname, inputEmail, inputTel, optInResult);
         if(memberReg.data) {
             window.localStorage.setItem("userId", inputId);
             window.localStorage.setItem("isLogin", "true");
