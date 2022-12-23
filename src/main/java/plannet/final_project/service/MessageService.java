@@ -5,8 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import plannet.final_project.dao.MemberRepository;
 import plannet.final_project.dao.MessageRepository;
+import plannet.final_project.entity.Board;
 import plannet.final_project.entity.Member;
 import plannet.final_project.entity.Message;
+import plannet.final_project.vo.BoardDTO;
 import plannet.final_project.vo.MessageDTO;
 
 import javax.transaction.Transactional;
@@ -109,5 +111,26 @@ public class MessageService {
         } catch (Exception e){
             return false;
         }
+    }
+
+    public MessageDTO searchListLoad(String keyword) {
+        MessageDTO messageDTO = new MessageDTO();
+        List<Map<String, Object>> messageList = new ArrayList<>();
+        try {
+            List<Message> messageData = messageRepository.findBySendIdLikeDetailLikeOrderByMessageNoDesc(keyword, keyword);
+            for (Message e : messageData) {
+                Map<String, Object> message = new HashMap<>();
+                message.put("messageNo", e.getMessageNo());
+                message.put("sendId", e.getUserId().getNickname()+"#"+e.getUserId().getUserCode());
+                message.put("detail", e.getDetail());
+                message.put("sendDate", e.getDate());
+                messageList.add(message);
+            }
+            messageDTO.setMessageList(messageList);
+            messageDTO.setOk(true);
+        } catch (Exception e) {
+            messageDTO.setOk(false);
+        }
+        return messageDTO;
     }
 }

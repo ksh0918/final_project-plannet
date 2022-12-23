@@ -3,6 +3,7 @@ package plannet.final_project.dao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import plannet.final_project.entity.Board;
 import plannet.final_project.entity.Member;
 import plannet.final_project.entity.Message;
 
@@ -13,4 +14,5 @@ public interface MessageRepository extends JpaRepository<Message,Long> {
     List<Message> findAllMatchingId(@Param("receive_id") String receive_id);
     void deleteByUserId(Member member);
     void deleteByMessageNo(Long messageNo);
+    List<Message> findBySendIdLikeDetailLikeOrderByMessageNoDesc(String keyword1, String keyword2);
 }
