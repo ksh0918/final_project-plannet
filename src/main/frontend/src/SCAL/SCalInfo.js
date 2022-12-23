@@ -151,21 +151,21 @@ const SCalSetting = () => {
         const scalInfo = async() => {
             try{
                 const response = await Api.scalInfo(getNum, getId);
-                setTitle(response.data.calName);
-                setFriendList(response.data.calMember);
-                setOwner(response.data.calOwner);
+                setTitle(response.data.scalName);
+                setFriendList(response.data.scalMember);
+                setOwner(response.data.scalOwner);
             } catch(e) {
                 console.log(e)
             }
         }
         scalInfo();
-    }, [getId]);
+    },[getId, getNum]);
 
     // 공유 캘린더 이름 입력
     const onChangeTitle = (e) => {
         setTitle(e.target.value);
     }
-    
+
     //  친구 검색 입력
     const onChangeSearchKeyword = (e) => {
     setSearchKeyword(e.target.value);

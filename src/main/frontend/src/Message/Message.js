@@ -63,7 +63,7 @@ const Section = styled.div`
             &:first-child {width:35px;}
             &:nth-child(2){width: 60px;}
             &:nth-child(3){width: 130px;}
-            &:last-child {width: 135px;}
+            &:last-child {width: 140px;}
         }
         td {
             padding: 10px; 
