@@ -159,7 +159,7 @@ const Setting = () => {
 
     const [sideBar, setSideBar] = useState(false); //미디어쿼리시 nav 사이드바
     const [userImgName, setUserImgName] = useState("");
-    const [userImgUrl, setUserImgUrl] = useState({backgroundImage: "url(https://khprojectplannet.s3.ap-northeast-2.amazonaws.com/" + userImgName + ")"});
+    const [userImgUrl, setUserImgUrl] = useState({backgroundImage: "url(https://plannetmanager5.s3.ap-northeast-2.amazonaws.com/" + userImgName + ")"});
     const [userNickname, setUserNickname] = useState("");
     const [userEmail, setUserEmail] = useState("");
     const [userPhone, setUserPhone] = useState("");
@@ -186,7 +186,7 @@ const Setting = () => {
                 setUserPhone(response.data[4]);
                 setUserPro(response.data[2]);
                 setUserImgName(response.data[5]);
-                setUserImgUrl({backgroundImage: "url(https://khprojectplannet.s3.ap-northeast-2.amazonaws.com/" + response.data[5] + ")"});
+                setUserImgUrl({backgroundImage: "url(https://plannetmanager5.s3.ap-northeast-2.amazonaws.com/" + response.data[5] + ")"});
             } catch(e) {
                 console.log(e);
             }
