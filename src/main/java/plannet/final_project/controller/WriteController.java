@@ -21,11 +21,9 @@ public class WriteController {
     private final WriteService writeService;
 
     //일정 불러오기
-    @PostMapping("/load")
-    public ResponseEntity<List<Object>> writeLoad(@RequestBody Map<String, Object> wrLoad) {
-        String userId = (String)wrLoad.get("id");
-        LocalDate date = LocalDate.parse((String)wrLoad.get("date"));
-        WriteDTO planAndDiary = writeService.writeLoad(userId, date);
+    @GetMapping("/load")
+    public ResponseEntity<List<Object>> writeLoad(@RequestParam String id, LocalDate date) {
+        WriteDTO planAndDiary = writeService.writeLoad(id, date);
         List<Object> writeData = new ArrayList<>();
         writeData.add(planAndDiary.getPlanList());
         writeData.add(planAndDiary.getDiary());
@@ -40,11 +38,11 @@ public class WriteController {
 
     // 일정 저장
     @PostMapping("/save")
-    public ResponseEntity<Boolean> writeSave(@RequestBody Map<String, Object> wrSave) {
-        String userId = (String)wrSave.get("id");
-        LocalDate date = LocalDate.parse((String)wrSave.get("date"));
-        List<Map<String, Object>> plan = (List<Map<String, Object>>)wrSave.get("plan");
-        String diary= (String)wrSave.get("diary");
+    public ResponseEntity<Boolean> writeSave(@RequestBody Map<String, Object> data) {
+        String userId = (String)data.get("id");
+        LocalDate date = LocalDate.parse((String)data.get("date"));
+        List<Map<String, Object>> plan = (List<Map<String, Object>>)data.get("plan");
+        String diary= (String)data.get("diary");
         boolean result = writeService.writeSave(userId, date, plan, diary);
         if(result) return new ResponseEntity(true, HttpStatus.OK);
         else return new ResponseEntity(false, HttpStatus.OK);

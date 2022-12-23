@@ -124,7 +124,7 @@ const Friend = () => {
     useEffect(() => {
         const friendPage = async() => {
             try{
-                const response = await Api.friendPageLoad(getId); //친구랑 알림 목록 불러오기
+                const response = await Api.friendLoad(getId); //친구랑 알림 목록 불러오기
                 setFriendList(response.data.friendList);
                 setNotiList(response.data.notiList);
             } catch(e){
@@ -141,7 +141,7 @@ const Friend = () => {
     }
 
     const onClickAddSCal = async () => {
-        const response = await Api.scalCheck(getId); //2개이상의 scal에 참여중인지 확인 2개 이하면 true, 이상이면 false
+        const response = await Api.scalCntCheck(getId); //2개이상의 scal에 참여중인지 확인 2개 이하면 true, 이상이면 false
         console.log(response.data);
         if(response.data) {
             navigate("/scal/create");

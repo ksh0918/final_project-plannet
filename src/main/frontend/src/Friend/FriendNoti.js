@@ -71,7 +71,7 @@ const FriendNoti = ({setCommnet, setModalHeader, setModalOpen, setOption, notiLi
 
     const onClickNoti = (e, status) => {
         const countSCal = async() => {
-            const response = await Api.scalCheck(getId); //2개이상의 scal에 참여중인지 확인 2개 이하면 true, 이상이면 false
+            const response = await Api.scalCntCheck(getId); //2개이상의 scal에 참여중인지 확인 2개 이하면 true, 이상이면 false
             console.log(response.data);
             if(response.data) {
                 setOption("?key=" + e.key + "&status=" + status);

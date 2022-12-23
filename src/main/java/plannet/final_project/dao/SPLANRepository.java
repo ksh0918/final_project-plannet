@@ -17,10 +17,9 @@ public interface SPLANRepository extends JpaRepository<SPLAN, Long> {
     List<SPLAN> findByScalNoAndSplanDateOrderBySplanNoAsc(SCAL calNo, LocalDate localDate);
     List<SPLAN> findByScalNoAndSplanChecked(SCAL calNo, int planChecked);
     void deleteByUserId(Member member);
-
+    void deleteByScalNo(SCAL CalNo);
     @Modifying //데이터베이스에 변경을 주는 네이티브 쿼리는 이 어노테이션 필요 (INSERT, UPDATE, DELETE)
     @Transactional
     @Query(value="delete from s_plan where cal_no = (:calNo) and plan_date = (:date)", nativeQuery = true)
     void deleteByPlanDateAndScalNo(@Param("date") LocalDate date, @Param("calNo") Long calNo);
-    void deleteByScalNo(SCAL CalNo);
 }

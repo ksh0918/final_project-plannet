@@ -236,10 +236,10 @@ const Nav = ({sideBar, setSideBar}) => {
                 setScalInfo(response.data.scalInfo);
                 setProHeight(response.data.scalInfo.length * 47 + 390);
                 console.log(response.data);
-                const mResult = await Api.messageNoti(userId);
+                const mResult = await Api.messageCntNoti(userId);
                 console.log(mResult.data);
                 setmNotiCount(mResult.data);
-                const result = await Api.friendPageLoad(userId);
+                const result = await Api.friendLoad(userId);
                 if(result.data != null){setfNotiCount(Object.keys(result.data.notiList).length);}
                 else{console.log("null 값")}
             } catch(e){

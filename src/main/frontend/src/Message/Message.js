@@ -107,7 +107,7 @@ const Section = styled.div`
     .util_box {
         padding: 10px 30px;
         .page_list {
-            width: 500px; 
+            width: 250px; 
             float:left;
             li {
                 list-style-type: none;
@@ -133,13 +133,15 @@ const Section = styled.div`
         }
         .search {
             float: right;
-            width: 200px; height: 29px; 
+            width: calc(100% - 250px);
+            max-width: 200px;
+            height: 29px; 
             padding: 0 10px; 
             border: solid 2px #ddd; 
             background-color: white;
             margin-top: -2px;
             border-radius: 5px; 
-            input {width: 150px; height: 25px; border: 0px; outline: none; margin-right: 10px;}
+            input {width: calc(100% - 25px); height: 25px; border: 0px; outline: none; margin-right: 10px;}
         }
     }
 `;

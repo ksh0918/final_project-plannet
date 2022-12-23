@@ -33,17 +33,17 @@ const Modal = (props) => {
         navigate('/board');
     }
     const onClickMessage = async() => {
-        await Api.messageReadModal(messageRead);
+        await Api.messageModalOpen(messageRead);
         setMessageRead("");
         navigate(0); 
         
     }
     const onClickUnfriend = async() => {
-        await Api.notiUnfriend(option);
+        await Api.unfriend(option);
         navigate(0);
     }
     const onClickNotiAnswer = async() => {
-        await Api.notiAnswer(option);
+        await Api.notiResponse(option);
         navigate(0);
     }
 
@@ -57,7 +57,7 @@ const Modal = (props) => {
         navigate('/home');
     }
     const onClickDrop = async() => {
-        await Api.smemDrop(calNo, option);
+        await Api.smemDelete(calNo, option);
         navigate(0);
     }
     const onClickInvite = async() => {
@@ -67,7 +67,7 @@ const Modal = (props) => {
         navigate(0);
     }
     const onClickScalQuit = async() => {
-        await Api.smemDrop(calNo, option);
+        await Api.smemDelete(calNo, option);
         navigate(-1);
     }
     const onClickGoogleLogin = async() => {

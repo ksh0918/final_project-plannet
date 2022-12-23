@@ -3,17 +3,16 @@ package plannet.final_project.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import plannet.final_project.dao.BoardRepository;
-import plannet.final_project.dao.CommentRepository;
-import plannet.final_project.dao.LikeRepository;
 import plannet.final_project.dao.MemberRepository;
-import plannet.final_project.entity.Board;
-import plannet.final_project.entity.Comment;
-import plannet.final_project.entity.LikeList;
+import plannet.final_project.dao.BoardRepository;
+import plannet.final_project.dao.LikeRepository;
+import plannet.final_project.dao.CommentRepository;
 import plannet.final_project.entity.Member;
+import plannet.final_project.entity.Board;
+import plannet.final_project.entity.LikeList;
+import plannet.final_project.entity.Comment;
 import plannet.final_project.vo.BoardDTO;
 
-import javax.crypto.ExemptionMechanismException;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -32,7 +31,7 @@ public class BoardService {
     private final CommentRepository commentRepository;
 
     // 보드 목록 불러오기
-    public BoardDTO getBoardList() {
+    public BoardDTO boardListLoad() {
         BoardDTO boardDTO = new BoardDTO();
         List<Map<String, Object>> boardList = new ArrayList<>();
         try {
@@ -42,9 +41,8 @@ public class BoardService {
                 board.put("boardNo", e.getBoardNo());
                 board.put("writerId", e.getUserId().getId());
                 // 익명체크 여부 확인 후 닉네임 넣기
-                if(e.getIsChecked() == 0) {
-                    board.put("nickname", e.getUserId().getNickname());
-                } else board.put("nickname", "익명");
+                if(e.getIsChecked() == 0) board.put("nickname", e.getUserId().getNickname());
+                else board.put("nickname", "익명");
                 board.put("category", e.getCategory());
                 board.put("title", e.getTitle());
                 board.put("views", e.getViews());
@@ -60,7 +58,7 @@ public class BoardService {
     }
 
     // 인기글 리스트 불러오기
-    public BoardDTO getTop3List() {
+    public BoardDTO top3ListLoad() {
         List<Integer> top3BoardNo = likeRepository.findAllTop3GroupByBoardNoOrderByCountByBoardNoDescBoardNoDesc();
         BoardDTO boardDTO = new BoardDTO();
         List<Map<String, Object>> boardList = new ArrayList<>();
@@ -71,9 +69,8 @@ public class BoardService {
                 board.put("boardNo", e.getBoardNo());
                 board.put("writerId", e.getUserId().getId());
                 // 익명체크 여부 확인 후 닉네임 넣기
-                if(e.getIsChecked() == 0) {
-                    board.put("nickname", e.getUserId().getNickname());
-                } else board.put("nickname", "익명");
+                if(e.getIsChecked() == 0) board.put("nickname", e.getUserId().getNickname());
+                else board.put("nickname", "익명");
                 board.put("category", e.getCategory());
                 board.put("title", e.getTitle());
                 board.put("views", e.getViews());
@@ -89,7 +86,7 @@ public class BoardService {
     }
 
     // 검색 키워드에 해당하는 글 목록 불러오기 불러오기
-    public BoardDTO getSearchList(String keyword) {
+    public BoardDTO searchListLoad(String keyword) {
         BoardDTO boardDTO = new BoardDTO();
         List<Map<String, Object>> boardList = new ArrayList<>();
         try {
@@ -99,9 +96,9 @@ public class BoardService {
                 board.put("boardNo", e.getBoardNo());
                 board.put("writerId", e.getUserId().getId());
                 // 익명체크 여부 확인 후 닉네임 넣기
-                if(e.getIsChecked() == 0) {
-                    board.put("nickname", e.getUserId().getNickname());
-                } else board.put("nickname", "익명");
+                if(e.getIsChecked() == 0) board.put("nickname", e.getUserId().getNickname());
+                else board.put("nickname", "익명");
+                board.put("category", e.getCategory());
                 board.put("title", e.getTitle());
                 board.put("views", e.getViews());
                 board.put("writeDate", e.getWriteDate());
@@ -116,7 +113,7 @@ public class BoardService {
     }
 
     // 보드 넘버에 해당하는 글의 상세페이지 불러오기
-    public BoardDTO getPostView(Long boardNo) {
+    public BoardDTO postViewLoad(Long boardNo) {
         Board board = boardRepository.findById(boardNo).orElseThrow();
         BoardDTO boardDTO = new BoardDTO();
         try {
@@ -138,10 +135,9 @@ public class BoardService {
     }
 
     // 조회수 +1
-    public boolean getViews(Long boardNo) {
+    public boolean viewUp(Long boardNo) {
         Board board = boardRepository.findById(boardNo).orElseThrow();
         int CurrentViews = board.getViews() + 1;
-
         try {
             board.setBoardNo(boardNo);
             board.setViews(CurrentViews);
@@ -153,36 +149,33 @@ public class BoardService {
     }
 
     // 보드 넘버에 해당하는 글의 좋아요 수
-    public int getLikeCnt(Board boardNo) {
+    public int likeCntLoad(Board boardNo) {
         int likeCnt = likeRepository.countByBoardNo(boardNo).intValue();
         return likeCnt;
     }
 
     // 내가 해당 게시물을 좋아요 눌렀는지 여부
-    public boolean getLikeChecked(String id, Board boardNo) {
+    public boolean likeCheckedLoad(Board boardNo, String id) {
         Member member = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         return likeRepository.existsByUserIdAndBoardNo(member, boardNo);
     }
 
     // 좋아요 버튼을 누를 때마다 데이터베이스 접근
-    public boolean likeCheckedToggle(String id, Board boardNo) {
+    public boolean likeCheckedToggle(Long boardNo, String id) {
         Member member = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        boolean CurrentLikeChecked = likeRepository.existsByUserIdAndBoardNo(member, boardNo);
-        System.out.println("현재 좋아요" + CurrentLikeChecked);
+        Board board = boardRepository.findById(boardNo).orElseThrow();
+        boolean CurrentLikeChecked = likeRepository.existsByUserIdAndBoardNo(member, board);
         try {
-            System.out.println("true 들어옴");
             if (CurrentLikeChecked) {
-                likeRepository.deleteByUserIdAndBoardNo(member, boardNo);
+                likeRepository.deleteByUserIdAndBoardNo(member, board);
                 CurrentLikeChecked = !CurrentLikeChecked;
-                System.out.println("true 정상수행" + CurrentLikeChecked);}
+            }
             else {
-                System.out.println("false 들어옴");
                 CurrentLikeChecked = !CurrentLikeChecked;
                 LikeList likeList = new LikeList();
                 likeList.setUserId(member);
-                likeList.setBoardNo(boardNo);
+                likeList.setBoardNo(board);
                 likeRepository.save(likeList);
-                System.out.println("false 정상수행" + CurrentLikeChecked);
             }
             return CurrentLikeChecked;
         } catch (Exception e) {
@@ -191,14 +184,10 @@ public class BoardService {
     }
 
     // 자유게시판 댓글 불러오기
-    public BoardDTO getCommentLoad (Long boardNo, Long offsetNum, Long limitNum) {
-        System.out.println("서비스 보드넘 : " + boardNo);
-        System.out.println("서비스 오프셋 : " + offsetNum);
-        System.out.println("서비스 리미트 : " + limitNum);
+    public BoardDTO commentListLoad (Long boardNo, Long offsetNum, Long limitNum) {
         BoardDTO boardDTO = new BoardDTO();
         try {
             List<Map<String, Object>> commentList = new ArrayList<>();
-//            Board board = boardRepository.findById(boardNo).orElseThrow(ExemptionMechanismException::new);
             List<Comment> data = commentRepository.findComment(boardNo, offsetNum, limitNum);
             for (Comment e : data) {
                 Map<String, Object> comment = new HashMap<>();
@@ -209,7 +198,7 @@ public class BoardService {
                 comment.put("date", e.getWriteDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
                 commentList.add(comment);
             }
-            boardDTO.setCommentsList(commentList);
+            boardDTO.setCommentList(commentList);
             boardDTO.setOk(true);
         } catch (Exception e) {
             boardDTO.setOk(false);
@@ -228,7 +217,7 @@ public class BoardService {
             commentRepository.save(comment);
             return true;
         } catch (Exception e) {
-            return true;
+            return false;
         }
     }
 
@@ -239,7 +228,7 @@ public class BoardService {
             commentRepository.deleteById(commentNo);
             return true;
         } catch (Exception e) {
-            return true;
+            return false;
         }
     }
 
@@ -262,10 +251,9 @@ public class BoardService {
         }
     }
 
-
     // 자유게시판 글 수정하기
     public boolean boardEdit(Long boardNo, String category, String title, String detail) {
-        try{
+        try {
             Board board = boardRepository.findById(boardNo).orElseThrow(EmptyStackException::new);
             board.setCategory(category);
             board.setTitle(title);
@@ -282,6 +270,7 @@ public class BoardService {
         Board board = boardRepository.findById(boardNo).orElseThrow();
         try {
             commentRepository.deleteByBoardNo(board); // 댓글 엔티티네서 게시판번호가 외래키이므로 게시글을 삭제하려면 댓글들도 삭제해야지만 게시글이 삭제됨
+            likeRepository.deleteByBoardNo(board);
             boardRepository.deleteById(boardNo);
             return true;
         } catch (Exception e){

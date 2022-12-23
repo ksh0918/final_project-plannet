@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface SCOMRepository extends JpaRepository<SCOM, Long> {
-    void deleteByUserId(Member member);
     List<SCOM> findByScalNoAndSplanDate(SCAL calNo, LocalDate planDate);
+    void deleteByUserId(Member member);
     void deleteByScalNo(SCAL CalNo);
 }

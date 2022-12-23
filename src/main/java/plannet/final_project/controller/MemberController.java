@@ -20,9 +20,9 @@ public class MemberController {
 
     // 구글연동 계정인지, 일반계정인지 체크
     @PostMapping("/login")
-    public ResponseEntity<Boolean> memberLogin(@RequestBody Map<String, String> loginData) {
-        String id = loginData.get("id");
-        String pwd = loginData.get("pwd");
+    public ResponseEntity<Boolean> memberLogin(@RequestBody Map<String, String> data) {
+        String id = data.get("id");
+        String pwd = data.get("pwd");
         String result = memberService.loginCheck(id,pwd);
         switch (result) {
             case "google" : return new ResponseEntity("google", HttpStatus.OK);
@@ -32,9 +32,8 @@ public class MemberController {
     }
 
     // 구글 연동 시 메일에서 아이디를 찾아옴
-    @PostMapping("/social_login_find_id")
-    public ResponseEntity<String> socialLoginFindId(@RequestBody Map<String,String> change) {
-        String email = change.get("email");
+    @GetMapping("/social_login_find_id")
+    public ResponseEntity<String> socialLoginFindId(@RequestParam String email) {
         String userId = "userID:" + memberService.socialLoginFindId(email);
         if(!userId.equals("NOK")) return new ResponseEntity(userId,HttpStatus.OK);
         else return new ResponseEntity("NOK",HttpStatus.OK);
@@ -42,12 +41,12 @@ public class MemberController {
 
     // 처음 구글 로그인 한 사람 회원가입
     @PostMapping("/new_social_save")
-    public ResponseEntity<Boolean> newSocialSave(@RequestBody Map<String,String> save) {
-        String id = save.get("id");
-        String name = save.get("name");
-        String email = save.get("email");
-        String nickname = save.get("nickname");
-        String tel = save.get("tel");
+    public ResponseEntity<Boolean> newSocialSave(@RequestBody Map<String,String> data) {
+        String id = data.get("id");
+        String name = data.get("name");
+        String email = data.get("email");
+        String nickname = data.get("nickname");
+        String tel = data.get("tel");
         boolean result = memberService.newSocialSave(id, name, email, nickname, tel);
         if(result) return new ResponseEntity(true,HttpStatus.OK);
         else return new ResponseEntity(false,HttpStatus.OK);
@@ -55,14 +54,14 @@ public class MemberController {
 
     // 회원가입
     @PostMapping("/register")
-    public ResponseEntity<Map<String,String>> memberRegister(@RequestBody Map<String, String> regData) {
+    public ResponseEntity<Map<String,String>> memberRegister(@RequestBody Map<String, String> data) {
         try {
-            String id = regData.get("id");
-            String pwd = regData.get("pwd");
-            String name = regData.get("name");
-            String nickname = regData.get("nickname");
-            String email = regData.get("email");
-            String tel =regData.get("tel");
+            String id = data.get("id");
+            String pwd = data.get("pwd");
+            String name = data.get("name");
+            String nickname = data.get("nickname");
+            String email = data.get("email");
+            String tel =data.get("tel");
             boolean result = memberService.memberReg(id, pwd, name, nickname, email, tel);
             log.warn(String.valueOf(result));
             if(result) return new ResponseEntity(true, HttpStatus.OK);
@@ -78,10 +77,10 @@ public class MemberController {
 
     // 아이디, 이메일, 전화번호, 닉네임 중복체크
     @PostMapping("/overlap_check")
-    public ResponseEntity<Boolean> overlapCheck(@RequestBody Map<String, String> checkData){
+    public ResponseEntity<Boolean> overlapCheck(@RequestBody Map<String, String> data){
         try {
-            String keyword = checkData.get("keyword");
-            String type = checkData.get("type");
+            String keyword = data.get("keyword");
+            String type = data.get("type");
             boolean result = memberService.overlapCheck(keyword, type);
             if(result) return new ResponseEntity(true, HttpStatus.OK);
             else return new ResponseEntity(false, HttpStatus.OK);
@@ -91,11 +90,8 @@ public class MemberController {
     }
 
     // 아이디 비밀번호 찾기
-    @PostMapping("/find")
-    public ResponseEntity<List<MemberDTO>> memberFind(@RequestBody Map<String, String> memFind) {
-        String keyword = memFind.get("keyword");
-        String email = memFind.get("email");
-        String type = memFind.get("type");
+    @GetMapping("/find")
+    public ResponseEntity<List<MemberDTO>> memberFind(@RequestParam String keyword, String email, String type) {
         MemberDTO memDTO = memberService.memberFind(keyword, email, type);
         if(memDTO.isOk()) return new ResponseEntity(memDTO, HttpStatus.OK);
         else return new ResponseEntity(false, HttpStatus.OK);
@@ -103,9 +99,9 @@ public class MemberController {
 
     // 비밀번호 찾기 시 새 비밀번호 설정
     @PostMapping("/new_pwd")
-    public ResponseEntity<Boolean> newPwd(@RequestBody Map<String, String> newPwd) {
-        String id = newPwd.get("id");
-        String pwd = newPwd.get("pwd");
+    public ResponseEntity<Boolean> newPwd(@RequestBody Map<String, String> data) {
+        String id = data.get("id");
+        String pwd = data.get("pwd");
         boolean result = memberService.newPwd(id, pwd);
         if(result) return new ResponseEntity(true, HttpStatus.OK);
         else return new ResponseEntity(false, HttpStatus.OK);
@@ -113,8 +109,8 @@ public class MemberController {
 
     // 회원 탈퇴
     @PostMapping("/delete")
-    public ResponseEntity<Boolean> memberDelete(@RequestBody Map<String,String> delete){
-        String id = delete.get("id");
+    public ResponseEntity<Boolean> memberDelete(@RequestBody Map<String,String> data){
+        String id = data.get("id");
         boolean member = memberService.memberDelete(id);
         if(member)return new ResponseEntity(true,HttpStatus.OK);
         else return new ResponseEntity(false,HttpStatus.OK);
@@ -122,8 +118,8 @@ public class MemberController {
 
     // 구글 계정으로 연동 (기존 gmail 가입 회원이)
     @PostMapping("/change_social_login")
-    public ResponseEntity<String> changeSocialLogin(@RequestBody Map<String,String> change) {
-        String email = change.get("email");
+    public ResponseEntity<String> changeSocialLogin(@RequestBody Map<String,String> data) {
+        String email = data.get("email");
         String userId = memberService.changeSocialLogin(email);
         if(!userId.equals("NOK")) return new ResponseEntity(userId,HttpStatus.OK);
         else return new ResponseEntity("NOK",HttpStatus.OK);
