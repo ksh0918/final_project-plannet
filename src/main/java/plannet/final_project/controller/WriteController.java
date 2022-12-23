@@ -22,8 +22,10 @@ public class WriteController {
 
     //일정 불러오기
     @GetMapping("/load")
-    public ResponseEntity<List<Object>> writeLoad(@RequestParam String id, LocalDate date) {
-        WriteDTO planAndDiary = writeService.writeLoad(id, date);
+    public ResponseEntity<List<Object>> writeLoad(@RequestParam String id, String date) {
+        LocalDate writeDate = LocalDate.parse(date);
+
+        WriteDTO planAndDiary = writeService.writeLoad(id, writeDate);
         List<Object> writeData = new ArrayList<>();
         writeData.add(planAndDiary.getPlanList());
         writeData.add(planAndDiary.getDiary());

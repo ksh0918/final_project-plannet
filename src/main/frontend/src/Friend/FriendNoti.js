@@ -83,7 +83,7 @@ const FriendNoti = ({setCommnet, setModalHeader, setModalOpen, setOption, notiLi
                     setCommnet("최대 공유 캘린더 개수(2개)를 넘어 공유 캘린더를 생성할 수 없습니다.");
                     setModalOpen(true);
                 } else {
-                    setOption("?key=" + e.key + "&status=" + status);
+                    setOption(e.key + status);
                     setCommnet((e.type === 'F'? '친구 요청을 ' : '공유캘린더 초대를 ') + (status? '승락' : '거절') + '합니다.');
                     setModalHeader("알림반응");
                     setModalOpen(true);

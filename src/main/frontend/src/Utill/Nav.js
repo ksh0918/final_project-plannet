@@ -1,10 +1,9 @@
-import { Link, useNavigate } from "react-router-dom";
-import styled from "styled-components"
-import {ReactComponent as Logo} from "../Images/plannet-001.svg";
-import Modal from "./Modal";
 import { useEffect, useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { ReactComponent as Logo } from "../Images/plannet-001.svg";
+import styled from "styled-components"
 import Api from "../api/plannetApi";
-
+import Modal from "./Modal";
 
 const Box = styled.div`
     width:280px;
@@ -12,34 +11,34 @@ const Box = styled.div`
     background-color: #e8f0fe;
     float: left;
     text-align: center;        
-    .logo{
+    .logo {
         width: 100%;
         height: 140px;
         cursor: pointer;
-        h1{
+        h1 {
             font-family: 'Comfortaa';
             font-size: 24px;
             line-height: 24px;
             letter-spacing: 2px;
         }
-        h2{
+        h2 {
             font-family: 'Montserrat Alternates';
             font-size: 12px;
             line-height: 15px;
         }
     }
-    .userinfo{
+    .userinfo {
         padding-top: 30px;
-        .userName{
+        .userName {
             margin-top: 15px;
             font-size: 16px;
             font-weight: 800;
             padding: 3px;
         }
-        .userId{
+        .userId {
             font-weight: 300;
             font-size: 12px;
-            i{
+            i {
                 padding: 3px;
                 display: inline-block;
                 text-align: center;
@@ -51,15 +50,15 @@ const Box = styled.div`
                 border-radius: 50%;
                 margin: 1px;
                 cursor: pointer;
-                &:first-child{margin-left: 4px;}
-                &:hover{
+                &:first-child {margin-left: 4px;}
+                &:hover {
                     background-color: #f0f0f0;
                     color: #888;
                     box-shadow: 1px 1px 3px #aaa;
                 }
             }
         }
-        .userPro{
+        .userPro {
             margin: 20px 0;
             padding-left:17px;
             white-space: pre;
@@ -81,7 +80,7 @@ const Box = styled.div`
                 /*스크롤바 뒷 배경 색상*/
             }
         }
-        .userImgBox{
+        .userImgBox {
             height: 20vh;
             aspect-ratio: auto 1 / 1;
             border-radius: 100%;
@@ -89,24 +88,23 @@ const Box = styled.div`
             margin: 0 auto;
             background-size: cover;
         };
-        .menu{
+        .menu {
             display :table;
             height: 40px;
             margin: 0 auto;
-            li{
+            li {
                 float: left;
-                a, span{
+                a, span {
                     padding: 0px 7px; 
                     line-height:50px; 
                     border-left: 1px solid #555; 
                     font-weight: 600; 
                     cursor: pointer;
-                    &:hover{
+                    &:hover {
                         color: #4555AE;
                     }
-                    
                 }
-                .notiCount{
+                .notiCount {
                     line-height: 16.2px;
                     width: 20px;
                     height: 20px;
@@ -116,52 +114,51 @@ const Box = styled.div`
                     position: absolute;
                     border: 1px solid balck;
                     border-radius: 10px 10px 10px 0px;
-                    .notiCountText{
+                    .notiCountText {
                         font-size: 10px;
                         color: #ddd;
                     }
                 }
-                &:first-of-type a{border-left: none;}
+                &:first-of-type a {border-left: none;}
             }
         }
-        .calList{
+        .calList {
             clear: both;
-            li{
+            li {
                 width: 90%;
                 padding: 10px 8px;
                 margin: 10px auto;
                 background-color: #f5f6ff;
                 border-radius: 5px;
                 transition: all .3s ease-out;
-                &:hover{
+                &:hover {
                     background-color: white;
                 }
             }
-            .calTitle{
+            .calTitle {
                 width: 90%;
                 margin: 0 auto 6px;
-                span:first-child{
+                span:first-child {
                     display: inline-block;
                     width: 190px;
                     text-align: left;
                     font-weight: 600;
                 }
-                span:last-child{
+                span:last-child {
                     display: inline-block;
                     width: 20px;
                     text-align: right;
-                    i{color: #333;}
+                    i {color: #333;}
                 }
             }
-            
-            .chartBackground{
+            .chartBackground {
                 width: 90%;
                 height: 5px;
                 background-color: #e5e5e5;
                 margin: 0 auto;
                 border-radius: 15px;
                 position: relative;
-                .chartBar{
+                .chartBar {
                     height: 5px;
                     position: absolute;
                     left: 0;
@@ -177,7 +174,6 @@ const Box = styled.div`
                 }
             }
         }
-
         .tooltip {
             position: relative;
             .tooltiptext {
@@ -203,7 +199,7 @@ const Box = styled.div`
             }
         }
     }
-    >i{
+    >i {
         position: absolute;
         left: -70px;
         font-size: 50px;
@@ -214,7 +210,7 @@ const Box = styled.div`
         transition: all 0.7s ease-in;
         visibility: visible;
     }
-    .side_bar_open{
+    .side_bar_open {
         opacity: 0;
         visibility: hidden;
     }
@@ -223,32 +219,12 @@ const Box = styled.div`
 const Nav = ({sideBar, setSideBar}) => {
     const navigate = useNavigate();
     const userId = window.localStorage.getItem("userId");
+
     const [userInfo, setUserInfo] = useState("");
     const [scalInfo, setScalInfo] = useState("");
     const [proHeight, setProHeight] = useState("");
     const [fNotiCount,setfNotiCount] = useState();
     const [mNotiCount,setmNotiCount] = useState();
-    useEffect(() => {
-        const userInfoLoad = async() => {
-            try{
-                const response = await Api.userNavInfo(userId);
-                setUserInfo(response.data.userInfo);
-                setScalInfo(response.data.scalInfo);
-                setProHeight(response.data.scalInfo.length * 47 + 390);
-                console.log(response.data);
-                const mResult = await Api.messageCntNoti(userId);
-                console.log(mResult.data);
-                setmNotiCount(mResult.data);
-                const result = await Api.friendLoad(userId);
-                if(result.data != null){setfNotiCount(Object.keys(result.data.notiList).length);}
-                else{console.log("null 값")}
-            } catch(e){
-                console.log(e);
-            }
-        }
-        userInfoLoad();
-    },[userId]);
-    console.log(userInfo);
 
     // 캘린더 클릭시 해당 캘린더로 이동
     const moveLink = async (calNo, userId) => {
@@ -274,12 +250,32 @@ const Nav = ({sideBar, setSideBar}) => {
 
     //로고 색상
     const logoStyle = {
-    fill:
-    "linear-gradient(217deg, rgb(0, 82, 212, .8), rgba(255,0,0,0) 70.71%), linear-gradient(127deg, rgb(66, 99, 247, .8), rgba(0,255,0,0) 70.71%), linear-gradient(336deg, rgb(111, 177, 252, .8), rgba(0,0,255,0) 70.71%)"};
+        fill: "linear-gradient(217deg, rgb(0, 82, 212, .8), rgba(255,0,0,0) 70.71%), linear-gradient(127deg, rgb(66, 99, 247, .8), rgba(0,255,0,0) 70.71%), linear-gradient(336deg, rgb(111, 177, 252, .8), rgba(0,0,255,0) 70.71%)"
+    };
 
     const onClickCloseNav = () => {
         setSideBar(false);
     }
+
+    useEffect(() => {
+        const userInfoLoad = async() => {
+            try{
+                const response = await Api.userNavInfo(userId);
+                setUserInfo(response.data.userInfo);
+                setScalInfo(response.data.scalInfo);
+                setProHeight(response.data.scalInfo.length * 47 + 390);
+                const messageCnt = await Api.messageCntNoti(userId);
+                setmNotiCount(messageCnt.data);
+                const friendData = await Api.friendLoad(userId);
+                if(friendData.data != null){setfNotiCount(Object.keys(friendData.data.notiList).length);}
+                else{console.log("null 값")}
+            } catch(e) {
+                console.log(e);
+            }
+        }
+        userInfoLoad();
+    }, [userId]);
+    console.log(userInfo);
 
     return (
         <Box id="nav" style={sideBar? {right: '0'} : {right: '-280px'}}>
@@ -304,16 +300,15 @@ const Nav = ({sideBar, setSideBar}) => {
                                 </div>
                             </li>
                         </Link>
-                        {scalInfo&&scalInfo.map(e => {
-                            return(
-                            <li onClick={()=> moveLink(e[0], userId)}>
-                                <p className="calTitle"><span>{e[1]}</span><span><i class="bi bi-caret-right-fill"></i></span></p>
-                                <div className="chartBackground">
-                                    <div className="chartBar" style={{width: e[2]+'%'}}></div>
-                                </div>
-                            </li>
+                        {scalInfo && scalInfo.map(e => {
+                            return (
+                                <li onClick={()=> moveLink(e[0], userId)}>
+                                    <p className="calTitle"><span>{e[1]}</span><span><i class="bi bi-caret-right-fill"></i></span></p>
+                                    <div className="chartBackground">
+                                        <div className="chartBar" style={{width: e[2]+'%'}}></div>
+                                    </div>
+                                </li>
                         )})}
-                        
                     </ul>
                 </div>
                 <ul className="menu">
@@ -326,4 +321,5 @@ const Nav = ({sideBar, setSideBar}) => {
         </Box>
     );
 }
+
 export default Nav;
