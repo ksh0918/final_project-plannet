@@ -79,4 +79,12 @@ public class Member {
     private List<Message> messages;
     @OneToMany(mappedBy = "receiveId", cascade = {CascadeType.REMOVE}, orphanRemoval=true)
     private List<Message> messageList;
+    @OneToMany(mappedBy = "userId", cascade = {CascadeType.REMOVE}, orphanRemoval=true)
+    private List<Comment> comments;
+    @OneToMany(mappedBy = "boardNo", cascade = {CascadeType.REMOVE}, orphanRemoval=true)
+    private List<Board> boards;
+    @OneToMany(mappedBy = "userId", cascade = {CascadeType.REMOVE}, orphanRemoval=true)
+    private List<Diary> diaries;
+    @OneToMany(mappedBy = "userId", cascade = {CascadeType.REMOVE}, orphanRemoval=true)
+    private List<Plan> plans;
 }
