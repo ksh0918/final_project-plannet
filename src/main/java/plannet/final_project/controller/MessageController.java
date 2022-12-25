@@ -30,7 +30,7 @@ public class MessageController {
         else return new ResponseEntity(null, HttpStatus.OK);
     }
 
-    // 쪽지 리스트
+    // 쪽지 리스트 불러오기
     @GetMapping("/list")
     public ResponseEntity<List<Map<String, Object>>> messageList(@RequestParam String receiveId) {
         MessageDTO messageList = messageService.messageListLoad(receiveId);
@@ -91,7 +91,7 @@ public class MessageController {
         }
     }
 
-    // 쪽지 검색
+    // 쪽지 검색하기
     @GetMapping("/search_messageList")
     public ResponseEntity<List<MessageDTO>> searchListLoad(@RequestParam String receive_id, String keyword) {
         MessageDTO messageList = messageService.searchListLoad(receive_id, keyword);

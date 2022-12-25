@@ -14,6 +14,8 @@ import java.io.UnsupportedEncodingException;
 @RequiredArgsConstructor
 public class EmailController {
     private final EmailService emailService;
+
+    // 이메일 인증
     @PostMapping("login/mailConfirm")
     public String mailConfirm(@RequestBody EmailAuthRequestDto emailDto) throws MessagingException, UnsupportedEncodingException, UnsupportedEncodingException {
         String authCode = emailService.sendEmail(emailDto.getEmail());

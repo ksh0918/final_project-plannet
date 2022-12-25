@@ -4,33 +4,19 @@ const HEADER = 'application/json';
 //const PLANNET_DOMAIN = "http://plannet.shop/";
 const PLANNET_DOMAIN = "http://localhost:8111/";
 
-// 이 주석은 다 하시면 지우고 커밋해주세요~!
-// 정리하면서 확인할 것
-// post, get 방식 확인 및 수정 (db의 수정이 조금이라도 있으면 post (삽입, 삭제, 수정 등) 무조건 불러오기만 하면 get) (놓친 거 있을 수 있으니까 잘 확인해주세요~! )
-// 예외적으로 .. 혹시나의 보안상의 이유로 memberLogin은 db를 가져오기만 하지만 post로 적어두었습니다
-// post는 " " 같은 식으로 뒤에 적어야 하고
-// get은 ` ` 같은 식으로 뒤에 적어야 함 
-// 크게 컨트롤러 순서는 member >  email > userinfo > noti > message > home > scal > board 
-// 컨트롤러 마다는 한 줄씩 띄어주세요
-// refresh controller는 제외
-// 각 컨트롤러 안에 있는 api는 컨트롤러 안에 있는 순서대로 정리해서 적기
-// 띄어쓰기 & 단어 통일 및 순서가 잘 안 되어있는 경우가 많아서 컨트롤러랑 느낌은 동일하게 맞춰주세요~! (delete는 drop 대신 delete로 통일하는 등)
-// 각 기능에 대한 주석도 꼭 한 줄 달아두기
-// 프론트랑 연결하는 부분의 api 명칭은 자유롭게 지정해도 되나 통일성있게 (바꾸는 게 낫지 않을까? 하는 거 있으시다면 말씀해주세요~! 컨트롤러도 비슷하게 같이 바꿀게요)
-
 const plannetApi = {
     // MemberController
-    // 로그인 기능
+    // 로그인 기능 (구글 연동 계정인지, 일반 계정인지 체크)
     memberLogin: async function(id, pw) {
         const loginObj = {
             id: id,
             pwd: pw
         };
-        return await axios.post(PLANNET_DOMAIN + "member/login", loginObj, HEADER);
+        return await axios.post("member/login", loginObj);
     },
     // 구글 연동 시 메일에서 아이디를 찾아옴
     socialLoginFindId: async function(email){
-        return await axios.get(PLANNET_DOMAIN + `member/social_login_find_id?email=${email}`, HEADER);
+        return await axios.get(`member/social_login_find_id?email=${email}`);
     },
     // 첫 소셜로그인시 정보 저장하기 (처음 구글 로그인 한 사람 회원가입)
     memberNewSocialSave: async function(id, name, email, nickname, tel){
@@ -41,7 +27,7 @@ const plannetApi = {
             nickname : nickname,
             tel : tel,
         };
-        return await axios.post(PLANNET_DOMAIN + "member/new_social_save", reg, HEADER);
+        return await axios.post("member/new_social_save", reg);
     },
     // 회원 가입
     memberReg: async function(id, pwd, name, nickname, email, tel, optInResult) {
@@ -54,7 +40,7 @@ const plannetApi = {
             tel: tel,
             optInResult: optInResult,
         };
-        return await axios.post(PLANNET_DOMAIN + "member/register", memberObj, HEADER);
+        return await axios.post("member/register", memberObj);
     },
     // 아이디, 이메일, 전화번호, 닉네임 중복체크
     overlapCheck: async function(keyword, type) { 
@@ -62,33 +48,33 @@ const plannetApi = {
             keyword: keyword,
             type: type
         };
-        return await axios.post(PLANNET_DOMAIN + "member/overlap_check", regCheck, HEADER);
+        return await axios.post"member/overlap_check", regCheck);
     },
     // 회원 아이디, 비밀번호 찾기
     memberFind: async function(keyword, email, type){
-        return await axios.get(PLANNET_DOMAIN + `member/find?keyword=${keyword}&email=${email}&type=${type}`, HEADER);
+        return await axios.get(`member/find?keyword=${keyword}&email=${email}&type=${type}`);
     },
-    // 새 비밀번호 저장
+    // 비밀번호 찾기 시 새 비밀번호 저장
     memberNewPwd: async function(id, pwd){
         const reg = {
             id : id,
             pwd : pwd
         };
-        return await axios.post(PLANNET_DOMAIN + "member/new_pwd", reg, HEADER);
+        return await axios.post("member/new_pwd", reg);
     },
     // 회원 탈퇴
     memberDelete: async function(id) {
         const memberObj = {
             id: id,
         };
-        return await axios.post(PLANNET_DOMAIN + "member/delete", memberObj, HEADER);
+        return await axios.post("member/delete", memberObj);
     },
-    // 일반로그인에서 > 소셜로그인으로 전환
+    // 일반로그인에서 > 소셜로그인으로 전환 (구글 계정으로 연동)
     changeSocialLogin: async function(email){ 
         const reg = {
             email : email,
         };
-        return await axios.post(PLANNET_DOMAIN + "member/change_social_login", reg, HEADER);
+        return await axios.post("member/change_social_login", reg);
     },
 
     // EmailController
@@ -97,15 +83,15 @@ const plannetApi = {
         const object = {
             email : email
         };
-        return await axios.post(PLANNET_DOMAIN+"login/mailConfirm",object,HEADER);
+        return await axios.post("login/mailConfirm",object);
     },
 
     // UserInfoController
-    // userInfo 불러오기 - userinfoController-userinfoload
+    // 사용자 정보 불러오기
     userInfoLoad: async function(id){
-        return await axios.get(PLANNET_DOMAIN + `user/info_load?id=${id}`, HEADER);
+        return await axios.get(`user/info_load?id=${id}`);
     },
-    // userInfo 수정하기
+    // 사용자 정보 수정하기
     userInfoSave: async function(id, nickname, tel, profile) {
         const object = {
             id: id,
@@ -113,7 +99,7 @@ const plannetApi = {
             tel: tel,
             profile: profile
         };
-        return await axios.post(PLANNET_DOMAIN + "user/info_save", object, HEADER);
+        return await axios.post("user/info_save", object);
     },
     // 사용자 프로필 이미지명 저장
     userImgSave: async function(id, imgName) {
@@ -121,32 +107,32 @@ const plannetApi = {
             id: id,
             imgName: imgName
         };
-        return await axios.post(PLANNET_DOMAIN + "user/img_save", object, HEADER);
+        return await axios.post("user/img_save", object);
     },
-    // NavInfo 불러오기 - userinfoController-NavInfo
+    // Nav바 정보 불러오기
     userNavInfo: async function(id){
-        return await axios.get(PLANNET_DOMAIN + `user/nav_info?id=${id}`, HEADER);
+        return await axios.get(`user/nav_info?id=${id}`);
     },
 
     //NotiController
     // 친구 불러오기
     friendLoad: async function(id) {
-        return await axios.get(PLANNET_DOMAIN + `noti/friend_load?id=${id}`, HEADER);
+        return await axios.get(`noti/friend_load?id=${id}`);
     },
-    // 친구 추가
+    // 친구 추가하기
     friendAdd: async function(id, keyword) {
         const object = {
             id: id,
             keyword: keyword
         };
-        return await axios.post(PLANNET_DOMAIN + "noti/friend_add", object, HEADER);
+        return await axios.post("noti/friend_add", object);
     },
-    // 친구 삭제
+    // 친구 삭제하기
     unfriend: async function(option) {
         const object = {
             key: option
         };
-        return await axios.post(PLANNET_DOMAIN + "noti/unfriend", object, HEADER);
+        return await axios.post("noti/unfriend", object);
     },
     // 알림 승락/거절
     notiResponse: async function(key, status) {
@@ -154,21 +140,21 @@ const plannetApi = {
             key: key,
             status: status
         };
-        return await axios.post(PLANNET_DOMAIN + "noti/noti_response", object, HEADER);
+        return await axios.post("noti/noti_response", object);
     },
-    // 공유 캘린더 갯수 확인
+    // 공유 캘린더 갯수 확인하기
     scalCntCheck: async function(id) {
-        return await axios.get(PLANNET_DOMAIN + `noti/cnt_check?id=${id}`, HEADER);
+        return await axios.get(`noti/cnt_check?id=${id}`);
     },
 
     // MessageController
     // 쪽지 갯수 불러오기 (말풍선)
     messageCntNoti : async function(id){
-        return await axios.get(PLANNET_DOMAIN + `message/cntNoti?receiveId=${id}`, HEADER);
+        return await axios.get(`message/cntNoti?receiveId=${id}`);
     },
-    // 쪽지 리스트
+    // 쪽지 리스트 불러오기
     messageList: async function(id){
-        return await axios.get(PLANNET_DOMAIN + `message/list?receiveId=${id}`, HEADER);
+        return await axios.get(`message/list?receiveId=${id}`);
     },
     // 쪽지 보내기
     messageSend : async function(id, receiveId, detail){
@@ -177,48 +163,48 @@ const plannetApi = {
             receiveId : receiveId,
             detail : detail,
         };
-        return await axios.post(PLANNET_DOMAIN+"message/send", object, HEADER);
+        return await axios.post("message/send", object);
     },
     // 쪽지 삭제
     messageDelete: async function(obj){
-        return await axios.post(PLANNET_DOMAIN+"message/delete", obj, HEADER);
+        return await axios.post("message/delete", obj);
     },
     // 쪽지 읽음 표시
     messageRead : async function(obj){
-        return await axios.post(PLANNET_DOMAIN+"message/read",obj,HEADER);
+        return await axios.post("message/read", obj);
     },
-    // 쪽지를 읽을 때 모달을 띄워줌
+    // 쪽지를 읽을 때 모달을 띄워 줌
     messageModalOpen : async function(messageNo){
         const object = {
             messageNo : messageNo
         }
-        return await axios.post(PLANNET_DOMAIN + "message/readModal", object, HEADER);
+        return await axios.post("message/readModal", object);
     },
-    // 쪽지 검색
+    // 쪽지 검색하기
     searchMessageList: async function(receive_id, keyword){
-        return await axios.get(PLANNET_DOMAIN + `message/search_messageList?receive_id=${receive_id}&keyword=${keyword}`, HEADER);
+        return await axios.get(`message/search_messageList?receive_id=${receive_id}&keyword=${keyword}`);
     },
 
     // HomeController
-    // 개인 home/달력/주간일정/메모/명언 출력
+    // 개인 home/달력/주간일정/메모/명언 불러오기
     personalHome: async function(id) {
-        return await axios.get(PLANNET_DOMAIN + `home/personal?id=${id}`, HEADER);
+        return await axios.get(`home/personal?id=${id}`);
     },
-    // 회원 메모 저장
+    // 회원 메모 저장하기
     memoSave: async function(id, detail) {
         const object = {
             id: id,
             detail: detail
         };
-        return await axios.post(PLANNET_DOMAIN + "home/memo", object, HEADER);
+        return await axios.post("home/memo", object);
     },
 
     // WriteController
-    // 플랜리스트.다이어리 로드
+    // 일정 불러오기 (플랜리스트, 다이어리 로드)
     writeLoad: async function(id, date) {
-        return await axios.get(PLANNET_DOMAIN + `write/load?id=${id}&date=${date}`, HEADER);
+        return await axios.get(`write/load?id=${id}&date=${date}`);
     },
-    // 플랜리스트.다이어리 저장
+    // 일정 저장하기 (플랜리스트, 다이어리 저장)
     writeSave: async function(id, date, planList, diary) {
         const object = {
             id: id,
@@ -226,64 +212,64 @@ const plannetApi = {
             plan: planList,
             diary: diary
         };
-        return await axios.post(PLANNET_DOMAIN + "write/save", object, HEADER);
+        return await axios.post("write/save", object);
         },
 
     // ScalController
-    // 공유 캘린더 생성
+    // 공유 캘린더 생성하기
     scalCreate: async function(id, title, checkedButton) {
         const object = {
             id: id,
             title: title,
             checkedButton: checkedButton
         };
-        return await axios.post(PLANNET_DOMAIN + "scal/create", object, HEADER);
+        return await axios.post("scal/create", object);
     },
-    // 공유 캘린더 삭제
+    // 공유 캘린더 삭제하기
     scalDelete: async function(scalNo) {
         const object = {
             scalNo: scalNo
         };
-        return await axios.post(PLANNET_DOMAIN + "scal/delete", object, HEADER);
+        return await axios.post("scal/delete", object);
     },
-    // 공유 캘린더 멤버 초대
+    // 공유 캘린더 멤버 초대하기
     smemInvite: async function(scalNo, id) {
         const object = {
             scalNo: scalNo,
             id: id
         };
-        return await axios.post(PLANNET_DOMAIN + "scal/member_invite", object, HEADER);
+        return await axios.post("scal/member_invite", object);
     },
-    // 공유 캘린더 멤버 삭제
+    // 공유 캘린더 멤버 삭제하기
     smemDelete: async function(scalNo, id) {
         const object = {
             scalNo: scalNo,
             id: id
         };
-        return await axios.post(PLANNET_DOMAIN + "scal/member_delete", object, HEADER);
-    }, // 공유 캘린더 정보 저장
+        return await axios.post("scal/member_delete", object);
+    }, // 공유 캘린더 정보 저장하기
     scalInfoSave: async function(scalNo, scalName) {
         const object = {
             scalNo: scalNo,
             scalName: scalName
         };
-        return await axios.post(PLANNET_DOMAIN + "scal/info_save", object, HEADER);
+        return await axios.post("scal/info_save", object);
     },
-    // 공유 캘린더 home/달력/주간일정/메모/명언 출력
+    // 해당 공유 캘린더 home/달력/주간일정/메모/명언 불러오기
     sharingHome: async function(scalNo) {
-        return await axios.get(PLANNET_DOMAIN + `scal/sharing?scalNo=${scalNo}`, HEADER);
+        return await axios.get(`scal/sharing?scalNo=${scalNo}`);
     },
-    // 공유 캘린더 메모 저장
+    // 해당 공유 캘린더 메모 저장
     scalMemoSave: async function(scalNo, detail) {
         const object = {
             scalNo: scalNo,
             detail: detail
         };
-        return await axios.post(PLANNET_DOMAIN + "scal/memo", object, HEADER);
+        return await axios.post("scal/memo", object);
     },
     // 공유 캘린더 일정 불러오기
     splanLoad: async function(scalNo, planDate) {
-        return await axios.get(PLANNET_DOMAIN + `scal/splan_load?scalNo=${scalNo}&planDate=${planDate}`, HEADER);
+        return await axios.get(`scal/splan_load?scalNo=${scalNo}&planDate=${planDate}`);
     },
     // 공유 캘린더 일정 작성하기
     splanSave: async function(scalNo, id, date, planList) {
@@ -293,13 +279,13 @@ const plannetApi = {
             date: date,
             planList: planList
         };
-        return await axios.post(PLANNET_DOMAIN + "scal/splan_save", object, HEADER);
+        return await axios.post("scal/splan_save", object);
     },
-    // 해당 캘린더에 작성된 댓글 불러오기
+    // 해당 공유 캘린더에 작성된 댓글 불러오기
     scommentLoad: async function(scalNo, planDate) {
-        return await axios.get(PLANNET_DOMAIN + `scal/scomment_load?scalNo=${scalNo}&planDate=${planDate}`, HEADER);
+        return await axios.get(`scal/scomment_load?scalNo=${scalNo}&planDate=${planDate}`);
     },
-    // 해당 캘린더에 댓글 작성
+    // 해당 공유 캘린더에 댓글 작성하기
     scommentWrite: async function(scalNo, id, planDate, detail){
         const object = {
             scalNo: scalNo,
@@ -307,18 +293,18 @@ const plannetApi = {
             planDate: planDate,
             detail
         };
-        return await axios.post(PLANNET_DOMAIN + "scal/comment_save", object, HEADER);
+        return await axios.post("scal/comment_save", object);
     },
-    // 해당 캘린더에 댓글 삭제
+    // 해당 공유 캘린더에 댓글 삭제하기
     scommnetDelete: async function(commentNo){
         const object = {
             commentNo: commentNo
         };
-        return await axios.post(PLANNET_DOMAIN + "scal/comment_delete", object, HEADER);
+        return await axios.post("scal/comment_delete", object);
     },
-    // 공유 캘린더 정보 조회
+    // 공유 캘린더 정보 불러오기
     scalInfo: async function(scalNo, id) {
-        return await axios.get(PLANNET_DOMAIN + `scal/info_load?scalNo=${scalNo}&id=${id}`, HEADER);
+        return await axios.get(`scal/info_load?scalNo=${scalNo}&id=${id}`);
     },
     // 공유 캘린더 멤버 추가 요청
         scalAddMember: async function(id, keyword) {
@@ -326,40 +312,40 @@ const plannetApi = {
             id: id,
             keyword: keyword
         };
-        return await axios.post(PLANNET_DOMAIN + "scal/invite_member", object, HEADER);
+        return await axios.post("scal/invite_member", object);
     },
 
     // BoardController
-    // 자유게시판 목록 출력
+    // 전체 자유게시판 목록 불러오기
     boardList: async function(){
-        return await axios.get(PLANNET_DOMAIN + "board/board_list", HEADER);
+        return await axios.get("board/board_list");
     },
-    // 인기글 top3 목록 출력
+    // 인기글 top3 목록 불러오기
     top3List: async function(){
-        return await axios.get(PLANNET_DOMAIN + "board/top3_list", HEADER);
+        return await axios.get("board/top3_list");
     },
-    // 자유게시판 검색 목록 출력
+    // 자유게시판 검색 키워드에 해당하는 리스트 불러오기
     searchList: async function(keyword){
-        return await axios.get(PLANNET_DOMAIN + `board/search_list?keyword=${keyword}`, HEADER);
+        return await axios.get(`board/search_list?keyword=${keyword}`);
     },
     // 특정 보드넘버의 게시물 내용 + 좋아요 수 불러오기
     postView: async function(boardNo){
-        return await axios.get(PLANNET_DOMAIN + `board/post_view?boardNo=${boardNo}`, HEADER);
+        return await axios.get(`board/post_view?boardNo=${boardNo}`);
     },
     // boardNo의 게시물을 내가 작성하지 않았으면 조회수 +1
     boardViewUp:async function(boardNo){
         const object = {
             boardNo: boardNo
         }
-        return await axios.post(PLANNET_DOMAIN+ "board/view_up", object, HEADER);
+        return await axios.post("board/view_up", object);
     },
-    // 좋아요 수 불러오기
+    // boardNo에 해당하는 좋아요 수 불러오기
     likeCnt: async function(boardNo) {
-        return await axios.get(PLANNET_DOMAIN + `board/like_cnt?boardNo=${boardNo}`, HEADER);
+        return await axios.get(`board/like_cnt?boardNo=${boardNo}`);
     },
-    // 좋아요 여부 불러오기
+    // boardNo로 내가 해당 게시물에 좋아요를 눌렀는지 조회하기
     likeChecked: async function(id, boardNo) {
-        return await axios.get(PLANNET_DOMAIN + `board/like_checked?id=${id}&boardNo=${boardNo}`, HEADER);
+        return await axios.get(`board/like_checked?id=${id}&boardNo=${boardNo}`);
     },
     // 좋아요 버튼을 눌렀을 때 toggle 밑 데이터베이스 변경
     likeCheckedToggle: async function(boardNo, id) {
@@ -367,29 +353,29 @@ const plannetApi = {
             boardNo : boardNo,
             id : id,
         }
-        return await axios.post(PLANNET_DOMAIN + "board/like_checked_toggle", object, HEADER);
+        return await axios.post("board/like_checked_toggle", object);
     },
     // 해당 게시물에 작성된 댓글 불러오기
     commentLoad: async function(boardNo){
-        return await axios.get(PLANNET_DOMAIN + `board/comment_load?boardNo=${boardNo}`, HEADER);
+        return await axios.get(`board/comment_load?boardNo=${boardNo}`);
     },
-    // 해당 게시물에 댓글 작성
+    // 해당 게시물에 댓글 작성하기
     commentWrite: async function(boardNo, id, detail){
         const object = {
             boardNo : boardNo,
             id : id,
             detail : detail
         }
-        return await axios.post(PLANNET_DOMAIN + "board/comment_write", object, HEADER);
+        return await axios.post("board/comment_write", object);
     },
-    // 해당 게시물에 댓글 삭제
+    // 해당 게시물에 댓글 삭제하기
     commentDelete: async function(commentNo){
         const object = {
             commentNo : commentNo
         }
-        return await axios.post(PLANNET_DOMAIN + "board/comment_delete", object, HEADER);
+        return await axios.post("board/comment_delete", object);
     },
-    // 자유게시판 글 작성
+    // 자유게시판 글 작성하기
     boardWrite: async function(id, category, title, detail, isChecked){
         const object = {
             id : id,
@@ -398,9 +384,9 @@ const plannetApi = {
             detail : detail,
             isChecked : isChecked
         };
-        return await axios.post(PLANNET_DOMAIN + "board/board_write", object, HEADER);
+        return await axios.post("board/board_write", object);
     },
-    // 글 수정
+    // 자유게시판 글 수정하기
     boardEdit: async function(boardNo, category, title, detail) {
         const object = {
             boardNo: boardNo,
@@ -408,14 +394,14 @@ const plannetApi = {
             title: title,
             detail: detail
         };
-        return await axios.post(PLANNET_DOMAIN + "board/board_edit", object, HEADER);
+        return await axios.post("board/board_edit", object);
     },
-    // 글 삭제
+    // 자유게시판 글 삭제하기
     boardDelete: async function(boardNo) {
         const object = {
             boardNo : boardNo
         };
-        return await axios.post(PLANNET_DOMAIN + "board/board_delete", object, HEADER);
+        return await axios.post("board/board_delete", object);
     }
 }
 

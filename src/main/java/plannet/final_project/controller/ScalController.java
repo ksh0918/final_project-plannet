@@ -31,7 +31,7 @@ public class ScalController {
         else return new ResponseEntity(null, HttpStatus.OK);
     }
 
-    // 공유캘린더 삭제하기
+    // 공유 캘린더 삭제하기
     @PostMapping("/delete")
     public ResponseEntity<Boolean> scalDelete(@RequestBody Map<String, String> data) {
         Long scalNo = Long.valueOf((String) data.get("scalNo"));
@@ -40,7 +40,7 @@ public class ScalController {
         else return new ResponseEntity(null, HttpStatus.OK);
     }
 
-    // 멤버 초대하기
+    // 공유 캘린더 멤버 초대하기
     @PostMapping("/member_invite")
     public ResponseEntity<Boolean> smemberInvite(@RequestBody Map<String, Object> data) {
         Long scalNo = Long.parseLong((String)data.get("scalNo"));
@@ -49,7 +49,7 @@ public class ScalController {
         return new ResponseEntity(result, HttpStatus.OK);
     }
 
-    // 멤버 삭제
+    // 공유 캘린더 멤버 삭제하기
     @PostMapping("/member_delete")
     public ResponseEntity<Boolean> smemberDelete(@RequestBody Map<String, Object> data) {
         Long scalNo = Long.parseLong((String)data.get("scalNo"));
@@ -67,7 +67,7 @@ public class ScalController {
         return new ResponseEntity(result, HttpStatus.OK);
     }
 
-    // 해당 캘린더의 각 정보 불러오기
+    // 해당 공유 캘린더의 home/달력/주간일정/메모/명언 불러오기
     @GetMapping("/sharing")
     public ResponseEntity<List<Map<String, Object>>> sharingHome(@RequestParam Long scalNo) {
         Map<String, Object> sharingHome = new HashMap<>();
@@ -82,7 +82,7 @@ public class ScalController {
         } else return new ResponseEntity(null, HttpStatus.OK);
     }
 
-    // 메모 수정 및 저장
+    // 해당 공유 캘린더 메모 저장
     @PostMapping("/memo")
     public ResponseEntity<Boolean> scalmemoSave(@RequestBody Map<String, String> data) {
         Long scalNo = Long.parseLong(data.get("scalNo"));
@@ -92,7 +92,7 @@ public class ScalController {
         else return new ResponseEntity(null, HttpStatus.OK);
     }
 
-    // 공유캘린더 일정 불러오기
+    // 공유 캘린더 일정 불러오기
     @GetMapping("/splan_load")
     public ResponseEntity<List<ShareDTO>> writeLoad(@RequestParam Long scalNo, String planDate) {
         LocalDate date = LocalDate.parse(planDate);
@@ -116,7 +116,7 @@ public class ScalController {
         else return new ResponseEntity(null, HttpStatus.OK);
     }
 
-    // 공유캘린더 댓글 불러오기
+    // 해당 공유 캘린더에 작성된 댓글 불러오기
     @GetMapping("/scomment_load")
     public ResponseEntity<List<Map<String, Object>>> commentLoad(@RequestParam Long scalNo, String planDate) {
         LocalDate date = LocalDate.parse(planDate);
@@ -127,7 +127,7 @@ public class ScalController {
         } else return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
-    // 공유캘린더 댓글 작성
+    // 해당 공유 캘린더에 댓글 작성하기
     @PostMapping("/comment_save")
     public ResponseEntity<Boolean> commentSave(@RequestBody Map<String, String> data) {
         Long scalNo = Long.valueOf(data.get("scalNo"));
@@ -138,7 +138,7 @@ public class ScalController {
         return new ResponseEntity(result, HttpStatus.OK);
     }
 
-    // 공유캘린더 댓글 삭제하기
+    // 해당 공유 캘린더에 댓글 삭제하기
     @PostMapping("/comment_delete")
     public ResponseEntity<Boolean> commentDelete(@RequestBody Map<String, String> commentDelete) {
         Long commentNo = Long.valueOf(commentDelete.get("commentNo"));
@@ -146,7 +146,7 @@ public class ScalController {
         return new ResponseEntity(commentDeleteResult, HttpStatus.OK);
     }
 
-    // 공유캘린더 정보 불러오기
+    // 공유 캘린더 정보 불러오기
     @GetMapping("/info_load")
     public ResponseEntity<Map<String, Object>> infoLoad(@RequestParam Long scalNo, String id) {
         Map<String, Object> scalInfo = new HashMap<>();

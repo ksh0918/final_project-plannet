@@ -54,7 +54,7 @@ public class MemberController {
         else return new ResponseEntity(false,HttpStatus.OK);
     }
 
-    // 회원가입
+    // 회원 가입
     @PostMapping("/register")
     public ResponseEntity<Map<String,String>> memberRegister(@RequestBody Map<String, String> data) {
         try {

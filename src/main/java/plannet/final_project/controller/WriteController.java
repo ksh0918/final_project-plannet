@@ -20,7 +20,7 @@ import java.util.Map;
 public class WriteController {
     private final WriteService writeService;
 
-    //일정 불러오기
+    // 일정 불러오기 (플랜리스트, 다이어리 로드)
     @GetMapping("/load")
     public ResponseEntity<List<Object>> writeLoad(@RequestParam String id, String date) {
         LocalDate writeDate = LocalDate.parse(date);
@@ -38,7 +38,7 @@ public class WriteController {
         }
     }
 
-    // 일정 저장
+    // 일정 저장하기 (플랜리스트, 다이어리 저장)
     @PostMapping("/save")
     public ResponseEntity<Boolean> writeSave(@RequestBody Map<String, Object> data) {
         String userId = (String)data.get("id");

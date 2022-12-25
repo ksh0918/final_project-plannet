@@ -23,7 +23,7 @@ public class BoardController {
     // Service 로직 연결
     private final BoardService boardService;
 
-    // 전체 보드 리스트 불러오기
+    // 전체 자유게시판 목록 불러오기
     @GetMapping("/board_list")
     // 전체조회기 때문에 boardList(@RequestParam) 으로 param 값을 받을 필요가 없음
     public ResponseEntity<List<BoardDTO>> boardListLoad() {
@@ -33,7 +33,7 @@ public class BoardController {
         else return new ResponseEntity(null, HttpStatus.OK);
     }
 
-    // 인기글 top3 목록 출력
+    // 인기글 top3 목록 불러오기
     @GetMapping("/top3_list")
     public ResponseEntity<List<BoardDTO>> top3ListLoad() {
         BoardDTO top3List = boardService.top3ListLoad();
@@ -41,7 +41,7 @@ public class BoardController {
         else return new ResponseEntity(null, HttpStatus.OK);
     }
 
-    // 검색 키워드에 해당하는 보드 리스트 불러오기
+    // 자유게시판 검색 키워드에 해당하는 리스트 불러오기
     @GetMapping("/search_list")
     public ResponseEntity<List<BoardDTO>> searchListLoad(@RequestParam String keyword) {
         BoardDTO boardList = boardService.searchListLoad("%%" + keyword + "%%");
@@ -77,7 +77,7 @@ public class BoardController {
         return new ResponseEntity(viewsChecked, HttpStatus.OK);
     }
 
-    // boardNo에 해당하는 좋아요 수 구하기
+    // boardNo에 해당하는 좋아요 수 불러오기
     @GetMapping("/like_cnt")
     public ResponseEntity<Integer> likeCntLoad(@RequestParam Board boardNo) {
         int likeCnt = boardService.likeCntLoad(boardNo);
@@ -100,7 +100,7 @@ public class BoardController {
         return new ResponseEntity(likeCheckedToggle, HttpStatus.OK);
     }
 
-    // 자유게시판 댓글 불러오기
+    // 해당 게시물에 작성된 댓글 불러오기
     @GetMapping("/comment_load")
     public ResponseEntity<List<Map<String, Object>>> commentLoad(@RequestParam Long boardNo) {
         System.out.println(boardNo);
@@ -111,7 +111,7 @@ public class BoardController {
         } else return new ResponseEntity(null, HttpStatus.OK);
     }
 
-    // 자유게시판 댓글 작성하기
+    // 해당 게시물에 댓글 작성하기
     @PostMapping("/comment_write")
     public ResponseEntity<Boolean> commentWrite(@RequestBody Map<String, Object> data) {
         Long boardNo = Long.parseLong((String)data.get("boardNo"));
@@ -122,7 +122,7 @@ public class BoardController {
         else return new ResponseEntity(null, HttpStatus.OK);
     }
 
-    // 자유게시판 댓글 삭제하기
+    // 해당 게시물에 댓글 삭제하기
     @PostMapping("/comment_delete")
     public ResponseEntity<Boolean> commentDelete(@RequestBody Map<String, Long> data) {
         Long commentNo = data.get("commentNo");
@@ -131,7 +131,7 @@ public class BoardController {
         else return new ResponseEntity(commentDelete, HttpStatus.OK);
     }
 
-    // 자유게시판 글 작성
+    // 자유게시판 글 작성하기
     @PostMapping("/board_write")
     public ResponseEntity<Long> boardWrite(@RequestBody Map<String, String> data) {
         String id = data.get("id");
@@ -144,7 +144,7 @@ public class BoardController {
         return new ResponseEntity(resultNo, HttpStatus.OK);
     }
 
-    // 자유게시판 글 수정
+    // 자유게시판 글 수정하기
     @PostMapping("/board_edit")
     public ResponseEntity<Boolean> boardEdit(@RequestBody Map<String, String> data) {
         Long boardNo = Long.parseLong(data.get("boardNo"));

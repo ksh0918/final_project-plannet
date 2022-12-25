@@ -18,7 +18,7 @@ import java.util.Map;
 public class HomeController {
     private final HomeService homeService;
 
-    // 개인 home/달력/주간일정/메모/명언 출력
+    // 개인 home/달력/주간일정/메모/명언 출력하기
     @GetMapping("/personal")
     public ResponseEntity<Map<String, Object>> personalHome(@RequestParam String id) {
         Map<String, Object> personalHome = new HashMap<>();
@@ -34,7 +34,7 @@ public class HomeController {
             return new ResponseEntity(null, HttpStatus.OK);
         }
     }
-    // 회원 메모 저장
+    // 회원 메모 저장하기
     @PostMapping("/memo")
     public ResponseEntity<Boolean> memoWrite(@RequestBody Map<String, String> data) {
         String id = data.get("id");

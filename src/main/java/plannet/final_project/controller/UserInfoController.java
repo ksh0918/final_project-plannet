@@ -20,7 +20,7 @@ import java.util.Map;
 public class UserInfoController {
     private final UserInfoService userInfoService;
 
-    //사용자 정보 불러오기
+    // 사용자 정보 불러오기
     @GetMapping("/info_load")
     public ResponseEntity<List<Object>> userInfoLoad(@RequestParam String id) {
         MemberDTO memberDTO = userInfoService.userInfoLoad(id);
@@ -36,7 +36,7 @@ public class UserInfoController {
         } else return new ResponseEntity(null, HttpStatus.OK);
     }
 
-    // 사용자 정보 수정
+    // 사용자 정보 수정하기
     @PostMapping("/info_save")
     public ResponseEntity<Boolean> userInfoSave(@RequestBody Map<String, String> data) {
         String id = data.get("id");
@@ -58,7 +58,7 @@ public class UserInfoController {
         else return new ResponseEntity(false, HttpStatus.OK);
     }
 
-    // nav바 정보 가져오기
+    // Nav바 정보 불러오기
     @GetMapping("/nav_info")
     public ResponseEntity<Map<String, Object>> NavInfo(@RequestParam String id) {
         MemberDTO memberDTO1 = userInfoService.userInfoLoad(id);
