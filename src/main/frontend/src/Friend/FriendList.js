@@ -56,7 +56,9 @@ const Friends = styled.div`
             border-radius: 50px;
             border: 3px solid #ebebeb;
             >img{
-                width: 46px;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
             }
         }
         p{
