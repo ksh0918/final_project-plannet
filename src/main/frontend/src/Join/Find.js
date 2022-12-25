@@ -184,8 +184,8 @@ const Find = () =>{
 
     return (
         <ContainerFind id="find">
-            <Modal open={modalOpen} close={closeModal} header={header}>{comment}</Modal>
             <Logo><LogoImg width="90px" viewBox="30 150 430 220"/><Link to="/" className="logo">Plannet</Link></Logo>
+            <Modal open={modalOpen} close={closeModal} header={header}>{comment}</Modal>
             <div>
                 <div className={`findBtn ${isFindId ? 'findActive' : ''}`} onClick={onClickId}>아이디 찾기</div>
                 <div className={`findBtn ${isFindPwd ? 'findActive' : ''}`} onClick={onClickPwd}>비밀번호 찾기</div>
