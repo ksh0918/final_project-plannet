@@ -152,6 +152,7 @@ const Section = styled.div`
             } 
         }
         .search {
+            cursor: pointer;
             float: right;
             width: 200px; height: 29px; 
             padding: 0 10px; 

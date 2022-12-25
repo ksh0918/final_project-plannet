@@ -10,10 +10,10 @@ import plannet.final_project.entity.Message;
 import java.util.List;
 
 public interface MessageRepository extends JpaRepository<Message,Long> {
-    @Query(value = "select * from MESSAGE where receive_Id = (:receive_id) order by date desc",nativeQuery = true)
+    @Query(value = "select * from MESSAGE where receive_Id = (:receive_id) order by MESSAGE_NO DESC",nativeQuery = true)
     List<Message> findAllMatchingId(@Param("receive_id") String receive_id);
     void deleteByUserId(Member member);
     void deleteByMessageNo(Long messageNo);
-    @Query(value = "select * from (select * from MESSAGE where DETAIL like (:keyword) or ID like (:keyword)) searchTable where receive_id = (:receive_id) order by MESSAGE_NO DESC", nativeQuery = true)
-    List<Message> findByReceiveIdAndDetailLikeOrderByDateDesc(@Param("receive_id") String receive_id, @Param("keyword") String keyword);
+    @Query(value = "select * from (select * from MESSAGE where DETAIL like (:keyword)) searchTable where receive_id = (:receive_id) order by MESSAGE_NO DESC", nativeQuery = true)
+    List<Message> findByDetailLikeOrderByMessageNoDesc(@Param("receive_id") String receive_id, @Param("keyword") String keyword);
 }
