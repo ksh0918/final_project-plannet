@@ -11,7 +11,7 @@ import Setting from './Setting/Setting';
 import Home from './Home/Home';
 import Write from './Write/Write';
 import Board from './Board/Board';
-import BoardWrite from './Board/BoardWrite';
+import BoardWrite from './Board/boardWrite';
 import Edit from './Board/Edit';
 import PostView from './Board/PostView';
 import PublicRoute from './Lib/PublicRoute';
