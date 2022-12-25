@@ -103,7 +103,6 @@ const CommentItem = ({getId, getNum, getDate, setCommentList, commentList}) => {
             navigate(0);    
         }
         else {
-            console.log("삭제의 false 들어옴");
             await Api.scommnetDelete(commentNo); 
             navigate(0);   
         }

@@ -162,10 +162,6 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
         setModalHeader("친구삭제");
         setModalOpen(true);
     }
-
-    console.log("프렌드리스트 페이지 : ");
-    console.log(friendList);
-    
    // onChange함수를 사용하여 이벤트 감지, 필요한 값 받아오기 
     const changeHandler = (checked, e) => {
      // check가 되었을 경우 checkedButtons에 friendList의 객체를 추가
@@ -175,20 +171,14 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
         setCheckedButtons(checkedButtons.filter(button => button !== e));
     }
     };
-
-    console.log("체크버튼 : ");
-    console.log(checkedButtons);
     
    // 공유 캘린더 생성
     const onClickSCalAdd = async() => {
-        console.log("타이틀 길이");
-        console.log(title.length);
         if (title.length === 0) {
             setCommnet("공유캘린더 이름을 입력해 주세요");
             setModalOpen(true); 
         } else {
             const response = await Api.scalCntCheck(getId); //2개이상의 scal에 참여중인지 확인 2개 이하면 true, 이상이면 false
-            console.log(response.data);
             if(response.data) {
                 const res = await Api.scalCreate(getId, title, checkedButtons); 
                 const linkNo = res.data;

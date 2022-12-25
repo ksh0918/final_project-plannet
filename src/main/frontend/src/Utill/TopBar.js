@@ -52,7 +52,6 @@ const TopBar = ({sideBar, setSideBar}) => {
 
     const onClickSideBar = () => {
         setSideBar(true);
-        console.log(sideBar);
     }
     return (
         <Bar id="topbar">

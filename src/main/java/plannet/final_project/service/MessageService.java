@@ -115,11 +115,8 @@ public class MessageService {
         MessageDTO messageDTO = new MessageDTO();
         List<Map<String, Object>> messageList = new ArrayList<>();
         String key = "%" + keyword + "%";
-        System.out.println("ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ");
-        System.out.println(key);
         try {
-            System.out.println("3eeeeeeeeeeeeeeee");
-            List<Message> messageData = messageRepository.findByReceiveIdAndDetailLikeOrderByDateDesc(receiveId, key);
+            List<Message> messageData = messageRepository.findByDetailLikeOrderByMessageNoDesc(receiveId, key);
             for(Message e : messageData){
                 Map<String,Object> message = new HashMap<>();
                 message.put("messageNo",e.getMessageNo());

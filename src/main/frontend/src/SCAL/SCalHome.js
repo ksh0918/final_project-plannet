@@ -235,7 +235,6 @@ const SCalHome = () => {
     const onClickSetting = () => {
         navigate("/scal/info/" + getNum);
     }
-    console.log(smemberList);
     return (
         <Wrap>
             <Nav sideBar={sideBar} setSideBar={setSideBar}/>

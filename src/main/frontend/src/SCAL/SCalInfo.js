@@ -179,8 +179,6 @@ const SCalSetting = () => {
     }
 
     const onClickSCalInfoSave = async() => {
-        console.log("타이틀 길이");
-        console.log(title.length);
         if (title.length === 0) {
             setCommnet("공유캘린더 이름을 입력해 주세요");
             setModalOpen(true); 

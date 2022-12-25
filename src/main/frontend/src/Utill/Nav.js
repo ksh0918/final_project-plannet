@@ -275,7 +275,6 @@ const Nav = ({sideBar, setSideBar}) => {
         }
         userInfoLoad();
     }, [userId]);
-    console.log(userInfo);
 
     return (
         <Box id="nav" style={sideBar? {right: '0'} : {right: '-280px'}}>
