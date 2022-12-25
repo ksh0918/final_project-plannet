@@ -61,7 +61,7 @@ const Section = styled.div`
             padding: 10px; 
             color: white;
             &:first-child {width:35px;}
-            &:nth-child(2){width: 60px;}
+            &:nth-child(2){width: 90px;}
             &:nth-child(3){width: 130px;}
             &:last-child {width: 140px;}
         }
@@ -126,6 +126,7 @@ const Section = styled.div`
             } 
         }
         .search {
+            cursor: pointer;
             float: right;
             width: calc(100% - 250px);
             max-width: 200px;

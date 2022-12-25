@@ -75,4 +75,6 @@ public class Member {
     private List<Noti> notis;
     @OneToMany(mappedBy = "receiveId", cascade = {CascadeType.REMOVE}, orphanRemoval=true)
     private List<Noti> notiList;
+    @OneToMany(mappedBy = "boardNo", cascade = {CascadeType.REMOVE}, orphanRemoval=true)
+    private List<LikeList> likeLists;
 }
