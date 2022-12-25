@@ -190,7 +190,7 @@ const Section = styled.div`
     .ck-editor__main {padding: 0;}
 `;
 
-function Create() {
+function boardWrite() {
     const navigate = useNavigate();
     const getId = window.localStorage.getItem("userId");
     const [title, setTitle] = useState("");
@@ -278,4 +278,4 @@ function Create() {
     )
 };
 
-export default Create;
+export default boardWrite;

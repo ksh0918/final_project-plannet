@@ -111,17 +111,26 @@ public class MessageService {
         }
     }
 
-    public MessageDTO searchListLoad(String receiveId,String keyword) {
+    public MessageDTO searchListLoad(String receiveId, String keyword) {
         MessageDTO messageDTO = new MessageDTO();
         List<Map<String, Object>> messageList = new ArrayList<>();
+        String key = "%" + keyword + "%";
+        System.out.println("ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ");
+        System.out.println(key);
         try {
-            List<Message> messageData2 = messageRepository.findByReceiveIdAndDetailLikeOrderByDateDesc(receiveId,keyword);
-            for (Message e : messageData2) {
+            System.out.println("3eeeeeeeeeeeeeeee");
+            List<Message> messageData = messageRepository.findByReceiveIdAndDetailLikeOrderByDateDesc(receiveId, key);
+            for (Message e : messageData) {
+                System.out.println("333333333333333333333333333333333");
                 Map<String, Object> message = new HashMap<>();
                 message.put("messageNo", e.getMessageNo());
+                System.out.println("333333333333333333333333333333333");
                 message.put("sendId", e.getUserId().getNickname()+"#"+e.getUserId().getUserCode());
+                System.out.println("333333333333333333333333333333333");
                 message.put("detail", e.getDetail());
+                System.out.println("333333333333333333333333333333333");
                 message.put("sendDate", e.getDate());
+                System.out.println("333333333333333333333333333333333");
                 messageList.add(message);
             }
             messageDTO.setMessageList(messageList);
