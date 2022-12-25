@@ -3,6 +3,8 @@ package plannet.final_project.entity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -20,9 +22,11 @@ public class Friend {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Member userId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "friend_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Member friendId;
 }
