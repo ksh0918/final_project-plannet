@@ -102,8 +102,9 @@ public class BoardController {
 
     // 자유게시판 댓글 불러오기
     @GetMapping("/comment_load")
-    public ResponseEntity<List<Map<String, Object>>> commentLoad(@RequestParam Long boardNo, Long offsetNum, Long limitNum) {
-        BoardDTO boardDTO = boardService.commentListLoad(boardNo, offsetNum, limitNum);
+    public ResponseEntity<List<Map<String, Object>>> commentLoad(@RequestParam Long boardNo) {
+        System.out.println(boardNo);
+        BoardDTO boardDTO = boardService.commentListLoad(boardNo);
         if(boardDTO.isOk()) {
             List<Map<String, Object>> commentList = boardDTO.getCommentList();
             return new ResponseEntity(commentList, HttpStatus.OK);

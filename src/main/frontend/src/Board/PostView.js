@@ -5,7 +5,6 @@ import Modal from '../Utill/Modal';
 import Nav from '../Utill/Nav';
 import TopBar from '../Utill/TopBar';
 import Comment from './Comment';
-import useInfiniteScroll from './UseInfiniteScroll';
 
 const Wrap = styled.div`
     width: 1130px;
@@ -167,9 +166,6 @@ const PostView = () => {
         setComment("삭제하시겠습니까?");
     }
 
-    // 무한 스크롤
-    const [offset, setOffset] = useState(0); // DB에서 데이터 가져오는 개수
-    const [isMax, setIsMax] = useState(false); // DB에 있는 전체 데이터 개수
     const [commentList, setCommentList] = useState([]); // 댓글
 
     // 좋아요를 누를 때마다 표면적으로 +1, -1 해주기 & 하트 모양 토글
@@ -179,8 +175,6 @@ const PostView = () => {
         if (likeCheckedData) setLikeCnt(likeCntData - 1);
         else (setLikeCnt(likeCntData + 1));
     }
-    console.log("오프셋");
-    console.log(offset);
     
     // 본문 불러오기
     useEffect(() => {
@@ -199,7 +193,8 @@ const PostView = () => {
                 setLikeChecked(likeChecked.data);
 
                 // 댓글 불러오기
-                // commentItem();
+                const response = await Api.commentLoad(getNum);
+                setCommentList(response.data);
             } catch (e) {
                 console.log(e);
             } 
@@ -207,41 +202,6 @@ const PostView = () => {
         postViewLoad();
     }, [getId, getNum]);
 
-
-    // 무한 스크롤
-    const commentItem = async () => {
-        try {
-          // DB에 있는 전체 데이터를 다 가져오면 데이터 더 부르지 않음
-          if(isMax){
-            setIsFetching(false);
-            console.log('//max Data');
-            return;
-          }
-          console.log('//new Data Fetching');
-          // 기존의 게시판 댓글 불러오는 api 호출
-          const fetchData = async () => {
-            console.log("댓글 불러오는중");
-            // PostView 페이지 댓글 목록 api
-            const response = await Api.commentLoad(getNum,offset,offset + 10); // DB에서 데이터 가져오는 개수의 범위를 api 매개변수로 넘겨줌
-            setCommentList(old => ([...old, ...response.data]));
-            console.log('//new Data :',response.data);
-            setOffset(old => old + 10) // offset을 계속 10씩 늘려주면 된다
-            setIsFetching(false); // fetching이 false가 되어야 한번만 데이터를 불러줌 패칭 스테이트는 선언한 훅에서 나옴
-            if(response.data.length < 10) setIsMax(true);
-          }
-          fetchData();
-        } catch(e) {
-          console.log(e);
-        };
-        // commentItem();
-      }
-
-      useEffect(() => {
-        commentItem();
-      }, []);
-
-    // hook 선언 (인자값에는 데이터를 불러오는 함수 입력(Comment))
-    const [isFetching,setIsFetching] = useInfiniteScroll(commentItem)
 
     return (
         <Wrap>
@@ -276,9 +236,8 @@ const PostView = () => {
                     </div>
                     </>))}
                     <h3>Comment</h3>
-                    <Comment getId={getId} getNum={getNum} setCommentList={setCommentList} commentList={commentList}
-                     {...isFetching && <h1>Loading...</h1>}
-                     {...!isFetching && <h1>더이상 조회할 게시글이 없습니다</h1>}/>
+                    <Comment getId={getId} getNum={getNum} setCommentList={setCommentList} commentList={commentList} ></Comment>
+                     
             </Section>
             <div className="copy">&#169; Plannet.</div>
         </Wrap>
