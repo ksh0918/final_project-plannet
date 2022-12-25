@@ -370,8 +370,8 @@ const plannetApi = {
         return await axios.post(PLANNET_DOMAIN + "board/like_checked_toggle", object, HEADER);
     },
     // 해당 게시물에 작성된 댓글 불러오기
-    commentLoad: async function(boardNo, offsetNum, limitNum){
-        return await axios.get(PLANNET_DOMAIN + `board/comment_load?boardNo=${boardNo}&offsetNum=${offsetNum}&limitNum=${limitNum}`, HEADER);
+    commentLoad: async function(boardNo){
+        return await axios.get(PLANNET_DOMAIN + `board/comment_load?boardNo=${boardNo}`, HEADER);
     },
     // 해당 게시물에 댓글 작성
     commentWrite: async function(boardNo, id, detail){

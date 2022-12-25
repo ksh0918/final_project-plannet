@@ -3,6 +3,7 @@ package plannet.final_project.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 import plannet.final_project.dao.MemberRepository;
 import plannet.final_project.dao.BoardRepository;
 import plannet.final_project.dao.LikeRepository;
@@ -184,11 +185,12 @@ public class BoardService {
     }
 
     // 자유게시판 댓글 불러오기
-    public BoardDTO commentListLoad (Long boardNo, Long offsetNum, Long limitNum) {
+    public BoardDTO commentListLoad (@RequestParam  Long boardNo) {
         BoardDTO boardDTO = new BoardDTO();
         try {
+            Board board = boardRepository.findById(boardNo).orElseThrow();
             List<Map<String, Object>> commentList = new ArrayList<>();
-            List<Comment> data = commentRepository.findComment(boardNo, offsetNum, limitNum);
+            List<Comment> data = commentRepository.findByBoardNoOrderByWriteDateDesc(board);
             for (Comment e : data) {
                 Map<String, Object> comment = new HashMap<>();
                 comment.put("commentNo", e.getCommentNo());
