@@ -116,7 +116,7 @@ public class MessageService {
         List<Map<String, Object>> messageList = new ArrayList<>();
         String key = "%" + keyword + "%";
         try {
-            List<Message> messageData = messageRepository.findByReceiveIdAndDetailLikeOrderByDateDesc(receiveId, key);
+            List<Message> messageData = messageRepository.findByDetailLikeOrderByMessageNoDesc(receiveId, key);
             for(Message e : messageData){
                 Map<String,Object> message = new HashMap<>();
                 message.put("messageNo",e.getMessageNo());
