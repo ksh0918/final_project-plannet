@@ -195,8 +195,8 @@ const plannetApi = {
         return await axios.post(PLANNET_DOMAIN + "message/readModal", object, HEADER);
     },
     // 쪽지 검색
-    searchMessageList: async function(id,keyword){
-        return await axios.get(PLANNET_DOMAIN + `message/search_messageList?id=${id}&keyword=${keyword}`, HEADER);
+    searchMessageList: async function(receive_id, keyword){
+        return await axios.get(PLANNET_DOMAIN + `message/search_messageList?receive_id=${receive_id}&keyword=${keyword}`, HEADER);
     },
 
     // HomeController
