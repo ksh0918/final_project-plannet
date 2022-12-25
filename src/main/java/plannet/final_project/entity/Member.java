@@ -59,12 +59,21 @@ public class Member {
     @ColumnDefault("0")
     private int reRegChecked; // 탈퇴 회원 여부 (재가입 방지)
 
-    @OneToMany(mappedBy = "userId", cascade = {CascadeType.ALL}, orphanRemoval=true)
+    @OneToMany(mappedBy = "userId", cascade = {CascadeType.REMOVE}, orphanRemoval=true)
     private List<SCAL> scals;
-    @OneToMany(mappedBy = "userId", cascade = {CascadeType.ALL}, orphanRemoval=true)
+    @OneToMany(mappedBy = "userId", cascade = {CascadeType.REMOVE}, orphanRemoval=true)
     private List<SMEM> smems;
-    @OneToMany(mappedBy = "userId", cascade = {CascadeType.ALL}, orphanRemoval=true)
+    @OneToMany(mappedBy = "userId", cascade = {CascadeType.REMOVE}, orphanRemoval=true)
     private List<SPLAN> splans;
-    @OneToMany(mappedBy = "userId", cascade = {CascadeType.ALL}, orphanRemoval=true)
+    @OneToMany(mappedBy = "userId", cascade = {CascadeType.REMOVE}, orphanRemoval=true)
     private List<SCOM> scoms;
+    @OneToMany(mappedBy = "userId", cascade = {CascadeType.REMOVE}, orphanRemoval=true)
+    private List<Friend> friends;
+    @OneToMany(mappedBy = "friendId", cascade = {CascadeType.REMOVE}, orphanRemoval=true)
+    private List<Friend> friendList;
+    @OneToMany(mappedBy = "userId", cascade = {CascadeType.REMOVE}, orphanRemoval=true)
+    private List<Noti> notis;
+    @OneToMany(mappedBy = "receiveId", cascade = {CascadeType.REMOVE}, orphanRemoval=true)
+    private List<Noti> notiList;
+
 }
