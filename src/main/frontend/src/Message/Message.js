@@ -34,10 +34,11 @@ const Section = styled.div`
             margin-top: 10px;
             margin-bottom: 15px;
         }
-        .readBtn, .sendBtn, .deleteBtn{
+        .msg_btn{
+            margin-left: 486px;
+            .readBtn, .sendBtn, .deleteBtn{
             cursor: pointer;
             font-weight: 600;
-            float: right;
             font-size: 16px;
             padding: 8px 25px;
             border-radius: 25px;
@@ -47,6 +48,7 @@ const Section = styled.div`
             transition: all .1s ease-in;
             margin-left: 5px;
             &:hover{background-color: #666; color: #888;}
+            }
         }
     }
     .message>table {
@@ -266,9 +268,11 @@ const Message = () => {
                     <h2>Message</h2>
                     <p>
                         <span>Plannet 친구들과 소통해 보세요!</span>
-                        <button onClick={onClickRead} className="readBtn">읽음</button>
-                        <button onClick={onClickDelete} className="deleteBtn">선택삭제</button>
-                        <button onClick={onClickToCreate} className="sendBtn">쪽지쓰기</button>
+                        <div className="msg_btn">
+                            <button onClick={onClickRead} className="readBtn">읽음</button>
+                            <button onClick={onClickDelete} className="deleteBtn">선택삭제</button>
+                            <button onClick={onClickToCreate} className="sendBtn">쪽지쓰기</button>
+                        </div>
                     </p>
                     <table>
                         <tr>
