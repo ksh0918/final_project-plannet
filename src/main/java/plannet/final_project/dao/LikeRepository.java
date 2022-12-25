@@ -12,7 +12,7 @@ import java.util.List;
 // 요청과 응답만 처리
 // JpaRepository<테이블명, 프라이머리키에 대한 데이터 형>
 public interface LikeRepository extends JpaRepository<LikeList, Long> {
-    @Query(value = "select board_no from like_cnt group by board_no order by count(board_no) desc, board_no desc limit 3", nativeQuery = true)
+    @Query(value = "select board_no from like_list group by board_no order by count(board_no) desc, board_no desc limit 3", nativeQuery = true)
     List<Integer> findAllTop3GroupByBoardNoOrderByCountByBoardNoDescBoardNoDesc();
     Long countByBoardNo(Board boardNo);
     boolean existsByUserIdAndBoardNo(Member userId, Board boardNo);
