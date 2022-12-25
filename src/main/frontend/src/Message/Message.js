@@ -202,8 +202,8 @@ const Message = () => {
     const [searchKeyword, setSearchKeyword] = useState('');
     const onClickSearch = async () => {
         try {
-            const response = await Api.searchMessageList(searchKeyword,getId);
-            console.log(response.data)
+            const response = await Api.searchMessageList(getId,searchKeyword);
+            // console.log(response.data)
             setMessageList(response.data);
         } catch (e) {
             console.log(e);
@@ -245,8 +245,8 @@ const Message = () => {
     useEffect(() => {
         const messageData = async () => {
             try {
-                const result = await Api.messageList(getId);
-                setMessageList(result.data);
+                const response = await Api.messageList(getId);
+                setMessageList(response.data);
             } catch(e) {
                 console.log(e);
             }
@@ -287,7 +287,7 @@ const Message = () => {
                                     //  checkItems 에 해당 쪽지의 messageNo 이 있으면 true, 아니면 false
                                     checked={checkItems.includes(message.messageNo) ? true : false}
                                 /></td> 
-                                <td onClick={()=>onClickList(message)}>{message.isRead===0 ? "안읽음" : "읽음"}</td>
+                                <td onClick={()=>onClickList(message)}>{message.isRead===0 ? "읽지않음" : "읽음"}</td>
                                 <td onClick={()=>onClickList(message)}>{message.sendId}</td>
                                 <td>{<div className='detail'onClick={()=>onClickList(message)} dangerouslySetInnerHTML={{__html: message.detail}}></div>}</td>
                                 <td onClick={()=>onClickList(message)}>{message.sendDate}</td>
