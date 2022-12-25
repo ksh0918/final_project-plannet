@@ -17,7 +17,7 @@ public class MemberDTO {
     private String proImg;
     private int pes; // 개인 일정의 달성률
     private List<List<Object>> sCalList; // 공유 캘린더의 정보가 넘어옴, 번호, 이름, 달성률
-    private boolean isReg; // 아이디 비밀번호 찾을 때 true/false 응답
+    private int isReg; // 아이디 비밀번호 찾을 때 true/false 응답
 
     private boolean isOk;
 }

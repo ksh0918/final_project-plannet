@@ -5,9 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import plannet.final_project.entity.Member;
 import plannet.final_project.service.MemberService;
 import plannet.final_project.vo.MemberDTO;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -92,7 +94,7 @@ public class MemberController {
 
     // 아이디 비밀번호 찾기
     @GetMapping("/find")
-    public ResponseEntity<List<MemberDTO>> memberFind(@RequestParam String keyword, String email, String type) {
+    public ResponseEntity<MemberDTO> memberFind(@RequestParam String keyword, String email, String type) {
         MemberDTO memDTO = memberService.memberFind(keyword, email, type);
         if(memDTO.isOk()) return new ResponseEntity(memDTO, HttpStatus.OK);
         else return new ResponseEntity(false, HttpStatus.OK);

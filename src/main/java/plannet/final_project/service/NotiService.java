@@ -79,7 +79,6 @@ public class NotiService {
             // 친구추가할 사람이 존재하는 지 확인
             String[] keywordArr = keyword.split("#");
             Member recive = memberRepository.findByNicknameAndUserCode(keywordArr[0], keywordArr[1]);
-
             if(recive == null) return result; // 해당 유저가 없음 0
             else { //해당 유저가 있음
                 // 자신에게 친구추가를 신청한 경우 5
@@ -88,7 +87,6 @@ public class NotiService {
                 } else {
                     // 타인에게 걸었을 경우 친구인지 확인
                     Friend isFriend = friendRepository.findByUserIdAndFriendId(send, recive);
-                    log.warn(String.valueOf(isFriend));
                     if(isFriend == null) { // 친구가 아니라면
                         // 내가 이미 보낸 요청 사항이 있는지 확인한다.
                         List<Noti> alreadySend = notiRepository.findByUserIdAndReceiveIdAndTypeAndAcceptChecked(send, recive, "F", 0);

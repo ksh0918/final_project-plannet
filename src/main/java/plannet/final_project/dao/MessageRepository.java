@@ -17,8 +17,6 @@ public interface MessageRepository extends JpaRepository<Message,Long> {
 //    @Query(value = "select * from MESSAGE where [detail]like '%(:keyWord)%' or [nickname]like '%(:keyWord)%' or [user_code]like '%(:keyWord)%'",nativeQuery = true)
 //    List<Message> findByUserIdLikeOrDetailLikeOrderByMessageNoDesc(@Param("keyWord") String keyWord);
 
-//    @Query(value = "select * from (select * from MESSAGE where DETAIL or receive_ID like '%(:keyword)%') searchTable where receive_id = '(:receive_id)';",nativeQuery = true)
-    @Query(value = "select * from message where receive_id =(:receive_id) and detail like '%(:keyword)%';",nativeQuery = true)
-    List<Message> findByReceiveIdAndDetailLikeOrderByDateDesc(@Param("receive_id") String receive_id,@Param("keyword") String keyword);
-
+    @Query(value = "select * from (select * from MESSAGE where DETAIL like (:keyword) or ID like (:keyword)) searchTable where receive_id = (:receive_id) order by MESSAGE_NO DESC", nativeQuery = true)
+    List<Message> findByReceiveIdAndDetailLikeOrderByDateDesc(@Param("receive_id") String receive_id, @Param("keyword") String keyword);
 }

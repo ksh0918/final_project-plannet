@@ -202,7 +202,7 @@ const Message = () => {
     const [searchKeyword, setSearchKeyword] = useState('');
     const onClickSearch = async () => {
         try {
-            const response = await Api.searchMessageList(getId,searchKeyword);
+            const response = await Api.searchMessageList(getId, searchKeyword);
             // console.log(response.data)
             setMessageList(response.data);
         } catch (e) {
@@ -266,8 +266,8 @@ const Message = () => {
                     <p>
                         <span>Plannet 친구들과 소통해 보세요!</span>
                         <button onClick={onClickRead} className="readBtn">읽음</button>
-                        <button onClick={onClickToCreate} className="sendBtn">쪽지쓰기</button>
                         <button onClick={onClickDelete} className="deleteBtn">선택삭제</button>
+                        <button onClick={onClickToCreate} className="sendBtn">쪽지쓰기</button>
                     </p>
                     <table>
                         <tr>
