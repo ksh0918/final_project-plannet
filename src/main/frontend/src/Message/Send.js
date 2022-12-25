@@ -303,7 +303,7 @@ const Send= () => {
                         <tr>
                             <td>
                                 <p className='sender'>받는 사람</p>
-                                <input title="검색" placeholder="받는 사람의 닉네임을 작성하세요. " onChange={onChangeReceiveId} value={receiveId} onClick={onBlurSend}/>
+                                <input title="검색" placeholder="받는 사람의 닉네임#유저코드를 작성하세요." onChange={onChangeReceiveId} value={receiveId} onClick={onBlurSend}/>
                             </td>
                         </tr>
                     </table>       
