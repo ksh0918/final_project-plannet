@@ -68,7 +68,7 @@ public class HomeService {
                 homeDTO.setMemo(member.getMemo());
             } else homeDTO.setMemo("");
             // quoteLoad
-            int randomNum = (int) (Math.random() * ((int) quoteRepository.count() + 1));
+            int randomNum = ((int) (Math.random() * (int) quoteRepository.count()))+ 1;
             homeDTO.setQuote(quoteRepository.findById(randomNum).orElseThrow().getQuote());
             homeDTO.setOk(true);
         } catch (Exception e){
