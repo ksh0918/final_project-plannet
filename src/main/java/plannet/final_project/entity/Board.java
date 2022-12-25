@@ -8,6 +8,7 @@ import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter @Setter
 @ToString
@@ -46,4 +47,7 @@ public class Board {
     @Column(name = "ischecked", nullable = false)
     @ColumnDefault("0")
     private int isChecked;
+
+    @OneToMany(mappedBy = "boardNo", cascade = {CascadeType.REMOVE}, orphanRemoval=true)
+    private List<LikeList> likeLists;
 }
