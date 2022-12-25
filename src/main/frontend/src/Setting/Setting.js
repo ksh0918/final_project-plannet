@@ -207,7 +207,8 @@ const Setting = () => {
     const onChangePhone = (e) => {
         setChangePhone(e.target.value.replace(/[^0-9]/g, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`));
         // 전화번호 하이픈 포함 길이 체크
-        if(e.target.value.length === 0 || e.target.value.length < 12 || e.target.value.length > 13) setIsTel(false);
+        if(e.target.value.length < 12 || e.target.value.length > 13) setIsTel(false);
+        else if(e.target.value.length === 0) setIsTel(true);
         else setIsTel(true);
     }
     const onChangePro = (e) => {
@@ -230,6 +231,9 @@ const Setting = () => {
         const memberCheck = await Api.overlapCheck(changePhone, "TYPE_TEL");
         if (memberCheck.data && (changePhone.length === 12 || changePhone.length === 13) && changePhone.indexOf('-') === 3) { // 전화번호 길이 체크
             setTelMessage("사용가능한 전화번호입니다.");
+            setIsTel(true);
+        } else if(changePhone.length === 0){
+            setTelMessage("");
             setIsTel(true);
         } else if(!memberCheck.data && userPhone === changePhone){
             setTelMessage("기존 전화번호입니다.");

@@ -232,6 +232,7 @@ const Board = () => {
             try {
                 const top3ListData = await Api.top3List();
                 setTop3List(top3ListData.data);
+                console.log(top3List);
             } catch (e) {
                 console.log(e);
             }

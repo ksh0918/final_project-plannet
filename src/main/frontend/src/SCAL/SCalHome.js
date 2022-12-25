@@ -235,7 +235,7 @@ const SCalHome = () => {
     const onClickSetting = () => {
         navigate("/scal/info/" + getNum);
     }
-
+    console.log(smemberList);
     return (
         <Wrap>
             <Nav sideBar={sideBar} setSideBar={setSideBar}/>
@@ -258,7 +258,7 @@ const SCalHome = () => {
                                 <ul>
                                     {/* memberList */}
                                     {smemberList.map((e) => {
-                                        if(e.scalOwner) return(<li style={{listStyleImage:'url(/crown.svg)'}} className="owner"><span>{e.nickname}</span> <span>#{e.userCode}</span></li>);
+                                        if(e.isOwner) return(<li style={{listStyleImage:'url(/crown.svg)'}} className="owner"><span>{e.nickname}</span> <span>#{e.userCode}</span></li>);
                                         else return(<li>{e.nickname} <span>#{e.userCode}</span></li>);
                                     })}
                                 </ul> :

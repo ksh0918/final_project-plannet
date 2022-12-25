@@ -11,7 +11,7 @@ import Setting from './Setting/Setting';
 import Home from './Home/Home';
 import Write from './Write/Write';
 import Board from './Board/Board';
-import Create from './Board/Create';
+import BoardWrite from './Board/BoardWrite';
 import Edit from './Board/Edit';
 import PostView from './Board/PostView';
 import PublicRoute from './Lib/PublicRoute';
@@ -39,7 +39,7 @@ function App() {
                 <Route path="/friend" element={<PrivateRoute><Friend /></PrivateRoute>}/>
                 <Route path="/write/:date" element={<PrivateRoute><Write /></PrivateRoute>}/>
                 <Route path="/board" element={<PrivateRoute><Board /></PrivateRoute>}/>
-                <Route path="/board/write" element={<PrivateRoute><Create /></PrivateRoute>}/>
+                <Route path="/board/write" element={<PrivateRoute><BoardWrite /></PrivateRoute>}/>
                 <Route path="/board/edit/:no" element={<PrivateRoute><Edit /></PrivateRoute>}/>
                 <Route path='/board/post_view/:no' element={<PrivateRoute><PostView /></PrivateRoute>}/>
                 <Route path="/scal/create" element={<PrivateRoute><SCalCreate /></PrivateRoute>}/>

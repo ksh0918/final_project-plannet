@@ -56,7 +56,9 @@ const Friends = styled.div`
             border-radius: 50px;
             border: 3px solid #ebebeb;
             >img{
-                width: 46px;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
             }
         }
         p{
@@ -233,7 +235,7 @@ const FriendList = ({setCommnet,setModalHeader,setModalOpen,friendList,isAdd,set
                             <span>{e.nickname}</span>
                             <span>&#35;{e.userCode}</span>
                         </p>
-                        <p>{e.profile}</p>
+                        {isPage === "message"? '' : <p>{e.profile}</p>}
                         {isPage === "친구삭제" && <i className="bi bi-x-lg unfriend_btn" onClick={() => onClickUnfriend(e.key)}></i>} 
                         {/* checked: 체크표시 & 해제를 시키는 로직. 배열에 e 데이터가 있으면 true, 없으면 false                     onChange: onChange이벤트가 발생하면 check여부와 e 데이터를 전달하여 배열에 friendList의 객체를 넣어준다. */}
                         {isPage === "공유캘린더" && <StyledInput class="form-check-input scalFriend_check" id="checkboxNoLabel" onChange={check => { changeHandler(check.currentTarget.checked, e);}} 
