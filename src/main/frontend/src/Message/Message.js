@@ -202,8 +202,8 @@ const Message = () => {
     const [searchKeyword, setSearchKeyword] = useState('');
     const onClickSearch = async () => {
         try {
-            const response = await Api.searchMessageList(searchKeyword,getId);
-            console.log(response.data)
+            const response = await Api.searchMessageList(getId,searchKeyword);
+            // console.log(response.data)
             setMessageList(response.data);
         } catch (e) {
             console.log(e);
@@ -245,8 +245,8 @@ const Message = () => {
     useEffect(() => {
         const messageData = async () => {
             try {
-                const result = await Api.messageList(getId);
-                setMessageList(result.data);
+                const response = await Api.messageList(getId);
+                setMessageList(response.data);
             } catch(e) {
                 console.log(e);
             }

@@ -92,10 +92,10 @@ public class MessageController {
     }
 
     // 쪽지 검색
-//    @GetMapping("/search_messageList")
-//    public ResponseEntity<List<MessageDTO>> searchListLoad(@RequestParam String keyword ,String id) {
-//        MessageDTO messageList = messageService.searchListLoad(id,"%%" + keyword + "%%");
-//        if(messageList.isOk()) return new ResponseEntity(messageList.getMessageList(), HttpStatus.OK);
-//        else return new ResponseEntity(null, HttpStatus.OK);
-//    }
+    @GetMapping("/search_messageList")
+    public ResponseEntity<List<MessageDTO>> searchListLoad(@RequestParam String id, @RequestParam String keyword) {
+        MessageDTO messageList = messageService.searchListLoad(id, keyword);
+        if(messageList.isOk()) return new ResponseEntity(messageList.getMessageList(), HttpStatus.OK);
+        else return new ResponseEntity(null, HttpStatus.OK);
+    }
 }

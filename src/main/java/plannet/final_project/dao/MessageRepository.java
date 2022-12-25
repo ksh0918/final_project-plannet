@@ -14,6 +14,11 @@ public interface MessageRepository extends JpaRepository<Message,Long> {
     List<Message> findAllMatchingId(@Param("receive_id") String receive_id);
     void deleteByUserId(Member member);
     void deleteByMessageNo(Long messageNo);
-//    @Query(value = "select * from (select * from MESSAGE where receive_Id = (:receive_id) order by date desc)m where [m.detail]like '%(:keyWord)%' or [m.receive_Id]like '%(:receive_id)%'",nativeQuery = true)
-//    List<Message> findByUserIdLikeOrDetailLikeOrderByMessageNoDesc(@Param("receive_id") String receive_id, String keyWord);
+//    @Query(value = "select * from MESSAGE where [detail]like '%(:keyWord)%' or [nickname]like '%(:keyWord)%' or [user_code]like '%(:keyWord)%'",nativeQuery = true)
+//    List<Message> findByUserIdLikeOrDetailLikeOrderByMessageNoDesc(@Param("keyWord") String keyWord);
+
+//    @Query(value = "select * from (select * from MESSAGE where DETAIL or receive_ID like '%(:keyword)%') searchTable where receive_id = '(:receive_id)';",nativeQuery = true)
+    @Query(value = "select * from message where receive_id =(:receive_id) and detail like '%(:keyword)%';",nativeQuery = true)
+    List<Message> findByReceiveIdAndDetailLikeOrderByDateDesc(@Param("receive_id") String receive_id,@Param("keyword") String keyword);
+
 }

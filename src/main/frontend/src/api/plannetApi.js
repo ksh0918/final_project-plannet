@@ -196,7 +196,7 @@ const plannetApi = {
     },
     // 쪽지 검색
     searchMessageList: async function(id,keyword){
-        return await axios.get(PLANNET_DOMAIN + `message/search_messageList?keyword=${keyword}&receiveId=${id}`, HEADER);
+        return await axios.get(PLANNET_DOMAIN + `message/search_messageList?id=${id}&keyword=${keyword}`, HEADER);
     },
 
     // HomeController
