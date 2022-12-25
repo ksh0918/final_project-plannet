@@ -64,6 +64,7 @@ const Button = styled.button`
     color: white;
     border-radius: 20px;
     cursor: pointer;
+    padding: 10px;
     &:hover {background-color: rgb(55, 67, 134); color: #eee;}
 `;
 

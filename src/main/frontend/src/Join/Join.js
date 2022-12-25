@@ -234,8 +234,8 @@ const Join = () => {
 
     return (
         <ContainerJoin id="join">
-            <Modal open={modalOpen} close={closeModal} header="글쓰기 안내">{comment}</Modal>
             <Logo><LogoImg width="90px" viewBox="30 150 430 220"/><Link to="/" className="logo">Plannet</Link></Logo>
+            <Modal open={modalOpen} close={closeModal} header="글쓰기 안내">{comment}</Modal>
             <div className="session">
                 <p>
                     아이디*
