@@ -76,16 +76,8 @@ public class UserInfoService {
             Member member = memberRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
 
             // 개인 일정 달성률 불러오기
-            List<Plan> personalTotal = planRepository.findByUserId(member);
-            List<Plan> personalComplete = planRepository.findByUserIdAndPlanChecked(member, 1);
             int personalTotalCnt = planRepository.countByUserId(member).intValue(); // 총 일정 갯수
             int personalCompleteCnt = planRepository.countByUserIdAndPlanChecked(member, 1).intValue(); // 완료된 일정 갯수
-            for(Plan e : personalTotal) {
-                personalTotalCnt++;
-            }
-            for(Plan e : personalComplete) {
-                personalCompleteCnt++;
-            }
             int personalPes = 0;
             try {
                 personalPes = personalCompleteCnt * 100 / personalTotalCnt;
@@ -103,16 +95,8 @@ public class UserInfoService {
 
                 // 공유캘린더 일정 달성률 구하기
                 SCAL scal = scalRepository.findById(scalNo).orElseThrow(EntityNotFoundException::new);
-                List<SPLAN> splanTotal = splanRepository.findByScalNo(scal);
-                List<SPLAN> splanComplete = splanRepository.findByScalNoAndSplanChecked(scal, 1);
-                int splanTotalCnt = 0; // 총 일정 갯수
-                int splanCompleteCnt = 0; // 완료된 일정 갯수
-                for(SPLAN f : splanTotal) {
-                    splanTotalCnt++;
-                }
-                for(SPLAN f : splanComplete) {
-                    splanCompleteCnt++;
-                }
+                int splanTotalCnt = splanRepository.countByScalNo(scal).intValue(); // 총 일정 갯수
+                int splanCompleteCnt = splanRepository.countByScalNoAndSplanChecked(scal, 1).intValue(); // 완료된 일정 갯수
                 int scalPes = 0;
                 try { scalPes = splanCompleteCnt * 100 / splanTotalCnt; }
                 catch (ArithmeticException ignored) {}
