@@ -124,13 +124,17 @@ const Find = () =>{
 
     const onClickFindId = async() => {
         const response = await Api.memberFind(findInName, findInEmail, "Type_ID");
-        if(response.data.reg === true){
+        if(response.data.isReg === 1){
             setModalOpen(true);
             setHeader("로그인");
             setComment("아이디는 ["+ response.data.id + "] 입니다.");
-        }
-        else {
+        } else if(response.data.isReg === 2){
             setModalOpen(true);
+            setHeader("로그인");
+            setComment("구글로 가입된 사용자입니다. 구글 로그인을 사용해주세요.");
+        } else {
+            setModalOpen(true);
+            setHeader("");
             setComment("가입되어 있는 정보가 없습니다.")
         }
     }
@@ -143,12 +147,17 @@ const Find = () =>{
     const onClickFindPwd = async() => {
         const response = await Api.memberFind(findInId, findInEmail, "Type_PWD");
         console.log(response.data);
-        if(response.data.reg === true){
+        if(response.data.isReg === 1){
             setModalOpen(true);
             setHeader("");
             setComment("새로운 비밀번호를 설정합니다.");
             setIsNewPwd(true);
-        } else {
+        } else if(response.data.isReg === 2){
+            setModalOpen(true);
+            setHeader("로그인");
+            setComment("구글로 가입된 사용자입니다. 구글 로그인을 사용해주세요.");
+        } else{
+            setHeader("");
             setModalOpen(true);
             setComment("가입되어 있는 정보가 없습니다.")
         }

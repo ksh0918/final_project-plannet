@@ -160,23 +160,26 @@ public class MemberService {
             switch (t) {
                 case 'I' :
                     mem = memberRepository.findByNameAndEmail(keyword, email);
-                    if(mem != null) {
-                        if(!mem.getSocial().equals("g")){
-                            memDTO.setReg(true);
-                            memDTO.setId(mem.getId());
+                    if(mem != null) { // 찾는 멤버가 있다
+                        if(!mem.getSocial().equals("g")){ //구글 가입 사용자가 아니면
+                            memDTO.setIsReg(1);
+                            memDTO.setId(mem.getId()); //아이디와 함께 돌려준다
                         } else{
-                            memDTO.setReg(false);
+                            memDTO.setIsReg(2); //구글 가입 사용자임
                         }
-                    } else {
-                        memDTO.setReg(false);
+                    } else { //찾는 사람이 없다
+                        memDTO.setIsReg(0);
                     }
                     memDTO.setOk(true);
                     break;
                 case 'P' :
                     mem = memberRepository.findByIdAndEmail(keyword, email);
-                    if(mem != null) {
-                        memDTO.setReg(!mem.getSocial().equals("g"));
-                    } else memDTO.setReg(false);
+                    if(mem != null) { // 찾는 사람이 있다
+                        if(!mem.getSocial().equals("g")){ //구글 가입자가 아니면
+                            memDTO.setIsReg(1);
+                        }
+                        else memDTO.setIsReg(2); //구글사용자임
+                    } else memDTO.setIsReg(0);
                     memDTO.setOk(true);
                     break;
             }
