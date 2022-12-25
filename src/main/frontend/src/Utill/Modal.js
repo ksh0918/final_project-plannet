@@ -25,7 +25,6 @@ const Modal = (props) => {
     }
     const onClickEdit = () => {
         const link = "/board/edit/" + boardNo;
-        console.log(link);
         navigate(link);
     }
     const onClickDelete = async() => {
@@ -42,7 +41,6 @@ const Modal = (props) => {
         navigate(0);
     }
     const onClickNotiAnswer = async() => {
-        console.log("option:" + option);
         if(option.indexOf(true) !== -1){
             const key = option.toString().slice(0, -4);
             const status = option.slice(-4);
@@ -63,8 +61,6 @@ const Modal = (props) => {
         navigate(0);
     }
     const onClickSMemInvite = async() => { // 공유캘린더 멤버 초대
-        console.log(calNo);
-        console.log(option);
         await Api.smemInvite(calNo, option);
         navigate(0);
     }

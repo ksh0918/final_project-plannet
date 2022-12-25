@@ -178,7 +178,6 @@ const Setting = () => {
         const userInfoLoad = async() => {
             try {
                 const response = await Api.userInfoLoad(userId);
-                console.log(response.data);
                 setChangeNickname(response.data[0]);
                 setChangePhone(response.data[4]);
                 setUserNickname(response.data[0]);

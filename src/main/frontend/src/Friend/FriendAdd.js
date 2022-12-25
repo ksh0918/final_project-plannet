@@ -68,7 +68,6 @@ const FriendAdd = ({setCommnet, setModalHeader, setModalOpen, isAdd, getId}) => 
     }
 
     const onClickAddBtn = async() => {
-        console.log(getId, addInput);
         const response = await Api.friendAdd(getId, addInput);
         if(response.data === 1) { // 자신의 친구 목록에 없고 유효한 사용자
             setCommnet("친구 신청이 되었습니다.");

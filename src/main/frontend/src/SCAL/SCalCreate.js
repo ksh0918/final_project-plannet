@@ -174,13 +174,10 @@ const Section = styled.div`
     // 공유 캘린더 이름 입력
     const onChangeTitle = (e) => {
         setTitle(e.target.value);
-        console.log("타이틀 : " + title);
     }
     //  친구 검색 입력
      const onChangeSearchKeyword = (e) => {
      setSearchKeyword(e.target.value);
-     console.log("서치키워드 : " + searchKeyword);
-     console.log(searchKeyword);
 
      }
      

@@ -142,7 +142,6 @@ const Friend = () => {
 
     const onClickAddSCal = async () => {
         const response = await Api.scalCntCheck(getId); //2개이상의 scal에 참여중인지 확인 2개 이하면 true, 이상이면 false
-        console.log(response.data);
         if(response.data) {
             navigate("/scal/create");
         } else {

@@ -230,7 +230,6 @@ function Edit() {
                     navigate('/home');
                     return; // Edit 페이지로 이동하지 않도록 Home 페이지로 이동하고 useEffect에서 return
                 } 
-                console.log(response.data);
                 setBoardLoad(response.data);
                 setTitle(response.data[0].title);
                 setDetail(response.data[0].detail);
@@ -270,7 +269,6 @@ function Edit() {
 
     const onChangerCategory = (e) => {
         setCategory(e.target.value)
-        console.log(e.target.value);
     }
       
     //미디어쿼리시 nav 사이드바

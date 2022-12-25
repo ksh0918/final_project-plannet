@@ -226,7 +226,6 @@ const Write = () => {
         const writeLoad = async() => {
             try{
                 const response = await Api.writeLoad(getId, date);
-                console.log(response.data[0]);
                 setPlanList(response.data[0]);
                 setDiary(response.data[1]);
             } catch(e){
@@ -234,7 +233,6 @@ const Write = () => {
             }
         }
         writeLoad();
-        console.log(planList);
     },[getId, date]);
 
     const onClickSave = async() => {
