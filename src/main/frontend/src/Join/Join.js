@@ -42,11 +42,11 @@ const Join = () => {
     // Terms.js 에서 받아온 마케팅 수신여부 동의 값
     const location = useLocation();
     const optInCheckList = location.state.optIn;
-    const [optInResult, setOptInResult] = useState("");
-    if (optInCheckList[0] && optInCheckList[1]) setOptInResult("ALL");
-    else if (optInCheckList[0]) setOptInResult("EMAIL");
-    else if (optInCheckList[1]) setOptInResult("SMS");
-    else setOptInResult("NON");
+    let optInResult = "";
+    if (optInCheckList[0] && optInCheckList[1]) optInResult = "ALL";
+    else if (optInCheckList[0]) optInResult = "EMAIL";
+    else if (optInCheckList[1]) optInResult = "SMS";
+    else optInResult = "NON";
 
     // 오류 메시지
     const [idMessage, setIdMessage] = useState("");

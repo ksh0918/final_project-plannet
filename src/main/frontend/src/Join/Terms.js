@@ -153,10 +153,10 @@ const Terms = () => {
     const istrue = async () => {
         if(serviceCheck === true && userCheck === true ){
             setOptInCheckList(optInCheckList.push(marketingEmailCheck, marketingSMSCheck));
-            console.log("출력됩니다!!");
-            console.log(marketingSMSCheck);
-            console.log(marketingEmailCheck);
-            console.log(optInCheckList);
+            // console.log("출력됩니다!!");
+            // console.log(marketingSMSCheck);
+            // console.log(marketingEmailCheck);
+            // console.log(optInCheckList);
             navigate("/join", {state: {optIn:optInCheckList}});
         } else {
             setModalOpenSignUp(true);
