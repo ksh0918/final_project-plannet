@@ -287,7 +287,7 @@ const Message = () => {
                                     //  checkItems 에 해당 쪽지의 messageNo 이 있으면 true, 아니면 false
                                     checked={checkItems.includes(message.messageNo) ? true : false}
                                 /></td> 
-                                <td onClick={()=>onClickList(message)}>{message.isRead===0 ? "안읽음" : "읽음"}</td>
+                                <td onClick={()=>onClickList(message)}>{message.isRead===0 ? "읽지않음" : "읽음"}</td>
                                 <td onClick={()=>onClickList(message)}>{message.sendId}</td>
                                 <td>{<div className='detail'onClick={()=>onClickList(message)} dangerouslySetInnerHTML={{__html: message.detail}}></div>}</td>
                                 <td onClick={()=>onClickList(message)}>{message.sendDate}</td>
