@@ -4,7 +4,7 @@ const HEADER = 'application/json';
 //const PLANNET_DOMAIN = "http://plannet.shop/";
 const PLANNET_DOMAIN = "http://localhost:8111/";
 
-const plannetApi = {
+const plannetApi_copy = {
     // MemberController
     // 로그인 기능 (구글 연동 계정인지, 일반 계정인지 체크)
     memberLogin: async function(id, pw) {
@@ -405,4 +405,4 @@ const plannetApi = {
     }
 }
 
-export default plannetApi;
+export default plannetApi_copy;
