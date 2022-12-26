@@ -268,9 +268,9 @@ const Message = () => {
                     <p>
                         <span>Plannet 친구들과 소통해 보세요!</span>
                         <div className="msg_btn">
-                            <button onClick={onClickRead} className="readBtn">쪽지쓰기</button>
+                            <button onClick={onClickToCreate} className="readBtn">쪽지쓰기</button>
                             <button onClick={onClickDelete} className="deleteBtn">선택삭제</button>
-                            <button onClick={onClickToCreate} className="sendBtn">읽기</button>
+                            <button onClick={onClickRead} className="sendBtn">읽기</button>
                         </div>
                     </p>
                     <table>
