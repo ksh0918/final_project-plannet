@@ -212,7 +212,7 @@ const plannetApi = {
             plan: planList,
             diary: diary
         };
-        return await axios.post("write/save", object);
+        return await axios.post("/save", object);
         },
 
     // ScalController
