@@ -48,7 +48,7 @@ const plannetApi = {
             keyword: keyword,
             type: type
         };
-        return await axios.post"member/overlap_check", regCheck);
+        return await axios.post("member/overlap_check", regCheck);
     },
     // 회원 아이디, 비밀번호 찾기
     memberFind: async function(keyword, email, type){
