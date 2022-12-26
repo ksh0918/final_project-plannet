@@ -301,7 +301,7 @@ function Edit() {
                                         <option value="정보">정보</option>
                                     </select>
                                 </td>
-                                <td><input className="title-input" type='text' placeholder='제목을 입력하세요.' defaultValue={title} value={title} onChange={onChangeTitle} name='title' maxLength={17}/></td>
+                                <td><input className="title-input" type='text' placeholder='제목을 입력하세요.' defaultValue={title} value={title} onChange={onChangeTitle} name='title' maxLength={33}/></td>
                                 <td><StyledInput type="checkbox" checked={e.isChecked} onChange={handleChecked}/>익명</td>
                             </tr>
                         </table>           
