@@ -16,7 +16,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     @Query(value = "select * from BOARD where board_No in (:board_no) order by board_no desc", nativeQuery = true)
     List<Board> findAllMatchingBoardNo(@Param("board_no") List<Integer> board_no);
     List<Board> findByTitleLikeOrDetailLikeOrderByBoardNoDesc(String keyword1, String keyword2);
-    @Query(value = "select board_No from BOARD where write_date in (select MAX(write_date) from BOARD group by id having id = (:userId))", nativeQuery = true)
+    @Query(value = "select board_No from board where write_date in (select MAX(write_date) from board group by id having id = (:userId))", nativeQuery = true)
     Long findLastBoardNo(@Param("userId") String userId);
     void deleteByUserId(Member member);
 }
